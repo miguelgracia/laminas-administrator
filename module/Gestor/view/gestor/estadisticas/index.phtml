@@ -1,0 +1,87 @@
+<?php
+
+$title = 'Estadísticas';
+$this->headTitle($title);
+
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title"><?php echo $this->escapeHtml($title); ?></h3>
+            </div>
+
+
+            <div class="box-body">
+
+
+                <form method="post" action="">
+
+                    <div class="col-md-6">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label>Rango de fechas:</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control pull-right" id="reservation" name="fechas">
+                                    </div><!-- /.input group -->
+                                </div><!-- /.form group -->
+
+                                <input type="submit" name="submit" id="submitbutton" class="btn&#x20;btn-primary" value="Calcular en rango de fechas">
+                                <br/><br/>
+                            </div>
+
+                    </div>
+                </form>
+
+
+                <br/><br/>
+                <br/>
+
+
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Nombre y apellidos</th>
+                        <th>Dirección Regional</th>
+                        <th>Número de accesos</th>
+                        <th>Último acceso</th>
+                        <th>Oficina nº</th>
+                        <th>Provincia</th>
+                        <th>PDFs generales</th>
+                        <th>PDFs totales</th>
+                        <th>PDFs castellano</th>
+                        <th>PDFs catalán</th>
+                        <th>PDFs inglés</th>
+                    </tr>
+
+                    <?php
+                    for ($i = 0; $i < count($arrayDatos); $i++)
+                    {
+                        echo ("<tr>");
+                        echo ("<td>".$arrayDatos[$i]['login']."</td>");
+                        echo ("<td>".$arrayDatos[$i]['nombre']." ".$arrayDatos[$i]['apellido1']." ".$arrayDatos[$i]['apellido2']." </td>");
+                        echo ("<td>".$arrayDatos[$i]['nombreDR']."</td>");
+                        echo ("<td>".$arrayDatos[$i]['cuantosAccesos']."</td>");
+                        echo ("<td>".$arrayDatos[$i]['ultimoAcceso']."</td>");
+                        echo ("<td>".$arrayDatos[$i]['numerooficina']."</td>");
+                        echo ("<td>".$arrayDatos[$i]['nombreProvincia']."</td>");
+                        echo ("<td>".$arrayDatos[$i]['generales']."</td>");
+                        echo ("<td>".$arrayDatos[$i]['total']."</td>");
+                        echo ("<td>".$arrayDatos[$i]['idlenguaje1']."</td>");
+                        echo ("<td>".$arrayDatos[$i]['idlenguaje2']."</td>");
+                        echo ("<td>".$arrayDatos[$i]['idlenguaje3']."</td>");
+                        echo ("</tr>");
+                    }
+                    ?>
+
+                </table>
+
+                        <div class="box-body">
+            </div>
+        </div>
+    </div>
+</div>

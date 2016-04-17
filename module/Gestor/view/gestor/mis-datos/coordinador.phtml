@@ -1,0 +1,78 @@
+<?php
+
+$title = 'Editar mis datos personales';
+$this->headTitle($title);
+
+
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title"><?php echo $this->escapeHtml($title); ?></h3>
+            </div>
+
+            <?php ?>
+
+            <form method="post" action="" class="form-horizontal">
+            <div class="box-body">
+
+                <?php
+                    //var_dump($datosCoordinador);
+                    //var_dump($datosGestorUsuarios);
+                if (($error != null) && ($error != ''))
+                {
+                    echo ("<p style='color: red'> ERROR :".$error."</p>");
+                }
+
+                ?>
+
+
+                <div class='form-group'>
+                    <label class="col-sm-2 control-label" for="email">Correo Electrónico</label>
+                    <div class='col-sm-10' style='vertical-align: bottom;'>
+                        <input type="text" name="email" value="<?php echo $datosCoordinador->email; ?>" class="form-control">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="hidden" name="checkPassword" value="0"><input type="checkbox" name="checkPassword" id="change_password" value="1"><label for="change_password">Cambiar contraseña</label>
+                            </label>
+                        </div>
+
+                    </div>
+                </div><div class='form-group'>
+                    <label class="col-sm-2&#x20;control-label" for="password">Nueva contraseña</label>
+                    <div class='col-sm-10'>
+                        <input type="text" name="password" id="password" class="form-control" value="">
+
+                    </div>
+                </div><div class='form-group'>
+                    <label class="col-sm-2&#x20;control-label" for="password2">Repita su nueva contraseña</label>
+                    <div class='col-sm-10'>
+                        <input type="text" name="password2" id="password2" class="form-control" value="">
+
+                    </div>
+                </div>
+
+                
+
+
+            </div>
+            <div class="box-footer">
+                <?php
+
+                ?>
+                <input type="submit" name="submit" id="submitbutton" class="btn&#x20;btn-primary" value="Grabar">
+            </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

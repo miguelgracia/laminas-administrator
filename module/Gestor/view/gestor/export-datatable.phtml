@@ -1,0 +1,18 @@
+<table>
+    <?php if(count($results)):?>
+        <tr bgcolor="#0066cc">
+            <?php foreach($headers as $header):?>
+                <td style="color: #FFFFFF"><?=$header['value']?></td>
+            <?php endforeach;?>
+        </tr>
+        <?php foreach($results as $row):
+            $row = array_map("utf8_decode",$row);
+            ?>
+            <tr>
+            <?php foreach($row as $rowKey => $value):?>
+                <td><?=$value?></td>
+            <?php endforeach;?>
+            </tr>
+        <?php endforeach;?>
+    <?php endif;?>
+</table>

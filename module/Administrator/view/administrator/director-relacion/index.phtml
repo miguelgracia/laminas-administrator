@@ -1,0 +1,88 @@
+<?php
+
+$title = 'Listado de directores de relación';
+$this->headTitle($title);
+
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title"><?php echo $this->escapeHtml($title); ?></h3>
+                <a class="pull-right" href="<?php echo $this->url('mastah/sections', array('section' => 'especialistas','action'=>'add'));?>">Nuevo</a>
+            </div>
+
+            <div class="box-body">
+
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th>Dirección Regional</th>
+                        <th>Usuario</th>
+                        <th>Nombre y apellidos</th>
+                        <th>Cargo</th>
+                        <th>Oficina nº</th>
+                        <th>Número de equipos</th>
+
+                        <th class="text-center">Editar</th>
+                        <th class="text-center">Activar/Desactivar</th>
+                    </tr>
+                    <?php foreach ($arrayElementos as  $i => $entrada) :
+//var_dump($entrada);
+                        echo ("<tr>");
+                        echo ("<td>".$entrada->nombreDR."</td>");
+                        echo ("<td>".$entrada->login."</td>");
+                        echo ("<td>".$entrada->nombre." ".$entrada->apellido1." ".$entrada->apellido2."</td>");
+                        echo ("<td>".$entrada->nombreCargo."</td>");
+                        echo ("<td>".$entrada->numerooficina."</td>");
+                        echo ("<td>".$entrada->cuantosEquipos."</td>");
+                        ?>
+                        <td class="text-center">
+                            <?php
+                            $href = $this->url('mastah/sections', array(
+                                'section' => 'director_relacion',
+                                'action' => 'edit',
+                                'id' => $entrada->id
+                            ));
+                            ?>
+                            <a href="<?php echo $href?>"><i class="fa fa-edit"></i> </a>
+                        </td>
+
+                        <td class="text-center">
+                            <?php
+                            // Solo vamos a dejar borrarlo si no está asignado a ningún lado
+                                if ($entrada->activo == 1)
+                                {
+                                    $href = $this->url('mastah/sections', array(
+                                        'section' => 'director_relacion',
+                                        'action' => 'desactivar',
+                                        'id' => $entrada->id
+                                    ));
+
+                                    echo ("<a href='".$href."'>");
+                                    echo ("Desactivar");
+                                } else {
+                                    $href = $this->url('mastah/sections', array(
+                                        'section' => 'director_relacion',
+                                        'action' => 'activar',
+                                        'id' => $entrada->id
+                                    ));
+                                    echo ("<a href='".$href."'>");
+                                    echo ("Activar");
+                                }
+                            echo ("</a>");
+                            ?>
+
+
+                        </td>
+
+                        <?php
+
+                        echo ("</tr>");
+                    endforeach ?>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

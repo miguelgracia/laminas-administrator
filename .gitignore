@@ -8,7 +8,7 @@ config/autoload/*.local.php
 
 # Binary gettext files
 *.mo
-
+/vendor
 # Data
 data/logs/
 data/cache/

@@ -1,0 +1,26 @@
+<?php
+
+$title = 'List blog';
+$this->headTitle($title);
+
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title"><?php echo $this->escapeHtml($title); ?></h3>
+                <a class="pull-right" href="<?php echo $this->url('mastah/sections', array('section' => 'blog','action'=>'add'));?>">Add new blog</a>
+            </div>
+
+            <div class="box-body">
+                <table data-settings='<?=json_encode($headers);?>' class="table table-bordered table-hover" id="blogTable">
+                    <thead><tr></tr></thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot><tr></tr></tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

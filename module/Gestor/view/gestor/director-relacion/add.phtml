@@ -1,0 +1,67 @@
+<?php
+
+$title = 'Añadir un director de relación';
+
+$form = $this->form;
+
+$form->prepare();
+
+$gestorFormRow = $this->gestor_form_row();
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title"><?php echo $this->escapeHtml($title); ?></h3>
+
+
+                <div class="box-body">
+
+                    <?php
+
+                    // Pintamos los errores
+                    for ($i = 0; $i < count($arrayErrores); $i++)
+                    {
+                        ?>
+                        <div class="callout callout-danger">
+                            <p>
+                                <strong>Error : </strong><?php echo $arrayErrores[$i]; ?>
+                            </p>
+                        </div>
+                        <?php
+                    }
+
+
+                    echo $this->form()->openTag($form);
+
+                    echo $gestorFormRow->render($form->get('iddireccionregional'));
+                    echo $gestorFormRow->render($form->get('login'));
+                    echo $gestorFormRow->render($form->get('nombre'));
+                    echo $gestorFormRow->render($form->get('apellido1'));
+                    echo $gestorFormRow->render($form->get('apellido2'));
+                    echo $gestorFormRow->render($form->get('idcargo'));
+                    echo $gestorFormRow->render($form->get('idoficina'));
+                    echo $gestorFormRow->render($form->get('movil'));
+                    echo $gestorFormRow->render($form->get('email'));
+
+//                    'login'     => $gestorUsuarios->login,
+//            'password'  => $gestorUsuarios->password,
+//            'idPerfil'  => $gestorUsuarios->idPerfil,
+//            'validado' => $gestorUsuarios->validado
+                    ?>
+
+
+                </div>
+                <div class="box-footer">
+                    <?php
+                    $submitButton = $form->get('submit');
+                    //echo $this->formHidden($form->get('id'));
+                    //echo $this->formHidden($form->get('fecha_creacion'));
+                    echo $this->formSubmit($submitButton);
+                    ?>
+                </div>
+                <?php echo $this->form()->closeTag();?>
+            </div>
+        </div>
+    </div>
+</div>

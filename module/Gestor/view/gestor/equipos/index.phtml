@@ -1,0 +1,20 @@
+<?php
+
+$title = 'List';
+$this->headTitle($title);
+
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title"><?php echo $this->escapeHtml($title); ?></h3>
+                <a class="pull-right" href="<?php echo $this->url('mastah/sections', array('section' => 'equipos','action'=>'add'));?>">Nuevo</a>
+            </div>
+
+            <div class="box-body">
+            </div>
+        </div>
+    </div>
+</div>

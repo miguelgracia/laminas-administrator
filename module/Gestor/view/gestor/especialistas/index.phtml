@@ -1,0 +1,127 @@
+<?php
+
+$title = 'Listado de especialistas';
+$this->headTitle($title);
+
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title"><?php echo $this->escapeHtml($title); ?></h3>
+                <a class="pull-right" href="<?php echo $this->url('mastah/sections', array('section' => 'especialistas','action'=>'add'));?>">Nuevo</a>
+            </div>
+
+            <div class="box-body">
+
+                <table class="table table-bordered table-hover" id="especialistas">
+                    <thead>
+                    <tr>
+                        <th>Especialidad</th>
+                        <th>Nombre y apellidos</th>
+                        <th>Foto en miniatura</th>
+                        <th>Gestores asignados</th>
+                        <th>Equipos asignados</th>
+                        <th class="text-center">Editar</th>
+                        <th class="text-center">Sustituir</th>
+                        <th class="text-center">Eliminar</th>
+                    </tr>
+                    </thead>
+                <?php foreach ($arrayEspecialistas as  $i => $entrada) :
+                    echo ("<tr>");
+                    echo ("<td>".$entrada->nombreInterno."</td>");
+                    echo ("<td>".$entrada->nombre." ".$entrada->apellido1." ".$entrada->apellido2."</td>");
+
+                    echo ("<td>");
+                    if (($entrada->foto != '') && ($entrada->foto != null)) {
+                        // Metemos la imagen para que se vea que existe
+                        $path = '/upload/especialista/';
+                        $pathCompleto = $path . $entrada->foto;
+                        // Sacamos el thumb que es el que queremos montar
+                        $pathCompleto = substr($pathCompleto, 0, strlen($pathCompleto) - 4) . "_thumb" . substr($pathCompleto, (strlen($pathCompleto) - 4), strlen($pathCompleto));
+                        echo("<img src='" . $pathCompleto . "'>");
+                    } else {
+                        echo ("<span style='color: red;'>");
+                        echo ("No existe imagen");
+                        echo ("</span>");
+                    }
+                    echo ("</td>");
+
+                    echo ("<td>".$entrada->cuantosGestores."</td>");
+                    echo ("<td>".$entrada->cuantosEquipos."</td>");
+                    ?>
+                    <td class="text-center">
+                        <?php
+                        $href = $this->url('mastah/sections', array(
+                            'section' => 'especialistas',
+                            'action' => 'edit',
+                            'id' => $entrada->id
+                        ));
+                        ?>
+                        <a href="<?php echo $href?>"><i class="fa fa-edit"></i> </a>
+                    </td>
+
+
+                    <td class="text-center">
+                        <?php
+                        $href = $this->url('mastah/sections', array(
+                            'section' => 'especialistas',
+                            'action' => 'substitute',
+                            'id' => $entrada->id
+                        ));
+                        ?>
+                        <a href="<?php echo $href?>"><i class="fa fa-edit"></i> </a>
+                    </td>
+
+
+
+                    <td class="text-center">
+                        <?php
+                        // Solo vamos a dejar borrarlo si no está asignado a ningún lado
+                        if (($entrada->cuantosGestores > 0) || ($entrada->cuantosEquipos > 0))
+                        {
+
+                            echo ("-");
+
+                        } else {
+
+                        $href = $this->url('mastah/sections', array(
+                            'section' => 'especialistas',
+                            'action' => 'delete',
+                            'id' => $entrada->id
+                        ));
+                        ?>
+                        <a href="<?php echo $href;?>"
+                           class="delete_alert"
+                           texto="Confirme que desea borrar al especialista '<?=$entrada->nombre?>'"
+                            ><i class="fa fa-remove"></i></a>
+                        <?php
+                        }
+                        ?>
+
+
+                    </td>
+
+                    <?php
+
+                    echo ("</tr>");
+                endforeach ?>
+                    <tfoot>
+                    <tr>
+                        <th>Especialidad</th>
+                        <th>Nombre y apellidos</th>
+                        <th data-can-filter="0"></th>
+                        <th>Gestores asignados</th>
+                        <th>Equipos asignados</th>
+                        <th data-can-filter="0" class="text-center">Editar</th>
+                        <th data-can-filter="0" class="text-center">Sustituir</th>
+                        <th data-can-filter="0" class="text-center">Eliminar</th>
+                    </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

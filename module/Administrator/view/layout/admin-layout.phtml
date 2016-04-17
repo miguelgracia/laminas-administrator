@@ -1,0 +1,204 @@
+<?php
+//$settings = $this->settings();
+
+
+echo $this->doctype();
+$basePath = $this->basePath() . '/administrator';
+?>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle('ABS Consultor')->setSeparator(' - ')->setAutoEscape(false) ?>
+
+    <?php echo $this->headMeta()
+        ->appendName('viewport', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+        ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+    ?>
+
+    <!-- Le styles -->
+    <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $basePath . '/img/favicon.ico'))
+        ->appendStylesheet($basePath . '/libs/bootstrap/css/bootstrap.min.css')
+        ->appendStylesheet('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
+        ->appendStylesheet('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css')
+        ->appendStylesheet($basePath . '/css/AdminLTE.min.css')
+        ->appendStylesheet($basePath . '/css/skins/skin-blue.min.css')
+        ->appendStylesheet($basePath . '/libs/datatables/dataTables.bootstrap.css')
+        ->appendStylesheet($basePath . '/css/style.css')
+        ->appendStylesheet($basePath . '/plugins/daterangepicker/daterangepicker-bs3.css')
+         ?>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+    <header class="main-header">
+
+        <!-- Logo -->
+        <a href="<?php echo $this->url('mastah/sections',array('section' => 'home')) ?>" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <!-- <img src="<?php echo $basePath."/img/gestor/logo_empresa.jpg";?>"/> -->
+            <!--<span class="logo-mini"><?php /*echo $settings->nameClient;*/?></span>-->
+            <span class="logo-mini">ABS Consultor</span>
+            <!-- logo for regular state and mobile devices -->
+            <!--<span class="logo-lg"><?php /*echo $settings->nameClient;*/?></span>-->
+            <span class="logo-lg">ABS Consultor</span>
+        </a>
+
+        <!-- Header Navbar -->
+        <nav class="navbar navbar-static-top" role="navigation">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- User Account Menu -->
+                    <li class="dropdown user user-menu">
+                        <!-- Menu Toggle Button -->
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <!-- The user image in the navbar-->
+                            <?php
+
+                            $imgPath = $basePath . '/img/user1-160x160.jpg';
+                            echo "<img src='$imgPath' class='user-image' alt='User Image'>";
+                            ?>
+
+
+                            <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                            <span class="hidden-xs"><?php echo $userData->email; ?></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- The user image in the menu -->
+                            <li class="user-header">
+                                <?php echo "<img src='$imgPath' class='user-image' alt='User Image'>"; ?>
+
+                                <p>
+                                    <?php echo $userData->email; ?>
+                                    <small>
+                                        Sign up date: <?php echo $userData->createdAt; ?><br/>
+                                        Last login: <?php echo $userData->lastLogin;?>
+                                    </small>
+                                </p>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <!-- <div class="pull-left">
+                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                </div> -->
+                                <div class="pull-right">
+                                    <a href="/login/logout" class="btn btn-default btn-flat">Sign out</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <aside class="main-sidebar">
+
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+
+            <!-- Sidebar user panel (optional) -->
+
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <?php
+                    echo "<img src='$imgPath' class='user-image' alt='User Image'>";
+                    //echo "<img src='' class='user-image' alt='User Image'>";
+                    ?>
+                </div>
+                <div class="pull-left info">
+                    <p><?php echo $userData->login; ?></p>
+                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                </div>
+            </div>
+
+
+            <!-- Sidebar Menu -->
+            <?php
+            //echo $this->menu_helper($this->getHelperPluginManager());
+            $containter = $this->navigation('Navigation')->getContainer();
+            echo $this->GestorMenu($containter)
+                /*
+                 * Escapamos las etiquetas.
+                 * De esta forma, podemos a�adir html a las mismas(para poder a�adir los iconos de
+                 */
+                ->escapeLabels(false)
+                /**
+                 * Seteamos la clase que van a llevar los ul de aquellos submen�s que aparezcan abiertos.
+                 */
+                ->setUlClassMenuOpen('menu-open')
+                ->setUlClass('sidebar-menu');
+            ?>
+            <!--<ul class="sidebar-menu">
+                <li class="active"><a href="#"><i class="fa fa-circle-thin"></i> <span>Link</span></a></li>
+                <li><a href="#"><i class="fa fa-circle-thin"></i> <span>Another Link</span></a></li>
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-circle-thin"></i> <span>Multilevel</span> <i
+                            class="fa fa-angle-left pull-right"></i></a>
+                    <ul class="treeview-menu">
+                        <li><a href="#">Link in level 2</a></li>
+                        <li><a href="#">Link in level 2</a></li>
+                    </ul>
+                </li>
+            </ul> -->
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <!--<section class="content-header">
+            <!--<h1>
+                Page Header
+                <small>Optional description</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+                <li class="active">Here</li>
+            </ol>
+        </section> -->
+
+        <!-- Main content -->
+        <section class="content">
+
+            <!-- Your Page Content Here -->
+            <?php echo $this->content; ?>
+
+        </section><!-- /.content -->
+    </div><!-- /.content-wrapper -->
+
+    <!-- Main Footer
+    <footer class="main-footer">
+
+        <div class="pull-right hidden-xs">
+            Anything you want
+        </div>
+
+        <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.
+    </footer>-->
+</div>
+
+<!-- Scripts -->
+<?php echo $this->headScript()
+    ->appendFile($basePath . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
+    ->appendFile($basePath . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+    ->appendFile($basePath . '/libs/jQuery/jQuery-2.1.4.min.js')
+    ->appendFile($basePath . '/libs/bootstrap/js/bootstrap.min.js')
+    ->appendFile($basePath . '/libs/datatables/jquery.dataTables.js')
+    ->appendFile($basePath . '/libs/datatables/dataTables.bootstrap.min.js')
+    // No usar app.min (de momento). Se han hecho cambios en app.js
+    // por lo que habría que minimizarlo de nuevo.
+    ->appendFile($basePath . '/js/app.js')
+    ->appendFile($basePath . '/js/routing.js')
+    ->appendFile($basePath . '/js/gestor.js')
+
+;
+
+?>
+<?php echo $this->inlineScript(); ?>
+</body>
+</html>

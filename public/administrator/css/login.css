@@ -1,0 +1,86 @@
+@charset "utf-8";
+/* CSS Document @import "general.css"; */
+
+/*-- GENERICOS -- */
+*, header, article, aside, footer, nav, section{
+    margin: 0;
+    padding: 0;
+    outline:none;
+    text-decoration:none;
+    font-family: 'Lucida Sans Unicode';
+    font-size: 12px;
+    list-style-type: none;
+}
+
+#login{
+    text-align: center;
+    /* background: url(../img/structure/bg-login.jpg) repeat-x top left; */
+}
+
+#login .content{
+    margin-top: 10px;
+    text-align: center;
+}
+
+.content .cuadro_usuario, .content .cuadro_pass{
+    margin:	0 auto;
+    width: 210px;
+    padding: 3px;
+    background: #CCCCCC;
+    text-align: left;
+
+}
+
+.content .cuadro_pass{
+    margin-top: 5px;
+}
+
+.logo{padding: 15px 0 10px 0;}
+
+
+.enviar{
+    width: 86px;
+    height: 20px;
+    border: none;
+    background: url(../img/structure/fondo_enviar.jpg) no-repeat top center;
+    color: rgb(255,255,255);
+    cursor: pointer;
+    margin-top: 20px;
+    text-align: left;
+    padding-left: 20px;
+    font-size: 11px;
+}
+
+.enviar_no_imagen{
+    width: 86px;
+    height: 20px;
+    cursor: pointer;
+    margin-top: 20px;
+    text-align: left;
+    padding-left: 22px;
+    font-size: 12px;
+}
+
+
+.right{
+    width: 106px;
+    float: right;
+}
+table{
+    width: 200px;
+}
+th{
+    font-weight:normal;
+}
+
+.enviar:hover{background-position: center -20px;}
+
+.error{
+    color: rgb(255,0,0);
+}
+
+.error_login {
+    color: rgb(255,0,0);
+    font-size: 14px;
+    margin-top: 20px;
+}

@@ -1,0 +1,115 @@
+body {
+    overflow-y: visible;
+}
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+.zf-green {
+    color: #68b604;
+}
+
+.btn-success {
+  background-color: #57a900;
+  background-image: -moz-linear-gradient(top, #70d900, #57a900);
+  background-image: -ms-linear-gradient(top, #70d900, #57a900);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#70d900), to(#57a900));
+  background-image: -webkit-linear-gradient(top, #70d900, #57a900);
+  background-image: -o-linear-gradient(top, #70d900, #57a900);
+  background-image: linear-gradient(top, #70d900, #57a900);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#70d900', endColorstr='#57a900', GradientType=0);
+}
+
+.btn-success:hover,
+.btn-success:active,
+.btn-success.active,
+.btn-success.disabled,
+.btn-success[disabled] {
+  background-color: #57a900;
+}
+
+.btn-success:active, .btn-success.active {
+  background-color: #57a900;
+}
+
+div.container a.brand {
+    background: url("../img/zf2-logo.png") no-repeat scroll 0 10px transparent;
+    margin-left: 0;
+    padding: 8px 20px 12px 40px;
+}
+
+div.horizontal-scroll {
+    overflow-x: auto ;
+}
+
+.tabla-destaca {
+    color: #0000fe;
+}
+
+.rojo {
+    color: #ff3333;
+}
+
+.fuentegrande {
+    font-size: 26px;
+}
+
+.form-block {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #d2d6de;
+    overflow: hidden;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.pull-center {
+    margin: 0 auto;
+}
+
+.modal.modal-wide .modal-dialog {
+    width: 90%;
+    max-width: 1024px;
+}
+.modal-wide .modal-body {
+    overflow-y: auto;
+}
+
+.text-underline,
+.text-underline:hover {
+    text-decoration: underline;
+}
+
+.navbar-nav > .user-menu > .dropdown-menu > .user-footer {
+    background-color: #48bbe6;
+}
+
+
+/**
+    PAGINA PRESENTACION
+*/
+
+.color-azul {
+    color: #034B94
+}
+
+/*.js-pagina-oficina .nav-tabs-custom > .nav-tabs > li.active {
+    border-top-color: #non;
+}*/
+.js-pagina-oficina .nav-tabs-custom > .nav-tabs > li.active a,
+.js-pagina-oficina .nav-tabs-custom > .nav-tabs > li.active:first-of-type a {
+    background-color: #ddd;
+    border: 1px solid #ddd;
+}
+
+.btn-download {
+
+}

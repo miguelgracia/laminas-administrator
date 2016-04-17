@@ -1,0 +1,34 @@
+<?php
+// Creamos el formulario
+$form->prepare();
+
+$gestorFormRow = $this->gestor_form_row();
+
+?>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Configuration</h3>
+            </div>
+            <?php
+            // Otra linea inútil para abrir el form
+            echo $this->form()->openTag($form);
+            $elements = $form->getElements();
+            ?>
+            <div class="box-body">
+            <?php foreach ($elements as $entryKey => $formField) :?>
+                <?php echo $gestorFormRow->render($formField);?>
+            <?php endforeach;?>
+            </div>
+            <div class="box-footer">
+                <input type="hidden" name="edit" value="1">
+                <input type="submit" value="Update" class="btn btn-primary">
+            </div>
+            <?php echo $this->form()->closeTag();?>
+        </div>
+    </div>
+</div>
+
+

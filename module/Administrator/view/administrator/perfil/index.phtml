@@ -1,0 +1,59 @@
+<?php
+
+$title = 'List profiles';
+$this->headTitle($title);
+
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title"><?php echo $this->escapeHtml($title); ?></h3>
+                <a class="pull-right" href="<?php echo $this->url('mastah/sections', array('section' => 'perfil','action'=>'add'));?>">Add new profile</a>
+            </div>
+            <div class="box-body">
+                <?php
+
+                if ((isset($perfiles)) && (count($perfiles) > 0)):?>
+
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+
+                    <?php foreach ($perfiles as $elemento) :?>
+                    <tr>
+                        <td><?php
+                            if ($miPerfil == $elemento->id)
+                            {
+                                echo ("<span class='tabla-destaca'>");
+                                echo $elemento->nombre;
+                                echo ("</span>");
+                            } else {
+                                echo $elemento->nombre;
+                            }
+                            ?>
+                        </td>
+                        <td>
+                            <a href="<?php echo $this->url('mastah/sections',
+                            array('section' => 'perfil','action'=>'edit', 'id' => $elemento->id));?>"><i class="fa fa-edit"></i></a>
+                        </td>
+
+                        <td>
+                        <?php if ($elemento->id != 1) :?>
+                            <a href="<?php echo $this->url('mastah/sections',
+                                array('section' => 'perfil','action'=>'delete', 'id' => $elemento->id));?>"><i class="fa fa-remove"></i></a>
+                        <?php else :?>
+                            <i class="fa fa-ban"></i>
+                        <?php endif;?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </table>
+                <?php endif;?>
+            </div>
+        </div>
+    </div>
+</div>

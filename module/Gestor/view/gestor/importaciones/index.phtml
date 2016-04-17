@@ -1,0 +1,82 @@
+<?php
+
+$title = 'Importaciones de Excel';
+$this->headTitle($title);
+
+//var_dump($arrayOficinas);
+
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title"><?php echo $this->escapeHtml($title); ?></h3>
+
+                <br/><br/>
+                <h3 class="box-title"><?php echo "Importación masiva"; ?></h3>
+
+                <strong>Formato:</strong>
+                <i>Nombre Gestor; Primer Apellido; Segundo Apellido; Usuario; Cargo; D.Regional; Oficina nº; Email; Dirección; Localidad; CP; Provincia</i>
+                        ;<i>Financiación a Corto Plazo; Financiación a Largo Plazo; Comercio Exterior; Renting; Medios de Pago; Seguros; Servicios Transaccionales; Banca de Inversión; Mercados</i>
+
+                <br/><br/>
+                <div class="box-body">
+                    <div class='form-group'>
+                        <form action="&#x2F;importaciones&#x2F;import" method="POST" class="form-horizontal" name="Gestor_Form" enctype="multipart&#x2F;form-data" id="Gestor_Form">
+                        <!-- <label class="col-sm-2&#x20;control-label" for="foto">Fichero CSV</label> -->
+                        <div class='col-sm-10'>
+                            <input type="file" name="fichero" value="">
+
+                        </div>
+                    </div>
+                </div>
+
+                <br/><br/>
+
+                <div class="box-footer">
+                    <input type="submit" value="Importar">
+                </div>
+                </form>
+
+                <hr/>
+
+                <!-- Y ahora las de fotos -->
+                <h3 class="box-title"><?php echo "Importación de fotografías"; ?></h3>
+                <br/><br/>
+                <div class="box-body">
+                    <div class='form-group'>
+                        <form action="&#x2F;importaciones&#x2F;importFotos" method="POST" class="form-horizontal" name="Gestor_Form" enctype="multipart&#x2F;form-data" id="Gestor_Form">
+
+                            <div class='form-group'>
+
+                            <label class="col-sm-2&#x20;control-label" for="idespecialidad">Ruta de las imágenes</label>
+                            <div class='col-sm-10'>
+                                <input type="text" name="rutaImagenes" value="/home/pablo/Documentos/RENOMBRADAS" class="form-control">
+                            </div>
+
+                                </div>
+                            <br/><br/>
+                                <div class='form-group'>
+
+                            <div class='col-sm-10'>
+                                <input type="file" name="fichero" value="">
+                            </div>
+                            </div>
+
+                    </div>
+                </div>
+
+                <br/><br/>
+
+                <div class="box-footer">
+                    <input type="submit" value="Importar">
+                </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
