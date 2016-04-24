@@ -153,10 +153,12 @@ class AuthController extends AbstractActionController
 
             $misPermisos = $this->sm->get('Administrator\Factory\PermisosCheckerFactory');
 
-            if (!$misPermisos->hasModuleAccess($module,$action))
+            $hasAccess = $misPermisos->hasModuleAccess($module,$action);
+
+            if (!$hasAccess)
             {
                 return $this->redirect()->toRoute('administrator',array(
-                    'section' => 'home',
+                    'module' => 'home',
                 ));
             }
         }

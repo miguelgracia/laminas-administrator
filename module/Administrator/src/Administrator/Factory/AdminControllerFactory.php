@@ -1,6 +1,7 @@
 <?php
 namespace Administrator\Factory;
 
+use Zend\Filter\Word\DashToCamelCase;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -15,7 +16,9 @@ class AdminControllerFactory implements FactoryInterface
 
         $module = $module == "" ? "login" : $module;
 
-        $moduleName = 'Am'.ucfirst($module);
+        $dashToCamel = new DashToCamelCase();
+
+        $moduleName = 'Am'.$dashToCamel->filter($module);
 
         $namespace = $moduleName."\\Controller\\".$moduleName."ModuleController";
 

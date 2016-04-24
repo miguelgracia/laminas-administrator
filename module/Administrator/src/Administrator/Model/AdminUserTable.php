@@ -7,10 +7,6 @@ use Zend\Db\Sql\Select;
 
 class AdminUserTable extends AdministratorTable
 {
-    protected $table = "admin_users";
+    protected $table = "gestor_usuarios";
 
-    public function test()
-    {
-
-    }
 }

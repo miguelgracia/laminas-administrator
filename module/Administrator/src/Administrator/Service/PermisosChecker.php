@@ -12,7 +12,7 @@ class PermisosChecker implements PermisosCheckerInterface
     {
         $this->sm = $sm;
         $this->userData = $userData;
-        $this->isSuperUser = $this->userData->isSuperuser == '1';
+        $this->isSuperUser = (bool) $this->userData->esAdmin;
     }
 
     public function isAdmin()
@@ -20,64 +20,68 @@ class PermisosChecker implements PermisosCheckerInterface
         return $this->isSuperUser;
     }
 
-    public function hasModuleAccess($module, $action)
+    public function hasModuleAccess($controlador, $accion)
     {
         if ($this->isSuperUser) {
             return true;
         }
-
-        // Vamos a comprobar si el $idPerfil tiene permisos para el $module.
+        // Vamos a comprobar si el $gestorPerfilId tiene permisos para el $controlador.
 
         // 0. Sacamos la parte final del controlador y en minusculas
-        $partirModule = explode('\\', $module);
 
-        $moduleFinal = strtolower($partirModule[count($partirModule) - 1]);
+        $partirControlador = explode('\\', $controlador);
+        $controladorFinal = strtolower($partirControlador[count($partirControlador) - 1]);
 
-        // 1. Buscamos $module como texto en la tabla de controladores
-        $modules = $this->sm->get('Administrator\Model\ModuleTable')->select();
+        // 1. Buscamos $controlador como texto en la tabla de controladores
+        $arrayControladores = $this->sm->get('Administrator\Model\GestorControladorTable')->select();
+        $encontrado = false;
+        $idEncontrado = 0;
 
-        $moduleExists = false;
-
-        foreach ($modules as $module)
+        foreach ($arrayControladores as $elemento)
         {
-            if (strtolower($module->name) == $moduleFinal) {
-                $moduleExists = true;
-                //$idEncontrado = $module->id;
+            if ($elemento->nombreZend == $controladorFinal) {
+                $encontrado = true;
+                $idEncontrado = $elemento->id;
             }
         }
 
-        if (!$moduleExists)
-        {
-            // Si no se ha encontrado el módulo entre los listados, no vamos a dejarle
+        if (!$encontrado) {
+            // Si no se ha encontrado el controlador entre los listados, no vamos a dejarle
             return false;
         } else {
+            // Buscamos si el id del controlador existe para este gestorPerfilId
 
-            $groupPermissions = json_decode($this->userData->groupPermissions,true);
-            $userPermissions = json_decode($this->userData->permissions,true);
+            $listaPermisos = $this->sm->get('Administrator\Model\PermisosTable')->fetchAllPerfilBasic($this->userData->gestorPerfilId);
 
-            $permissions = array_merge($groupPermissions, $userPermissions);
+            $tienePermiso = false;
 
-            $permissionKey = $moduleFinal.'.'.$action;
+            foreach ($listaPermisos as $permiso)
+            {
+                if ($permiso->gestorControladorId == $idEncontrado)
+                {
+                    $tienePermiso = true;
+                    break;
+                }
+            }
 
-            //TODO: Barajar la opción de devolver una excepción cuando el permiso no se encuentre definido
-            return array_key_exists($permissionKey, $permissions) and ((bool)$permissions[$permissionKey]);
+            return $tienePermiso;
         }
     }
 
-    public function redibujarMenu($dataMenuTemp)
+    public function redibujarMenu(&$dataMenu)
     {
         if ($this->isSuperUser) {
-            return $dataMenuTemp;
+            return $dataMenu;
         }
 
-        foreach ($dataMenuTemp as $i => $menuTemp) {
+        foreach ($dataMenu as $i => $menuTemp) {
 
             if ($menuTemp->nombreZend != '') {
                 if (!$this->hasModuleAccess($menuTemp->nombreZend)) {
                     //El usuario no tiene permisos de acceso. Eliminamos el registro del array
-                    unset($dataMenuTemp[$i]);
+                    unset($dataMenu[$i]);
                     //no es necesario comprobar si hay acceso a los hijos porque directamente
-                    //no hay acceso al padre, as� que continuamos con la siguiente iteraci�n.
+                    //no hay acceso al padre, así que continuamos con la siguiente iteración.
 
                     continue;
                 }
@@ -92,6 +96,7 @@ class PermisosChecker implements PermisosCheckerInterface
                 }
             }
         }
-        return $dataMenuTemp;
+
+        return $dataMenu;
     }
 }

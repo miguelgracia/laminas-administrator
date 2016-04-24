@@ -4,7 +4,7 @@
  * Esto es un servicio gen�rico de apoyo a formularios.
  */
 
-namespace Gestor\Service;
+namespace Administrator\Service;
 
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Metadata\Metadata;
@@ -13,13 +13,16 @@ use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
 
+use Zend\Filter\Word\CamelCaseToUnderscore;
+use Zend\Filter\Word\SeparatorToCamelCase;
 use Zend\Filter\Word\SeparatorToSeparator;
+use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\Form\Form;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class GestorFormService implements FactoryInterface, EventManagerAwareInterface
+class AdministratorFormService implements FactoryInterface, EventManagerAwareInterface
 {
     protected $eventManager;
 
@@ -346,7 +349,8 @@ class GestorFormService implements FactoryInterface, EventManagerAwareInterface
         $columns = $this->metadata->getColumns($sourceTable);
 
         foreach ($columns as $column) {
-            $columnName = $column->getName();
+            $toCamel = new SeparatorToCamelCase('_');
+            $columnName = lcfirst($toCamel->filter($column->getName()));
 
             $flags = array(
                 'priority' => -($column->getOrdinalPosition() * 100),
@@ -402,6 +406,16 @@ class GestorFormService implements FactoryInterface, EventManagerAwareInterface
         return $this;
     }
 
+    public function postCamelToUnderscore($post)
+    {
+        $toUnderscore = new CamelCaseToUnderscore();
+        $underscoreVars = array();
+        foreach ($post as $key => $value) {
+            $underscoreVars[strtolower($toUnderscore->filter($key))] = $value;
+        }
+        return $underscoreVars;
+    }
+
     protected function setFormDataType($columnName, $dataType)
     {
         if (array_key_exists($columnName, $this->fieldModifiers)) {
@@ -438,7 +452,7 @@ class GestorFormService implements FactoryInterface, EventManagerAwareInterface
         $viewHelper  = $this->serviceLocator->get('ViewHelperManager');
 
         $params = array(
-            'section' => $this->routeParams['section'],
+            'module' => $this->routeParams['module'],
             'action'  => $this->routeParams['action'],
         );
 
@@ -490,6 +504,6 @@ class GestorFormService implements FactoryInterface, EventManagerAwareInterface
 
         $url = $viewHelper->get('url');
 
-        $this->setAttribute('action', $url('administrator', $params));
+        $this->setAttribute('action', $url('mastah/sections', $params));
     }
 }

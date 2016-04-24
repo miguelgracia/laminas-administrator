@@ -27,24 +27,24 @@ $this->headTitle($title);
 <?php foreach ($entradas as  $i => $entrada) :?>
     <li>
         <?=$entrada->texto;?>
-        <a class="btn" href="<?php echo $this->url('mastah/sections',array('section' => 'entradamenu','action'=>'edit', 'id' => $entrada->id));?>"><i class="fa fa-edit"></i></a>
+        <a class="btn" href="<?php echo $this->url('administrator',array('section' => 'entradamenu','action'=>'edit', 'id' => $entrada->id));?>"><i class="fa fa-edit"></i></a>
 
         <?php if ($entrada->cuantosHijos > 0) :?>
             <ul>
                 <?php foreach ($entrada->hijos as $k => $hijo) :?>
                 <li>
-                    <a class="btn" href="<?php echo $this->url('mastah/sections', array('section' => 'entradamenu','action' => 'delete', 'id' => $hijo->id));?>"><i class="fa fa-remove"></i></a>
-                    <a class="btn" href="<?php echo $this->url('mastah/sections', array('section' => 'entradamenu','action' => 'edit', 'id' => $hijo->id));?>"><i class="fa fa-edit"></i></a>
+                    <a class="btn" href="<?php echo $this->url('administrator', array('section' => 'entradamenu','action' => 'delete', 'id' => $hijo->id));?>"><i class="fa fa-remove"></i></a>
+                    <a class="btn" href="<?php echo $this->url('administrator', array('section' => 'entradamenu','action' => 'edit', 'id' => $hijo->id));?>"><i class="fa fa-edit"></i></a>
                     <?=$hijo->texto;?>
                 </li>
                 <?php endforeach; ?>
-                <li class="add-more"><a class="btn" href="<?php echo $this->url('mastah/sections', array('section' => 'entradamenu', 'action' => 'add', 'id' => $entrada->id, 'data' => ($k + 1)));?>"><i class="fa fa-plus"></i></a></li>
+                <li class="add-more"><a class="btn" href="<?php echo $this->url('administrator', array('section' => 'entradamenu', 'action' => 'add', 'id' => $entrada->id, 'data' => ($k + 1)));?>"><i class="fa fa-plus"></i></a></li>
             </ul>
 
         <?php else:?>
-        <a class="btn" href="<?php echo $this->url('mastah/sections', array('section' => 'entradamenu','action'=>'delete', 'id' => $entrada->id));?>"><i class="fa fa-remove"></i></a>
+        <a class="btn" href="<?php echo $this->url('administrator', array('section' => 'entradamenu','action'=>'delete', 'id' => $entrada->id));?>"><i class="fa fa-remove"></i></a>
         </li>
-        <li><ul><li class="add-more"><a href="<?php echo $this->url('mastah/sections',array('section' => 'entradamenu','action'=>'add', 'id' => $entrada->id, 'data' => ($i + 1)));?>"><i class="fa fa-plus"></i></a></li></li></ul>
+        <li><ul><li class="add-more"><a href="<?php echo $this->url('administrator',array('section' => 'entradamenu','action'=>'add', 'id' => $entrada->id, 'data' => ($i + 1)));?>"><i class="fa fa-plus"></i></a></li></li></ul>
 
     <?php endif; ?>
     </li>
@@ -52,5 +52,5 @@ $this->headTitle($title);
 
 </ul>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo $this->url('mastah/sections',
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo $this->url('administrator',
     array('section' => 'entradamenu','action'=>'add', 'id' => 0, 'data' => ($i+1)));?>">Add Menu</a>

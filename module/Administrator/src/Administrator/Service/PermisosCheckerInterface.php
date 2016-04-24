@@ -10,6 +10,6 @@ interface PermisosCheckerInterface
 
     public function hasModuleAccess($module, $action);
 
-    public function redibujarMenu($dataMenuTemp);
+    public function redibujarMenu(&$dataMenuTemp);
 
 }

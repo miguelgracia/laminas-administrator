@@ -33,7 +33,7 @@ $basePath = $this->basePath() . '/administrator';
     <header class="main-header">
 
         <!-- Logo -->
-        <a href="<?php echo $this->url('mastah/sections',array('section' => 'home')) ?>" class="logo">
+        <a href="<?php echo $this->url('administrator',array('module' => 'home')) ?>" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <!-- <img src="<?php echo $basePath."/img/gestor/logo_empresa.jpg";?>"/> -->
             <!--<span class="logo-mini"><?php /*echo $settings->nameClient;*/?></span>-->
@@ -65,7 +65,7 @@ $basePath = $this->basePath() . '/administrator';
 
 
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                            <span class="hidden-xs"><?php echo $userData->email; ?></span>
+                            <span class="hidden-xs"><?php echo $userData->login; ?></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
@@ -118,9 +118,8 @@ $basePath = $this->basePath() . '/administrator';
 
             <!-- Sidebar Menu -->
             <?php
-            //echo $this->menu_helper($this->getHelperPluginManager());
             $containter = $this->navigation('Navigation')->getContainer();
-            echo $this->GestorMenu($containter)
+            echo $this->AdministratorMenu($containter)
                 /*
                  * Escapamos las etiquetas.
                  * De esta forma, podemos a�adir html a las mismas(para poder a�adir los iconos de

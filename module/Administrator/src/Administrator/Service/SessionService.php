@@ -38,17 +38,17 @@ class SessionService implements FactoryInterface, SessionServiceInterface
      */
     public function getUserData($username)
     {
-        $rowset = $this->usuariosTableGateway->select(function(Select $select) use($username) {
-            $select->join(
-                'admin_groups',
-                'admin_groups.id = admin_users.admin_group_id',
-                array(
-                    'group_permissions' => 'permissions',
-                    'is_superuser'
+        $rowset = $this->usuariosTableGateway->select(function (Select $select) use($username) {
+            $select
+                ->columns(array('*'))
+                ->join(
+                    'gestor_perfiles',
+                    'gestor_perfiles.id = gestor_usuarios.gestor_perfil_id',
+                    array('es_admin')
                 )
-            )->where(array(
-                'email' => $username
-            ));
+                ->where(array(
+                    'login' => $username
+                ));
         });
         $row = $rowset->current();
         if (!$row) {

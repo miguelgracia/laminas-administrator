@@ -6,12 +6,14 @@
 
 namespace Administrator;
 
+use Administrator\View\Helper\AdministratorFormRow;
 use Zend\Authentication\AuthenticationService;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 
 use Zend\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
 use Zend\Mvc\MvcEvent;
+use Zend\Validator\AbstractValidator;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
@@ -70,38 +72,57 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                 'Administrator\Factory\AdministratorModelAbstractFactory',
             ),
             'factories' => array(
-                //'Navigation' => 'Gestor\Factory\GestorNavigationFactory',
+                'Navigation' => 'Administrator\Factory\AdministratorNavigationFactory',
 
                 'Administrator\Model\AuthStorage' => function ($sm) {
                     return new \Administrator\Model\AuthStorage('AdministratorStorage');
                 },
-                'AuthService' => function ($sm) {
-                    //My assumption, you've alredy set dbAdapter
-                    //and has users table with columns : user_name and pass_word
-                    //that password hashed with md5
-                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-
-                    $dbTableAuthAdapter  = new AuthAdapter($dbAdapter,
-                        'admin_users','email','password', "MD5(?)");
-
-                    $authService = new AuthenticationService();
-                    $authService->setAdapter($dbTableAuthAdapter);
-                    $authService->setStorage($sm->get('Administrator\Model\AuthStorage'));
-
-                    return $authService;
-                },
+                'AuthService'                            => 'Administrator\Service\AuthService',
 
                 'Administrator\Service\SessionServiceInterface' => 'Administrator\Service\SessionService',
                 'Administrator\Factory\PermisosCheckerFactory'  => 'Administrator\Factory\PermisosCheckerFactory',
-                //'Gestor\Service\GestorFormService'       => 'Gestor\Service\GestorFormService',
+                'Administrator\Service\AdministratorFormService'       => 'Administrator\Service\AdministratorFormService',
                 //'Gestor\Service\DatatableService'        => 'Gestor\Service\DatatableService',
 
             ),
         );
     }
 
+    public function getViewHelperConfig()
+    {
+        return array(
+            'invokables' => array(
+                'AdministratorMenu' => 'Administrator\View\Helper\AdministratorMenu',
+            ),
+            'factories' => array(
+
+                'settings' => function ($sm) {
+                    return new \Gestor\View\Helper\AppSettingsHelper();
+                },
+                'gestor_user' => function($sm) {
+                    return new \Gestor\View\Helper\GestorUserHelper($sm);
+                },
+                'administrator_form_row' => function ($sm) {
+                    return new AdministratorFormRow($sm);
+                }
+            )
+        );
+    }
+
     public function onBootstrap(MvcEvent $e)
     {
+        $translator = $e->getApplication()->getServiceManager()->get('translator');
 
+        $locale = $translator->getLocale();
+
+        $translateFile = __DIR__."/language/$locale/Zend_Validate.php";
+        $translateFile = str_replace('/',DIRECTORY_SEPARATOR,$translateFile);
+        $translator->getTranslator()->addTranslationFile(
+            'phpArray',
+            $translateFile,
+            'default',
+            $locale);
+
+        AbstractValidator::setDefaultTranslator($translator);
     }
 }
