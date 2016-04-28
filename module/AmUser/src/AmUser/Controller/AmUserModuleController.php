@@ -75,12 +75,12 @@ class AmUserModuleController extends AuthController
             if ($form->isValid()) {
 
                 $gestorUsuarios->exchangeArray($form->getData());
-                $gestorUsuarios->password = new Expression("AES_ENCRYPT('$gestorUsuarios->password','$this->encryptKey')");
+                $gestorUsuarios->password = new Expression("md5('$gestorUsuarios->password')");
 
                 // Grabamos lo que teníamos bindeado al form
                 $insertId = $this->userTable->saveGestorUsuarios($gestorUsuarios);
 
-                return $this->goToSection('gestorusuarios', array(
+                return $this->goToSection('user', array(
                     'action' => 'edit',
                     'id' => $insertId
                 ));
@@ -100,7 +100,7 @@ class AmUserModuleController extends AuthController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->goToSection('gestorusuarios');
+            return $this->goToSection('user');
         }
 
         try {
@@ -109,7 +109,7 @@ class AmUserModuleController extends AuthController
             $auxGestorUsuarios = clone $gestorUsuarios;
         }
         catch (\Exception $ex) {
-            return $this->goToSection('gestorusuarios');
+            return $this->goToSection('user');
         }
 
         // Le bindeamos los datos al formulario y configuramos para que el submit ponga Edit
@@ -139,18 +139,16 @@ class AmUserModuleController extends AuthController
                 unset($gestorUsuarios->checkPassword);
                 unset($gestorUsuarios->password2);
 
-                $encryptKey = $this->config['encrypt_key'];
-
                 if (!$checkPassword) {
                     $gestorUsuarios->password = $auxGestorUsuarios->getPassword();
                 } else {
-                    $gestorUsuarios->password = new Expression("AES_ENCRYPT('$gestorUsuarios->password','$encryptKey')");
+                    $gestorUsuarios->password = new Expression("md5('$gestorUsuarios->password')");
                 }
 
                 // Grabamos lo que teníamos bindeado al form
                 $id = $this->userTable->saveGestorUsuarios($gestorUsuarios);
 
-                return $this->goToSection('gestorusuarios', array(
+                return $this->goToSection('user', array(
                     'action' => 'edit',
                     'id' => $id
                 ));
@@ -176,6 +174,6 @@ class AmUserModuleController extends AuthController
             $this->userTable->deleteGestorUsuarios($id);
         }
         // Nos vamos al listado general
-        return $this->goToSection('gestorusuarios');
+        return $this->goToSection('user');
     }
 }

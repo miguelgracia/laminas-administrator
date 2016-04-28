@@ -110,7 +110,7 @@ class UserTable extends AdministratorTable
         return $row;
     }
 
-    public function saveGestorUsuarios(GestorUsuariosModel $gestorUsuarios)
+    public function saveGestorUsuarios(UserModel $gestorUsuarios)
     {
         $data = array(
             'login'             => $gestorUsuarios->login,
