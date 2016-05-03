@@ -65,7 +65,7 @@ class AdministratorModel
     public function exchangeArray($data)
     {
         foreach ($data as $field => &$value) {
-            $this->{$field} = !empty($value) ? $value : null;
+            $this->{$field} = $value;
         }
     }
 
@@ -110,11 +110,9 @@ class AdministratorModel
 
         $columns = $this->metadata->getColumns($sourceTable);
 
-
         $inputFilter = $this->inputFilter
             ? $this->inputFilter
             : new InputFilter();
-
 
         foreach ($columns as $column) {
 
@@ -130,10 +128,8 @@ class AdministratorModel
                 $filterParams['validators'] = $this->setValidators($column);
             }
 
-            $filterParams = array(
-                'name'     => $columnName,
-                'required' => $required,
-            );
+            $filterParams['name'] = $columnName;
+            $filterParams['required'] = $required;
 
             $inputFilter->add($filterParams);
         }
@@ -158,7 +154,7 @@ class AdministratorModel
         switch ($dataType) {
             case 'int':
                 $validators[] = array(
-                    'name' => 'Zend\I18n\Validator\Int'
+                    'name' => 'Zend\I18n\Validator\IsInt'
                 );
                 break;
             case 'varchar':
