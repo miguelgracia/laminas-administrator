@@ -17,19 +17,15 @@ class AmUserForm extends Form {
             'fieldValueOptions' => array(
                 /**
                  * El campo idPerfil se va a reflejar como un select de perfiles. Debemos indicar los valores
-                 * de dicho select. La funci�n setIdPerfil guarda, para el campo idPerfil, los valores que va
+                 * de dicho select. La función setIdPerfil guarda, para el campo idPerfil, los valores que va
                  * a tener el <select> de idPerfil
                  */
 
                 'gestorPerfilId' => function ($serviceLocator) {
 
-                    $gestorPerfilTable = $serviceLocator->get('Administrator\Model\PerfilTable');
+                    $gestorPerfilTable = $serviceLocator->get('AmProfile\Model\ProfileTable');
 
-                    $misPermisos = $serviceLocator->get('Administrator\Factory\PermisosCheckerFactory');
-
-                    $gestorPerfil = $misPermisos->isAdmin()
-                        ? $gestorPerfilTable->fetchAll()
-                        : $gestorPerfilTable->fetchHijos($misPermisos->idPerfil);
+                    $gestorPerfil = $gestorPerfilTable->fetchAll();
 
                     return $gestorPerfil->toKeyValueArray('id','nombre');
                 }

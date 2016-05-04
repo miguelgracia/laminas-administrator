@@ -1,6 +1,6 @@
 <?php
 
-$title = 'Add new profile';
+$title = 'Edit controller';
 $this->headTitle($title);
 
 $form = $this->form;
@@ -18,8 +18,8 @@ $form->prepare();
             <?php echo $this->form()->openTag($form);?>
             <div class="box-body">
                 <?php
-                echo $gestorFormRow->render($form->get('nombre'));
-                echo $gestorFormRow->render($form->get('descripcion'));
+                echo $gestorFormRow->render($form->get('nombreZend'));
+                echo $gestorFormRow->render($form->get('nombreUsable'));
                 ?>
             </div>
             <div class="box-footer">
@@ -29,7 +29,7 @@ $form->prepare();
                 echo $this->formSubmit($submitButton);
                 ?>
             </div>
-            <?php echo $this->form()->closeTag(); ?>
+            <?php echo $this->form()->closeTag();?>
         </div>
     </div>
 </div>

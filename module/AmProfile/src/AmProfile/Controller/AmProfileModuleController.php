@@ -18,12 +18,7 @@ class AmProfileModuleController extends AuthController
 
     public function indexAction()
     {
-        // Solo te deja ver los perfiles que dependen del tuyo en caso de que no seas admin
-        $misPermisos = $this->sm->get('Administrator\Factory\PermisosCheckerFactory');
-
-        $perfiles = $misPermisos->isAdmin()
-            ? $this->perfilTable->fetchAll()
-            : $this->perfilTable->fetchHijos($misPermisos->idPerfil);
+        $perfiles = $this->perfilTable->fetchAll();
 
         return new ViewModel(compact('perfiles'));
     }
@@ -49,7 +44,7 @@ class AmProfileModuleController extends AuthController
                 $insertId = $this->perfilTable->savePerfil($perfil);
 
                 // Nos vamos a la ruta de edición de perfil
-                return $this->goToSection('perfil', array(
+                return $this->goToSection('profile', array(
                     'action' => 'edit',
                     'id' => $insertId
                 ));
@@ -64,14 +59,14 @@ class AmProfileModuleController extends AuthController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->goToSection('perfil');
+            return $this->goToSection('profile');
         }
 
         try {
             // Sacamos los datos del perfil en concreto
             $perfil = $this->perfilTable->getPerfil($id);
         } catch (\Exception $ex) {
-            return $this->goToSection('perfil');
+            return $this->goToSection('profile');
         }
 
         $this->formService->setForm(new ProfileForm())->addFields();
@@ -92,7 +87,7 @@ class AmProfileModuleController extends AuthController
 
                 $this->perfilTable->savePerfil($perfil);
 
-                return $this->goToSection('perfil',array(
+                return $this->goToSection('profile',array(
                     'action'  => 'edit',
                     'id'      => $request->getPost('id')
                 ));
@@ -109,7 +104,7 @@ class AmProfileModuleController extends AuthController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->goToSection('perfil');
+            return $this->goToSection('profile');
         }
 
         $request = $this->getRequest();
@@ -122,7 +117,7 @@ class AmProfileModuleController extends AuthController
             }
 
             // Redirect to list of perfiles
-            return $this->goToSection('perfil');
+            return $this->goToSection('profile');
         }
 
         return array(

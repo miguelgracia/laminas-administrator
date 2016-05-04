@@ -4,6 +4,7 @@ namespace Administrator\Model;
 
 use Zend\Db\Metadata\MetadataInterface;
 use Zend\Db\Metadata\Object\ColumnObject;
+use Zend\Filter\Word\DashToCamelCase;
 use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\InputFilter\InputFilter;
 
@@ -104,6 +105,7 @@ class AdministratorModel
 
     public function getInputFilter($sourceTable = null)
     {
+        $dashToCamel = new DashToCamelCase();
         if ($sourceTable === null) {
             $sourceTable = $this->table;
         }
@@ -128,7 +130,7 @@ class AdministratorModel
                 $filterParams['validators'] = $this->setValidators($column);
             }
 
-            $filterParams['name'] = $columnName;
+            $filterParams['name'] = lcfirst($dashToCamel->filter($columnName));
             $filterParams['required'] = $required;
 
             $inputFilter->add($filterParams);

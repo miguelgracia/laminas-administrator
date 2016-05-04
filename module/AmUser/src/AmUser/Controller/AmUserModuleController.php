@@ -21,7 +21,7 @@ class AmUserModuleController extends AuthController
     public function setControllerVars()
     {
         $this->userTable = $this->sm->get('AmUser\Model\UserTable');
-        $this->perfilTable = $this->sm->get('Administrator\Model\PerfilTable');
+        $this->perfilTable = $this->sm->get('AmProfile\Model\ProfileTable');
         $this->formService = $this->sm->get('Administrator\Service\AdministratorFormService')->setTable($this->userTable);
     }
 
@@ -30,19 +30,10 @@ class AmUserModuleController extends AuthController
      */
     public function indexAction()
     {
-        $misPermisos = $this->sm->get('Administrator\Factory\PermisosCheckerFactory');
-        // Solo vamos a mostrar todos los usuarios si eres admin
-        if ($misPermisos->isAdmin()) {
-            $arrayUsuarios = $this->userTable->fetchAll();
-        } else {
-            // Si no eres admin, vamos a mostrar solo los usuarios de perfiles hijos de tu perfil
-            $arrayUsuarios = $this->userTable->fetchHijos($misPermisos->idPerfil, $this->perfilTable);
-        }
+        $arrayUsuarios = $this->userTable->fetchAll();
 
         // Vamos a sacar también mi usuario para destacarlo
-        //$sessionService = $this->sm->get('Administrator\Service\SessionServiceInterface');
-        $authService = $this->sm->get('AuthService');
-        $identity = $authService->getIdentity();
+        $identity = $this->sm->get('AuthService')->getIdentity();
 
         return new ViewModel(array(
             'usuarios' => $arrayUsuarios,

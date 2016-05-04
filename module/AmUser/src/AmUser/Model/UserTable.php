@@ -27,39 +27,6 @@ class UserTable extends AdministratorTable
         return $row->cuantos;
     }
 
-    // Sacamos los usuarios de los perfiles que sean hijos del tuyo. Ya, ya, es un poco l�o
-    public function fetchHijos($idPerfil, $perfilTable)
-    {
-        // Primero sacamos todos los perfiles del usuario que accede o sus inferiores
-        $arrayPerfiles = $perfilTable->fetchHijos($idPerfil);
-        $arrayYo = $perfilTable->fetchId($idPerfil);
-
-        $arrayPerfiles = array_merge($arrayPerfiles->toArray(), $arrayYo->toArray());
-
-        $arrayFinal = array();
-        for ($i = 0; $i < count($arrayPerfiles); $i++)
-        {
-            // Ahora para cada uno de estos $arrayPerfiles[$i]['id'] sacamos los usuarios
-            $resultSet = $this->select(function(Select $select) use ($idPerfil, $arrayPerfiles, $i) {
-                $select->join(array('p' => 'gestor_perfil_id'),
-                    'p.id = gestor_usuarios.gestor_perfil_id',
-                    array('nombre'), $select::JOIN_INNER
-                );
-                $select->where(array('gestor_usuarios.gestor_perfil_id' => $arrayPerfiles[$i]['id']));
-            });
-            $arrayTemporal = $resultSet->toArray();
-
-            // Ahora lo sumamos
-            $arrayFinal = array_merge($arrayFinal, $arrayTemporal);
-        }
-
-        //Capturamos el objecto ResultSet y le pasamos el array con la informaci�n necesaria.
-        //De esta forma no perdemos la funcionalidad que nos proporciona dicho objeto
-
-        $resultSet = $this->getResultSetPrototype();
-        return $resultSet->initialize($arrayFinal);
-    }
-
     /**
      * Devuelve el password desencriptado de base de datos.
      *

@@ -14,23 +14,9 @@ class GestorControladorTable extends AdministratorTable
         return $resultSet;
     }
 
-    public function fetchWithParent($gestorPerfilIdPadre = '')
+    public function fetchWithParent()
     {
-        if ($gestorPerfilIdPadre == '') {
-            $resultSet = $this->select();
-        } else {
-            $resultSet = $this->select(function(Select $select) use ($gestorPerfilIdPadre) {
-                $select->join(
-                    'gestor_permisos',
-                    'gestor_permisos.gestor_controlador_id = gestor_controlador.id',
-                    'gestor_perfil_id',
-                    $select::JOIN_INNER)
-                    ->where(array(
-                        'gestor_permisos.gestor_perfil_id' => $gestorPerfilIdPadre,
-                    ));
-            });
-        }
-
+        $resultSet = $this->select();
         return $resultSet;
     }
 
@@ -45,7 +31,7 @@ class GestorControladorTable extends AdministratorTable
         return $row;
     }
 
-    public function saveGestorControlador(GestorModel $gestorControlador)
+    public function saveGestorControlador(AdministratorModel $gestorControlador)
     {
         $data = array(
             'nombre_zend' => $gestorControlador->nombreZend,

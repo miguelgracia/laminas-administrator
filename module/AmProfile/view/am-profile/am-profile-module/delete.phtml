@@ -1,6 +1,4 @@
 <?php
-// module/Album/view/album/album/delete.phtml:
-
 $title = 'Delete perfil';
 $this->headTitle($title);
 ?>
@@ -11,8 +9,8 @@ $this->headTitle($title);
     '<?php echo $this->escapeHtml($perfil->descripcion); ?>'?
 </p>
 <?php
-$url = $this->url('mastah/sections', array(
-    'section' => 'perfil',
+$url = $this->url('administrator', array(
+    'module' => 'profile',
     'action' => 'delete',
     'id'     => $this->id,
 ));
