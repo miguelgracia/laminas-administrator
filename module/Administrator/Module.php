@@ -72,7 +72,6 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                 'Administrator\Factory\AdministratorModelAbstractFactory',
             ),
             'factories' => array(
-                'Navigation' => 'Administrator\Factory\AdministratorNavigationFactory',
 
                 'Administrator\Model\AuthStorage' => function ($sm) {
                     return new \Administrator\Model\AuthStorage('AdministratorStorage');

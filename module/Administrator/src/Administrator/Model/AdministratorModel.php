@@ -4,7 +4,6 @@ namespace Administrator\Model;
 
 use Zend\Db\Metadata\MetadataInterface;
 use Zend\Db\Metadata\Object\ColumnObject;
-use Zend\Filter\Word\DashToCamelCase;
 use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\InputFilter\InputFilter;
 
@@ -31,6 +30,19 @@ class AdministratorModel
                     break;
             }
         }
+    }
+
+    public function getObjectCopy()
+    {
+        $newObject = new \stdClass();
+
+        $arrayCopy = $this->getArrayCopy();
+
+        foreach ($arrayCopy as $fieldKey => $value) {
+            $newObject->{$fieldKey} = $value;
+        }
+
+        return $newObject;
     }
 
     // Esto te permite hacer el bind (serializa las vars del objeto)
@@ -105,7 +117,7 @@ class AdministratorModel
 
     public function getInputFilter($sourceTable = null)
     {
-        $dashToCamel = new DashToCamelCase();
+        $dashToCamel = new UnderscoreToCamelCase();
         if ($sourceTable === null) {
             $sourceTable = $this->table;
         }

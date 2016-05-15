@@ -325,7 +325,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     }
 
     /**
-     * Setea los valores con los que vamos a rellenar los campos de tipo Select
+     * Setea los valores con los que vamos a rellenar los campos de tipo Select o Multicheckbox
      *
      * @param $fieldName
      * @param array $valueOptions
@@ -382,8 +382,14 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
             $type = $this->setFormDataType($columnName, $dataType);
 
-            if ($type == 'Select') {
-                $fieldParams['options']['value_options'] = $this->fieldValueOptions[$columnName];
+            if ($type == 'Select' or $type == 'MultiCheckbox') {
+
+                if ($dataType == 'enum' and !isset($this->fieldValueOptions[$columnName])) {
+                    $enumValues = $column->getErratas();
+                    $fieldParams['options']['value_options'] = $enumValues['permitted_values'];
+                } else {
+                    $fieldParams['options']['value_options'] = $this->fieldValueOptions[$columnName];
+                }
             }
 
             $fieldParams['type'] = $type;
@@ -434,6 +440,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
                 $fieldType = 'text';
                 break;
             case 'enum':
+                $fieldType = 'Select';
                 break;
             default:
 

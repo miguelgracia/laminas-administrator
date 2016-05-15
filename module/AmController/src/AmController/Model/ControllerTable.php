@@ -16,21 +16,22 @@ class ControllerTable extends AdministratorTable
         return $resultSet;
     }
 
-    public function fetchWithParent($idPerfilPadre)
+    /*public function fetchWithParent($idPerfilPadre)
     {
         $resultSet = $this->select(function(Select $select) use ($idPerfilPadre) {
-            $select->join(
-                'gestorpermisos',
-                'gestorpermisos.idRecurso = gestorcontrolador.id',
-                'idPerfil', // Esto son los campos que me traigo
-                $select::JOIN_INNER)
-                                   ->where(array('gestorpermisos.idTipoRecurso' => '1',
-                                           'gestorpermisos.idPerfil' => $idPerfilPadre,
-                                        ));
+            $select
+                ->join(
+                    'gestor_permisos',
+                    'gestor_permisos.idRecurso = gestor_controlador.id',
+                    'gestor_perfil_id',
+                    $select::JOIN_INNER)
+                ->where(array(
+                   'gestor_permisos.gestor_perfil_id' => $idPerfilPadre,
+                ));
         });
 
         return $resultSet;
-    }
+    }*/
 
     public function getGestorControlador($id)
     {

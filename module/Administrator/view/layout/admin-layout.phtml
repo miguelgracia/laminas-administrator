@@ -25,7 +25,7 @@ $basePath = $this->basePath() . '/administrator';
         ->appendStylesheet($basePath . '/css/skins/skin-blue.min.css')
         ->appendStylesheet($basePath . '/libs/datatables/dataTables.bootstrap.css')
         ->appendStylesheet($basePath . '/css/style.css')
-        ->appendStylesheet($basePath . '/plugins/daterangepicker/daterangepicker-bs3.css')
+        ->appendStylesheet($basePath . '/libs/daterangepicker/daterangepicker-bs3.css')
          ?>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -73,7 +73,7 @@ $basePath = $this->basePath() . '/administrator';
                                 <?php echo "<img src='$imgPath' class='user-image' alt='User Image'>"; ?>
 
                                 <p>
-                                    <?php echo $userData->email; ?>
+                                    <?php echo $userData->login; ?>
                                     <small>
                                         Sign up date: <?php echo $userData->createdAt; ?><br/>
                                         Last login: <?php echo $userData->lastLogin;?>
@@ -189,6 +189,8 @@ $basePath = $this->basePath() . '/administrator';
     ->appendFile($basePath . '/libs/bootstrap/js/bootstrap.min.js')
     ->appendFile($basePath . '/libs/datatables/jquery.dataTables.js')
     ->appendFile($basePath . '/libs/datatables/dataTables.bootstrap.min.js')
+    ->appendFile($basePath . '/libs/daterangepicker/moment-with-locales.js')
+    ->appendFile($basePath . '/libs/sortable/sortable.min.js')
     // No usar app.min (de momento). Se han hecho cambios en app.js
     // por lo que habría que minimizarlo de nuevo.
     ->appendFile($basePath . '/js/app.js')

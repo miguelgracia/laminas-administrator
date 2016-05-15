@@ -36,14 +36,14 @@ class AmProfileModuleController extends AuthController
             $form->setInputFilter($perfil->getInputFilter());
             $form->bind($request->getPost());
             if ($form->isValid()) {
-                //  Si funciona, metemos en el Model a través de su papá GestorModel, que implementa un exchangeArray
-                // genérico que nos vale para cualquier colección de datos.
+                //  Si funciona, metemos en el Model a travï¿½s de su papï¿½ GestorModel, que implementa un exchangeArray
+                // genï¿½rico que nos vale para cualquier colecciï¿½n de datos.
                 $perfil->exchangeArray($form->getData());
 
-                // Ahora ya sí, llamamos al método que hace el INSERT específico
+                // Ahora ya sï¿½, llamamos al mï¿½todo que hace el INSERT especï¿½fico
                 $insertId = $this->perfilTable->savePerfil($perfil);
 
-                // Nos vamos a la ruta de edición de perfil
+                // Nos vamos a la ruta de ediciï¿½n de perfil
                 return $this->goToSection('profile', array(
                     'action' => 'edit',
                     'id' => $insertId
@@ -57,7 +57,7 @@ class AmProfileModuleController extends AuthController
 
     public function editAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
+        $id = (int) $this->params()->fromRoute('id', false);
         if (!$id) {
             return $this->goToSection('profile');
         }
@@ -65,6 +65,9 @@ class AmProfileModuleController extends AuthController
         try {
             // Sacamos los datos del perfil en concreto
             $perfil = $this->perfilTable->getPerfil($id);
+
+            $perfil->permisos = $perfil->getPermisos();
+
         } catch (\Exception $ex) {
             return $this->goToSection('profile');
         }
@@ -79,11 +82,19 @@ class AmProfileModuleController extends AuthController
         $request = $this->getRequest();
 
         if ($request->isPost()) {
+
             $form->setInputFilter($perfil->getInputFilter());
-            $form->setData($request->getPost());
+
+            $post = $request->getPost();
+
+            $post->permisos = $this->params()->fromPost('permisos', array());
+
+            $form->setData($post);
 
             if ($form->isValid()) {
                 // Metemos los datos que vamos a guardar
+
+                $perfil->permisos = json_encode($perfil->permisos);
 
                 $this->perfilTable->savePerfil($perfil);
 

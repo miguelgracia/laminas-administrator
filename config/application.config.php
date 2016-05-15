@@ -16,7 +16,8 @@ return array(
         'AmConfiguration',
         'AmUser',
         'AmProfile',
-        'AmController'
+        'AmController',
+        'AmMenu'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

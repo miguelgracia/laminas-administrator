@@ -1,0 +1,58 @@
+<?php
+
+$title = 'Navigation Menu';
+$this->headTitle($title);
+
+?>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title"><?php echo $this->escapeHtml($title); ?></h3>
+            </div>
+            <div class="box-body">
+
+                <div class="box-group" id="menu_accordion">
+                    <?php foreach ($entradas as  $i => $entrada) :?>
+                    <div class="panel box box-success" data-id="<?=$entrada->id?>">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#menu_accordion" href="#collapse<?=$i?>">
+                                    <?=$entrada->texto;?>
+                                </a>
+                                <?php if (count($entrada->hijos) > 0) :?>
+                                    <a class="btn btn-remove" href="<?php echo $this->url('administrator', array('module' => 'menu','action'=>'delete', 'id' => $entrada->id));?>"><i class="fa fa-remove"></i></a>
+                                <?php endif;?>
+                                <a class="btn" href="<?php echo $this->url('administrator',array('module' => 'menu','action'=>'edit', 'id' => $entrada->id));?>"><i class="fa fa-edit"></i></a>
+                            </h4>
+                        </div>
+                        <div id="collapse<?=$i?>" class="panel-collapse collapse in">
+                            <div class="box-body">
+                                <div class="form-horizontal">
+                                    <ul id="list-submenu-<?=$i?>" class="list-group sub-menu">
+                                    <?php if (count($entrada->hijos) > 0) :?>
+                                        <?php foreach ($entrada->hijos as $k => $hijo) :?>
+                                            <li class="list-group-item" data-id="<?=$hijo->id?>">
+                                                <a class="btn btn-remove" href="<?php echo $this->url('administrator', array('module' => 'menu','action' => 'delete', 'id' => $hijo->id));?>"><i class="fa fa-remove"></i></a>
+                                                <a class="btn" href="<?php echo $this->url('administrator', array('module' => 'menu','action' => 'edit', 'id' => $hijo->id));?>"><i class="fa fa-edit"></i></a>
+                                                <?=$hijo->texto;?>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    <?php endif;?>
+                                    </ul>
+                                </div>
+                                <a class="btn btn-sm btn-default" href="<?php echo $this->url('administrator',array('module' => 'menu','action'=>'add', 'id' => $entrada->id, 'data' => ($i + 1)));?>">Añadir submenú de <?=$entrada->texto;?></a>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach;?>
+                </div>
+            </div>
+
+            <div class="box-footer">
+                <a class="btn btn-primary" href="<?php echo $this->url('administrator', array('module' => 'menu','action'=>'add', 'id' => 0, 'data' => ($i+1)));?>">Nueva sección de menú</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -21,6 +21,8 @@ $form->prepare();
                 <?php
                 echo $gestorFormRow->render($form->get('nombre'));
                 echo $gestorFormRow->render($form->get('descripcion'));
+                echo $gestorFormRow->render($form->get('esAdmin'));
+                echo $gestorFormRow->render($form->get('permisos'));
                 ?>
             </div>
             <div class="box-footer">

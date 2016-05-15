@@ -6,13 +6,13 @@
  * https://samsonasik.wordpress.com/2012/11/18/zend-framework-2-dynamic-navigation-using-zend-navigation/
  */
 
-namespace Administrator\Navigation;
+namespace AmMenu\Navigation;
 
 
 use Zend\Navigation\Service\DefaultNavigationFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class AdministratorNavigation extends DefaultNavigationFactory
+class MenuNavigation extends DefaultNavigationFactory
 {
     protected $entradaMenuTable;
 
@@ -30,7 +30,7 @@ class AdministratorNavigation extends DefaultNavigationFactory
             $rutaController = $routeMatch->getParam('module');
             $actionController = $routeMatch->getParam('action');
 
-            $this->entradaMenuTable = $serviceLocator->get('Administrator\Model\AdministratorMenuTable');
+            $this->entradaMenuTable = $serviceLocator->get('AmMenu\Model\MenuTable');
 
             $dataMenu = $this->entradaMenuTable->fetchAllOrdenados();
 

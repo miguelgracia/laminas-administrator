@@ -42,6 +42,8 @@ class ProfileTable extends AdministratorTable
         $data = array(
             'nombre'                    => $perfil->nombre,
             'descripcion'               => $perfil->descripcion,
+            'permisos'                  => $perfil->permisos,
+            'es_admin'                  => (string) $perfil->esAdmin
         );
 
         $id = (int) $perfil->id;

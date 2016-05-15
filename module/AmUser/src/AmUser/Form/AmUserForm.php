@@ -36,8 +36,8 @@ class AmUserForm extends Form {
     public function addFields()
     {
         //fechaAlta y ultimoLogin nunca deben ser editables. Se marcan como Readonly
-        $this->get('fechaAlta')->setAttribute('readonly',true);
-        $this->get('ultimoLogin')->setAttribute('readonly',true);
+        $this->get('createdAt')->setAttribute('readonly',true);
+        $this->get('lastLogin')->setAttribute('readonly',true);
 
         $this->add(array(
             'name' => 'password2',

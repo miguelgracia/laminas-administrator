@@ -1,38 +1,35 @@
 <?php
 
-$title = 'Edit user';
+$title = 'Edit Menu entry';
 $this->headTitle($title);
 
 $form = $this->form;
 
-$gestorFormRow = $this->gestor_form_row();
+$gestorFormRow = $this->administrator_form_row();
 
 $form->prepare();
-
 ?>
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-sm-12">
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title"><?php echo $this->escapeHtml($title); ?></h3>
             </div>
-            <?php echo $this->form()->openTag($form); ?>
+            <?php echo $this->form()->openTag($form);?>
             <div class="box-body">
                 <?php
-                echo $gestorFormRow->render($form->get('login'));
-                echo $gestorFormRow->render($form->get('idPerfil'));
-                echo $gestorFormRow->render($form->get('checkPassword'));
-                echo $gestorFormRow->render($form->get('password'));
-                echo $gestorFormRow->render($form->get('password2'));
-                echo $gestorFormRow->render($form->get('fechaAlta'));
-                echo $gestorFormRow->render($form->get('ultimoLogin'));
+                echo $gestorFormRow->render($form->get('texto'));
+                echo $gestorFormRow->render($form->get('gestorControladorId'));
+                echo $gestorFormRow->render($form->get('accion'));
                 ?>
             </div>
             <div class="box-footer">
                 <?php
                 $submitButton = $form->get('submit');
                 echo $this->formHidden($form->get('id'));
+                echo $this->formHidden($form->get('padre'));
+                echo $this->formHidden($form->get('orden'));
                 echo $this->formSubmit($submitButton);
                 ?>
             </div>

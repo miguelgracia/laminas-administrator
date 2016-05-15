@@ -2,8 +2,6 @@
 
 namespace Administrator\View\Helper;
 
-
-use Zend\Cache\Storage\Adapter\ZendServerDisk;
 use Zend\Form\Form;
 use Zend\View\Helper\AbstractHelper;
 
@@ -45,6 +43,17 @@ class AdministratorFormRow extends AbstractHelper
                                 <label>
                                 %2$s
                                 </label>
+                            </div>
+                            %3$s
+                        </div>
+                     </div>';
+                break;
+            case 'multi_checkbox':
+                $template = '
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox multi-checkbox">
+                                %2$s
                             </div>
                             %3$s
                         </div>
@@ -97,6 +106,9 @@ class AdministratorFormRow extends AbstractHelper
                 $input = $this->view->formSelect($formElement);
                 break;
             case 'checkbox':
+                $input = $this->view->formRow($formElement,'append');
+                break;
+            case 'multi_checkbox':
                 $input = $this->view->formRow($formElement,'append');
                 break;
             case 'text':

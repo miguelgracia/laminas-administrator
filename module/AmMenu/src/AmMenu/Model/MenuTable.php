@@ -1,10 +1,11 @@
 <?php
 
-namespace Administrator\Model;
+namespace AmMenu\Model;
 
-use Zend\Db\Sql\Select;
+use Administrator\Model\AdministratorModel;
+use Administrator\Model\AdministratorTable;
 
-class AdministratorMenuTable extends AdministratorTable
+class MenuTable extends AdministratorTable
 {
     protected $table = "gestor_menu";
 
@@ -60,7 +61,7 @@ class AdministratorMenuTable extends AdministratorTable
         return $row;
     }
 
-    public function saveEntradaMenu(GestorModel $entradaMenu)
+    public function saveEntradaMenu(AdministratorModel $entradaMenu)
     {
         $id = (int) $entradaMenu->id;
 
