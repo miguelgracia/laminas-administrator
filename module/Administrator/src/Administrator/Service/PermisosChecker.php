@@ -33,7 +33,7 @@ class PermisosChecker implements PermisosCheckerInterface
         $controladorFinal = strtolower($partirControlador[count($partirControlador) - 1]);
 
         // 1. Buscamos $controlador como texto en la tabla de controladores
-        $arrayControladores = $this->sm->get('Administrator\Model\GestorControladorTable')->select();
+        $arrayControladores = $this->sm->get('AmController\Model\ControllerTable')->select();
         $encontrado = false;
         $idEncontrado = 0;
 
@@ -77,7 +77,7 @@ class PermisosChecker implements PermisosCheckerInterface
         foreach ($dataMenu as $i => $menuTemp) {
 
             if ($menuTemp->nombreZend != '') {
-                if (!$this->hasModuleAccess($menuTemp->nombreZend)) {
+                if (!$this->hasModuleAccess($menuTemp->nombreZend,$menuTemp->accion)) {
                     //El usuario no tiene permisos de acceso. Eliminamos el registro del array
                     unset($dataMenu[$i]);
                     //no es necesario comprobar si hay acceso a los hijos porque directamente
@@ -89,7 +89,7 @@ class PermisosChecker implements PermisosCheckerInterface
 
             foreach($menuTemp->hijos as $indexHijo => $hijo) {
                 if ($hijo->tieneEnlace == 1) {
-                    if (!$this->hasControllerAccess($hijo->nombreZend)) {
+                    if (!$this->hasControllerAccess($hijo->nombreZend, $hijo->accion)) {
                         //El usuario no tiene permisos de acceso. Eliminamos el registro del array
                         unset($menuTemp->hijos[$indexHijo]);
                     }
