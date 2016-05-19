@@ -18,13 +18,15 @@ return array(
         'AmProfile',
         'AmModule',
         'AmMenu',
+        'AmTool'
     ),
 
     //Aquí podemos incluir todos aquellos modulos de administrador que no queremos que
     //puedan formar parte de la lógica de administración (como por ejemplo, asignar permisos de acceso a
     //los controladores que tenga
     'hidden_modules' => array(
-        'AmLogin'
+        'AmLogin',
+        'AmTool'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
