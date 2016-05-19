@@ -37,7 +37,4 @@ return array(
         'Administrator' => 'layout/layout',
     ),*/
 
-
-
-
 );

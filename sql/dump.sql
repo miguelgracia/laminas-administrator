@@ -31,29 +31,13 @@ CREATE TABLE `estadisticaslogins` (
 
 /*Data for the table `estadisticaslogins` */
 
-/*Table structure for table `gestor_controlador` */
-
-DROP TABLE IF EXISTS `gestor_controlador`;
-
-CREATE TABLE `gestor_controlador` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre_zend` varchar(255) NOT NULL,
-  `nombre_usable` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `nombreZend` (`nombre_zend`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
-
-/*Data for the table `gestor_controlador` */
-
-insert  into `gestor_controlador`(`id`,`nombre_zend`,`nombre_usable`) values (1,'home','home'),(2,'configuration','Valores de configuración'),(3,'user','Usuarios del gestor'),(4,'perfil','Perfiles'),(5,'permisos','Permisos'),(6,'entrada-menu','Entradas de menú'),(10,'especialistas','Especialistas'),(19,'gestor-controlador','Controladores');
-
 /*Table structure for table `gestor_menu` */
 
 DROP TABLE IF EXISTS `gestor_menu`;
 
 CREATE TABLE `gestor_menu` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `gestor_controlador_id` int(11) unsigned DEFAULT NULL,
+  `gestor_module_id` int(11) unsigned DEFAULT NULL,
   `padre` int(11) DEFAULT NULL,
   `texto` varchar(255) DEFAULT NULL,
   `accion` varchar(255) DEFAULT NULL,
@@ -64,7 +48,23 @@ CREATE TABLE `gestor_menu` (
 
 /*Data for the table `gestor_menu` */
 
-insert  into `gestor_menu`(`id`,`gestor_controlador_id`,`padre`,`texto`,`accion`,`tiene_enlace`,`orden`) values (2,2,-1,'Configuración',NULL,1,90),(201,2,2,'Valores Generales','index',1,1),(202,3,2,'Usuarios','index',1,2),(203,4,2,'Perfil','index',1,3),(204,5,2,'Permisos','index',1,4),(205,6,2,'Menú','index',1,5),(206,19,2,'Controladores','index',1,6),(207,10,-1,'Especialistas','index',1,1);
+insert  into `gestor_menu`(`id`,`gestor_module_id`,`padre`,`texto`,`accion`,`tiene_enlace`,`orden`) values (2,2,-1,'Configuración',NULL,1,90),(201,2,2,'Valores Generales','index',1,3),(202,3,2,'Usuarios','index',1,2),(203,4,2,'Perfil','index',1,4),(205,6,2,'Menú','index',1,1),(206,19,2,'Módulos','index',1,5);
+
+/*Table structure for table `gestor_modules` */
+
+DROP TABLE IF EXISTS `gestor_modules`;
+
+CREATE TABLE `gestor_modules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_zend` varchar(255) NOT NULL,
+  `nombre_usable` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombreZend` (`nombre_zend`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+
+/*Data for the table `gestor_modules` */
+
+insert  into `gestor_modules`(`id`,`nombre_zend`,`nombre_usable`) values (1,'home','home'),(2,'configuration','Valores de configuración'),(3,'user','Usuarios del gestor'),(4,'profile','Perfiles'),(6,'menu','Entradas de menú'),(19,'module','Modulos');
 
 /*Table structure for table `gestor_perfiles` */
 
@@ -72,32 +72,16 @@ DROP TABLE IF EXISTS `gestor_perfiles`;
 
 CREATE TABLE `gestor_perfiles` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `gestor_perfil_id_padre` int(11) unsigned DEFAULT NULL,
   `nombre` varchar(255) NOT NULL,
   `descripcion` text NOT NULL,
   `es_admin` tinyint(4) DEFAULT '0',
   `permisos` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `gestor_perfiles` */
 
-insert  into `gestor_perfiles`(`id`,`gestor_perfil_id_padre`,`nombre`,`descripcion`,`es_admin`,`permisos`) values (1,NULL,'Superadmin','Administrador de la plataforma',1,'[]'),(2,4,'Coordinador','Usuario normal de la plataforma',0,'[]'),(3,NULL,'Director de Relacion','descripcion',0,'[]'),(4,NULL,'Administrador','Administrador',0,'[]');
-
-/*Table structure for table `gestor_permisos` */
-
-DROP TABLE IF EXISTS `gestor_permisos`;
-
-CREATE TABLE `gestor_permisos` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `gestor_perfil_id` int(11) unsigned NOT NULL,
-  `gestor_controlador_id` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=154 DEFAULT CHARSET=utf8;
-
-/*Data for the table `gestor_permisos` */
-
-insert  into `gestor_permisos`(`id`,`gestor_perfil_id`,`gestor_controlador_id`) values (152,4,1),(153,2,1);
+insert  into `gestor_perfiles`(`id`,`nombre`,`descripcion`,`es_admin`,`permisos`) values (1,'Superadmin','Administrador de la plataforma',1,'[]'),(2,'Coordinador','Usuario normal de la plataforma',0,'[\"home.index\"]'),(3,'Director de Relacion','descripcion',0,'[]'),(4,'Administrador','Administrador',1,'[]'),(5,'Soldado Raso33','Permisos básicos',0,'[\"user.index\",\"profile.edit\"]');
 
 /*Table structure for table `gestor_usuarios` */
 
@@ -108,8 +92,8 @@ CREATE TABLE `gestor_usuarios` (
   `gestor_perfil_id` int(11) unsigned NOT NULL,
   `login` varchar(255) NOT NULL,
   `password` varchar(32) NOT NULL,
-  `fecha_alta` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `ultimo_login` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_login` timestamp NULL DEFAULT NULL,
   `validado` tinyint(4) NOT NULL DEFAULT '0',
   `active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`id`)
@@ -117,7 +101,7 @@ CREATE TABLE `gestor_usuarios` (
 
 /*Data for the table `gestor_usuarios` */
 
-insert  into `gestor_usuarios`(`id`,`gestor_perfil_id`,`login`,`password`,`fecha_alta`,`ultimo_login`,`validado`,`active`) values (1,1,'dreamsite','e10adc3949ba59abbe56e057f20f883e','2016-01-13 12:42:11','2016-04-22 09:33:56',1,1),(2,2,'coordinador','e10adc3949ba59abbe56e057f20f883e','2016-01-13 12:42:11','2016-04-05 11:00:53',1,1),(3,4,'entropy','e10adc3949ba59abbe56e057f20f883e','2016-03-29 12:05:16','2016-04-18 17:45:34',1,1),(4,4,'bbva','e10adc3949ba59abbe56e057f20f883e','2016-03-30 18:13:54','2016-04-13 17:18:48',1,1),(3797,3,'U502562','e10adc3949ba59abbe56e057f20f883e','2016-03-29 12:29:19','2016-04-19 14:34:46',1,1),(3799,2,'usercito','e10adc3949ba59abbe56e057f20f883e','2016-04-21 11:54:07','2016-04-21 16:55:16',0,1);
+insert  into `gestor_usuarios`(`id`,`gestor_perfil_id`,`login`,`password`,`created_at`,`last_login`,`validado`,`active`) values (1,1,'dreamsite','e10adc3949ba59abbe56e057f20f883e','2016-01-13 12:42:11','2016-04-22 09:33:56',1,1),(2,2,'coordinador','e10adc3949ba59abbe56e057f20f883e','2016-01-13 12:42:11','2016-04-05 11:00:53',1,1),(3,4,'entropy','e10adc3949ba59abbe56e057f20f883e','2016-03-29 12:05:16','2016-04-18 17:45:34',1,1),(4,4,'bbva','e10adc3949ba59abbe56e057f20f883e','2016-03-30 18:13:54','2016-04-13 17:18:48',1,1),(3797,3,'U502562','e10adc3949ba59abbe56e057f20f883e','2016-03-29 12:29:19','2016-04-19 14:34:46',1,1),(3799,2,'usercito','e10adc3949ba59abbe56e057f20f883e','2016-04-21 11:54:07','2016-04-21 16:55:16',0,1);
 
 /*Table structure for table `historico_login` */
 

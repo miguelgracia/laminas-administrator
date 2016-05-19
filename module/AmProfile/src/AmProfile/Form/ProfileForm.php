@@ -26,7 +26,7 @@ class ProfileForm extends AdministratorForm {
                 ),
                 'permisos' => function ($sm) {
 
-                    $listaControladores = $sm->get('AmController\Model\ControllerTable')->select();
+                    $listaControladores = $sm->get('AmModule\Model\ModuleTable')->select();
 
                     $filterDashToCamelCase = new DashToCamelCase();
 

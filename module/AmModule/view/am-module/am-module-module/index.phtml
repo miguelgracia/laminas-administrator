@@ -1,6 +1,6 @@
 <?php
 
-$title = 'List controllers';
+$title = 'List Modules';
 $this->headTitle($title);
 
 ?>
@@ -10,7 +10,6 @@ $this->headTitle($title);
 
             <div class="box-header with-border">
                 <h3 class="box-title"><?php echo $this->escapeHtml($title); ?></h3>
-                <a class="pull-right" href="<?php echo $this->url('administrator', array('module' => 'controller','action'=>'add'));?>">Add new controller</a>
             </div>
 
             <div class="box-body">
@@ -23,8 +22,8 @@ $this->headTitle($title);
                         </tr>
 
                         <?php foreach ($controladores as $elemento) :
-                            $urlToEdit = $this->url('administrator', array('module' => 'controller','action'=>'edit', 'id' => $elemento->id));
-                            $urlToDelete = $this->url('administrator', array('module' => 'controller','action'=>'delete', 'id' => $elemento->id));?>
+                            $urlToEdit = $this->url('administrator', array('module' => 'module','action'=>'edit', 'id' => $elemento->id));
+                            $urlToDelete = $this->url('administrator', array('module' => 'module','action'=>'delete', 'id' => $elemento->id));?>
 
                             <tr>
                                 <td><?=$elemento->nombreZend; ?></td>

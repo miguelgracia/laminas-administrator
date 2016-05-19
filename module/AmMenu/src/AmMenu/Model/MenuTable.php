@@ -16,8 +16,8 @@ class MenuTable extends AdministratorTable
         $selectParent = $this->sql->select();
 
         $selectParent->join(
-            'gestor_controlador',
-            'gestor_menu.gestor_controlador_id = gestor_controlador.id',
+            'gestor_modules',
+            'gestor_menu.gestor_module_id = gestor_modules.id',
             'nombre_zend',
             $selectParent::JOIN_LEFT
         )->order('orden ASC');
@@ -67,7 +67,7 @@ class MenuTable extends AdministratorTable
 
         $data = array(
             'texto'                 => $entradaMenu->texto,
-            'gestor_controlador_id' => $entradaMenu->gestorControladorId,
+            'gestor_module_id'      => $entradaMenu->gestorModuleId,
             'accion'                => $entradaMenu->accion,
             'tiene_enlace'          => $entradaMenu->tieneEnlace,
         );

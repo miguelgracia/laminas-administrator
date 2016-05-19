@@ -12,11 +12,19 @@ class MenuForm extends Form {
             'fieldModifiers' => array(
                 'padre'         => 'Hidden',
                 'orden'         => 'Hidden',
-                'gestorControladorId' => 'Select'
+                'gestorModuleId' => 'Select'
             ),
             'fieldValueOptions' => array(
-                'gestorControladorId' => function ($serviceLocator) {
-                    $gestorControladorTable = $serviceLocator->get('AmController\Model\ControllerTable');
+                'gestorModuleId' => function ($serviceLocator) {
+
+                    $controllerManager = $serviceLocator->get('ControllerManager');
+                    $moduleManager = $serviceLocator->get('ModuleManager');
+
+                    $application = $serviceLocator->get('Application');
+
+                    $modulo = $controllerManager->get('AmHome\Controller\AmHomeModuleController');
+
+                    $gestorControladorTable = $serviceLocator->get('AmModule\Model\ModuleTable');
 
                     $gestorControlador = $gestorControladorTable->fetchAll();
 

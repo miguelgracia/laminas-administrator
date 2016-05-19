@@ -1,37 +1,20 @@
 <?php
 
-namespace AmController\Model;
+namespace AmModule\Model;
 
 use Administrator\Model\AdministratorModel;
 use Administrator\Model\AdministratorTable;
 use Zend\Db\Sql\Select;
 
-class ControllerTable extends AdministratorTable
+class ModuleTable extends AdministratorTable
 {
-    protected $table = "gestor_controlador";
+    protected $table = "gestor_modules";
 
     public function fetchAll()
     {
         $resultSet = $this->select();
         return $resultSet;
     }
-
-    /*public function fetchWithParent($idPerfilPadre)
-    {
-        $resultSet = $this->select(function(Select $select) use ($idPerfilPadre) {
-            $select
-                ->join(
-                    'gestor_permisos',
-                    'gestor_permisos.idRecurso = gestor_controlador.id',
-                    'gestor_perfil_id',
-                    $select::JOIN_INNER)
-                ->where(array(
-                   'gestor_permisos.gestor_perfil_id' => $idPerfilPadre,
-                ));
-        });
-
-        return $resultSet;
-    }*/
 
     public function getGestorControlador($id)
     {

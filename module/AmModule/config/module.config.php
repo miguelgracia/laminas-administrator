@@ -10,12 +10,14 @@ return array(
 
     'controllers' => array(
         'invokables' => array(
-            'AmController\Controller\AmControllerModuleController' => 'AmController\Controller\AmControllerModuleController'
+            'AmModule\Controller\AmModuleModuleController' => 'AmModule\Controller\AmModuleModuleController'
         )
     ),
 
     'service_manager' => array(
-
+        'factories' => array(
+            'AmModule\Service\ModuleService' => 'AmModule\Service\ModuleService'
+        )
     ),
 
     'router' => array(
