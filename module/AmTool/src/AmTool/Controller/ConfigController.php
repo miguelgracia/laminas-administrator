@@ -15,8 +15,8 @@ class ConfigController extends AbstractActionController
 
     public function listAction()
     {
-        $console = $this->getServiceLocator()->get('console');
-        $sm = $this->getServiceLocator();
+        $console = $this->serviceLocator->get('console');
+        $sm = $this->serviceLocator;
 
         $isLocal = $this->params()->fromRoute('local');
 
@@ -45,8 +45,8 @@ class ConfigController extends AbstractActionController
 
     public function getAction()
     {
-        $console = $this->getServiceLocator()->get('console');
-        $sm = $this->getServiceLocator();
+        $console = $this->serviceLocator->get('console');
+        $sm = $this->serviceLocator;
 
         $name = $this->params()->fromRoute('arg1');
 
@@ -77,8 +77,8 @@ class ConfigController extends AbstractActionController
 
     public function setAction()
     {
-        $console = $this->getServiceLocator()->get('console');
-        $sm = $this->getServiceLocator();
+        $console = $this->serviceLocator->get('console');
+        $sm = $this->serviceLocator;
 
         $name = $this->params()->fromRoute('arg1');
         $value = $this->params()->fromRoute('arg2');

@@ -13,7 +13,7 @@ class ModuleController extends AbstractActionController
 {
     public function listAction()
     {
-        $console = $this->getServiceLocator()->get('console');
+        $console = $this->serviceLocator->get('console');
         $modules = $this->getModulesFromService();
         if (empty($modules)) {
             $console->writeLine('No modules installed. Are you in the root folder of a ZF2 app?');
@@ -37,7 +37,7 @@ class ModuleController extends AbstractActionController
 
     protected function getModulesFromService()
     {
-        $sm = $this->getServiceLocator();
+        $sm = $this->serviceLocator;
         try{
             /* @var $mm \Zend\ModuleManager\ModuleManager */
             $mm = $sm->get('modulemanager');

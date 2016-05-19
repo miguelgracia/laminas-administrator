@@ -14,7 +14,7 @@ class InfoController extends AbstractActionController
 
     public function versionAction()
     {
-        $console = $this->getServiceLocator()->get('console');
+        $console = $this->serviceLocator->get('console');
 
         $zf2Path = $this->getZF2Path();
         if (file_exists($zf2Path . '/Zend/Version/Version.php')) {
@@ -30,9 +30,9 @@ class InfoController extends AbstractActionController
 
     public function configAction()
     {
-        $console = $this->getServiceLocator()->get('console');
+        $console = $this->serviceLocator->get('console');
 
-        $sm = $this->getServiceLocator();
+        $sm = $this->serviceLocator;
         $config = $sm->get('Configuration');
 
         if(!is_array($config)){

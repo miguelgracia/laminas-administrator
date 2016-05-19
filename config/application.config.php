@@ -21,8 +21,8 @@ return array(
         'AmTool'
     ),
 
-    //Aquí podemos incluir todos aquellos modulos de administrador que no queremos que
-    //puedan formar parte de la lógica de administración (como por ejemplo, asignar permisos de acceso a
+    //Aquï¿½ podemos incluir todos aquellos modulos de administrador que no queremos que
+    //puedan formar parte de la lï¿½gica de administraciï¿½n (como por ejemplo, asignar permisos de acceso a
     //los controladores que tenga
     'hidden_modules' => array(
         'AmLogin',

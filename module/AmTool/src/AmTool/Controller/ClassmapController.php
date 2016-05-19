@@ -20,7 +20,7 @@ class ClassmapController extends AbstractActionController
         /* @var $request \Zend\Console\Request          */
         /* @var $console \Zend\Console\AdapterInterface */
         $request      = $this->getRequest();
-        $console      = $this->getServiceLocator()->get('console');
+        $console      = $this->serviceLocator->get('console');
         $relativePath = '';
         $usingStdout  = false;
         $directory    = $request->getParam('directory');

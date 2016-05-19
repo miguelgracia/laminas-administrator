@@ -18,7 +18,7 @@ class DiagnosticsController extends AbstractActionController
 {
     public function runAction()
     {
-        $sm = $this->getServiceLocator();
+        $sm = $this->serviceLocator;
         /* @var $console \Zend\Console\Adapter\AdapterInterface */
         /* @var $config array */
         /* @var $mm \Zend\ModuleManager\ModuleManager */

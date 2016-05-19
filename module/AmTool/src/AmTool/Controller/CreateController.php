@@ -23,7 +23,7 @@ class CreateController extends AbstractActionController
         if (!extension_loaded('openssl')) {
             return $this->sendError('You need to install the OpenSSL extension of PHP');
         }
-        $console = $this->getServiceLocator()->get('console');
+        $console = $this->serviceLocator->get('console');
         $tmpDir  = sys_get_temp_dir();
         $request = $this->getRequest();
         $path    = rtrim($request->getParam('path'), '/');
@@ -93,7 +93,7 @@ class CreateController extends AbstractActionController
 
     public function controllerAction()
     {
-        $console = $this->getServiceLocator()->get('console');
+        $console = $this->serviceLocator->get('console');
         $tmpDir  = sys_get_temp_dir();
         $request = $this->getRequest();
         $name    = $request->getParam('name');
@@ -160,7 +160,7 @@ class CreateController extends AbstractActionController
 
     public function methodAction()
     {
-        $console        = $this->getServiceLocator()->get('console');
+        $console        = $this->serviceLocator->get('console');
         $request        = $this->getRequest();
         $action         = $request->getParam('name');
         $controller     = $request->getParam('controllerName');
@@ -240,7 +240,7 @@ class CreateController extends AbstractActionController
 
     public function moduleAction()
     {
-        $console = $this->getServiceLocator()->get('console');
+        $console = $this->serviceLocator->get('console');
         $tmpDir  = sys_get_temp_dir();
         $request = $this->getRequest();
         $name    = $request->getParam('name');

@@ -17,7 +17,7 @@ class InstallController extends AbstractActionController
         if (!extension_loaded('zip')) {
             return $this->sendError('You need to install the ZIP extension of PHP');
         }
-        $console = $this->getServiceLocator()->get('console');
+        $console = $this->serviceLocator->get('console');
         $tmpDir  = sys_get_temp_dir();
         $request = $this->getRequest();
         $version = $request->getParam('version');
