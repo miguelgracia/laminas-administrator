@@ -79,7 +79,6 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                 'AuthService'                            => 'Administrator\Service\AuthService',
 
                 'Administrator\Service\SessionServiceInterface' => 'Administrator\Service\SessionService',
-                'Administrator\Factory\PermisosCheckerFactory'  => 'Administrator\Factory\PermisosCheckerFactory',
                 'Administrator\Service\AdministratorFormService'       => 'Administrator\Service\AdministratorFormService',
                 //'Gestor\Service\DatatableService'        => 'Gestor\Service\DatatableService',
 

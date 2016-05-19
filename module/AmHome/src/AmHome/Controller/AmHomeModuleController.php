@@ -16,12 +16,4 @@ class AmHomeModuleController extends AuthController
     {
 
     }
-
-    public function addAction()
-    {
-        echo "<pre>";
-        print_r('ADD');
-        echo "</pre>";
-
-    }
 }

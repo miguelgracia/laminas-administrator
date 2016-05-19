@@ -38,7 +38,7 @@ class MenuNavigation extends DefaultNavigationFactory
             // antes de pintarlos vamos a ir viendo a cu�les de ellos
             // hay acceso, y por tanto, qu� opciones pintar
 
-            $misPermisos = $serviceLocator->get('Administrator\Factory\PermisosCheckerFactory');
+            $misPermisos = $serviceLocator->get('AmProfile\Service\ProfilePermissionService');
 
             // Ahora, vamos a recorrer el men� y a ver lo que es imprimible y lo que no.
             // La versi�n final va a pasar de $dataMenuTemp a $dataMenu

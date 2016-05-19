@@ -3,6 +3,7 @@
 namespace AmProfile\Form;
 
 use Administrator\Form\AdministratorForm;
+use Zend\Code\Reflection\ClassReflection;
 use Zend\Filter\Word\DashToCamelCase;
 use Zend\Server\Reflection;
 
@@ -15,12 +16,13 @@ class ProfileForm extends AdministratorForm {
         return array(
             'fieldModifiers' => array(
                 'descripcion'   => 'textarea',
-                'permisos' => 'MultiCheckbox'
+                'permisos' => 'MultiCheckbox',
+                'esAdmin' => 'Select'
             ),
             'fieldValueOptions' => array(
                 'esAdmin' => array(
-                    '0' => '0',
-                    '1' => '1'
+                    '0' => 'NO',
+                    '1' => 'SI'
                 ),
                 'permisos' => function ($sm) {
 
@@ -44,8 +46,7 @@ class ProfileForm extends AdministratorForm {
                         $class = sprintf($controllerNamespace,$controllerName,$controllerName);
 
                         if (class_exists($class)) {
-                            $reflectionController = Reflection::reflectClass($class);
-
+                            $reflectionController = new ClassReflection($class);
                             $controllerMethods = $reflectionController->getMethods();
 
                             $actions = array();

@@ -16,6 +16,9 @@ return array(
 
     'service_manager' => array(
 
+        'factories' => array(
+            'AmProfile\Service\ProfilePermissionService'  => 'AmProfile\Service\ProfilePermissionService',
+        )
     ),
 
     'router' => array(

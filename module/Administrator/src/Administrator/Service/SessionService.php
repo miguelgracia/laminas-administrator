@@ -44,7 +44,7 @@ class SessionService implements FactoryInterface, SessionServiceInterface
                 ->join(
                     'gestor_perfiles',
                     'gestor_perfiles.id = gestor_usuarios.gestor_perfil_id',
-                    array('es_admin')
+                    array('es_admin','permisos')
                 )
                 ->where(array(
                     'login' => $username
