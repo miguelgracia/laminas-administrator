@@ -99,6 +99,15 @@ return array(
                         ),
                     ),
                 ),
+                'zftool-create-admin-module' => array(
+                    'options' => array(
+                        'route'    => 'create am-module <name> [<path>]',
+                        'defaults' => array(
+                            'controller' => 'AmTool\Controller\Create',
+                            'action'     => 'adminModule',
+                        ),
+                    ),
+                ),
                 'zftool-create-controller' => array(
                     'options' => array(
                         'route'    => 'create controller <name> <module> [<path>]',

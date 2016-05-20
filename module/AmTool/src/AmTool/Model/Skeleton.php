@@ -138,6 +138,25 @@ EOD;
         return <<<EOD
 <?php
 return array(
+    'view_manager' => array(
+        'template_path_stack' => array(
+            __DIR__ . '/../view',
+        ),
+    ),
+
+    'controllers' => array(
+        'invokables' => array(
+            '$name\Controller\\{$name}ModuleController' => '$name\Controller\\{$name}ModuleController'
+        )
+    ),
+
+    'service_manager' => array(
+
+    ),
+
+    'router' => array(
+
+    )
 );
 EOD;
     }
@@ -169,5 +188,78 @@ EOD;
         );
 
         return stream_context_create($aContext);
+    }
+
+    public static function getIndexView()
+    {
+        return <<<EOD
+<?php
+
+\$title = 'List';
+\$this->headTitle(\$title);
+
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title"><?php echo \$this->escapeHtml(\$title); ?></h3>
+            </div>
+
+            <div class="box-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+EOD;
+
+    }
+
+    public static function getAddView()
+    {
+        return self::getEditView();
+    }
+
+    public static function getEditView()
+    {
+        return <<<EOD
+<?php
+
+\$title = '';
+\$this->headTitle(\$title);
+
+\$form = \$this->form;
+
+\$gestorFormRow = \$this->administrator_form_row();
+
+\$form->prepare();
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title"><?php echo \$this->escapeHtml(\$title); ?></h3>
+            </div>
+            <?php echo \$this->form()->openTag(\$form);?>
+            <div class="box-body">
+                <?php
+                // echo \$gestorFormRow->render(\$form->get('[variable]'));
+                ?>
+            </div>
+            <div class="box-footer">
+                <?php
+                /*\$submitButton = \$form->get('submit');
+                echo \$this->formHidden(\$form->get('id'));
+                echo \$this->formSubmit(\$submitButton);*/
+                ?>
+            </div>
+            <?php echo \$this->form()->closeTag();?>
+        </div>
+    </div>
+</div>
+EOD;
+
     }
 }
