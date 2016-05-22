@@ -58,7 +58,7 @@ class MenuNavigation extends DefaultNavigationFactory
                     'label' => $label
                 );
 
-                if ($menu->tieneEnlace) {
+                if ($menu->accion != '') {
                     $parentMenuSection['route'] = "administrator";
                     $parentMenuSection['params'] = array(
                         'module' => $menu->nombreZend,

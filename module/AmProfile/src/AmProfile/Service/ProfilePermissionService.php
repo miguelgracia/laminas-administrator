@@ -60,14 +60,14 @@ class ProfilePermissionService implements FactoryInterface
                     //El usuario no tiene permisos de acceso. Eliminamos el registro del array
                     unset($dataMenu[$i]);
                     //no es necesario comprobar si hay acceso a los hijos porque directamente
-                    //no hay acceso al padre, así que continuamos con la siguiente iteración.
+                    //no hay acceso al padre, asï¿½ que continuamos con la siguiente iteraciï¿½n.
 
                     continue;
                 }
             }
 
             foreach($menuTemp->hijos as $indexHijo => $hijo) {
-                if ($hijo->tieneEnlace == 1) {
+                if ($hijo->accion != '') {
                     if (!$this->hasModuleAccess($hijo->nombreZend, $hijo->accion)) {
                         //El usuario no tiene permisos de acceso. Eliminamos el registro del array
                         unset($menuTemp->hijos[$indexHijo]);

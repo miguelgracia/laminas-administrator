@@ -247,6 +247,25 @@ $(function () {
                 }
             });
         };
+
+        this.addAndedit = function() {
+            var $accion = $('#accion').select2({width: '100%'});
+
+            var $optGroupAccion = $accion.find('optgroup');
+
+            var $gestorModuleId = $('#gestorModuleId').select2({width: '100%'});
+
+            var changeModuleId = function(e) {
+                var optionSelected = $(e.target).find('option:selected').text();
+                $optGroupAccion.addClass('hide').find('option').attr('disabled','disabled');
+
+                $optGroupAccion.filter('[label="'+optionSelected+'"]').find('option').removeAttr('disabled');
+
+                $accion.select2();
+            };
+
+            $gestorModuleId.on('change',changeModuleId);
+        };
     });
 
 
@@ -260,7 +279,9 @@ $(document).ready(function () {
 
     $.AdminLTE.srRoutes({
         '/home': function() {},
-        '/admin/menu':       ['menu','index']
+        '/admin/menu/edit/{:num}':       ['menu','addAndedit'],
+        '/admin/menu/add/{:num}':        ['menu','addAndedit'],
+        '/admin/menu':                   ['menu','index']
     }).run();
 
     $(".delete_alert").click(function() {

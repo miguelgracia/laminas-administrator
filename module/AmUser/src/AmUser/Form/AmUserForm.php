@@ -3,10 +3,11 @@
 namespace AmUser\Form;
 
 use Zend\Form\Form;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AmUserForm extends Form {
 
-    public function initializers()
+    public function initializers(ServiceLocatorInterface $serviceLocator)
     {
         return array(
 
@@ -21,7 +22,7 @@ class AmUserForm extends Form {
                  * a tener el <select> de idPerfil
                  */
 
-                'gestorPerfilId' => function ($serviceLocator) {
+                'gestorPerfilId' => function () use($serviceLocator) {
 
                     $gestorPerfilTable = $serviceLocator->get('AmProfile\Model\ProfileTable');
 

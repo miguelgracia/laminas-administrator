@@ -49,7 +49,6 @@ class AmMenuModuleController extends AuthController
             $entradaMenu = $this->entradaMenuTable->getEntityModel();
 
             $post = $request->getPost();
-            $post['tieneEnlace'] = (int) ($post['idControlador'] != null and $post['idControlador'] != '');
 
             $form->setInputFilter($entradaMenu->getInputFilter());
             $form->bind($post);
@@ -100,8 +99,6 @@ class AmMenuModuleController extends AuthController
         if ($request->isPost()) {
 
             $post = $request->getPost();
-
-            $entradaMenu->tieneEnlace = (int) ($post['idControlador'] != null and $post['idControlador'] != '');
 
             $form->setInputFilter($entradaMenu->getInputFilter());
             $form->setData($post);

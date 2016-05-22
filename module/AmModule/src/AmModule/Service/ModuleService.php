@@ -3,6 +3,8 @@
 namespace AmModule\Service;
 
 
+use Zend\Code\Reflection\ClassReflection;
+use Zend\Filter\Word\DashToCamelCase;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -51,5 +53,48 @@ class ModuleService implements FactoryInterface
         }
 
         return $newModules;
+    }
+
+    public function getControllerActionsModules()
+    {
+        $listaControladores = $this->sm->get('AmModule\Model\ModuleTable')->select();
+
+        $filterDashToCamelCase = new DashToCamelCase();
+
+        $hiddenMethods = array(
+            'getMethodFromAction',
+            'notFoundAction'
+        );
+
+        $controllerActions = array();
+
+        foreach ($listaControladores as $i => $controller) {
+
+            $controllerNamespace = '\Am%s\Controller\Am%sModuleController';
+
+            $controllerName = $filterDashToCamelCase->filter($controller->nombreZend);
+
+            $class = sprintf($controllerNamespace,$controllerName,$controllerName);
+
+            if (class_exists($class)) {
+                $reflectionController = new ClassReflection($class);
+                $controllerMethods = $reflectionController->getMethods();
+
+                $actions = array();
+                foreach ($controllerMethods as $method) {
+
+                    $name = $method->getName();
+                    
+                    if (stripos($name, 'action') !== false and !in_array($name,$hiddenMethods)) {
+                        $action = preg_replace("/(Action)$/", "$2", $name);
+                        $controllerActions[$controller->nombreZend . '.' .$action] = $controller->nombreUsable . ' ' . $action;
+                    }
+                }
+                asort($actions);
+
+            }
+        }
+
+        return $controllerActions;
     }
 }

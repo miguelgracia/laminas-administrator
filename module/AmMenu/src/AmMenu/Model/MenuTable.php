@@ -69,7 +69,6 @@ class MenuTable extends AdministratorTable
             'texto'                 => $entradaMenu->texto,
             'gestor_module_id'      => $entradaMenu->gestorModuleId,
             'accion'                => $entradaMenu->accion,
-            'tiene_enlace'          => $entradaMenu->tieneEnlace,
         );
 
         if ($id == 0) {

@@ -21,11 +21,13 @@ $basePath = $this->basePath() . '/administrator';
         ->appendStylesheet($basePath . '/libs/bootstrap/css/bootstrap.min.css')
         ->appendStylesheet('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
         ->appendStylesheet('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css')
+        ->appendStylesheet($basePath . '/libs/select2/css/select2.min.css')
         ->appendStylesheet($basePath . '/css/AdminLTE.min.css')
         ->appendStylesheet($basePath . '/css/skins/skin-blue.min.css')
         ->appendStylesheet($basePath . '/libs/datatables/dataTables.bootstrap.css')
-        ->appendStylesheet($basePath . '/css/style.css')
         ->appendStylesheet($basePath . '/libs/daterangepicker/daterangepicker-bs3.css')
+        ->appendStylesheet($basePath . '/css/style.css')
+
          ?>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -190,6 +192,7 @@ $basePath = $this->basePath() . '/administrator';
     ->appendFile($basePath . '/libs/datatables/jquery.dataTables.js')
     ->appendFile($basePath . '/libs/datatables/dataTables.bootstrap.min.js')
     ->appendFile($basePath . '/libs/daterangepicker/moment-with-locales.js')
+    ->appendFile($basePath . '/libs/select2/js/select2.min.js')
     ->appendFile($basePath . '/libs/sortable/sortable.min.js')
     // No usar app.min (de momento). Se han hecho cambios en app.js
     // por lo que habría que minimizarlo de nuevo.

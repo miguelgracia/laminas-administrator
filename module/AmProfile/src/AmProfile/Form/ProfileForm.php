@@ -3,13 +3,11 @@
 namespace AmProfile\Form;
 
 use Administrator\Form\AdministratorForm;
-use Zend\Code\Reflection\ClassReflection;
-use Zend\Filter\Word\DashToCamelCase;
-use Zend\Server\Reflection;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ProfileForm extends AdministratorForm {
 
-    public function initializers()
+    public function initializers(ServiceLocatorInterface $serviceLocator)
     {
         $form = $this;
 
@@ -24,47 +22,10 @@ class ProfileForm extends AdministratorForm {
                     '0' => 'NO',
                     '1' => 'SI'
                 ),
-                'permisos' => function ($sm) {
+                'permisos' => function () use($serviceLocator) {
 
-                    $listaControladores = $sm->get('AmModule\Model\ModuleTable')->select();
+                    return $serviceLocator->get('AmModule\Service\ModuleService')->getControllerActionsModules();
 
-                    $filterDashToCamelCase = new DashToCamelCase();
-
-                    $hiddenMethods = array(
-                        'getMethodFromAction',
-                        'notFoundAction'
-                    );
-
-                    $controllerActions = array();
-
-                    foreach ($listaControladores as $i => $controller) {
-
-                        $controllerNamespace = '\Am%s\Controller\Am%sModuleController';
-
-                        $controllerName = $filterDashToCamelCase->filter($controller->nombreZend);
-
-                        $class = sprintf($controllerNamespace,$controllerName,$controllerName);
-
-                        if (class_exists($class)) {
-                            $reflectionController = new ClassReflection($class);
-                            $controllerMethods = $reflectionController->getMethods();
-
-                            $actions = array();
-
-                            foreach ($controllerMethods as $method) {
-
-                                $name = $method->getName();
-
-                                if (stripos($name, 'action') !== false and !in_array($name,$hiddenMethods)) {
-                                    $action = preg_replace("/(Action)$/", "$2", $name);
-                                    $controllerActions[$controller->nombreZend . '.' .$action] = $controller->nombreUsable . ' ' . $action;
-                                }
-                            }
-                            asort($actions);
-
-                        }
-                    }
-                    return $controllerActions;
                 }
             )
         );

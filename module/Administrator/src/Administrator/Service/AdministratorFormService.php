@@ -283,7 +283,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     public function initializers()
     {
         if (method_exists($this->form, 'initializers')) {
-            $initializers = $this->form->initializers();
+            $initializers = $this->form->initializers($this->serviceLocator);
 
             foreach ($initializers as $property => $initializer) {
 
@@ -294,7 +294,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
                     if (method_exists($this, $method)) {
                         call_user_func_array(array($this,$method), array(
                             $field,
-                            is_callable($value) ? $value($this->serviceLocator) : $value
+                            is_callable($value) ? $value() : $value
                         ));
                     } else {
                         throw new \Exception('Method ' . $method . ' not exists in '.get_class($this));

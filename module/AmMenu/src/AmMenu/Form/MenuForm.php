@@ -3,36 +3,46 @@
 namespace AmMenu\Form;
 
 use Zend\Form\Form;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class MenuForm extends Form {
 
-    public function initializers()
+    public function initializers(ServiceLocatorInterface $serviceLocator)
     {
+        $moduleTable = $serviceLocator->get('AmModule\Model\ModuleTable');
+
+        $moduleController = $moduleTable->fetchAll()->toKeyValueArray('id','nombreZend');
+
         return array(
             'fieldModifiers' => array(
                 'padre'         => 'Hidden',
                 'orden'         => 'Hidden',
-                'gestorModuleId' => 'Select'
+                'gestorModuleId' => 'Select',
+                'accion'        => 'Select'
             ),
             'fieldValueOptions' => array(
-                'gestorModuleId' => function ($serviceLocator) {
+                'gestorModuleId' => function () use($moduleController) {
 
-                    $controllerManager = $serviceLocator->get('ControllerManager');
-                    $moduleManager = $serviceLocator->get('ModuleManager');
+                    return array('' => '[Ninguno]') + $moduleController;
+                },
+                'accion' => function () use($serviceLocator, $moduleController) {
 
-                    $application = $serviceLocator->get('Application');
+                    $modules = $serviceLocator->get('AmModule\Service\ModuleService')->getControllerActionsModules();
 
-                    $modulo = $controllerManager->get('AmHome\Controller\AmHomeModuleController');
+                    $modulesArray = array();
 
-                    $gestorControladorTable = $serviceLocator->get('AmModule\Model\ModuleTable');
+                    foreach ($modules as $action => $module) {
+                        $explode = explode('.',$action);
+                        if (!isset($modulesArray[$explode[0]])) {
+                            $modulesArray[$explode[0]] = array(
+                                'label' => $explode[0],
+                                'options' => array()
+                            );
+                        }
+                        $modulesArray[$explode[0]]['options'][$explode[1]] = $explode[1];
+                    }
 
-                    $gestorControlador = $gestorControladorTable->fetchAll();
-
-                    // Es necesario que haya una primera opci�n vac�a, para las entradas de men� sin enlace
-                    $array = array('' => '[Ninguno]');
-                    $arrayMerged = $array + $gestorControlador->toKeyValueArray('id','nombreUsable');
-
-                    return $arrayMerged;
+                    return array('' => 'Selecciona una acción') + $modulesArray;
                 }
             ),
         );
