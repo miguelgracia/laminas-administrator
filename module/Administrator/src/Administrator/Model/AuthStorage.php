@@ -6,6 +6,11 @@ use Zend\Authentication\Storage;
 
 class AuthStorage extends Storage\Session
 {
+    public function __construct()
+    {
+        parent::__construct('AdministratorStorage');
+    }
+
     public function setRememberMe($rememberMe = 0, $time = 1209600)
     {
         if ($rememberMe == 1) {

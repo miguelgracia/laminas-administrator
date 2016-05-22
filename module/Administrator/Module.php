@@ -60,29 +60,23 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
     public function getServiceConfig()
     {
         return array(
-            'initializers' => array(function ($instance, $sm) {
-                //Seteamos el dbAdapter para todos los modelos)
-                if ($instance instanceof \Zend\Db\Adapter\AdapterAwareInterface) {
-                    $instance->setServiceLocator($sm);
-                    $instance->setDbAdapter($sm->get('Zend\Db\Adapter\Adapter'));
-                }
-            }),
+            'initializers' => array(
+                'Administrator\Initializer\DatabaseInitializer'
+            ),
             'abstract_factories' => array(
                 'Administrator\Factory\AdministratorTableAbstractFactory',
                 'Administrator\Factory\AdministratorModelAbstractFactory',
             ),
             'factories' => array(
 
-                'Administrator\Model\AuthStorage' => function ($sm) {
-                    return new \Administrator\Model\AuthStorage('AdministratorStorage');
-                },
-                'AuthService'                            => 'Administrator\Service\AuthService',
-
-                'Administrator\Service\SessionServiceInterface' => 'Administrator\Service\SessionService',
-                'Administrator\Service\AdministratorFormService'       => 'Administrator\Service\AdministratorFormService',
-                //'Gestor\Service\DatatableService'        => 'Gestor\Service\DatatableService',
-
+                'AuthService'                                       => 'Administrator\Service\AuthService',
+                'Administrator\Service\SessionServiceInterface'     => 'Administrator\Service\SessionService',
+                'Administrator\Service\AdministratorFormService'    => 'Administrator\Service\AdministratorFormService',
+                //'Gestor\Service\DatatableService'                 => 'Gestor\Service\DatatableService',
             ),
+            'invokables' => array(
+                'Administrator\Model\AuthStorage'                   => 'Administrator\Model\AuthStorage',
+            )
         );
     }
 
@@ -93,13 +87,6 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                 'AdministratorMenu' => 'Administrator\View\Helper\AdministratorMenu',
             ),
             'factories' => array(
-
-                'settings' => function ($sm) {
-                    return new \Gestor\View\Helper\AppSettingsHelper();
-                },
-                'gestor_user' => function($sm) {
-                    return new \Gestor\View\Helper\GestorUserHelper($sm);
-                },
                 'administrator_form_row' => function ($sm) {
                     return new AdministratorFormRow($sm);
                 }
