@@ -7,11 +7,9 @@
 namespace Administrator;
 
 use Administrator\View\Helper\AdministratorFormRow;
-use Zend\Authentication\AuthenticationService;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 
-use Zend\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
 use Zend\Mvc\MvcEvent;
 use Zend\Validator\AbstractValidator;
 
@@ -70,7 +68,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             'factories' => array(
 
                 'AuthService'                                       => 'Administrator\Service\AuthService',
-                'Administrator\Service\SessionServiceInterface'     => 'Administrator\Service\SessionService',
+                'Administrator\Service\SessionService'              => 'Administrator\Service\SessionService',
                 'Administrator\Service\AdministratorFormService'    => 'Administrator\Service\AdministratorFormService',
                 //'Gestor\Service\DatatableService'                 => 'Gestor\Service\DatatableService',
             ),
@@ -96,6 +94,8 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 
     public function onBootstrap(MvcEvent $e)
     {
+
+
         $translator = $e->getApplication()->getServiceManager()->get('translator');
 
         $locale = $translator->getLocale();

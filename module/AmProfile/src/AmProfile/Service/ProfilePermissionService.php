@@ -16,12 +16,9 @@ class ProfilePermissionService implements FactoryInterface
     {
         $this->sm = $serviceLocator;
 
-        $sessionService = $this->sm->get('Administrator\Service\SessionServiceInterface');
         $authService = $this->sm->get('AuthService');
 
-        $identity = $authService->getIdentity();
-
-        $dataUser = $sessionService->getUserData($identity['user']);
+        $dataUser = $authService->getUserData();
 
         $this->userData = $dataUser;
         $this->isSuperUser = (bool) $this->userData->esAdmin;

@@ -110,18 +110,19 @@ class AmLoginModuleController extends AuthController
                 }
 
                 if ($result->isValid()) {
-                    if (isset($_SESSION['section_referer'])) {
-                        $params = $_SESSION['section_referer'];
+                    if ($this->sessionService->section_referer) {
+                        $params = $this->sessionService->section_referer;
                         $redirectTo = $params['module'];
                         unset($params['module']);
                         $redirectParams = $params;
-                        unset($_SESSION['section_referer']);
+
+                        $this->sessionService->section_referer = null;
                     } else {
                         $redirectTo = 'home';
                     }
 
 
-                    $this->getSessionStorage()->setRememberMe(1);
+                    //$this->getSessionStorage()->setRememberMe(0);
                     $this->saveLastLogin($userCheck,$passwordCheck);
                 }
 

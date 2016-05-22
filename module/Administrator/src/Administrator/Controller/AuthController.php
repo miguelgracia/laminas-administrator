@@ -13,18 +13,18 @@ class AuthController extends AbstractActionController
     protected $whitelist = array('login');
     protected $sm;
     protected $storage;
-    protected $authservice;
+    protected $authService;
     protected $formService;
     protected $sessionService;
     protected $config;
 
-    public function getAuthService()
+    public function getAuthService($returnAuthInstance = true)
     {
-        if (! $this->authservice) {
-            $this->authservice = $this->sm->get('AuthService');
+        if (! $this->authService) {
+            $this->authService = $this->sm->get('AuthService');
         }
 
-        return $this->authservice;
+        return $returnAuthInstance ? $this->authService->getAuthInstance() : $this->authService;
     }
 
     public function getSessionStorage()
@@ -70,8 +70,7 @@ class AuthController extends AbstractActionController
 
     protected function getUserData()
     {
-        $identity = $this->getAuthService()->getIdentity();
-        return $this->sessionService->getUserData($identity['user']);
+        return $this->getAuthService(false)->getUserData();
     }
 
     protected function forbidUser()
@@ -116,9 +115,11 @@ class AuthController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
+        $this->sessionService = $this->sm->get('Administrator\Service\SessionService');
+
         // Sacamos la ruta para matchearla
         $match = $e->getRouteMatch();
-        $this->sessionService = $this->sm->get('Administrator\Service\SessionServiceInterface');
+
         $this->config = $this->sm->get('Config');
 
 
@@ -138,7 +139,7 @@ class AuthController extends AbstractActionController
             // Comprobamos si esta autenticado
             $authService = $this->getAuthService();
             if (!$authService->hasIdentity()){
-                $_SESSION['section_referer'] = $match->getParams();
+                $this->sessionService->section_referer = $match->getParams();
                 return $this->goToSection('login');
             }
 

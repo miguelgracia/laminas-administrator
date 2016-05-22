@@ -14,15 +14,12 @@
  */
 
 return array(
-    // Configuraci�n de la base de datos
     'db' => array(
         'driver'         => 'Pdo',
         'dsn'            => 'mysql:dbname=abs_consultor;host=localhost',
         'driver_options' => array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         ),
-        // ******************************* IMPORTANTE ****************************
-        // Esto deber�a sobreescribirse con un valor en config/autoload/local.php si se desea una configuracion local
         'username' => 'root',
         'password' => '',
     ),

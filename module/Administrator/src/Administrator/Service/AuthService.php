@@ -2,6 +2,7 @@
 
 namespace Administrator\Service;
 
+use Zend\Db\Sql\Select;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Authentication\AuthenticationService;
@@ -10,6 +11,8 @@ use Zend\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapte
 class AuthService implements FactoryInterface
 {
     protected $serviceLocator;
+    protected $userData = false;
+    protected $authService;
 
     /**
      * @param ServiceLocatorInterface $serviceLocator
@@ -27,15 +30,59 @@ class AuthService implements FactoryInterface
         $dbTableAuthAdapter  = new  AuthAdapter($dbAdapter,
             'gestor_usuarios','login','password', "md5(?)");
 
-        $authService = new AuthenticationService();
-        $authService->setAdapter($dbTableAuthAdapter);
-        $authService->setStorage($serviceLocator->get('Administrator\Model\AuthStorage'));
+        $storage = $serviceLocator->get('Administrator\Model\AuthStorage');
 
-        return $authService;
+        $this->authService = new AuthenticationService($storage, $dbTableAuthAdapter);
+
+        return $this;
+    }
+
+    public function getAuthInstance()
+    {
+        return $this->authService;
     }
 
     public function getServiceLocator()
     {
         return $this->serviceLocator;
+    }
+
+    /**
+     *
+     * @param $username
+     * @return mixed
+     */
+    public function getUserData()
+    {
+        if ($this->userData) {
+            return $this->userData;
+        }
+
+        $username = $this->authService->getIdentity();
+
+        $username = $username['user'];
+
+        $rowset = $this->serviceLocator->get('Administrator\Model\AdminUserTable')->select(function (Select $select) use($username) {
+            $select
+                ->columns(array('*'))
+                ->join(
+                    'gestor_perfiles',
+                    'gestor_perfiles.id = gestor_usuarios.gestor_perfil_id',
+                    array('es_admin','permisos')
+                )
+                ->where(array(
+                    'login' => $username
+                ));
+        });
+
+        $row = $rowset->current();
+
+        if (!$row) {
+            throw new \Exception("Could not find row");
+        }
+
+        $this->userData = $row;
+
+        return $row;
     }
 }
