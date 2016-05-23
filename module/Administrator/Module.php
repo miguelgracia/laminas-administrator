@@ -10,11 +10,14 @@ use Administrator\View\Helper\AdministratorFormRow;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 
+use Zend\ModuleManager\ModuleEvent;
+use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\MvcEvent;
 use Zend\Validator\AbstractValidator;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
+    protected $mvcEvent;
 
     /**
      * Returns configuration to merge with application configuration
@@ -93,21 +96,61 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
         );
     }
 
+   /* EN UN INTENTO DE HACER LA CARGA DE LOS MODULOS QUE PERTENECEN AL ADMINISTRADOR DE FORMA
+   INDEPENDIENTE AL RESTO DE LA PLATAFORMA SE HAN CREADO ESTOS DOS MÉTODOS.
+   HE CONSEGUIDO ACCEDER A TODA LA INFORMACIÓN NECESARIA PERO ZEND NO ES CAPAZ DE RECONOCER
+   LOS MÓDULOS CARGADOS DE DICHA FORMA.
+   
+    public function init(ModuleManager $moduleManager)
+    {
+        $eventManager = $moduleManager->getEventManager();
+        $eventManager->attach(ModuleEvent::EVENT_LOAD_MODULES_POST,array($this, 'onLoadModule'));
+    }
+
+    public function onLoadModule(ModuleEvent $event)
+    {
+        $serviceManager = $event->getParam('ServiceManager');
+
+        $router = $serviceManager->get('Router');
+        $request = $serviceManager->get('Request');
+
+        $routeMatch = $router->match($request);
+
+        if ($routeMatch->getParam('controller') == 'Administrator\Factory\AdminControllerFactory') {
+            $moduleManager = $serviceManager->get('ModuleManager');
+        }
+    }*/
+
     public function onBootstrap(MvcEvent $e)
     {
+        $this->mvcEvent = $e;
 
+        $this->loadTranslations();
+    }
 
-        $translator = $e->getApplication()->getServiceManager()->get('translator');
+    private function loadTranslations()
+    {
+        $serviceManager = $this->mvcEvent->getApplication()->getServiceManager();
+        $translator = $serviceManager->get('translator');
 
         $locale = $translator->getLocale();
 
-        $translateFile = __DIR__."/language/$locale/Zend_Validate.php";
-        $translateFile = str_replace('/',DIRECTORY_SEPARATOR,$translateFile);
-        $translator->getTranslator()->addTranslationFile(
-            'phpArray',
-            $translateFile,
-            'default',
-            $locale);
+        $translateFilePath = __DIR__."/language/$locale/";
+        $tranlationFiles = array(
+            "Zend_Validate",
+            "locale",
+        );
+
+        foreach ($tranlationFiles as $file) {
+            $translateFile = $translateFilePath . "$file.php";
+            $translateFile = str_replace('/',DIRECTORY_SEPARATOR,$translateFile);
+            $translator->getTranslator()->addTranslationFile(
+                'phpArray',
+                $translateFile,
+                'default',
+                $locale);
+        }
+
 
         AbstractValidator::setDefaultTranslator($translator);
     }

@@ -55,6 +55,11 @@ class ModuleService implements FactoryInterface
         return $newModules;
     }
 
+    public function getModules()
+    {
+        return $this->modules;
+    }
+
     public function getControllerActionsModules()
     {
         $listaControladores = $this->sm->get('AmModule\Model\ModuleTable')->select();
@@ -84,7 +89,7 @@ class ModuleService implements FactoryInterface
                 foreach ($controllerMethods as $method) {
 
                     $name = $method->getName();
-                    
+
                     if (stripos($name, 'action') !== false and !in_array($name,$hiddenMethods)) {
                         $action = preg_replace("/(Action)$/", "$2", $name);
                         $controllerActions[$controller->nombreZend . '.' .$action] = $controller->nombreUsable . ' ' . $action;
