@@ -59,18 +59,19 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
     {
         return array(
             'initializers' => array(
-                'Administrator\Initializer\DatabaseInitializer'
+                'Administrator\Initializer\DatabaseInitializer',
             ),
             'abstract_factories' => array(
                 'Administrator\Factory\AdministratorTableAbstractFactory',
                 'Administrator\Factory\AdministratorModelAbstractFactory',
+                'Administrator\Factory\DatatableConfigAbstractFactory',
             ),
             'factories' => array(
 
                 'AuthService'                                       => 'Administrator\Service\AuthService',
                 'Administrator\Service\SessionService'              => 'Administrator\Service\SessionService',
                 'Administrator\Service\AdministratorFormService'    => 'Administrator\Service\AdministratorFormService',
-                //'Gestor\Service\DatatableService'                 => 'Gestor\Service\DatatableService',
+                'Administrator\Service\DatatableService'            => 'Administrator\Service\DatatableService',
             ),
             'invokables' => array(
                 'Administrator\Model\AuthStorage'                   => 'Administrator\Model\AuthStorage',

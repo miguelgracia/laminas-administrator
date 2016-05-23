@@ -206,6 +206,39 @@ $(function () {
         };
     });
 
+
+    $.AdminLTE.srController('user', function () {
+        this.index = function() {
+
+            var oDatatable = $.AdminLTE.simpleRouting.dsDatatable;
+            oDatatable.run('#userTable',function (dataTable){
+
+                var clickDelete = function(e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    var isConfirm = $.AdminLTE.simpleRouting.confirm.show('¿Seguro que deseas eliminar este usuario?');
+
+                    var ajaxSuccessEliminar = function(data) {
+                        if(data.status == 'ok') {
+                            dataTable.api().draw(false);
+                        }
+                        if(typeof data.message != 'undefined') {
+                            $.AdminLTE.simpleRouting.callout.show(data.message);
+                        }
+                    };
+                    if(isConfirm) {
+                        $.AdminLTE.simpleRouting.ajax.run({
+                            url: $this.parent().attr('href')
+                        }, ajaxSuccessEliminar);
+                    }
+                };
+
+                $(document.body)
+                    .on('click','.js-eliminar-usuario',clickDelete);
+            });
+        };
+    });
+
     $.AdminLTE.srController('menu', function () {
 
         this.index = function() {
@@ -279,6 +312,7 @@ $(document).ready(function () {
 
     $.AdminLTE.srRoutes({
         '/home': function() {},
+        '/admin/user':                   ['user','index'],
         '/admin/menu/edit/{:num}':       ['menu','addAndedit'],
         '/admin/menu/add/{:num}':        ['menu','addAndedit'],
         '/admin/menu':                   ['menu','index']

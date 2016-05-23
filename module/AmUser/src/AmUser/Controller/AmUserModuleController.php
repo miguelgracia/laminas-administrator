@@ -17,12 +17,14 @@ class AmUserModuleController extends AuthController
     protected $userTable;
     protected $perfilTable;
     protected $form;
+    protected $datatable;
 
     public function setControllerVars()
     {
-        $this->userTable = $this->sm->get('AmUser\Model\UserTable');
-        $this->perfilTable = $this->sm->get('AmProfile\Model\ProfileTable');
-        $this->formService = $this->sm->get('Administrator\Service\AdministratorFormService')->setTable($this->userTable);
+        $this->userTable    = $this->sm->get('AmUser\Model\UserTable');
+        $this->perfilTable  = $this->sm->get('AmProfile\Model\ProfileTable');
+        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService')->setTable($this->userTable);
+        $this->datatable    = $this->sm->get('Administrator\Service\DatatableService');
     }
 
     /**
@@ -30,15 +32,9 @@ class AmUserModuleController extends AuthController
      */
     public function indexAction()
     {
-        $arrayUsuarios = $this->userTable->fetchAll();
+        $this->datatable->init();
 
-        // Vamos a sacar también mi usuario para destacarlo
-        $identity = $this->sm->get('AuthService')->getIdentity();
-
-        return new ViewModel(array(
-            'usuarios' => $arrayUsuarios,
-            'quienSoy' => $identity['user'],
-        ));
+        return $this->datatable->run();
     }
 
     /**

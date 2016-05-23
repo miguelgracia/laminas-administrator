@@ -1,6 +1,6 @@
 <?php
 
-namespace Gestor\Service;
+namespace Administrator\Service;
 
 use Zend\Db\Metadata\Metadata;
 
@@ -9,12 +9,17 @@ use Zend\Db\Sql\Having;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
 
+use Zend\Filter\Word\SeparatorToSeparator;
 use Zend\Filter\Word\UnderscoreToSeparator;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Model\ViewModel;
 
 class DatatableService implements FactoryInterface
 {
+    protected $configService;
+    protected $controller;
+
     protected $serviceLocator;
     protected $metadata;
 
@@ -38,6 +43,10 @@ class DatatableService implements FactoryInterface
     protected $sql;
     protected $select;
 
+    protected $spaceSeparator;
+    protected $dollarSeparator;
+    protected $dotSeparator;
+
     protected $rows = array();
     protected $totalRecords = 0;
     protected $totalRecordsFiltered = 0;
@@ -51,6 +60,10 @@ class DatatableService implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
+
+        $this->spaceSeparator  = new UnderscoreToSeparator(' ');
+        $this->dollarSeparator = new SeparatorToSeparator('.','$');
+        $this->dotSeparator    = new SeparatorToSeparator('$','.');
 
         $this->request = $this->serviceLocator->get('Request');
 
@@ -128,28 +141,42 @@ class DatatableService implements FactoryInterface
 
     public function setColumnHeaders($fields)
     {
-        $separator = new UnderscoreToSeparator(' ');
+        $spaceSeparator  = $this->spaceSeparator;
+        $dollarSeparator = $this->dollarSeparator;
 
         $currentFields = $this->headerFields;
         $config = $this->config;
-        $fields = array_merge($currentFields, $fields);
-        array_walk($fields, function (&$elem, $index) use($separator, $config) {
+        $fields = $currentFields + $fields;
+
+        array_walk($fields, function (&$elem, $index) use($spaceSeparator, $dollarSeparator, $config) {
             $searchable = isset($config['searchable'][$index]) ? $config['searchable'][$index] : true;
             $orderable = isset($config['orderable'][$index]) ? $config['orderable'][$index] : true;
 
             $elem = array(
-                'value' => $separator->filter($elem),
+                'value' => $spaceSeparator->filter($elem),
+                'json_key' => $dollarSeparator->filter($index),
                 'options' => array(
                     'searchable' => $searchable,
                     'orderable' => $orderable
-                )
+                ),
+                /**
+                 * attributes contendrá aquellos atributos que se añadiran
+                 * a la etiqueta th de cada columna
+                 */
+                'attributes' => array()
             );
         });
         if (isset($this->config['columns']) and is_callable($this->config['columns'])) {
             $fields = call_user_func_array($this->config['columns'],array($fields));
         }
+
         $this->headerFields = $fields;
         return $this;
+    }
+
+    public function setParserColumn($columnsCallback)
+    {
+        $this->config['columns'] = $columnsCallback;
     }
 
     public function getQueryFields()
@@ -177,6 +204,8 @@ class DatatableService implements FactoryInterface
         foreach ($joins as $joinParams) {
             call_user_func_array(array($select, 'join'),$joinParams);
         }
+
+        return $this;
     }
 
     public function setWhere($wheres)
@@ -184,6 +213,7 @@ class DatatableService implements FactoryInterface
         foreach ($wheres as $where) {
             $this->select->where($where);
         }
+        return $this;
     }
 
     public function setColumnFilters()
@@ -197,13 +227,15 @@ class DatatableService implements FactoryInterface
                 //Coge la parte del string que se encuentra después del último punto
                 $fieldName = preg_replace("/(.+)\.(.+)$/", "$2", $columnName);
 
+                //TODO: Implementar un sistema para hacer más flexible el tipo de having (having like, having >, having <...)
+
                 if (isset($this->config['having_fields']) and in_array($fieldName,$this->config['having_fields'])) {
                     $this->select->having(function (Having $having) use ($fieldName, $columnValue) {
                         $having->like($fieldName, '%'.$columnValue.'%');
                     });
                 } else {
                     $this->select->where(function (Where $where) use ($columnName, $columnValue) {
-                        $where->like($columnName, '%'.$columnValue.'%');
+                        $where->like($columnName, "%".$columnValue."%");
                     });
                 }
             }
@@ -224,7 +256,7 @@ class DatatableService implements FactoryInterface
 
         foreach ($this->order as $fieldOrder) {
 
-            $field = $this->columns[$fieldOrder['column']]['name'];
+            $field = $this->dotSeparator->filter($this->columns[$fieldOrder['column']]['name']);
 
             //Coge la parte del string que se encuentra después del último punto
             $auxField = preg_replace("/(.+)\.(.+)$/", "$2", $field);
@@ -336,11 +368,18 @@ class DatatableService implements FactoryInterface
 
     public function parseRows(&$rows)
     {
+        $fieldKeys = array_keys($this->headerFields);
+        $dollarSeparator = $this->dollarSeparator;
+        array_walk($fieldKeys, function (&$elem) use($dollarSeparator){
+            $elem = $dollarSeparator->filter($elem);
+        });
+
         foreach ($rows as &$row) {
             if (isset($this->config['parse_row_data']) and is_callable($this->config['parse_row_data'])) {
                 $row = call_user_func_array($this->config['parse_row_data'],array($row));
             }
-            $row = array_values($row);
+            $row = array_combine($fieldKeys,array_values($row));
+            //$row = array_values($row);
         }
     }
 
@@ -377,5 +416,52 @@ class DatatableService implements FactoryInterface
         $this->runQuery();
 
         return $this->getResult();
+    }
+
+    public function init()
+    {
+        $controllerPluginManager = $this->serviceLocator->get('ControllerPluginManager');
+
+        $this->controller = $controllerPluginManager->getController();
+
+        $currentController = get_class($this->controller);
+
+        //sacamos el namespace de la clase DatatableConfigService ayudándonos del namespace del controlador
+        $configClass = strstr($currentController, '\\', true) . "\\Service\\DatatableConfigService";
+
+        $this->configService = $this->serviceLocator->get($configClass);
+
+        $config = $this->configService->getQueryConfig();
+
+        $config += $this->configService->getDatatableConfig();
+
+        $this->setConfig($config);
+    }
+
+    public function run()
+    {
+        if (!$this->configService) {
+            $this->init();
+        }
+
+        $request = $this->serviceLocator->get('Request');
+
+        if ($request->isPost()) {
+            $result = $this->getData();
+            $response = $this->controller->getResponse();
+            $response->setContent(json_encode($result));
+            return $response;
+        } else {
+
+            $viewParams = array(
+                'settings' => array(
+                    'headers' => $this->getHeaderFields()
+                )
+            ) + $this->configService->getViewParams();
+
+            $viewModel = new ViewModel($viewParams);
+            $viewModel->setTemplate('administrator/list-datatable');
+            return $viewModel;
+        }
     }
 }
