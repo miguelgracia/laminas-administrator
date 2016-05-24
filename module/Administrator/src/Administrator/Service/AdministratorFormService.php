@@ -347,7 +347,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
         foreach ($columns as $column) {
             $toCamel = new SeparatorToCamelCase('_');
-            $columnName = $sourceTable . '_' . lcfirst($toCamel->filter($column->getName()));
+            $columnName = lcfirst($toCamel->filter($column->getName()));
 
             $flags = array(
                 'priority' => -($column->getOrdinalPosition() * 100),
