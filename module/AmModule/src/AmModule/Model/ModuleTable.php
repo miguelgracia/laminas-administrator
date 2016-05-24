@@ -30,8 +30,8 @@ class ModuleTable extends AdministratorTable
     public function saveGestorControlador(AdministratorModel $gestorControlador)
     {
         $data = array(
-            'nombreZend' => $gestorControlador->nombreZend,
-            'nombreUsable'  => $gestorControlador->nombreUsable,
+            'nombre_zend' => $gestorControlador->nombreZend,
+            'nombre_usable'  => $gestorControlador->nombreUsable,
         );
 
         $id = (int) $gestorControlador->id;

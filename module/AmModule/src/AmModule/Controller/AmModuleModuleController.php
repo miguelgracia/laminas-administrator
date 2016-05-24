@@ -74,13 +74,7 @@ class AmModuleModuleController extends AuthController
 
             if ($form->isValid()) {
                 // Metemos los datos que vamos a guardar
-                //$gestorControlador->exchangeArray($form->getData());
                 $this->moduleTable->saveGestorControlador($gestorControlador);
-
-                return $this->goToSection('controller',array(
-                    'action'  => 'edit',
-                    'id'      => $request->getPost('id')
-                ));
             }
         }
 
