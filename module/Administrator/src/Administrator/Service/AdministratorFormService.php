@@ -30,7 +30,6 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     const ACTION_ADD        = 'add';
     const ACTION_EDIT       = 'edit';
     const ACTION_DELETE     = 'delete';
-    const ACTION_SUBSTITUTE = 'substitute';
 
 
     /**
@@ -40,7 +39,6 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     const EVENT_READ        = 'read';
     const EVENT_UPDATE      = 'update';
     const EVENT_DELETE      = 'delete';
-    const EVENT_SUBSTITUTE  = 'substitute';
 
     /**
      * @var array
@@ -52,7 +50,6 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         self::ACTION_DEFAULT    => self::EVENT_READ,
         self::ACTION_EDIT       => self::EVENT_UPDATE,
         self::ACTION_DELETE     => self::EVENT_DELETE,
-        self::ACTION_SUBSTITUTE => self::EVENT_SUBSTITUTE
     );
 
     protected $defaultAttributes = array(
@@ -119,7 +116,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
      *
      * Nombre por defecto del campo de tabla de base de datos que se usara
      * como valor oculto del formulario para usarlo como condicion en el where
-     * de consulta cuando guardamos un formulario de edici�n
+     * de consulta cuando guardamos un formulario de edición
      */
     protected $hiddenPrimaryKey = 'id';
 
@@ -129,7 +126,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
      * Este array incluye aquellos campos de base de datos que queremos redefinir su tipo.
      * Por ejemplo. idPerfil en base de datos se guarda como tipo entero. Los tipos enteros
      * se reflejan en el formulario como un campo input pero en nuestro caso queremos
-     * que sea un Select. Es aqu� donde quedar� almacenado dicho cambio. Los valores deben corresponder a
+     * que sea un Select. Es aquí donde quedará almacenado dicho cambio. Los valores deben corresponder a
      * elementos de tipo Form\Element. Se setea desde el initializer de los formularios
      */
     protected $fieldModifiers = array();
@@ -163,9 +160,9 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     public function eventTrigger($eventName,  $args = array())
     {
         $args = array('formService' => $this) + $args;
-        // En result almacenamos el primer resultado de todos los listener que est�n escuchando
-        // el evento $eventName. En principio el �nico que va a mandar resultado va a ser
-        // CrudListener. Si hubiese alg�n otro Listener definido, ser�a para aplicar l�gica
+        // En result almacenamos el primer resultado de todos los listener que están escuchando
+        // el evento $eventName. En principio el único que va a mandar resultado va a ser
+        // CrudListener. Si hubiese algún otro Listener definido, sería para aplicar lógica
         // que no interfiera con el guardado en base de datos.
 
         $result = $this->getEventManager()->trigger($eventName,null,$args)->first();
@@ -200,7 +197,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
     /**
      * Seteamos el objeto tableGateway que va a alimentar el formulario.
-     * Se llama desde la funci�n setControllerVars de los controladores.
+     * Se llama desde la función setControllerVars de los controladores.
      *
      * @param $table
      * @return $this
@@ -350,7 +347,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
         foreach ($columns as $column) {
             $toCamel = new SeparatorToCamelCase('_');
-            $columnName = lcfirst($toCamel->filter($column->getName()));
+            $columnName = $sourceTable . '_' . lcfirst($toCamel->filter($column->getName()));
 
             $flags = array(
                 'priority' => -($column->getOrdinalPosition() * 100),
@@ -398,10 +395,10 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         }
 
         /**
-         * Buscamos en el objeto formulario si existe el m�todo addFields.
-         * En caso afirmativo, lo ejecutamos para poder a�adir campos adicionales
-         * que se salga de la l�gica predeterminada o, por ejemplo, redefinir
-         * el atributo de alg�n campo concreto. (Vease Gestor\Form\GestorUsuariosForm)
+         * Buscamos en el objeto formulario si existe el método addFields.
+         * En caso afirmativo, lo ejecutamos para poder añadir campos adicionales
+         * que se salga de la lógica predeterminada o, por ejemplo, redefinir
+         * el atributo de algún campo concreto. (Vease Gestor\Form\GestorUsuariosForm)
          */
         $thisMethod = substr(strrchr(__METHOD__, '::'), 1);
 
@@ -450,9 +447,9 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     }
 
     /**
-     *  Seteamos el action por defecto en funci�n de la url en la que nos encontramos
+     *  Seteamos el action por defecto en función de la url en la que nos encontramos
      *  Busca los segmentos "section", "action" e "id" y los
-     *  rellena autom�ticamente.
+     *  rellena automáticamente.
      */
     private function setDefaultFormAction()
     {
@@ -475,8 +472,8 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     }
 
     /**
-     *  A�adimos los elementos de formulario que en principio deben aparecer por defecto
-     *  Dicha funci�n se ejecute desde el servicio GestorFormService
+     *  Añadimos los elementos de formulario que en principio deben aparecer por defecto
+     *  Dicha función se ejecute desde el servicio GestorFormService
      */
     private function addDefaultFields()
     {
@@ -500,10 +497,8 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         return $this;
     }
 
-
-
     /**
-     * @param array $params - Redefine los par�metros que se setean autom�ticamente
+     * @param array $params - Redefine los parámetros que se setean automáticamente
      */
     public function setUrlAction($params = array())
     {
@@ -511,6 +506,6 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
         $url = $viewHelper->get('url');
 
-        $this->setAttribute('action', $url('mastah/sections', $params));
+        $this->setAttribute('action', $url('administrator', $params));
     }
 }

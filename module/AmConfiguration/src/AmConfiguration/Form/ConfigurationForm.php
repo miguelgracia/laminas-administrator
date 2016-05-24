@@ -64,6 +64,11 @@ class ConfigurationForm extends Form
 
             if (stripos($entryKey, 'image') !== false) {
                 // File Input
+                $tempPath = "./public/administrator/img/administrator/temp";
+                $tempPath = str_replace("/",DIRECTORY_SEPARATOR,$tempPath);
+                if (!is_dir($tempPath)) {
+                    mkdir($tempPath);
+                }
                 $input = new FileInput($entryKey);
                 $input->setRequired(false);
                 $input->getFilterChain()->attachByName(
@@ -71,7 +76,7 @@ class ConfigurationForm extends Form
                     array(
                         'randomize' => false,
                         'overwrite' => true,
-                        'target'    => "./public/gestor/img/gestor/temp/$entryKey.jpg",
+                        'target'    => "$tempPath\\$entryKey.jpg",
                     )
                 );
             } else {

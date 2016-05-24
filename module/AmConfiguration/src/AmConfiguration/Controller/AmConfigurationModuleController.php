@@ -4,6 +4,7 @@ namespace AmConfiguration\Controller;
 
 use Administrator\Controller\AuthController;
 use AmConfiguration\Form\ConfigurationForm;
+use Zend\Filter\File\Rename;
 
 class AmConfigurationModuleController extends AuthController
 {
