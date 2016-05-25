@@ -4,6 +4,7 @@ namespace AmUser\Controller;
 use Administrator\Controller\AuthController;
 
 use AmUser\Form\AmUserForm;
+use AmUser\Form\UserFieldset;
 use Zend\Db\Sql\Predicate\Expression;
 use Zend\View\Model\ViewModel;
 
@@ -17,24 +18,12 @@ class AmUserModuleController extends AuthController
     protected $userTable;
     protected $perfilTable;
     protected $form;
-    protected $datatable;
 
     public function setControllerVars()
     {
         $this->userTable    = $this->sm->get('AmUser\Model\UserTable');
         $this->perfilTable  = $this->sm->get('AmProfile\Model\ProfileTable');
         $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService')->setTable($this->userTable);
-        $this->datatable    = $this->sm->get('Administrator\Service\DatatableService');
-    }
-
-    /**
-     * @return ViewModel
-     */
-    public function indexAction()
-    {
-        $this->datatable->init();
-
-        return $this->datatable->run();
     }
 
     /**
@@ -42,35 +31,40 @@ class AmUserModuleController extends AuthController
      */
     public function addAction()
     {
-        // Ya hemos sacado las cosas que necesitamos
-        $this->formService->setForm(new AmUserForm())->addFields();
+        $gestorUsuarios = $this->userTable->getEntityModel();
+
+        $fieldset = new UserFieldset($this->serviceLocator,$gestorUsuarios,$this->userTable);
+
+        $this->formService
+            ->setForm(new AmUserForm())
+            ->addFieldset($fieldset)
+            ->addFields();
 
         $form = $this->formService->getForm();
 
-        // Si es un request tipo post grabamos los datos y redirigimos
         $request = $this->getRequest();
+
         if ($request->isPost()) {
-            $gestorUsuarios = $this->userTable->getEntityModel();
 
-            $post = $request->getPost();
-
-            $post->validado = 0;
-
-            $form->setInputFilter($gestorUsuarios->getInputFilter())
-                ->setData($post);
+            $form->bind($request->getPost());
 
             if ($form->isValid()) {
 
                 $gestorUsuarios->exchangeArray($form->getData());
                 $gestorUsuarios->password = new Expression("md5('$gestorUsuarios->password')");
 
-                // Grabamos lo que teníamos bindeado al form
                 $insertId = $this->userTable->saveGestorUsuarios($gestorUsuarios);
 
                 return $this->goToSection('user', array(
                     'action' => 'edit',
                     'id' => $insertId
                 ));
+            } else {
+                echo "<pre>";
+                print_r($form->getMessages());
+                echo "</pre>";
+                die;
+
             }
         }
 
@@ -99,32 +93,27 @@ class AmUserModuleController extends AuthController
             return $this->goToSection('user');
         }
 
-        // Le bindeamos los datos al formulario y configuramos para que el submit ponga Edit
-        $this->formService->setForm(new AmUserForm())->addFields();
+        $fieldset = new UserFieldset($this->serviceLocator, $gestorUsuarios, $this->userTable);
+
+        $this->formService
+            ->setForm(new AmUserForm())
+            ->addFieldset($fieldset)
+            ->addFields();
+
+
         $form = $this->formService->getForm();
-        $form->bind($gestorUsuarios);
-        $form->get('submit')->setAttribute('value', 'Edit');
 
         $request = $this->getRequest();
+
         if ($request->isPost()) {
 
             $post = $request->getPost();
 
-            if (!isset($post->validado)) {
-                $post->validado = $gestorUsuarios->validado;
-            }
-            $checkPassword = (bool) $post['checkPassword'];
-
-            $gestorUsuarios->setCheckPassword($checkPassword);
-
-            $form->setInputFilter($gestorUsuarios->getInputFilter());
-
-            $form->setData($post);
+            $form->bind($post);
 
             if ($form->isValid()) {
 
-                unset($gestorUsuarios->checkPassword);
-                unset($gestorUsuarios->password2);
+                $checkPassword =  (bool) $gestorUsuarios->getCheckPassword();
 
                 if (!$checkPassword) {
                     $gestorUsuarios->password = $auxGestorUsuarios->getPassword();

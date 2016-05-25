@@ -83,7 +83,6 @@ class UserTable extends AdministratorTable
             'login'             => $gestorUsuarios->login,
             'password'          => $gestorUsuarios->password,
             'gestor_perfil_id'  => $gestorUsuarios->gestorPerfilId,
-            'validado'          => $gestorUsuarios->validado
         );
 
         $id = (int) $gestorUsuarios->id;

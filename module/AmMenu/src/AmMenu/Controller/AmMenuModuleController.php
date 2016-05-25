@@ -2,6 +2,7 @@
 namespace AmMenu\Controller;
 
 use Administrator\Controller\AuthController;
+use AmMenu\Form\MenuFieldset;
 use AmMenu\Form\MenuForm;
 use Zend\View\Model\ViewModel;
 
@@ -22,7 +23,6 @@ class AmMenuModuleController extends AuthController
     public function indexAction()
     {
         $entradas = $this->entradaMenuTable->fetchAllOrdenados();
-
 
         return new ViewModel(compact('entradas'));
     }
@@ -86,31 +86,24 @@ class AmMenuModuleController extends AuthController
             return $this->goToSection('menu');
         }
 
-        // Si es un request tipo post grabamos los datos y redirigimos
-        $request = $this->getRequest();
+        $fieldset = new MenuFieldset($this->serviceLocator, $entradaMenu, $this->entradaMenuTable);
 
-        $this->formService->setForm(new MenuForm())->addFields();
+        $this->formService
+            ->setForm(new MenuForm())
+            ->addFieldset($fieldset)
+            ->addFields();
+
+        $request = $this->getRequest();
 
         $form = $this->formService->getForm();
 
-        // Le bindeamos los datos al formulario
-        $form->bind($entradaMenu);
-
         if ($request->isPost()) {
 
-            $post = $request->getPost();
-
-            $form->setInputFilter($entradaMenu->getInputFilter());
-            $form->setData($post);
+            $form->bind($request->getPost());
 
             if ($form->isValid()) {
-                // Grabamos lo que ten�amos bindeado al form
-                $this->entradaMenuTable->saveEntradaMenu($entradaMenu);
 
-                return $this->goToSection('menu',array(
-                    'action' => 'edit',
-                    'id' => $id
-                ));
+                $this->entradaMenuTable->saveEntradaMenu($entradaMenu);
             }
         }
 
@@ -124,6 +117,7 @@ class AmMenuModuleController extends AuthController
     {
         $request = $this->getRequest();
         $result = array();
+
         if ($request->isPost()) {
             $menuIds = $this->params()->fromPost('elements');
             foreach ($menuIds as $index => $id) {
@@ -134,6 +128,7 @@ class AmMenuModuleController extends AuthController
             echo json_encode($result);
             die;
         }
+
         return $this->goToSection('home');
     }
 

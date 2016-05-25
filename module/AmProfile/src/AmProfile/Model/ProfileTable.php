@@ -46,16 +46,7 @@ class ProfileTable extends AdministratorTable
             'es_admin'                  => (string) $perfil->esAdmin
         );
 
-        $id = (int) $perfil->id;
-        if ($id == 0) {
-            $this->insert($data);
-        } else {
-            if ($this->getPerfil($id)) {
-                $this->update($data, array('id' => $id));
-            } else {
-                throw new \Exception('Perfil id does not exist');
-            }
-        }
+        return $this->save($data, (int) $perfil->id);
     }
 
     public function deletePerfil($id)

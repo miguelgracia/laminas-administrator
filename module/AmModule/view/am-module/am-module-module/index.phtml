@@ -13,7 +13,7 @@ $this->headTitle($title);
             </div>
 
             <div class="box-body">
-                <?php if ((isset($controladores)) && (count($controladores) > 0)) :?>
+                <?php if ((isset($modules)) && (count($modules) > 0)) :?>
                     <table class="table table-bordered table-hover">
                         <tr>
                             <th>Ruta en Zend</th>
@@ -21,7 +21,7 @@ $this->headTitle($title);
                             <th colspan="2" class="text-center">Acciones</th>
                         </tr>
 
-                        <?php foreach ($controladores as $elemento) :
+                        <?php foreach ($modules as $elemento) :
                             $urlToEdit = $this->url('administrator', array('module' => 'module','action'=>'edit', 'id' => $elemento->id));
                             $urlToDelete = $this->url('administrator', array('module' => 'module','action'=>'delete', 'id' => $elemento->id));?>
 

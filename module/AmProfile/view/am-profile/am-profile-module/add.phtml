@@ -5,10 +5,13 @@ $this->headTitle($title);
 
 $form = $this->form;
 
+$fieldset = $form->get('AmProfile\Form\ProfileFieldset');
+
 $gestorFormRow = $this->administrator_form_row();
 
 $form->prepare();
 ?>
+
 <div class="row">
     <div class="col-md-12">
         <div class="box box-primary">
@@ -18,14 +21,16 @@ $form->prepare();
             <?php echo $this->form()->openTag($form);?>
             <div class="box-body">
                 <?php
-                echo $gestorFormRow->render($form->get('nombre'));
-                echo $gestorFormRow->render($form->get('descripcion'));
+                echo $gestorFormRow->render($fieldset->get('nombre'));
+                echo $gestorFormRow->render($fieldset->get('descripcion'));
+                echo $gestorFormRow->render($fieldset->get('esAdmin'));
+                echo $gestorFormRow->render($fieldset->get('permisos'));
                 ?>
             </div>
             <div class="box-footer">
                 <?php
                 $submitButton = $form->get('submit');
-                echo $this->formHidden($form->get('id'));
+                echo $this->formHidden($fieldset->get('id'));
                 echo $this->formSubmit($submitButton);
                 ?>
             </div>

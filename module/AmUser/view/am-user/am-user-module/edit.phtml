@@ -5,6 +5,8 @@ $this->headTitle($title);
 
 $form = $this->form;
 
+$fieldset = $form->get('AmUser\Form\UserFieldset');
+
 $gestorFormRow = $this->administrator_form_row();
 
 $form->prepare();
@@ -20,19 +22,19 @@ $form->prepare();
             <?php echo $this->form()->openTag($form); ?>
             <div class="box-body">
                 <?php
-                echo $gestorFormRow->render($form->get('login'));
-                echo $gestorFormRow->render($form->get('gestorPerfilId'));
-                echo $gestorFormRow->render($form->get('checkPassword'));
-                echo $gestorFormRow->render($form->get('password'));
-                echo $gestorFormRow->render($form->get('password2'));
-                echo $gestorFormRow->render($form->get('createdAt'));
-                echo $gestorFormRow->render($form->get('lastLogin'));
+                echo $gestorFormRow->render($fieldset->get('login'));
+                echo $gestorFormRow->render($fieldset->get('gestorPerfilId'));
+                echo $gestorFormRow->render($fieldset->get('checkPassword'));
+                echo $gestorFormRow->render($fieldset->get('password'));
+                echo $gestorFormRow->render($fieldset->get('password2'));
+                echo $gestorFormRow->render($fieldset->get('createdAt'));
+                echo $gestorFormRow->render($fieldset->get('lastLogin'));
                 ?>
             </div>
             <div class="box-footer">
                 <?php
                 $submitButton = $form->get('submit');
-                echo $this->formHidden($form->get('id'));
+                echo $this->formHidden($fieldset->get('id'));
                 echo $this->formSubmit($submitButton);
                 ?>
             </div>

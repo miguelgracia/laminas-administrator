@@ -3,6 +3,7 @@ namespace AmModule\Controller;
 
 use Administrator\Controller\AuthController;
 
+use AmModule\Form\ModuleFieldset;
 use AmModule\Form\ModuleForm;
 use Zend\View\Model\ViewModel;
 
@@ -21,13 +22,10 @@ class AmModuleModuleController extends AuthController
     public function setControllerVars()
     {
         // Como vamos a acceder a la tabla de controladores sacamos el Model con el Service Manager
-        $this->moduleTable = $this->sm->get('AmModule\Model\ModuleTable');
-
+        $this->moduleTable   = $this->sm->get('AmModule\Model\ModuleTable');
         $this->moduleService = $this->sm->get('AmModule\Service\ModuleService');
-
-        $this->formService = $this->sm->get('Administrator\Service\AdministratorFormService')->setTable($this->moduleTable);
+        $this->formService   = $this->sm->get('Administrator\Service\AdministratorFormService')->setTable($this->moduleTable);
     }
-
 
     /**
      * @return ViewModel
@@ -35,13 +33,11 @@ class AmModuleModuleController extends AuthController
     public function indexAction()
     {
         // Sacamos el listado completo de controladores del TableGateway
-        $controladores = $this->moduleTable->select();
-
-
+        $modules = $this->moduleTable->select();
 
         // Vamos a la vista de índice con ese array para pintar la tabla.
         return new ViewModel(compact(
-            'controladores'
+            'modules'
         ));
     }
 
@@ -57,20 +53,23 @@ class AmModuleModuleController extends AuthController
             $gestorControlador = $this->moduleTable->getGestorControlador($id);
         }
         catch (\Exception $ex) {
-            return $this->goToSection('controller');
+            return $this->goToSection('module');
         }
 
-        // Le bindeamos los datos al formulario
-        $this->formService->setForm(new ModuleForm())->addFields();
+        $fieldset = new ModuleFieldset($this->serviceLocator, $gestorControlador, $this->moduleTable);
+
+        $this->formService
+            ->setForm(new ModuleForm())
+            ->addFieldset($fieldset)
+            ->addFields();
 
         $form = $this->formService->getForm();
-        $form->bind($gestorControlador);
 
-        // Sacamos los datos dle request
         $request = $this->getRequest();
+
         if ($request->isPost()) {
-            $form->setInputFilter($gestorControlador->getInputFilter());
-            $form->setData($request->getPost());
+
+            $form->bind($request->getPost());
 
             if ($form->isValid()) {
                 // Metemos los datos que vamos a guardar
