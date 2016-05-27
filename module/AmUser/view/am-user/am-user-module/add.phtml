@@ -5,10 +5,14 @@ $this->headTitle($title);
 
 $form = $this->form;
 
+$fieldset = $form->get('AmUser\Form\UserFieldset');
+
 $gestorFormRow = $this->administrator_form_row();
 
 $form->prepare();
+
 ?>
+
 <div class="row">
     <?php if(count($messages)):?>
         <div class="col-md-12">
@@ -29,14 +33,14 @@ $form->prepare();
             <?php echo $this->form()->openTag($form);?>
             <div class="box-body">
                 <?php
-                echo $gestorFormRow->render($form->get('login'));
-                echo $gestorFormRow->render($form->get('gestorPerfilId'));
-                echo $gestorFormRow->render($form->get('password'));
-                echo $gestorFormRow->render($form->get('password2'));
+                echo $gestorFormRow->render($fieldset->get('login'));
+                echo $gestorFormRow->render($fieldset->get('gestorPerfilId'));
+                echo $gestorFormRow->render($fieldset->get('password'));
+                echo $gestorFormRow->render($fieldset->get('password2'));
                 ?>
             </div>
             <div class="box-footer">
-                <?php echo $this->formHidden($form->get('id'));?>
+                <?php echo $this->formHidden($fieldset->get('id'));?>
                 <?php
                 $submitButton = $form->get('submit');
                 echo $this->formSubmit($submitButton);?>

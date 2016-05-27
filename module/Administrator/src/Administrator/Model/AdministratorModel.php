@@ -2,17 +2,11 @@
 
 namespace Administrator\Model;
 
-use Zend\Db\Metadata\MetadataInterface;
-use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Filter\Word\UnderscoreToCamelCase;
-use Zend\InputFilter\InputFilter;
 
 class AdministratorModel
 {
-    protected $inputFilter;
     protected $metadata;
-    protected $table;
-    protected $tableInfo;
 
     function __call($name, $arguments)
     {
@@ -45,7 +39,11 @@ class AdministratorModel
         return $newObject;
     }
 
-    // Esto te permite hacer el bind (serializa las vars del objeto)
+    /**
+     * Devuelve un array con los datos del modelo
+     *
+     * @return array
+     */
     public function getArrayCopy()
     {
         $object = get_object_vars($this);
@@ -70,7 +68,7 @@ class AdministratorModel
     }
 
     /**
-     * Es el m�todo que se ejecuta cuando llamados a la funci�n toArray
+     * Es el método que se ejecuta cuando llamados a la función toArray
      * del Resultset
      *
      * @param $data
@@ -82,106 +80,9 @@ class AdministratorModel
         }
     }
 
-
-    /**
-     * Elimina todas aquellas propiedades creadas en el objeto que no tengan
-     * correspondencia en la tabla de base de datos asociada al modelo
-     *
-     * @return array
-     */
-    public function toSave()
-    {
-        $data = $this->getArrayCopy();
-
-        $columnNames = $this->metadata->getColumnNames($this->table);
-
-        foreach ($data as $field => $value) {
-            if (!in_array($field, $columnNames)) {
-                unset($data[$field]);
-            }
-        }
-
-        return $data;
-    }
-
-    public function setMetadata(MetadataInterface $metadataInterface, $dbTable = false)
-    {
-        $this->metadata = $metadataInterface;
-        $this->table = $dbTable;
-    }
-
-    public function getMetatada()
-    {
-        return $this->metadata;
-    }
-
-    public function getInputFilter($sourceTable = null)
-    {
-        $dashToCamel = new UnderscoreToCamelCase();
-        if ($sourceTable === null) {
-            $sourceTable = $this->table;
-        }
-
-        $columns = $this->metadata->getColumns($sourceTable);
-
-        $inputFilter = $this->inputFilter
-            ? $this->inputFilter
-            : new InputFilter();
-
-        foreach ($columns as $column) {
-
-            $columnName = $column->getName();
-
-            $filterParams = array();
-
-            if ($columnName == 'id') {
-                $required = false;
-            } else {
-                $required = $column->getIsNullable() ? false : true;
-                //seteamos los validadores en funci�n del tipo de dato
-                $filterParams['validators'] = $this->setValidators($column);
-            }
-
-            $filterParams['name'] = lcfirst($dashToCamel->filter($columnName));
-            $filterParams['required'] = $required;
-
-            $inputFilter->add($filterParams);
-        }
-
-        $this->inputFilter = $inputFilter;
-
-        return $this->inputFilter;
-    }
-
     protected function parseProperty($property)
     {
         $toCamelCase = new UnderscoreToCamelCase();
         return lcfirst($toCamelCase->filter($property));
-    }
-
-    protected function setValidators(ColumnObject $column)
-    {
-        $validators = array();
-
-        $dataType = $column->getDataType();
-
-        switch ($dataType) {
-            case 'int':
-                $validators[] = array(
-                    'name' => 'Zend\I18n\Validator\IsInt'
-                );
-                break;
-            case 'varchar':
-                $validators[] = array(
-                    'name' => 'StringLength',
-                    'options' => array(
-                        'min' => '1',
-                        'max' => $column->getCharacterMaximumLength()
-                    )
-                );
-                break;
-        }
-
-        return $validators;
     }
 }

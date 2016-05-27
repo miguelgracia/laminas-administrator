@@ -88,6 +88,11 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
     /**
      * @var array
+     */
+    protected $fieldsets = array();
+
+    /**
+     * @var array
      *
      * Contiene los par�metros de la url: section, action e id
      */
@@ -183,11 +188,9 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         $routeMatch  = $application->getMvcEvent()->getRouteMatch();
         $this->routeParams = $routeMatch->getParams();
 
-        /**
-         * Retornamos un clone del objeto para poder devolver distintas instancias cuando
-         * hacemos un get a Gestor\Service\GestorFormService.
-         */
-        return clone $this;
+        $this->setActionType($this->routeParams['action']);
+
+        return $this;
     }
 
     public function getServiceLocator()
@@ -233,7 +236,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
      */
     public function setActionType($actionType)
     {
-        if (!array_key_exists($actionType, $this->allowedActionType)) {
+        if ($this->form and !array_key_exists($actionType, $this->allowedActionType)) {
             throw new \Exception('Action Type ' . $actionType . ' not allowed');
         }
 
@@ -253,6 +256,18 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         return $this->actionType;
     }
 
+    public function addFieldset($fieldset)
+    {
+        $className = get_class($fieldset);
+
+        if (!array_key_exists($className, $this->fieldsets)) {
+            $this->initializers($fieldset);
+            $this->fieldsets[$className] = $fieldset;
+        }
+
+        return $this;
+    }
+
     public function setForm(Form $form = null)
     {
         if (!$this->form) {
@@ -268,19 +283,19 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
             $this->form = $form->setName($separatorToSeparator->filter(get_class($form)));
             $this->form->setAttributes($this->defaultAttributes);
 
-            $this->setActionType($this->routeParams['action'])
+            $this
                 ->addDefaultFields()
                 ->setDefaultFormAction()
-                ->initializers();
+                ->initializers($this->form);
         }
 
         return $this;
     }
 
-    public function initializers()
+    public function initializers($instance)
     {
-        if (method_exists($this->form, 'initializers')) {
-            $initializers = $this->form->initializers($this->serviceLocator);
+        if (method_exists($instance, 'initializers')) {
+            $initializers = $instance->initializers($this->serviceLocator);
 
             foreach ($initializers as $property => $initializer) {
 
@@ -338,6 +353,87 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     }
 
     public function addFields($sourceTable = null)
+    {
+        /**
+         * Buscaremos en el objeto formulario y en los objectos Fieldset si existe el método addFields.
+         * En caso afirmativo, lo ejecutamos para poder añadir campos adicionales
+         * que se salga de la lógica predeterminada o, por ejemplo, redefinir
+         * el atributo de algún campo concreto. (Vease Gestor\Form\GestorUsuariosForm)
+         */
+        $thisMethod = substr(strrchr(__METHOD__, '::'), 1);
+
+        foreach ($this->fieldsets as &$fieldset) {
+
+            $columns = $fieldset->getColumns();
+
+            foreach ($columns as $column) {
+
+                $toCamel = new SeparatorToCamelCase('_');
+                $columnName = lcfirst($toCamel->filter($column->getName()));
+
+                $flags = array(
+                    'priority' => -($column->getOrdinalPosition() * 100),
+                );
+
+                $fieldParams = array(
+                    'name' => $columnName,
+                    'label' => $columnName,
+                    'options' => array(
+                        'label' => $columnName,
+                        'label_attributes' => array(
+                            'class' => 'col-sm-2 control-label'
+                        ),
+                        'priority' => -($column->getOrdinalPosition() * 100),
+                    ),
+                    'attributes' => array(
+                        'id' => $columnName,
+                        'class' => 'form-control',
+                    )
+                );
+
+                if ($columnName == $this->hiddenPrimaryKey) {
+                    $fieldParams['type'] = 'Hidden';
+                    $fieldset->add($fieldParams, $flags);
+                    continue;
+                }
+
+                $dataType = $column->getDataType();
+
+                $type = $this->setFormDataType($columnName, $dataType);
+
+                if ($type == 'Select' or $type == 'MultiCheckbox') {
+
+                    if ($dataType == 'enum' and !isset($this->fieldValueOptions[$columnName])) {
+                        $enumValues = $column->getErratas();
+                        $fieldParams['options']['value_options'] = $enumValues['permitted_values'];
+                    } else {
+                        $fieldParams['options']['value_options'] = $this->fieldValueOptions[$columnName];
+                    }
+                }
+
+                $fieldParams['type'] = $type;
+
+                $fieldset->add($fieldParams,$flags);
+
+            }
+
+            $fieldset->populateValues($fieldset->getObjectModel()->getArrayCopy());
+
+            if (method_exists($fieldset, $thisMethod)) {
+                $fieldset->{$thisMethod}();
+            }
+
+            $this->form->add($fieldset);
+        }
+
+        if (method_exists($this->form, $thisMethod)) {
+            $this->form->{$thisMethod}();
+        }
+
+        return $this;
+    }
+
+    public function addFieldsOld($sourceTable = null)
     {
         if (!$sourceTable) {
             $sourceTable = $this->tableGateway->getTable();

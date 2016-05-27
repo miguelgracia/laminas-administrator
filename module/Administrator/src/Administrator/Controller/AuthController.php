@@ -15,6 +15,7 @@ class AuthController extends AbstractActionController
     protected $storage;
     protected $authService;
     protected $formService;
+
     protected $sessionService;
     protected $config;
 
@@ -115,6 +116,8 @@ class AuthController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
+        $this->setControllerVars();
+
         $this->sessionService = $this->sm->get('Administrator\Service\SessionService');
 
         // Sacamos la ruta para matchearla
@@ -165,5 +168,17 @@ class AuthController extends AbstractActionController
         }
 
         return parent::onDispatch($e);
+    }
+
+    /**
+     * @return ViewModel
+     */
+    public function indexAction()
+    {
+        $datatable = $this->sm->get('Administrator\Service\DatatableService');
+
+        $datatable->init();
+
+        return $datatable->run();
     }
 }

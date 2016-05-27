@@ -2,6 +2,7 @@
 namespace AmProfile\Controller;
 
 use Administrator\Controller\AuthController;
+use AmProfile\Form\ProfileFieldset;
 use AmProfile\Form\ProfileForm;
 use Zend\View\Model\ViewModel;
 
@@ -25,25 +26,39 @@ class AmProfileModuleController extends AuthController
 
     public function addAction()
     {
-        $this->formService->setForm(new ProfileForm())->addFields();
+        $perfil = $this->perfilTable->getEntityModel();
+
+        $fieldset = new ProfileFieldset($this->serviceLocator,$perfil,$this->perfilTable);
+
+        $this->formService
+            ->setForm(new ProfileForm())
+            ->addFieldset($fieldset)
+            ->addFields();
 
         $form = $this->formService->getForm();
 
         $request = $this->getRequest();
 
         if ($request->isPost()) {
-            $perfil = $this->perfilTable->getEntityModel();
-            $form->setInputFilter($perfil->getInputFilter());
-            $form->bind($request->getPost());
-            if ($form->isValid()) {
-                //  Si funciona, metemos en el Model a trav�s de su pap� GestorModel, que implementa un exchangeArray
-                // gen�rico que nos vale para cualquier colecci�n de datos.
-                $perfil->exchangeArray($form->getData());
 
-                // Ahora ya s�, llamamos al m�todo que hace el INSERT espec�fico
+            $post = $request->getPost();
+
+            $post->permisos = $this->params()->fromPost('permisos', array());
+
+            $form->bind($post);
+
+            if ($form->isValid()) {
+                //  Si funciona, metemos en el Model a través de su papá AdministratorModel,
+                // que implementa un exchangeArray genérico que nos vale para
+                // cualquier colección de datos.
+
+                $perfil->exchangeArray($form->getData());
+                $perfil->permisos = json_encode(isset($perfil->permisos) ? $perfil->permisos : array());
+
+                // Ahora ya sí, llamamos al método que hace el INSERT específico
                 $insertId = $this->perfilTable->savePerfil($perfil);
 
-                // Nos vamos a la ruta de edici�n de perfil
+                // Nos vamos a la ruta de edición de perfil
                 return $this->goToSection('profile', array(
                     'action' => 'edit',
                     'id' => $insertId
@@ -65,43 +80,35 @@ class AmProfileModuleController extends AuthController
         try {
             // Sacamos los datos del perfil en concreto
             $perfil = $this->perfilTable->getPerfil($id);
-
             $perfil->permisos = $perfil->getPermisos();
 
         } catch (\Exception $ex) {
             return $this->goToSection('profile');
         }
 
-        $this->formService->setForm(new ProfileForm())->addFields();
+        $fieldset = new ProfileFieldset($this->serviceLocator,$perfil,$this->perfilTable);
+
+        $this->formService
+            ->setForm(new ProfileForm())
+            ->addFieldset($fieldset)
+            ->addFields();
 
         $form = $this->formService->getForm();
-
-        // Le bindeamos los datos al formulario
-        $form->bind($perfil);
 
         $request = $this->getRequest();
 
         if ($request->isPost()) {
 
-            $form->setInputFilter($perfil->getInputFilter());
-
             $post = $request->getPost();
+
+            $form->bind($post);
 
             $post->permisos = $this->params()->fromPost('permisos', array());
 
-            $form->setData($post);
-
             if ($form->isValid()) {
-                // Metemos los datos que vamos a guardar
 
                 $perfil->permisos = json_encode($perfil->permisos);
-
                 $this->perfilTable->savePerfil($perfil);
-
-                return $this->goToSection('profile',array(
-                    'action'  => 'edit',
-                    'id'      => $request->getPost('id')
-                ));
             }
         }
 

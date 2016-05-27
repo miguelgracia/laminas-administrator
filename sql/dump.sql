@@ -41,14 +41,13 @@ CREATE TABLE `gestor_menu` (
   `padre` int(11) DEFAULT NULL,
   `texto` varchar(255) DEFAULT NULL,
   `accion` varchar(255) DEFAULT NULL,
-  `tiene_enlace` tinyint(4) DEFAULT NULL,
   `orden` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=208 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=207 DEFAULT CHARSET=utf8;
 
 /*Data for the table `gestor_menu` */
 
-insert  into `gestor_menu`(`id`,`gestor_module_id`,`padre`,`texto`,`accion`,`tiene_enlace`,`orden`) values (2,2,-1,'Configuración',NULL,1,90),(201,2,2,'Valores Generales','index',1,3),(202,3,2,'Usuarios','index',1,2),(203,4,2,'Perfil','index',1,4),(205,6,2,'Menú','index',1,1),(206,19,2,'Módulos','index',1,5);
+insert  into `gestor_menu`(`id`,`gestor_module_id`,`padre`,`texto`,`accion`,`orden`) values (2,0,-1,'Configuración','',90),(201,2,2,'Valores Generales','index',3),(202,3,2,'Usuarios','index',2),(203,4,2,'Perfil','index',4),(205,6,2,'Menú','index',1),(206,19,2,'Módulos','index',5);
 
 /*Table structure for table `gestor_modules` */
 
@@ -64,7 +63,22 @@ CREATE TABLE `gestor_modules` (
 
 /*Data for the table `gestor_modules` */
 
-insert  into `gestor_modules`(`id`,`nombre_zend`,`nombre_usable`) values (1,'home','home'),(2,'configuration','Valores de configuración'),(3,'user','Usuarios del gestor'),(4,'profile','Perfiles'),(6,'menu','Entradas de menú'),(19,'module','Modulos');
+insert  into `gestor_modules`(`id`,`nombre_zend`,`nombre_usable`) values (1,'home','home'),(2,'configuration','Valores de configuración'),(3,'user','xxx'),(4,'profile','Perfiles'),(6,'menu','Entradas de menú'),(19,'module','ttt'),(20,'blog','blog');
+
+/*Table structure for table `gestor_modules_locale` */
+
+DROP TABLE IF EXISTS `gestor_modules_locale`;
+
+CREATE TABLE `gestor_modules_locale` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `gestor_modules_id` int(10) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `locale` varchar(5) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombreZend` (`gestor_modules_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `gestor_modules_locale` */
 
 /*Table structure for table `gestor_perfiles` */
 
@@ -77,11 +91,11 @@ CREATE TABLE `gestor_perfiles` (
   `es_admin` tinyint(4) DEFAULT '0',
   `permisos` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 /*Data for the table `gestor_perfiles` */
 
-insert  into `gestor_perfiles`(`id`,`nombre`,`descripcion`,`es_admin`,`permisos`) values (1,'Superadmin','Administrador de la plataforma',1,'[]'),(2,'Coordinador','Usuario normal de la plataforma',0,'[\"home.index\"]'),(3,'Director de Relacion','descripcion',0,'[]'),(4,'Administrador','Administrador',1,'[]'),(5,'Soldado Raso33','Permisos básicos',0,'[\"user.index\",\"profile.edit\"]');
+insert  into `gestor_perfiles`(`id`,`nombre`,`descripcion`,`es_admin`,`permisos`) values (1,'Superadmin','Administrador de la plataforma',1,'[]'),(2,'Coordinador','Usuario normal de la plataforma',0,'[\"home.index\",\"configuration.index\",\"user.index\",\"profile.add\",\"profile.delete\",\"menu.index\"]'),(3,'Director de Relacion','descripcion',0,'[]'),(4,'Administrador','Administrador',1,'[\"user.index\",\"profile.add\",\"menu.add\",\"menu.saveOrder\",\"menu.delete\"]'),(5,'Soldado Raso33','Permisos básicos',0,'[]'),(9,'zxcvzxcv','zxcvxzcv',1,'[\"user.delete\",\"profile.add\",\"menu.saveOrder\",\"module.delete\"]'),(13,'asdfasdfasfaf','asdfasf',0,'[]'),(14,' vvv','cfghfgh',0,'[\"profile.add\",\"menu.add\",\"menu.saveOrder\",\"module.index\"]'),(15,'Mi nuevo perfil','Deswcripcion',0,'[\"home.index\",\"profile.index\",\"profile.delete\",\"menu.index\"]');
 
 /*Table structure for table `gestor_usuarios` */
 
@@ -94,14 +108,15 @@ CREATE TABLE `gestor_usuarios` (
   `password` varchar(32) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `last_login` timestamp NULL DEFAULT NULL,
-  `validado` tinyint(4) NOT NULL DEFAULT '0',
+  `validado` tinyint(4) DEFAULT '0',
   `active` tinyint(4) DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3800 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `login` (`login`)
+) ENGINE=InnoDB AUTO_INCREMENT=3805 DEFAULT CHARSET=utf8;
 
 /*Data for the table `gestor_usuarios` */
 
-insert  into `gestor_usuarios`(`id`,`gestor_perfil_id`,`login`,`password`,`created_at`,`last_login`,`validado`,`active`) values (1,1,'dreamsite','e10adc3949ba59abbe56e057f20f883e','2016-01-13 12:42:11','2016-04-22 09:33:56',1,1),(2,2,'coordinador','e10adc3949ba59abbe56e057f20f883e','2016-01-13 12:42:11','2016-04-05 11:00:53',1,1),(3,4,'entropy','e10adc3949ba59abbe56e057f20f883e','2016-03-29 12:05:16','2016-04-18 17:45:34',1,1),(4,4,'bbva','e10adc3949ba59abbe56e057f20f883e','2016-03-30 18:13:54','2016-04-13 17:18:48',1,1),(3797,3,'U502562','e10adc3949ba59abbe56e057f20f883e','2016-03-29 12:29:19','2016-04-19 14:34:46',1,1),(3799,2,'usercito','e10adc3949ba59abbe56e057f20f883e','2016-04-21 11:54:07','2016-04-21 16:55:16',0,1);
+insert  into `gestor_usuarios`(`id`,`gestor_perfil_id`,`login`,`password`,`created_at`,`last_login`,`validado`,`active`) values (1,1,'dreamsite','e10adc3949ba59abbe56e057f20f883e','2016-01-13 12:42:11','2016-04-22 09:33:56',1,1),(3,4,'entropy','698d51a19d8a121ce581499d7b701668','2016-03-29 12:05:16','2016-04-18 17:45:34',1,1),(4,4,'bbva','e10adc3949ba59abbe56e057f20f883e','2016-03-30 18:13:54','2016-04-13 17:18:48',1,1),(3797,3,'U502562','e10adc3949ba59abbe56e057f20f883e','2016-03-29 12:29:19','2016-04-19 14:34:46',1,1),(3799,2,'usercitot','310dcbbf4cce62f762a2aaa148d556bd','2016-04-21 11:54:07','2016-04-21 16:55:16',1,1);
 
 /*Table structure for table `historico_login` */
 
@@ -129,11 +144,11 @@ CREATE TABLE `valores_configuracion` (
   `entry_key` varchar(100) NOT NULL,
   `entry_value` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*Data for the table `valores_configuracion` */
 
-insert  into `valores_configuracion`(`id`,`entry_key`,`entry_value`) values (1,'nameAuthor','4422222222'),(2,'nameClient','Col ZF2888'),(3,'introText','Content Manager for Business XXX '),(4,'logoImage','444.jpg'),(5,'upperImage','444.jpg'),(6,'jareImage','555.jpg');
+insert  into `valores_configuracion`(`id`,`entry_key`,`entry_value`) values (1,'nameAuthor','4422222222'),(2,'nameClient','Col ZF2888'),(3,'introText','Content Manager for Business XXX '),(4,'logoImage','imgres2.jpg');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
