@@ -50,17 +50,6 @@ class MenuTable extends AdministratorTable
         return $arrayResult;
     }
 
-    public function getEntradaMenu($id)
-    {
-        $id  = (int) $id;
-        $rowset = $this->select(array('id' => $id));
-        $row = $rowset->current();
-        if (!$row) {
-            throw new \Exception("Could not find row $id");
-        }
-        return $row;
-    }
-
     public function saveEntradaMenu(AdministratorModel $entradaMenu)
     {
         $id = (int) $entradaMenu->id;

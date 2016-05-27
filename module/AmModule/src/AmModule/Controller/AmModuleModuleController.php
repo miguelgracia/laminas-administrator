@@ -50,7 +50,7 @@ class AmModuleModuleController extends AuthController
             // Sacamos los datos del usuario en concreto
             $id = (int) $this->params()->fromRoute('id', 0); // Lo sacamos de la ruta
             // Sacamos la información del controlador definido por este id
-            $gestorControlador = $this->moduleTable->getGestorControlador($id);
+            $gestorControlador = $this->moduleTable->find($id);
         }
         catch (\Exception $ex) {
             return $this->goToSection('module');
@@ -90,13 +90,13 @@ class AmModuleModuleController extends AuthController
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->goToSection('controller');
+            return $this->goToSection('module');
         }
 
         // Borramos con este ID
-        $this->moduleTable->deleteGestorControlador($id);
+        $this->moduleTable->deleteRow($id);
 
         // Nos vamos al listado general
-        return $this->goToSection('controller');
+        return $this->goToSection('module');
     }
 }

@@ -10,23 +10,6 @@ class UserTable extends AdministratorTable
 {
     public $table = 'gestor_usuarios';
 
-    public function CuantosLogin($login)
-    {
-        $select = new Select();
-
-        $select->from($this->table)->columns(array(
-            "cuantos" => new Expression("count(*)")
-        ))->where(array(
-            'login' => $login
-        ));
-
-        $resultSet = $this->selectWith($select);
-
-        $row = $resultSet->current();
-
-        return $row->cuantos;
-    }
-
     /**
      * Devuelve el password desencriptado de base de datos.
      *
@@ -52,28 +35,6 @@ class UserTable extends AdministratorTable
 
         $row = $resultSet->current();
 
-        return $row;
-    }
-
-    // Sacamos todos los usuarios
-    public function fetchAll()
-    {
-        $resultSet = $this->select(function(Select $select){
-            $select->join('gestor_perfiles','gestor_perfil_id = gestor_perfiles.id','nombre', $select::JOIN_LEFT);
-        });
-
-        return $resultSet;
-    }
-
-    // Sacamos un id de usuario
-    public function getGestorUsuarios($id)
-    {
-        $id  = (int) $id;
-        $rowset = $this->select(array('id' => $id));
-        $row = $rowset->current();
-        if (!$row) {
-            throw new \Exception("Could not find row $id");
-        }
         return $row;
     }
 

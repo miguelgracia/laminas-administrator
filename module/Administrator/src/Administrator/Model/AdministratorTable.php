@@ -79,20 +79,25 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
         return $this->select(array($fieldKey => $id))->count() > 0;
     }
 
-    public function getRow($id)
+    public function all($where = array())
+    {
+        return $this->select($where);
+    }
+
+    public function find($id)
     {
         $id  = (int) $id;
         $rowset = $this->select(array('id' => $id));
         $row = $rowset->current();
         if (!$row) {
-            throw new \Exception("Could not find row $id");
+            throw new \Exception("Could not find row $id in table" . $this->table);
         }
         return $row;
     }
 
-    public function deleteRow($id)
+    public function deleteRow($id, $key = 'id')
     {
-        $this->delete(array('id' => (int) $id));
+        $this->delete(array($key => (int) $id));
     }
 
 

@@ -12,7 +12,7 @@ class MenuFieldset extends AdministratorFieldset
     {
         $moduleTable = $serviceLocator->get('AmModule\Model\ModuleTable');
 
-        $moduleController = $moduleTable->fetchAll()->toKeyValueArray('id','nombreZend');
+        $moduleController = $moduleTable->all()->toKeyValueArray('id','nombreZend');
 
         return array(
             'fieldModifiers' => array(

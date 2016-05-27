@@ -81,7 +81,7 @@ class AmMenuModuleController extends AuthController
 
         // Sacamos los datos de una entrada en concreto
         try {
-            $entradaMenu = $this->entradaMenuTable->getEntradaMenu($id);
+            $entradaMenu = $this->entradaMenuTable->find($id);
         } catch (\Exception $ex) {
             return $this->goToSection('menu');
         }

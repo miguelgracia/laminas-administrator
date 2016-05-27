@@ -19,7 +19,7 @@ class AmProfileModuleController extends AuthController
 
     public function indexAction()
     {
-        $perfiles = $this->perfilTable->fetchAll();
+        $perfiles = $this->perfilTable->all();
 
         return new ViewModel(compact('perfiles'));
     }
@@ -79,7 +79,7 @@ class AmProfileModuleController extends AuthController
 
         try {
             // Sacamos los datos del perfil en concreto
-            $perfil = $this->perfilTable->getPerfil($id);
+            $perfil = $this->perfilTable->find($id);
             $perfil->permisos = $perfil->getPermisos();
 
         } catch (\Exception $ex) {
@@ -140,7 +140,7 @@ class AmProfileModuleController extends AuthController
 
         return array(
             'id'    => $id,
-            'perfil' => $this->perfilTable->getPerfil($id)
+            'perfil' => $this->perfilTable->find($id)
         );
     }
 }

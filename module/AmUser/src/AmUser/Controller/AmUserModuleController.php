@@ -80,7 +80,7 @@ class AmUserModuleController extends AuthController
 
         try {
             // Sacamos los datos del usuario en concreto
-            $gestorUsuarios = $this->userTable->getGestorUsuarios($id);
+            $gestorUsuarios = $this->userTable->find($id);
             $auxGestorUsuarios = clone $gestorUsuarios;
         }
         catch (\Exception $ex) {

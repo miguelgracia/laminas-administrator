@@ -29,7 +29,7 @@ class UserFieldset extends AdministratorFieldset
 
                     $gestorPerfilTable = $serviceLocator->get('AmProfile\Model\ProfileTable');
 
-                    $gestorPerfil = $gestorPerfilTable->fetchAll();
+                    $gestorPerfil = $gestorPerfilTable->all();
 
                     return $gestorPerfil->toKeyValueArray('id','nombre');
                 }
