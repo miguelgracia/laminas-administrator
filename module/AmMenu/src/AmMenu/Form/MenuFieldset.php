@@ -43,7 +43,7 @@ class MenuFieldset extends AdministratorFieldset
                         $modulesArray[$explode[0]]['options'][$explode[1]] = $explode[1];
                     }
 
-                    return array('' => 'Selecciona una acciÛn') + $modulesArray;
+                    return array('' => 'Selecciona una acci√≥n') + $modulesArray;
                 }
             ),
         );

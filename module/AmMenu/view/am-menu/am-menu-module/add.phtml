@@ -1,10 +1,11 @@
 <?php
 
 $title = $padre == -1 ? 'Create menu entry' : 'Create submenu entry';
-
 $this->headTitle($title);
 
 $form = $this->form;
+
+$fieldset = $form->get('AmMenu\Form\MenuFieldset');
 
 $gestorFormRow = $this->administrator_form_row();
 
@@ -20,18 +21,18 @@ $form->prepare();
             <?php echo $this->form()->openTag($form);?>
             <div class="box-body">
                 <?php
-                echo $gestorFormRow->render($form->get('texto'));
-                echo $gestorFormRow->render($form->get('gestorModuleId'));
-                echo $gestorFormRow->render($form->get('accion'));
+                echo $gestorFormRow->render($fieldset->get('texto'));
+                echo $gestorFormRow->render($fieldset->get('gestorModuleId'));
+                echo $gestorFormRow->render($fieldset->get('accion'));
                 ?>
             </div>
             <div class="box-footer">
                 <?php
                 $submitButton = $form->get('submit');
 
-                echo $this->formHidden($form->get('id'));
-                echo $this->formHidden($form->get('padre'));
-                echo $this->formHidden($form->get('orden'));
+                echo $this->formHidden($fieldset->get('id'));
+                echo $this->formHidden($fieldset->get('padre'));
+                echo $this->formHidden($fieldset->get('orden'));
                 echo $this->formSubmit($submitButton);
                 ?>
             </div>

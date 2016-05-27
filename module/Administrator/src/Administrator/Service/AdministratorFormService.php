@@ -236,7 +236,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
      */
     public function setActionType($actionType)
     {
-        if (!array_key_exists($actionType, $this->allowedActionType)) {
+        if ($this->form and !array_key_exists($actionType, $this->allowedActionType)) {
             throw new \Exception('Action Type ' . $actionType . ' not allowed');
         }
 
