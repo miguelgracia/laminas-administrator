@@ -115,13 +115,7 @@ class AmUserModuleController extends AuthController
                     $gestorUsuarios->password = new Expression("md5('$gestorUsuarios->password')");
                 }
 
-                // Grabamos lo que teníamos bindeado al form
-                $id = $this->userTable->saveGestorUsuarios($gestorUsuarios);
-
-                return $this->goToSection('user', array(
-                    'action' => 'edit',
-                    'id' => $id
-                ));
+                $this->userTable->saveGestorUsuarios($gestorUsuarios);
             }
         }
 

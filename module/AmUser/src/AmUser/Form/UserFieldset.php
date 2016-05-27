@@ -3,7 +3,8 @@
 namespace AmUser\Form;
 
 use Administrator\Form\AdministratorFieldset;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Db\Sql\Expression;
+
 
 class UserFieldset extends AdministratorFieldset
 {
@@ -85,6 +86,19 @@ class UserFieldset extends AdministratorFieldset
     public function getInputFilterSpecification()
     {
         $filter = parent::getInputFilterSpecification();
+
+        $filter['login']['validators'][] = array(
+            'name' => 'Zend\Validator\Db\NoRecordExists',
+            'options' => array(
+                'table' => $this->tableGateway->getTable(),
+                'field' => 'login',
+                'adapter' => $this->tableGateway->getAdapter(),
+                'exclude' => array(
+                    'field' => 'id',
+                    'value' => $this->get('id')->getValue()
+                )
+            )
+        );
 
         $filter['password2'] = array(
             'name' => 'password2',
