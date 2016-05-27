@@ -5,8 +5,6 @@ $this->headTitle($title);
 
 $form = $this->form;
 
-$fieldset = $form->get('AmMenu\Form\MenuFieldset');
-
 $gestorFormRow = $this->administrator_form_row();
 
 $form->prepare();
@@ -19,22 +17,11 @@ $form->prepare();
                 <h3 class="box-title"><?php echo $this->escapeHtml($title); ?></h3>
             </div>
             <?php echo $this->form()->openTag($form);?>
-            <div class="box-body">
-                <?php
-                echo $gestorFormRow->render($fieldset->get('texto'));
-                echo $gestorFormRow->render($fieldset->get('gestorModuleId'));
-                echo $gestorFormRow->render($fieldset->get('accion'));
-                ?>
-            </div>
-            <div class="box-footer">
-                <?php
-                $submitButton = $form->get('submit');
-                echo $this->formHidden($fieldset->get('id'));
-                echo $this->formHidden($fieldset->get('padre'));
-                echo $this->formHidden($fieldset->get('orden'));
-                echo $this->formSubmit($submitButton);
-                ?>
-            </div>
+            <?php
+            echo $this->form()->openTag($form);
+            echo $gestorFormRow->render($form);
+            echo $this->form()->closeTag();
+            ?>
             <?php echo $this->form()->closeTag();?>
         </div>
     </div>

@@ -2,6 +2,7 @@
 
 namespace Administrator\View\Helper;
 
+use Administrator\Form\AdministratorFieldset;
 use Zend\Form\Form;
 use Zend\View\Helper\AbstractHelper;
 
@@ -75,6 +76,17 @@ class AdministratorFormRow extends AbstractHelper
         return call_user_func_array('sprintf',$params);
     }
 
+    public function renderFieldset($fieldset)
+    {
+        $elements = $fieldset->getElements();
+        $render = "";
+
+        foreach ($elements as $element) {
+            $render .= $this->render($element);
+        }
+
+        return $render;
+    }
     public function render($formElement)
     {
         if ($formElement instanceof Form) {
@@ -83,11 +95,15 @@ class AdministratorFormRow extends AbstractHelper
 
             $form = $formElement;
             foreach ($form as $element) {
-                $elementHtml = $this->render($element);
-                if (in_array($element->getAttribute('type'), array('submit', 'button', 'hidden'))) {
-                    $boxFooter .= $elementHtml;
+                if ($element instanceof AdministratorFieldset) {
+                    $boxBody .= $this->renderFieldset($element);
                 } else {
-                    $boxBody .= $elementHtml;
+                    $elementHtml = $this->render($element);
+                    if (in_array($element->getAttribute('type'), array('submit', 'button', 'hidden'))) {
+                        $boxFooter .= $elementHtml;
+                    } else {
+                        $boxBody .= $elementHtml;
+                    }
                 }
             }
             return sprintf($this->formTemplate(),$boxBody,$boxFooter);
