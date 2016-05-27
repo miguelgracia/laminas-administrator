@@ -24,8 +24,6 @@ class AdminControllerFactory implements FactoryInterface
 
         $controller = $serviceLocator->get($namespace);
 
-        $controller->setControllerVars();
-
         return $controller;
     }
 

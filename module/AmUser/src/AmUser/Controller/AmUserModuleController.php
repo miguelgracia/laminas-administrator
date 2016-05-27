@@ -59,12 +59,6 @@ class AmUserModuleController extends AuthController
                     'action' => 'edit',
                     'id' => $insertId
                 ));
-            } else {
-                echo "<pre>";
-                print_r($form->getMessages());
-                echo "</pre>";
-                die;
-
             }
         }
 

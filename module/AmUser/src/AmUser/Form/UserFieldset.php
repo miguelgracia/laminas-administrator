@@ -7,8 +7,10 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class UserFieldset extends AdministratorFieldset
 {
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    public function initializers()
     {
+        $serviceLocator = $this->serviceLocator;
+
         return array(
 
             'fieldModifiers' => array(
@@ -57,21 +59,25 @@ class UserFieldset extends AdministratorFieldset
             ),
         ));
 
-        $this->add(array(
-            'name' => 'checkPassword',
-            'type' => 'Zend\Form\Element\Checkbox',
-            'label' => 'Change Password',
-            'options' => array(
-                'use_hidden_element' => true,
+        if ($this->formActionType == 'edit') {
+
+            $this->add(array(
+                'name' => 'checkPassword',
+                'type' => 'Zend\Form\Element\Checkbox',
                 'label' => 'Change Password',
-                'checked_value' => '1',
-                'unchecked_value' => '0'
-            ),
-            'attributes' => array(
-                'id' => 'change_password',
-                'value' => '0',
-            )
-        ));
+                'options' => array(
+                    'use_hidden_element' => true,
+                    'label' => 'Change Password',
+                    'checked_value' => '1',
+                    'unchecked_value' => '0'
+                ),
+                'attributes' => array(
+                    'id' => 'change_password',
+                    'value' => '0',
+                )
+            ));
+        }
+
 
         return $this;
     }
@@ -80,30 +86,31 @@ class UserFieldset extends AdministratorFieldset
     {
         $filter = parent::getInputFilterSpecification();
 
-        $filter['checkPassword'] = array(
-            'name' => 'checkPassword',
-            'required' => false
-        );
-
-        $checkPassword = $this->get('checkPassword')->getValue();
-
-        if (is_null($checkPassword) or $checkPassword == '1') {
-
-            $filter['password2'] = array(
-                'name' => 'password2',
-                'validators' => array(
-                    array(
-                        'name' => 'Identical',
-                        'options' => array(
-                            'token' => 'password'
-                        ),
+        $filter['password2'] = array(
+            'name' => 'password2',
+            'validators' => array(
+                array(
+                    'name' => 'Identical',
+                    'options' => array(
+                        'token' => 'password'
                     ),
                 ),
-                'required' => true
+            ),
+            'required' => true
+        );
+
+        if ($this->formActionType == 'edit') {
+
+            $filter['checkPassword'] = array(
+                'name' => 'checkPassword',
             );
 
-        } else {
-            $filter['password']['required']  = false;
+            $checkPassword = $this->get('checkPassword')->getValue();
+
+            if ($checkPassword == '0') {
+                $filter['password']['required']  = false;
+                $filter['password2']['required']  = false;
+            }
         }
 
         return $filter;

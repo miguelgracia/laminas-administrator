@@ -188,11 +188,9 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         $routeMatch  = $application->getMvcEvent()->getRouteMatch();
         $this->routeParams = $routeMatch->getParams();
 
-        /**
-         * Retornamos un clone del objeto para poder devolver distintas instancias cuando
-         * hacemos un get a Gestor\Service\GestorFormService.
-         */
-        return clone $this;
+        $this->setActionType($this->routeParams['action']);
+
+        return $this;
     }
 
     public function getServiceLocator()
@@ -285,7 +283,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
             $this->form = $form->setName($separatorToSeparator->filter(get_class($form)));
             $this->form->setAttributes($this->defaultAttributes);
 
-            $this->setActionType($this->routeParams['action'])
+            $this
                 ->addDefaultFields()
                 ->setDefaultFormAction()
                 ->initializers($this->form);

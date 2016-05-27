@@ -21,6 +21,8 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
     protected $objectModel;
 
+    protected $formActionType;
+
     public function __construct($serviceLocator, $objectModel, $tableGateway)
     {
         $className = get_class($this);
@@ -37,6 +39,8 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
             ->setObject($objectModel);
 
         $this->objectModel = $objectModel;
+
+        $this->formActionType = $serviceLocator->get('Administrator\Service\AdministratorFormService')->getActionType();
     }
 
 

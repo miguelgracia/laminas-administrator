@@ -116,6 +116,8 @@ class AuthController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
+        $this->setControllerVars();
+
         $this->sessionService = $this->sm->get('Administrator\Service\SessionService');
 
         // Sacamos la ruta para matchearla
