@@ -2,6 +2,7 @@
 
 namespace Administrator\Model;
 
+use Zend\Filter\Word\CamelCaseToUnderscore;
 use Zend\Filter\Word\UnderscoreToCamelCase;
 
 class AdministratorModel
@@ -24,6 +25,12 @@ class AdministratorModel
                     break;
             }
         }
+    }
+
+    protected function parseProperty($property)
+    {
+        $toCamelCase = new UnderscoreToCamelCase();
+        return lcfirst($toCamelCase->filter($property));
     }
 
     public function getObjectCopy()
@@ -80,9 +87,18 @@ class AdministratorModel
         }
     }
 
-    protected function parseProperty($property)
+    public function prepareToSave()
     {
-        $toCamelCase = new UnderscoreToCamelCase();
-        return lcfirst($toCamelCase->filter($property));
+        $toSaveArray = array();
+
+        $props = $this->getArrayCopy();
+
+        $toSeparatorFilter = new CamelCaseToUnderscore();
+
+        foreach ($props as $propName => $propValue) {
+            $toSaveArray[$toSeparatorFilter->filter($propName)] = $propValue;
+        }
+
+        return $toSaveArray;
     }
 }

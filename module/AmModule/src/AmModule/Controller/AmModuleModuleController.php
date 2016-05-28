@@ -73,7 +73,7 @@ class AmModuleModuleController extends AuthController
 
             if ($form->isValid()) {
                 // Metemos los datos que vamos a guardar
-                $this->moduleTable->saveGestorControlador($gestorControlador);
+                $this->moduleTable->save($gestorControlador);
             }
         }
 

@@ -21,7 +21,7 @@ class UserFieldset extends AdministratorFieldset
             'fieldValueOptions' => array(
                 /**
                  * El campo idPerfil se va a reflejar como un select de perfiles. Debemos indicar los valores
-                 * de dicho select. La función setIdPerfil guarda, para el campo idPerfil, los valores que va
+                 * de dicho select. La funciï¿½n setIdPerfil guarda, para el campo idPerfil, los valores que va
                  * a tener el <select> de idPerfil
                  */
 

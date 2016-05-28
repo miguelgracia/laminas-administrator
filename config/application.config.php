@@ -11,6 +11,7 @@ return array(
         'AmModule',
         'AmMenu',
         'AmTool',
+        'AmBlog',
     ),
     'hidden_modules' => array(
         'AmLogin',

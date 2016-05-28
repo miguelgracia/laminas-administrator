@@ -50,10 +50,9 @@ class AmUserModuleController extends AuthController
 
             if ($form->isValid()) {
 
-                $gestorUsuarios->exchangeArray($form->getData());
-                $gestorUsuarios->password = new Expression("md5('$gestorUsuarios->password')");
+                $gestorUsuarios->password = md5($gestorUsuarios->password);
 
-                $insertId = $this->userTable->saveGestorUsuarios($gestorUsuarios);
+                $insertId = $this->userTable->save($gestorUsuarios);
 
                 return $this->goToSection('user', array(
                     'action' => 'edit',
@@ -115,7 +114,7 @@ class AmUserModuleController extends AuthController
                     $gestorUsuarios->password = new Expression("md5('$gestorUsuarios->password')");
                 }
 
-                $this->userTable->saveGestorUsuarios($gestorUsuarios);
+                $this->userTable->save($gestorUsuarios);
             }
         }
 

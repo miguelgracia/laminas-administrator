@@ -50,26 +50,6 @@ class MenuTable extends AdministratorTable
         return $arrayResult;
     }
 
-    public function saveEntradaMenu(AdministratorModel $entradaMenu)
-    {
-        $id = (int) $entradaMenu->id;
-
-        $data = array(
-            'texto'                 => $entradaMenu->texto,
-            'gestor_module_id'      => $entradaMenu->gestorModuleId,
-            'accion'                => $entradaMenu->accion,
-        );
-
-        if ($id == 0) {
-            //INSERT
-            $data['padre'] = $entradaMenu->padre;
-            $data['orden'] = $entradaMenu->orden;
-
-        }
-
-        return $this->save($data, $id);
-    }
-
     public function deleteEntradaMenu($id)
     {
         $this->delete(array('id' => (int) $id));

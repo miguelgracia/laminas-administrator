@@ -103,6 +103,16 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
 
     public function save($data, $id = 0, $fieldKey = 'id')
     {
+        if ($data instanceof AdministratorModel) {
+
+            $data = $data->prepareToSave();
+
+            if (isset($data[$fieldKey])) {
+                $id = $data[$fieldKey];
+                unset($data[$fieldKey]);
+            }
+        }
+
         if ($id == 0) {
             $this->insert($data);
             $id = $this->getLastInsertValue();

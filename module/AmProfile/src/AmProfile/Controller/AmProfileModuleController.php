@@ -43,31 +43,30 @@ class AmProfileModuleController extends AuthController
 
             $post = $request->getPost();
 
-            $post->permisos = $this->params()->fromPost('permisos', array());
+            $postFieldset = $post->get("AmProfile\\Form\\ProfileFieldset");
+
+            if (!isset($postFieldset['permisos'])) {
+                $postFieldset['permisos'] = array();
+                $post->set("AmProfile\\Form\\ProfileFieldset", $postFieldset);
+            }
 
             $form->bind($post);
 
+            $permisos = $form->get('AmProfile\Form\ProfileFieldset')->get('permisos')->getValue();
+
             if ($form->isValid()) {
-                //  Si funciona, metemos en el Model a través de su papá AdministratorModel,
-                // que implementa un exchangeArray genérico que nos vale para
-                // cualquier colección de datos.
 
-                $perfil->exchangeArray($form->getData());
-                $perfil->permisos = json_encode(isset($perfil->permisos) ? $perfil->permisos : array());
+                $perfil->permisos = json_encode($permisos);
 
-                // Ahora ya sí, llamamos al método que hace el INSERT específico
-                $insertId = $this->perfilTable->savePerfil($perfil);
+                $insertId = $this->perfilTable->save($perfil);
 
-                // Nos vamos a la ruta de edición de perfil
                 return $this->goToSection('profile', array(
                     'action' => 'edit',
                     'id' => $insertId
                 ));
             }
         }
-        return array(
-            'form' => $form,
-        );
+        return compact('form');
     }
 
     public function editAction()
@@ -101,21 +100,26 @@ class AmProfileModuleController extends AuthController
 
             $post = $request->getPost();
 
+            $postFieldset = $post->get("AmProfile\\Form\\ProfileFieldset");
+
+            if (!isset($postFieldset['permisos'])) {
+                $postFieldset['permisos'] = array();
+                $post->set("AmProfile\\Form\\ProfileFieldset", $postFieldset);
+            }
+
             $form->bind($post);
 
-            $post->permisos = $this->params()->fromPost('permisos', array());
+            $permisos = $form->get('AmProfile\Form\ProfileFieldset')->get('permisos')->getValue();
 
             if ($form->isValid()) {
 
-                $perfil->permisos = json_encode($perfil->permisos);
-                $this->perfilTable->savePerfil($perfil);
+                $perfil->permisos = json_encode($permisos);
+
+                $this->perfilTable->save($perfil);
             }
         }
 
-        return array(
-            'id' => $id,
-            'form' => $form,
-        );
+        return compact( 'id', 'form' );
     }
 
     public function deleteAction()

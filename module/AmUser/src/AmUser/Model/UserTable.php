@@ -38,19 +38,6 @@ class UserTable extends AdministratorTable
         return $row;
     }
 
-    public function saveGestorUsuarios(UserModel $gestorUsuarios)
-    {
-        $data = array(
-            'login'             => $gestorUsuarios->login,
-            'password'          => $gestorUsuarios->password,
-            'gestor_perfil_id'  => $gestorUsuarios->gestorPerfilId,
-        );
-
-        $id = (int) $gestorUsuarios->id;
-
-        return $this->save($data,$id);
-    }
-
     public function updateActivo($id,$activo)
     {
         $this->update(array('activo' => $activo),

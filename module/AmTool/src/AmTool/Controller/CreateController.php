@@ -439,14 +439,19 @@ EOD;
             $console->writeLine("The path $path doesn't contain a ZF2 application. I cannot create a module here.", Color::RED);
             return;
         }
+        $formExists = false;
+
         if (file_exists("$path/module/$module/src/$module/Form/{$name}Form.php")) {
             $console->writeLine("The form $name already exists in module $module.", Color::RED);
-            return;
+            $formExists = true;
         }
 
         $ucName     = ucfirst($name);
-        $ctrlPath   = $path . '/module/' . $module . '/src/' . $module . '/Form/' . $ucName.'Form.php';
+
+        $ctrlPath   = $path . '/module/' . $module . '/src/' . $module . '/Form/' . $ucName.'%s.php';
+
         $form = $ucName . 'Form';
+
 
         $code = new Generator\ClassGenerator();
         $code->setNamespaceName(ucfirst($module) . '\Form')
@@ -461,10 +466,39 @@ EOD;
             )
         );
 
-        if (file_put_contents($ctrlPath, $file->generate())) {
-            $console->writeLine("The form $name has been created in module $module.", Color::GREEN);
+        if (!$formExists) {
+            if (file_put_contents(sprintf($ctrlPath,'Form'), $file->generate())) {
+                $console->writeLine("The form $name has been created in module $module.", Color::GREEN);
+            } else {
+                $console->writeLine("There was an error during form creation.", Color::RED);
+            }
+        }
+
+        //Generamos el fieldset
+        if (file_exists("$path/module/$module/src/$module/Form/{$name}Fieldset.php")) {
+            $console->writeLine("The fieldset $name already exists in module $module.", Color::RED);
+            return;
+        }
+
+        $fieldset = $ucName . 'Fieldset';
+
+        $code = new Generator\ClassGenerator();
+        $code->setNamespaceName(ucfirst($module) . '\Form')
+            ->addUse('Administrator\Form\AdministratorFieldset')
+            ->setName($fieldset)
+            ->setExtendedClass('AdministratorFieldset');
+
+        $file = new Generator\FileGenerator(
+            array(
+                'classes'  => array($code),
+            )
+        );
+
+
+        if (file_put_contents(sprintf($ctrlPath,'Fieldset'), $file->generate())) {
+            $console->writeLine("The fieldset $name has been created in module $module.", Color::GREEN);
         } else {
-            $console->writeLine("There was an error during form creation.", Color::RED);
+            $console->writeLine("There was an error during fieldset creation.", Color::RED);
         }
     }
 

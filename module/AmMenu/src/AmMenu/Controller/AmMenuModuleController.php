@@ -50,17 +50,15 @@ class AmMenuModuleController extends AuthController
 
         $fieldset->get('orden')->setValue($orden);
 
-        // Si es un request tipo post grabamos los datos y redirigimos
         $request = $this->getRequest();
+
         if ($request->isPost()) {
 
             $form->bind($request->getPost());
 
             if ($form->isValid()) {
-                // Metemos los datos que vamos a guardar
-                $entradaMenu->exchangeArray($form->getData());
 
-                $insertId = $this->entradaMenuTable->saveEntradaMenu($entradaMenu);
+                $insertId = $this->entradaMenuTable->save($entradaMenu);
 
                 return $this->goToSection('menu', array(
                     'action'  => 'edit',
@@ -103,7 +101,7 @@ class AmMenuModuleController extends AuthController
 
             if ($form->isValid()) {
 
-                $this->entradaMenuTable->saveEntradaMenu($entradaMenu);
+                $this->entradaMenuTable->save($entradaMenu);
             }
         }
 
