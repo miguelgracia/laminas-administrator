@@ -2,6 +2,7 @@
 
 namespace Administrator\Service;
 
+use Zend\Filter\Word\DashToCamelCase;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 abstract class DatatableConfig
@@ -26,8 +27,10 @@ abstract class DatatableConfig
 
         $module = $params->fromRoute('module');
 
+        $filter = new DashToCamelCase();
+
         $viewParams = array(
-            'table_id'   => $module.'Table',
+            'table_id'   => lcfirst($filter->filter($module)).'Table',
             'title'      => sprintf($translator->translate("List of %s module"),$module)
         );
 

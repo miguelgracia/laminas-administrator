@@ -4,6 +4,7 @@ namespace AmModule\Service;
 
 
 use Zend\Code\Reflection\ClassReflection;
+use Zend\Filter\Word\CamelCaseToDash;
 use Zend\Filter\Word\DashToCamelCase;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -38,11 +39,14 @@ class ModuleService implements FactoryInterface
 
         $newModules = array();
 
+        $filter = new CamelCaseToDash();
+
         foreach ($this->modules as $module) {
 
-            $module = mb_strtolower(preg_replace('/^Am/','',$module));
+            $module = mb_strtolower($filter->filter(preg_replace('/^Am/i','', $module)));
 
             if (!in_array($module, $availableModules)) {
+
                 $newModules[] = $module;
 
                 $moduleTable->save(array(

@@ -85,7 +85,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
                 $required = false;
             } else {
                 $required = $column->getIsNullable() ? false : true;
-                //seteamos los validadores en función del tipo de dato
+                //seteamos los validadores en funciÃ³n del tipo de dato
                 $filterParams['validators'] = $this->setValidators($column);
             }
 
