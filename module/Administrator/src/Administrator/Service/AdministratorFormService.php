@@ -366,10 +366,16 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
             $columns = $fieldset->getColumns();
 
+            $hiddenFields = $fieldset->getHiddenFields();
+
             foreach ($columns as $column) {
 
                 $toCamel = new SeparatorToCamelCase('_');
                 $columnName = lcfirst($toCamel->filter($column->getName()));
+
+                if (in_array($columnName, $hiddenFields)) {
+                    continue;
+                }
 
                 $flags = array(
                     'priority' => -($column->getOrdinalPosition() * 100),

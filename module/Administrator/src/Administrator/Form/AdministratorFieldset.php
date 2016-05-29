@@ -75,6 +75,8 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
         $columns = $this->getColumns();
 
+        $hiddenFields = $this->getHiddenFields();
+
         foreach ($columns as $column) {
 
             $columnName = $column->getName();
@@ -90,6 +92,11 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
             }
 
             $name = lcfirst($dashToCamel->filter($columnName));
+
+            if (in_array($name, $hiddenFields)) {
+                continue;
+            }
+
             $filterParams['name'] = $name;
             $filterParams['required'] = $required;
 
@@ -123,5 +130,21 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
         }
 
         return $validators;
+    }
+
+    /**
+     * Esta función se busca en la función addFields de AdministratorFormService
+     * Devuelve un array con los elementos del fieldset que no se deben pintar en el formulario
+     *
+     * @return array
+     */
+
+    public function getHiddenFields()
+    {
+        return array(
+            'createdAt',
+            'updatedAt',
+            'deletedAt'
+        );
     }
 }
