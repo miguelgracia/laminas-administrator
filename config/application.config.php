@@ -12,6 +12,7 @@ return array(
         'AmMenu',
         'AmTool',
         'AmBlog',
+        'AmBlogCategory',
     ),
     'hidden_modules' => array(
         'AmLogin',
