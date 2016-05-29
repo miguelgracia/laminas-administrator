@@ -16,6 +16,73 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`abs_consultor` /*!40100 DEFAULT CHARACT
 
 USE `abs_consultor`;
 
+/*Table structure for table `blog_categories` */
+
+DROP TABLE IF EXISTS `blog_categories`;
+
+CREATE TABLE `blog_categories` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `active` enum('0','1') COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `key` (`key`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `blog_categories` */
+
+insert  into `blog_categories`(`id`,`key`,`created_at`,`updated_at`,`deleted_at`,`active`) values (1,'Mi categoría','2016-05-29 20:28:00','2016-05-29 20:53:59',NULL,'1');
+
+/*Table structure for table `blog_categories_locale` */
+
+DROP TABLE IF EXISTS `blog_categories_locale`;
+
+CREATE TABLE `blog_categories_locale` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `blog_categories_id` int(10) unsigned NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `content` text COLLATE utf8_unicode_ci,
+  `meta_description` text COLLATE utf8_unicode_ci,
+  `locale` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `blog_categories_locale` */
+
+/*Table structure for table `blog_entries` */
+
+DROP TABLE IF EXISTS `blog_entries`;
+
+CREATE TABLE `blog_entries` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `blog_categories_id` int(10) unsigned NOT NULL,
+  `key` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `blog_entries` */
+
+insert  into `blog_entries`(`id`,`blog_categories_id`,`key`,`created_at`) values (1,1,'MI blog','2016-05-29 21:20:18');
+
+/*Table structure for table `blog_entries_locales` */
+
+DROP TABLE IF EXISTS `blog_entries_locales`;
+
+CREATE TABLE `blog_entries_locales` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `blog_entries_id` int(10) unsigned NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `content` text COLLATE utf8_unicode_ci,
+  `meta_description` text COLLATE utf8_unicode_ci,
+  `locale` char(2) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `blog_entries_locales` */
+
 /*Table structure for table `estadisticaslogins` */
 
 DROP TABLE IF EXISTS `estadisticaslogins`;
@@ -31,6 +98,22 @@ CREATE TABLE `estadisticaslogins` (
 
 /*Data for the table `estadisticaslogins` */
 
+/*Table structure for table `gestor_controlador` */
+
+DROP TABLE IF EXISTS `gestor_controlador`;
+
+CREATE TABLE `gestor_controlador` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_zend` varchar(255) NOT NULL,
+  `nombre_usable` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombreZend` (`nombre_zend`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+
+/*Data for the table `gestor_controlador` */
+
+insert  into `gestor_controlador`(`id`,`nombre_zend`,`nombre_usable`) values (1,'home','home'),(2,'configuration','Valores de configuración'),(3,'user','Usuarios del gestor'),(4,'profile','Perfiles'),(6,'menu','Entradas de menú'),(19,'controller','Controladores');
+
 /*Table structure for table `gestor_menu` */
 
 DROP TABLE IF EXISTS `gestor_menu`;
@@ -43,11 +126,11 @@ CREATE TABLE `gestor_menu` (
   `accion` varchar(255) DEFAULT NULL,
   `orden` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=207 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=212 DEFAULT CHARSET=utf8;
 
 /*Data for the table `gestor_menu` */
 
-insert  into `gestor_menu`(`id`,`gestor_module_id`,`padre`,`texto`,`accion`,`orden`) values (2,0,-1,'Configuración','',90),(201,2,2,'Valores Generales','index',3),(202,3,2,'Usuarios','index',2),(203,4,2,'Perfil','index',4),(205,6,2,'Menú','index',1),(206,19,2,'Módulos','index',5);
+insert  into `gestor_menu`(`id`,`gestor_module_id`,`padre`,`texto`,`accion`,`orden`) values (2,0,-1,'Configuración','',90),(201,2,2,'Valores Generales','index',3),(202,3,2,'Usuarios','index',2),(203,4,2,'Perfil','index',4),(205,6,2,'Menú','index',1),(206,19,2,'Módulos','index',5),(207,0,-1,'Blog','',1),(208,20,207,'Listado','index',1),(209,20,207,'Nueva entrada','add',1),(210,0,-1,'Categorías de Blog','',1),(211,23,210,'Listado','index',1);
 
 /*Table structure for table `gestor_modules` */
 
@@ -59,11 +142,11 @@ CREATE TABLE `gestor_modules` (
   `nombre_usable` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombreZend` (`nombre_zend`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 /*Data for the table `gestor_modules` */
 
-insert  into `gestor_modules`(`id`,`nombre_zend`,`nombre_usable`) values (1,'home','home'),(2,'configuration','Valores de configuración'),(3,'user','xxx'),(4,'profile','Perfiles'),(6,'menu','Entradas de menú'),(19,'module','ttt'),(20,'blog','blog');
+insert  into `gestor_modules`(`id`,`nombre_zend`,`nombre_usable`) values (1,'home','home'),(2,'configuration','Valores de configuración'),(3,'user','User'),(4,'profile','Perfiles'),(6,'menu','Entradas de menú'),(19,'module','Module'),(20,'blog','blog'),(23,'blog-category','blog-category');
 
 /*Table structure for table `gestor_modules_locale` */
 
@@ -91,11 +174,26 @@ CREATE TABLE `gestor_perfiles` (
   `es_admin` tinyint(4) DEFAULT '0',
   `permisos` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 /*Data for the table `gestor_perfiles` */
 
-insert  into `gestor_perfiles`(`id`,`nombre`,`descripcion`,`es_admin`,`permisos`) values (1,'Superadmin','Administrador de la plataforma',1,'[]'),(2,'Coordinador','Usuario normal de la plataforma',0,'[\"home.index\",\"configuration.index\",\"user.index\",\"profile.add\",\"profile.delete\",\"menu.index\"]'),(3,'Director de Relacion','descripcion',0,'[]'),(4,'Administrador','Administrador',1,'[\"user.index\",\"profile.add\",\"menu.add\",\"menu.saveOrder\",\"menu.delete\"]'),(5,'Soldado Raso33','Permisos básicos',0,'[]'),(9,'zxcvzxcv','zxcvxzcv',1,'[\"user.delete\",\"profile.add\",\"menu.saveOrder\",\"module.delete\"]'),(13,'asdfasdfasfaf','asdfasf',0,'[]'),(14,' vvv','cfghfgh',0,'[\"profile.add\",\"menu.add\",\"menu.saveOrder\",\"module.index\"]'),(15,'Mi nuevo perfil','Deswcripcion',0,'[\"home.index\",\"profile.index\",\"profile.delete\",\"menu.index\"]');
+insert  into `gestor_perfiles`(`id`,`nombre`,`descripcion`,`es_admin`,`permisos`) values (1,'Superadmin','Administrador de la plataforma',1,'[]'),(2,'Coordinador','Usuario normal de la plataforma',0,'[\"home.index\",\"configuration.index\",\"user.index\",\"profile.add\",\"profile.delete\",\"menu.index\"]'),(3,'Director de Relacion','descripcion',0,'[]'),(4,'Administrador','Administrador',1,'[\"user.index\",\"profile.add\",\"menu.add\",\"menu.saveOrder\",\"menu.delete\"]'),(5,'Soldado Raso33','Permisos básicos',0,'[]'),(9,'zxcvzxcv','zxcvxzcv',1,'[\"user.delete\",\"profile.add\",\"menu.saveOrder\",\"module.delete\"]');
+
+/*Table structure for table `gestor_permisos` */
+
+DROP TABLE IF EXISTS `gestor_permisos`;
+
+CREATE TABLE `gestor_permisos` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `gestor_perfil_id` int(11) unsigned NOT NULL,
+  `gestor_controlador_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=154 DEFAULT CHARSET=utf8;
+
+/*Data for the table `gestor_permisos` */
+
+insert  into `gestor_permisos`(`id`,`gestor_perfil_id`,`gestor_controlador_id`) values (152,4,1),(153,2,1);
 
 /*Table structure for table `gestor_usuarios` */
 
@@ -112,11 +210,11 @@ CREATE TABLE `gestor_usuarios` (
   `active` tinyint(4) DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `login` (`login`)
-) ENGINE=InnoDB AUTO_INCREMENT=3805 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3807 DEFAULT CHARSET=utf8;
 
 /*Data for the table `gestor_usuarios` */
 
-insert  into `gestor_usuarios`(`id`,`gestor_perfil_id`,`login`,`password`,`created_at`,`last_login`,`validado`,`active`) values (1,1,'dreamsite','e10adc3949ba59abbe56e057f20f883e','2016-01-13 12:42:11','2016-04-22 09:33:56',1,1),(3,4,'entropy','698d51a19d8a121ce581499d7b701668','2016-03-29 12:05:16','2016-04-18 17:45:34',1,1),(4,4,'bbva','e10adc3949ba59abbe56e057f20f883e','2016-03-30 18:13:54','2016-04-13 17:18:48',1,1),(3797,3,'U502562','e10adc3949ba59abbe56e057f20f883e','2016-03-29 12:29:19','2016-04-19 14:34:46',1,1),(3799,2,'usercitot','310dcbbf4cce62f762a2aaa148d556bd','2016-04-21 11:54:07','2016-04-21 16:55:16',1,1);
+insert  into `gestor_usuarios`(`id`,`gestor_perfil_id`,`login`,`password`,`created_at`,`last_login`,`validado`,`active`) values (1,1,'dreamsite','e10adc3949ba59abbe56e057f20f883e','2016-01-13 12:42:11','2016-04-22 09:33:56',1,1),(3,4,'entropy','698d51a19d8a121ce581499d7b701668','2016-03-29 12:05:16','2016-04-18 17:45:34',1,1),(4,4,'bbva','8f14e45fceea167a5a36dedd4bea2543','2016-03-30 18:13:54','2016-04-13 17:18:48',1,1),(3797,3,'U502562','e10adc3949ba59abbe56e057f20f883e','2016-03-29 12:29:19','2016-04-19 14:34:46',1,1),(3799,2,'usercitot','310dcbbf4cce62f762a2aaa148d556bd','2016-04-21 11:54:07','2016-04-21 16:55:16',1,1),(3806,1,'tuuuu','e10adc3949ba59abbe56e057f20f883e','2016-05-28 18:33:38',NULL,0,1);
 
 /*Table structure for table `historico_login` */
 

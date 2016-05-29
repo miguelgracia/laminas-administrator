@@ -72,13 +72,8 @@ class AmMenuModuleController extends AuthController
 
     public function editAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
-            return $this->goToSection('menu');
-        }
-
-        // Sacamos los datos de una entrada en concreto
         try {
+            $id = (int) $this->params()->fromRoute('id', 0);
             $entradaMenu = $this->entradaMenuTable->find($id);
         } catch (\Exception $ex) {
             return $this->goToSection('menu');

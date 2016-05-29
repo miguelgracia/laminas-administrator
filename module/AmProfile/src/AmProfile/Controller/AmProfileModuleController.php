@@ -71,13 +71,9 @@ class AmProfileModuleController extends AuthController
 
     public function editAction()
     {
-        $id = (int) $this->params()->fromRoute('id', false);
-        if (!$id) {
-            return $this->goToSection('profile');
-        }
-
         try {
-            // Sacamos los datos del perfil en concreto
+            $id = (int) $this->params()->fromRoute('id', 0);
+
             $perfil = $this->perfilTable->find($id);
             $perfil->permisos = $perfil->getPermisos();
 
