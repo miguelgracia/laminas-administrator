@@ -10,19 +10,19 @@ use Zend\View\Model\ViewModel;
 class AmBlogModuleController extends AuthController
 {
 
-    protected $blogTable = null;
+    protected $tableGateway = null;
 
     public function setControllerVars()
     {
-        $this->blogTable = $this->sm->get('AmBlog\Model\BlogTable');
-        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService')->setTable($this->blogTable);
+        $this->tableGateway = $this->sm->get('AmBlog\Model\BlogTable');
+        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService')->setTable($this->tableGateway);
     }
 
     public function addAction()
     {
-        $row = $this->blogTable->getEntityModel();
+        $row = $this->tableGateway->getEntityModel();
 
-        $fieldset = new BlogFieldset($this->serviceLocator,$row,$this->blogTable);
+        $fieldset = new BlogFieldset($this->serviceLocator,$row,$this->tableGateway);
 
         $this->formService
             ->setForm()
@@ -39,11 +39,9 @@ class AmBlogModuleController extends AuthController
 
             if ($form->isValid()) {
 
-                $row->exchangeArray($form->getData());
+                $insertId = $this->tableGateway->save($row);
 
-                $insertId = 0; //$this->blogTable->saveEntradaMenu($row);
-
-                return $this->goToSection('menu', array(
+                return $this->goToSection('blog', array(
                     'action'  => 'edit',
                     'id'      => $insertId
                 ));
@@ -53,9 +51,41 @@ class AmBlogModuleController extends AuthController
         return new ViewModel(compact( 'form' ));
     }
 
+    /**
+     * @return array|\Zend\Http\Response
+     */
     public function editAction()
     {
-        return new ViewModel();
+        try {
+            $id = (int) $this->params()->fromRoute('id', 0);
+            $model = $this->tableGateway->find($id);
+        }
+        catch (\Exception $ex) {
+            return $this->goToSection('blog');
+        }
+
+        $fieldset = new BlogFieldset($this->serviceLocator, $model, $this->tableGateway);
+
+        $this->formService
+            ->setForm(new BlogForm())
+            ->addFieldset($fieldset)
+            ->addFields();
+
+        $form = $this->formService->getForm();
+
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+
+            $form->bind($request->getPost());
+
+            if ($form->isValid()) {
+
+                $this->tableGateway->save($model);
+            }
+        }
+
+        return compact('id', 'form');
     }
 
 

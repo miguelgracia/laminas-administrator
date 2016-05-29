@@ -51,7 +51,6 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             'parse_row_data'=> function ($row) use($controllerPlugin, $canDelete, $canEdit) {
 
                 //$row contiene los datos de cada una de las filas que ha generado la consulta.
-                //Desde aqu� podemos parsear los datos antes de visualizarlos por pantalla
 
                 $link = "<a href='%s'><i class='col-xs-12 text-center fa %s'></i></a>";
 
@@ -60,19 +59,8 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
                 $editUrl = $controller->goToSection('blog',array('action' => 'edit', 'id' => $row['id']),true);
                 $deleteUrl = $controller->goToSection('blog',array('action' => 'delete','id' => $row['id']),true);
 
-                if ($canEdit) {
-                    $row['edit'] = sprintf($link,$editUrl, 'fa-edit');
-                } else {
-                    $row['edit'] = '';
-                }
-
-                if ($canDelete) {
-                    $row['delete'] = $row['id'] != "1"
-                        ? sprintf($link,$deleteUrl, 'fa-remove js-eliminar')
-                        : sprintf($link,"#_","fa-ban");
-                } else {
-                    $row['delete'] = '';
-                }
+                $row['edit'] = $canEdit ? sprintf($link,$editUrl, 'fa-edit') : '';
+                $row['delete'] = $canDelete ? sprintf($link, $deleteUrl, 'fa-remove js-eliminar') : '';
 
                 return $row;
             }
@@ -82,7 +70,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
     public function getQueryConfig()
     {
         return array(
-            //En fields solo tenemos que a�adir los campos de la tabla indicada en 'from'
+            //En fields solo tenemos que añadir los campos de la tabla indicada en 'from'
             'fields' => array(
                 'id',
                 'key',
