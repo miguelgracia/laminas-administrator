@@ -8,7 +8,7 @@ gulp.task('build', function () {
         'js/routing.js',
         'js/classes/*.js',
         'js/controllers/*.js',
-        'js/gestor.js'
+        'js/ready.js'
     ])
         .pipe(concat('administrator.min.js'))
         .pipe(uglify())
