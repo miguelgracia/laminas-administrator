@@ -62,7 +62,7 @@ class AuthService implements FactoryInterface
 
         $username = $username['user'];
 
-        $rowset = $this->serviceLocator->get('Administrator\Model\AdminUserTable')->select(function (Select $select) use($username) {
+        $rowset = $this->serviceLocator->get('AmUser\Model\UserTable')->select(function (Select $select) use($username) {
             $select
                 ->columns(array('*'))
                 ->join(
