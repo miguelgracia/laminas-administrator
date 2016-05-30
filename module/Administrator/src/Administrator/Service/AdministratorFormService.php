@@ -257,32 +257,21 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         return $this->actionType;
     }
 
-    public function addFieldset(AdministratorFieldset $fieldset)
+    public function addFieldset(AdministratorFieldset $fieldset, $isLocale = false)
     {
-        $className = $fieldset->getName();
+        $fieldset->setOption('is_locale', $isLocale);
 
-        $fieldset->setOption('is_locale',false);
+        if ($isLocale) {
+            $fieldset->setName(get_class($fieldset) . "\\" . $fieldset->getObjectModel()->languageId);
+        }
+
+        $className = $fieldset->getName();
 
         if (!array_key_exists($className, $this->fieldsets)) {
             $this->initializers($fieldset);
             $this->fieldsets[$className] = $fieldset;
         }
-
         return $this;
-    }
-
-    public function addLocaleFieldset(AdministratorFieldset $fieldset)
-    {
-        $fieldset->setName(get_class($fieldset) . "\\" . $fieldset->getObjectModel()->languageId);
-
-        $fieldset->setOption('is_locale',true);
-
-        return $this->addFieldset($fieldset);
-    }
-
-    public function getLocaleModels()
-    {
-
     }
 
     public function setForm(Form $form = null)
@@ -456,78 +445,6 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         return $this;
     }
 
-    public function addFieldsOld($sourceTable = null)
-    {
-        if (!$sourceTable) {
-            $sourceTable = $this->tableGateway->getTable();
-        }
-
-        $columns = $this->metadata->getColumns($sourceTable);
-
-        foreach ($columns as $column) {
-            $toCamel = new SeparatorToCamelCase('_');
-            $columnName = lcfirst($toCamel->filter($column->getName()));
-
-            $flags = array(
-                'priority' => -($column->getOrdinalPosition() * 100),
-            );
-
-            $fieldParams = array(
-                'name' => $columnName,
-                'label' => $columnName,
-                'options' => array(
-                    'label' => $columnName,
-                    'label_attributes' => array(
-                        'class' => 'col-sm-2 control-label'
-                    ),
-                    'priority' => -($column->getOrdinalPosition() * 100),
-                ),
-                'attributes' => array(
-                    'id' => $columnName,
-                    'class' => 'form-control',
-                )
-            );
-
-            if ($columnName == $this->hiddenPrimaryKey) {
-                $fieldParams['type'] = 'Hidden';
-                $this->form->add($fieldParams, $flags);
-                continue;
-            }
-
-            $dataType = $column->getDataType();
-
-            $type = $this->setFormDataType($columnName, $dataType);
-
-            if ($type == 'Select' or $type == 'MultiCheckbox') {
-
-                if ($dataType == 'enum' and !isset($this->fieldValueOptions[$columnName])) {
-                    $enumValues = $column->getErratas();
-                    $fieldParams['options']['value_options'] = $enumValues['permitted_values'];
-                } else {
-                    $fieldParams['options']['value_options'] = $this->fieldValueOptions[$columnName];
-                }
-            }
-
-            $fieldParams['type'] = $type;
-
-            $this->form->add($fieldParams,$flags);
-        }
-
-        /**
-         * Buscamos en el objeto formulario si existe el método addFields.
-         * En caso afirmativo, lo ejecutamos para poder añadir campos adicionales
-         * que se salga de la lógica predeterminada o, por ejemplo, redefinir
-         * el atributo de algún campo concreto. (Vease Gestor\Form\GestorUsuariosForm)
-         */
-        $thisMethod = substr(strrchr(__METHOD__, '::'), 1);
-
-        if (method_exists($this->form, $thisMethod)) {
-            $this->form->{$thisMethod}();
-        }
-
-        return $this;
-    }
-
     public function postCamelToUnderscore($post)
     {
         $toUnderscore = new CamelCaseToUnderscore();
@@ -626,5 +543,14 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         $url = $viewHelper->get('url');
 
         $this->setAttribute('action', $url('administrator', $params));
+    }
+
+    public function save()
+    {
+        foreach ($this->fieldsets as $fieldset) {
+            $tableGateway = $fieldset->getTableGateway();
+            $model = $fieldset->getObjectModel();
+            $tableGateway->save($model);
+        }
     }
 }

@@ -65,48 +65,31 @@ class AmBlogModuleController extends AuthController
         }
 
         $fieldset = new BlogFieldset($this->serviceLocator, $model, $this->tableGateway);
-
         $localeTableGateway = $this->sm->get('AmBlog\Model\BlogLocaleTable');
-
         $localeModels = $localeTableGateway->findLocales($id);
 
         $this->formService
             ->setForm(new BlogForm())
             ->addFieldset($fieldset);
 
-        $thisLocaleModels = array();
-
         foreach ($localeModels as $localModel) {
-
             $localModel->blogEntriesId = $id;
-
-            $thisLocaleModels[] = $localModel;
-
             $localeFieldset = new BlogLocaleFieldset($this->serviceLocator, $localModel, $localeTableGateway);
-
-            $this->formService->addLocaleFieldset($localeFieldset);
+            $this->formService->addFieldset($localeFieldset, true);
         }
 
         $this->formService->addFields();
-
-        $this->formService->getLocaleModels();
-
 
         $form = $this->formService->getForm();
 
         $request = $this->getRequest();
 
         if ($request->isPost()) {
-
             $form->bind($request->getPost());
 
             if ($form->isValid()) {
 
-                $this->tableGateway->save($model);
-
-                foreach ($thisLocaleModels as $l) {
-                    $l->id = $localeTableGateway->save($l);
-                }
+                $this->formService->save();
 
                 return $this->goToEditSection('blog', $id);
             }
