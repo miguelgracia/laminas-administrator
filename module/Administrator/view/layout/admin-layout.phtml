@@ -194,12 +194,7 @@ $basePath = $this->basePath() . '/administrator';
     ->appendFile($basePath . '/libs/daterangepicker/moment-with-locales.js')
     ->appendFile($basePath . '/libs/select2/js/select2.min.js')
     ->appendFile($basePath . '/libs/sortable/sortable.min.js')
-    // No usar app.min (de momento). Se han hecho cambios en app.js
-    // por lo que habría que minimizarlo de nuevo.
-    ->appendFile($basePath . '/js/app.js')
-    ->appendFile($basePath . '/js/routing.js')
-    ->appendFile($basePath . '/js/gestor.js')
-
+    ->appendFile($basePath . '/js/build/administrator.min.js')
 ;
 
 ?>

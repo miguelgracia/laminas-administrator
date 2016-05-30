@@ -1,3 +1,4 @@
+/public/administrator/node_modules
 /config/application.config.old
 /module/Gestor
 /module/Gestor_old
@@ -17,6 +18,7 @@ data/logs/
 data/cache/
 data/sessions/
 data/tmp/
+/public/administrator/js/build
 temp/
 
 # Legacy ZF1

@@ -29,10 +29,7 @@ $this->headTitle($title);
                                 <td><?=$elemento->nombreZend; ?></td>
                                 <td><?=$elemento->nombreUsable; ?></td>
                                 <td class="text-center"><a title="edit" href="<?php echo $urlToEdit;?>"><i class="fa fa-edit"></i></a></td>
-                                <td class="text-center"><a title="delete" href="<?php echo $urlToDelete;?>"
-                                           class="delete_alert"
-                                           texto="Are you sure you want to delete controller '<?=$elemento->nombreUsable?>'"
-                                            ><i class="fa fa-remove"></i></a></td>
+                                <td class="text-center"><a title="delete" href="<?php echo $urlToDelete;?>"><i class="fa fa-remove"></i></a></td>
                             </tr>
 
                         <?php endforeach; ?>
