@@ -42,6 +42,29 @@ class AmLoginModuleController extends AuthController
         return $this->goToSection('login');
     }
 
+    public function checkAuthSessionAction()
+    {
+        $request = $this->getRequest();
+
+        if ($request->isXmlHttpRequest()) {
+
+            $response = $this->getResponse();
+
+            $hasIdentity = $this->getAuthService()->hasIdentity();
+
+            $response->setContent(json_encode(array(
+                'status' => 'ok',
+                'error' => '',
+                'response' => $hasIdentity,
+                'message' => !$hasIdentity  ? 'Tu sesión ha caducado, refresca la página y vuelve a loguearte' :''
+            )));
+
+            return $response;
+        }
+
+        return $this->goToSection('login');
+    }
+
     public function rememberPasswordAction()
     {
         if (!$this->getAuthService()->hasIdentity()) {

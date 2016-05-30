@@ -102,9 +102,17 @@ $(function () {
                 "serverSide": true,
                 "sDom": "lip<'horizontal-scroll't>ipr",
                 "ajax": {
-                    'url': document.location.href
+                    'url': document.location.href,
+                    "data": function(json) {
+                        $.AdminLTE.simpleRouting.ajax.run({
+                            url: '/admin/login/check-auth-session'
+                        }, function(data) {
+                            if(data.response != true) {
+                                location.reload();
+                            }
+                        });
+                    }
                 },
-                "dataSrc": 'data',
                 "language": language,
                 "columns": columns,
                 "order": order,
