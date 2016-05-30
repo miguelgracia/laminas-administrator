@@ -9,7 +9,7 @@ class AmHomeModuleController extends AuthController
     protected $userTable;
     public function setControllerVars()
     {
-        $this->userTable = $this->sm->get('Administrator\Model\AdminUserTable');
+        $this->userTable = $this->sm->get('AmUser\Model\UserTable');
     }
 
     public function indexAction()

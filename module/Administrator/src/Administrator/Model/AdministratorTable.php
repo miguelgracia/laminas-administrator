@@ -7,6 +7,8 @@ use Administrator\Model\AdministratorResultSet;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Metadata\Metadata;
+use Zend\Db\Sql\Predicate\Expression;
+use Zend\Db\Sql\Select;
 use Zend\Db\TableGateway\AbstractTableGateway;
 use Zend\Hydrator\ClassMethods;
 
@@ -84,15 +86,45 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
         return $this->select($where);
     }
 
-    public function find($id)
+    public function find($id, $key = 'id')
     {
         $id  = (int) $id;
-        $rowset = $this->select(array('id' => $id));
+        $rowset = $this->select(array($key => $id));
         $row = $rowset->current();
         if (!$row) {
-            throw new \Exception("Could not find row $id in table" . $this->table);
+            throw new \Exception("Could not find row $id with key $key in table" . $this->table);
         }
         return $row;
+    }
+
+    public function findMany($id, $key = 'id')
+    {
+        $id  = (int) $id;
+
+        $rowset = $this->select(array($key => $id));
+
+        return $rowset;
+    }
+
+    public function findLocales($id)
+    {
+        $tableLocale = $this->table;
+
+        $table = preg_replace("/_locales$/","",$this->table);
+
+        $key = $tableLocale . '.' . $table . '_id';
+
+        $resultSet = $this->select(function (Select $select) use($id, $key, $table, $tableLocale){
+            $select
+                ->join(
+                'languages',
+                new Expression("languages.id = $tableLocale.language_id AND $key = $id"),
+                array("language_id" => "id"),
+                Select::JOIN_RIGHT
+            );
+        });
+
+        return $resultSet;
     }
 
     public function deleteRow($id, $key = 'id')

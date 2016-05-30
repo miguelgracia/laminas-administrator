@@ -4,7 +4,9 @@ namespace AmBlog\Model;
 
 use Administrator\Model\AdministratorModel;
 
-class BlogModel extends AdministratorModel
+class BlogLocaleModel extends AdministratorModel
 {
 
+
 }
+

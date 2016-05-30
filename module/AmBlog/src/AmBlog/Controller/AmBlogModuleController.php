@@ -5,11 +5,11 @@ namespace AmBlog\Controller;
 use Administrator\Controller\AuthController;
 use AmBlog\Form\BlogFieldset;
 use AmBlog\Form\BlogForm;
+use AmBlog\Form\BlogLocaleFieldset;
 use Zend\View\Model\ViewModel;
 
 class AmBlogModuleController extends AuthController
 {
-
     protected $tableGateway = null;
 
     public function setControllerVars()
@@ -66,10 +66,30 @@ class AmBlogModuleController extends AuthController
 
         $fieldset = new BlogFieldset($this->serviceLocator, $model, $this->tableGateway);
 
+        $localeTableGateway = $this->sm->get('AmBlog\Model\BlogLocaleTable');
+
+        $localeModels = $localeTableGateway->findLocales($id);
+
         $this->formService
             ->setForm(new BlogForm())
-            ->addFieldset($fieldset)
-            ->addFields();
+            ->addFieldset($fieldset);
+
+        $thisLocaleModels = array();
+
+        foreach ($localeModels as $localModel) {
+
+            $localModel->blogEntriesId = $id;
+
+            $thisLocaleModels[] = $localModel;
+
+            $fieldsetLocaleName = "AmBlog\\Form\\BlogLocaleFieldset\\".$localModel->languageId;
+
+            $localeFieldset = new BlogLocaleFieldset($this->serviceLocator, $localModel, $localeTableGateway, $fieldsetLocaleName);
+
+            $this->formService->addFieldset($localeFieldset);
+        }
+
+        $this->formService->addFields();
 
         $form = $this->formService->getForm();
 
@@ -82,6 +102,10 @@ class AmBlogModuleController extends AuthController
             if ($form->isValid()) {
 
                 $this->tableGateway->save($model);
+
+                foreach ($thisLocaleModels as $l) {
+                    $localeTableGateway->save($l);
+                }
             }
         }
 

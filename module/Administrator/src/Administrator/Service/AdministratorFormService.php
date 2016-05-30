@@ -258,7 +258,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
     public function addFieldset($fieldset)
     {
-        $className = get_class($fieldset);
+        $className = $fieldset->getName();
 
         if (!array_key_exists($className, $this->fieldsets)) {
             $this->initializers($fieldset);
