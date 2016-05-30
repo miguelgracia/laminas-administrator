@@ -97,7 +97,18 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
 
     public function deleteRow($id, $key = 'id')
     {
-        $this->delete(array($key => (int) $id));
+        return $this->delete(array($key => (int) $id));
+    }
+
+    public function deleteSoft($id, $fieldKey = 'id')
+    {
+        if ($this->isTableRow($id, $fieldKey)) {
+            return $this->update(array(
+                'deletedAt' => date('Y-m-d H:i:s')
+            ), array($fieldKey => $id));
+        } else {
+            throw new \Exception($this->table . ' ' . $fieldKey .' id does not exist');
+        }
     }
 
 

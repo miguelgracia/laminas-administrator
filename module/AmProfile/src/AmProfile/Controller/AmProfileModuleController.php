@@ -17,13 +17,6 @@ class AmProfileModuleController extends AuthController
         $this->formService = $this->sm->get('Administrator\Service\AdministratorFormService')->setTable($this->perfilTable);
     }
 
-    public function indexAction()
-    {
-        $perfiles = $this->perfilTable->all();
-
-        return new ViewModel(compact('perfiles'));
-    }
-
     public function addAction()
     {
         $perfil = $this->perfilTable->getEntityModel();

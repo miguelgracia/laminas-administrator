@@ -28,20 +28,6 @@ class AmModuleModuleController extends AuthController
     }
 
     /**
-     * @return ViewModel
-     */
-    public function indexAction()
-    {
-        // Sacamos el listado completo de controladores del TableGateway
-        $modules = $this->moduleTable->select();
-
-        // Vamos a la vista de índice con ese array para pintar la tabla.
-        return new ViewModel(compact(
-            'modules'
-        ));
-    }
-
-    /**
      * @return array|\Zend\Http\Response
      */
     public function editAction()
