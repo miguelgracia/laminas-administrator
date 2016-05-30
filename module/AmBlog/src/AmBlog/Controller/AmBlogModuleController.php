@@ -82,14 +82,15 @@ class AmBlogModuleController extends AuthController
 
             $thisLocaleModels[] = $localModel;
 
-            $fieldsetLocaleName = "AmBlog\\Form\\BlogLocaleFieldset\\".$localModel->languageId;
+            $localeFieldset = new BlogLocaleFieldset($this->serviceLocator, $localModel, $localeTableGateway);
 
-            $localeFieldset = new BlogLocaleFieldset($this->serviceLocator, $localModel, $localeTableGateway, $fieldsetLocaleName);
-
-            $this->formService->addFieldset($localeFieldset);
+            $this->formService->addLocaleFieldset($localeFieldset);
         }
 
         $this->formService->addFields();
+
+        $this->formService->getLocaleModels();
+
 
         $form = $this->formService->getForm();
 
@@ -104,8 +105,10 @@ class AmBlogModuleController extends AuthController
                 $this->tableGateway->save($model);
 
                 foreach ($thisLocaleModels as $l) {
-                    $localeTableGateway->save($l);
+                    $l->id = $localeTableGateway->save($l);
                 }
+
+                return $this->goToEditSection('blog', $id);
             }
         }
 

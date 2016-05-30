@@ -6,6 +6,7 @@
 
 namespace Administrator\Service;
 
+use Administrator\Form\AdministratorFieldset;
 use Zend\Db\Adapter\AdapterAwareInterface;
 use Zend\Db\Metadata\Metadata;
 
@@ -256,9 +257,11 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         return $this->actionType;
     }
 
-    public function addFieldset($fieldset)
+    public function addFieldset(AdministratorFieldset $fieldset)
     {
         $className = $fieldset->getName();
+
+        $fieldset->setOption('is_locale',false);
 
         if (!array_key_exists($className, $this->fieldsets)) {
             $this->initializers($fieldset);
@@ -266,6 +269,20 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         }
 
         return $this;
+    }
+
+    public function addLocaleFieldset(AdministratorFieldset $fieldset)
+    {
+        $fieldset->setName(get_class($fieldset) . "\\" . $fieldset->getObjectModel()->languageId);
+
+        $fieldset->setOption('is_locale',true);
+
+        return $this->addFieldset($fieldset);
+    }
+
+    public function getLocaleModels()
+    {
+
     }
 
     public function setForm(Form $form = null)

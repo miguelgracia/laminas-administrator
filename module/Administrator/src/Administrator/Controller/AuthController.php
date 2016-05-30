@@ -69,6 +69,16 @@ class AuthController extends AbstractActionController
             : $this->redirect()->toRoute('administrator', $defaultParams);
     }
 
+    public function gotoAddSection($module, $returnLink = false)
+    {
+        return $this->goToSection($module,array('action' => 'add'),$returnLink);
+    }
+
+    public function goToEditSection($module, $id, $returnLink = false)
+    {
+        return $this->goToSection($module,array('action' => 'edit', 'id' => $id), $returnLink);
+    }
+
     protected function getUserData()
     {
         return $this->getAuthService(false)->getUserData();
