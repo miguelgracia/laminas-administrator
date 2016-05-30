@@ -8,7 +8,7 @@ $(function () {
                 var clickDelete = function(e) {
                     e.preventDefault();
                     var $this = $(this);
-                    var isConfirm = $.AdminLTE.simpleRouting.confirm.show('¿Seguro que deseas eliminar este usuario?');
+                    var isConfirm = $.AdminLTE.simpleRouting.confirm.show('Â¿Seguro que deseas eliminar este usuario?');
 
                     var ajaxSuccessEliminar = function(data) {
                         if(data.status == 'ok') {

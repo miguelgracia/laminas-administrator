@@ -14,4 +14,3 @@ $(document).ready(function () {
         '/admin/blog-category':          ['blog_category','index']
     }).run();
 });
-

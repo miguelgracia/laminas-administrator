@@ -34,7 +34,7 @@ $(function () {
 
             $(menuAccordion).find('.btn-remove').click(function(e) {
                 e.preventDefault();
-                var canDelete = $.AdminLTE.simpleRouting.confirm.show("¿Deseas eliminar esta opción de menú?");
+                var canDelete = $.AdminLTE.simpleRouting.confirm.show("Â¿Deseas eliminar esta opciÃ³n de menÃº?");
                 if(canDelete) {
                     document.location.href = $(this).attr('href');
                 }

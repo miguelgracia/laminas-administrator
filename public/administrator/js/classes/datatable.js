@@ -17,7 +17,7 @@ $(function () {
                 "zeroRecords":    "No se han encontrado resultados",
                 "paginate": {
                     "first":      "Primera",
-                    "last":       "Última",
+                    "last":       "Ãšltima",
                     "next":       "Siguiente",
                     "previous":   "Anterior"
                 },
@@ -121,8 +121,8 @@ $(function () {
 
             $.extend(defaultConfig, customConfig);
 
-            //initComplete lo sobreescribimos siempre, ya que tiene lógica de existir siempre
-            //pero tenemos la opción de entrar en ella desde el parametro initCompleteFn
+            //initComplete lo sobreescribimos siempre, ya que tiene lÃ³gica de existir siempre
+            //pero tenemos la opciÃ³n de entrar en ella desde el parametro initCompleteFn
 
             defaultConfig.initComplete = function() {
 
