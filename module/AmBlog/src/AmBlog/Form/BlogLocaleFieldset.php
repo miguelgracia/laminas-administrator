@@ -11,7 +11,9 @@ class BlogLocaleFieldset extends AdministratorFieldset
     {
         return array(
             'fieldModifiers' => array(
-                'blogEntriesId' => 'Hidden',
+                'blogEntriesId'     => 'Hidden',
+                'content'           => 'Textarea',
+                'metaDescription'   => 'Textarea'
             ),
             'fieldValueOptions' => array(
 

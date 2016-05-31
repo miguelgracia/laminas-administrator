@@ -12,6 +12,7 @@ class BlogCategoryLocaleFieldset extends AdministratorFieldset
         return array(
             'fieldModifiers' => array(
                 'blogCategoriesId' => 'Hidden',
+                'metaDescription'   => 'Textarea'
             ),
             'fieldValueOptions' => array(
 
