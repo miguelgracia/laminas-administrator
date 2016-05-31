@@ -24,7 +24,32 @@ class AdministratorFormRow extends AbstractHelper
 
     private function formTemplate()
     {
-        $template = '<div class="box-body">%s</div><div class="box-footer">%s</div>';
+        $template = '<div class="box-body">%s%s</div><div class="box-footer">%s</div>';
+        return $template;
+    }
+
+    private function localeTabTemplate($tplType = '')
+    {
+        switch ($tplType) {
+            case "link":
+                $template = "<li class='%s'><a href='#tab_%s' data-toggle='tab'>%s</a></li>";
+                break;
+            case "tab":
+                $template = "<div class='tab-pane %s' id='tab_%s'>%s</div>";
+                break;
+            default:
+                $template = "
+                    <div class='nav-tabs-custom'>
+                        <ul class='nav nav-tabs'>
+                            %s
+                        </ul>
+                        <div class='tab-content'>
+                        %s
+                        </div>
+                    </div>
+                ";
+        }
+
         return $template;
     }
 
@@ -89,13 +114,23 @@ class AdministratorFormRow extends AbstractHelper
     public function render($formElement)
     {
         if ($formElement instanceof Form) {
-            $boxBody = "";
-            $boxFooter = "";
+            $boxBody    = "";
+            $boxFooter  = "";
+            $localeTabs = "";
+            $linkTabs   = "";
 
             $form = $formElement;
+            $index = 0;
             foreach ($form as $element) {
                 if ($element instanceof AdministratorFieldset) {
-                    $boxBody .= $this->renderFieldset($element);
+                    if ($element->getOption('is_locale')) {
+                        $index++;
+                        $activeClass = $linkTabs == '' ? 'active' : '';
+                        $linkTabs .= sprintf($this->localeTabTemplate('link'),$activeClass,$index,$element->getOption("tab_name"));
+                        $localeTabs .= sprintf($this->localeTabTemplate('tab'),$activeClass,$index,$this->renderFieldset($element));
+                    } else {
+                        $boxBody .= $this->renderFieldset($element);
+                    }
                 } else {
                     $elementHtml = $this->render($element);
                     if (in_array($element->getAttribute('type'), array('submit', 'button', 'hidden'))) {
@@ -105,7 +140,10 @@ class AdministratorFormRow extends AbstractHelper
                     }
                 }
             }
-            return sprintf($this->formTemplate(),$boxBody,$boxFooter);
+
+            $tabTpl = $localeTabs != '' ? sprintf($this->localeTabTemplate(), $linkTabs, $localeTabs) : '';
+
+            return sprintf($this->formTemplate(),$boxBody,$tabTpl,$boxFooter);
         }
 
         $label = $this->label;

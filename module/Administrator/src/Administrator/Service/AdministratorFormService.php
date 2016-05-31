@@ -69,6 +69,15 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
     /**
      * @var array
+     *
+     * Array Clave/valor que contendrá los idiomas disponibles
+     * Se instancia en la función setForm y en principio se usará
+     * para saber el nombre del idioma.
+     */
+    protected $languages = array();
+
+    /**
+     * @var array
      */
     protected $fieldsets = array();
 
@@ -227,6 +236,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
         if ($isLocale) {
             $fieldset->setName(get_class($fieldset) . "\\" . $objectModel->languageId);
+            $fieldset->setOption('tab_name', $this->languages[$objectModel->languageId]);
         }
 
         $className = $fieldset->getName();
@@ -280,6 +290,8 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     public function setForm($form = null)
     {
         if (!$this->form) {
+
+            $this->languages = $this->serviceLocator->get('Administrator\Model\LanguageTable')->all()->toKeyValueArray('id','name');
 
             $form = (is_null($form) or !$form instanceof Form)
                 ? new Form()

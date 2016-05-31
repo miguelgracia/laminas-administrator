@@ -119,9 +119,13 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
                 ->join(
                 'languages',
                 new Expression("languages.id = $tableLocale.language_id AND $key = $id"),
-                array("language_id" => "id"),
+                array(
+                    "language_id" => "id"
+                ),
                 Select::JOIN_RIGHT
-            );
+            )->where(array(
+                'languages.active' => '1'
+            ));
         });
 
         return $resultSet;
