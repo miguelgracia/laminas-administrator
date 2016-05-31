@@ -6,6 +6,7 @@ namespace Administrator\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Model\ViewModel;
 
 class AuthController extends AbstractActionController
 {
@@ -190,5 +191,24 @@ class AuthController extends AbstractActionController
         $datatable->init();
 
         return $datatable->run();
+    }
+
+    protected function getView($params = array(), $viewName)
+    {
+        $viewModel = new ViewModel($params);
+        $viewModel->setTemplate('administrator/'.$viewName);
+
+        return $viewModel;
+    }
+
+
+    public function getAddView($params = array())
+    {
+        return $this->getView($params,'add');
+    }
+
+    public function getEditView($params = array())
+    {
+        return $this->getView($params,'edit');
     }
 }

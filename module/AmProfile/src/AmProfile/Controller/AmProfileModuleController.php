@@ -57,7 +57,9 @@ class AmProfileModuleController extends AuthController
                 ));
             }
         }
-        return compact('form');
+        $title = 'Nuevo Perfil';
+
+        return $this->getAddView(compact( 'form', 'title' ));
     }
 
     public function editAction()
@@ -104,7 +106,9 @@ class AmProfileModuleController extends AuthController
             }
         }
 
-        return compact( 'form' );
+        $title = 'Edición de Perfil';
+
+        return $this->getAddView(compact( 'form', 'title' ));
     }
 
     public function deleteAction()

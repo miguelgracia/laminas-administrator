@@ -56,12 +56,14 @@ class AmModuleModuleController extends AuthController
             $form->bind($request->getPost());
 
             if ($form->isValid()) {
-                // Metemos los datos que vamos a guardar
+
                 $this->moduleTable->save($gestorControlador);
             }
         }
 
-        return compact( 'form' );
+        $title = 'Edición de Módulo';
+
+        return $this->getEditView(compact( 'form', 'title' ));
     }
 
     /**

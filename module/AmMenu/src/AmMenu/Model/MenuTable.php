@@ -2,7 +2,6 @@
 
 namespace AmMenu\Model;
 
-use Administrator\Model\AdministratorModel;
 use Administrator\Model\AdministratorTable;
 
 class MenuTable extends AdministratorTable
@@ -22,13 +21,13 @@ class MenuTable extends AdministratorTable
             $selectParent::JOIN_LEFT
         )->order('orden ASC');
 
-        //clonamos la consulta padre porque nos servir� para sacar los hijos ya que son los mismos
-        //par�metros para las dos consultas (solo var�a el where que se lo a�adimos despu�s
+        //clonamos la consulta padre porque nos servirá para sacar los hijos ya que son los mismos
+        //parámetros para las dos consultas (solo varía el where que se lo añadimos después
 
         $selectChildren = clone $selectParent;
 
         $selectParent->where(array(
-            'gestor_menu.padre' => '-1'
+            'gestor_menu.padre' => '0'
         ));
 
         $result = $this->selectWith($selectParent);

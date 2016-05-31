@@ -38,16 +38,11 @@ class AmMenuModuleController extends AuthController
 
         $form = $this->formService->getForm();
 
-        // Asignamos "padre" y "orden"
-        $padre = (int) $this->params()->fromRoute('id', 0) ?: -1;
+        $padre = (int) $this->params()->fromRoute('id', 0);
 
         $fieldset = $this->formService->getBaseFieldset();
 
         $fieldset->get('padre')->setValue($padre);
-
-        $orden = (int) ($this->params()->fromRoute('data', 0)) + 1; // Como minimo debe ser orden 1
-
-        $fieldset->get('orden')->setValue($orden);
 
         $request = $this->getRequest();
 
@@ -66,7 +61,9 @@ class AmMenuModuleController extends AuthController
             }
         }
 
-        return new ViewModel(compact( 'form' , 'padre' ));
+        $title = 'Nuevo Menú';
+
+        return $this->getAddView(compact( 'form', 'title' ));
     }
 
     public function editAction()
@@ -97,10 +94,9 @@ class AmMenuModuleController extends AuthController
             }
         }
 
-        return new ViewModel(array(
-            'id'          => $id,
-            'form'        => $form
-        ));
+        $title = 'Edición de Menú';
+
+        return $this->getEditView(compact( 'form', 'title' ));
     }
 
     public function saveOrderAction()

@@ -47,7 +47,9 @@ class AmBlogModuleController extends AuthController
             }
         }
 
-        return new ViewModel(compact( 'form' ));
+        $title = 'Nueva Entrada de blog';
+
+        return $this->getAddView(compact( 'form', 'title' ));
     }
 
     /**
@@ -84,6 +86,8 @@ class AmBlogModuleController extends AuthController
             }
         }
 
-        return compact('form');
+        $title = 'Edición de Entrada de blog';
+
+        return $this->getEditView(compact( 'form', 'title' ));
     }
 }

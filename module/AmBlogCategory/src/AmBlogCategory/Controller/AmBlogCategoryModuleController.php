@@ -47,7 +47,10 @@ class AmBlogCategoryModuleController extends AuthController
                 ));
             }
         }
-        return compact('form');
+
+        $title = 'Nueva Categoría de blog';
+
+        return $this->getAddView(compact( 'form', 'title' ));
     }
 
     /**
@@ -83,6 +86,8 @@ class AmBlogCategoryModuleController extends AuthController
             }
         }
 
-        return compact('form');
+        $title = 'Edición de Categoría de blog';
+
+        return $this->getEditView(compact( 'form', 'title' ));
     }
 }

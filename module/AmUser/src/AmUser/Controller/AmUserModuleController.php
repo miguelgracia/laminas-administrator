@@ -59,9 +59,9 @@ class AmUserModuleController extends AuthController
             }
         }
 
-        $messages = array();
+        $title = 'Nuevo Usuario';
 
-        return compact('form', 'messages');
+        return $this->getAddView(compact( 'form', 'title' ));
     }
 
     /**
@@ -112,7 +112,9 @@ class AmUserModuleController extends AuthController
             }
         }
 
-        return compact('form');
+        $title = 'Edición de Usuario';
+
+        return $this->getEditView(compact( 'form', 'title' ));
     }
 
     /**
