@@ -24,7 +24,7 @@ class AmModuleModuleController extends AuthController
         // Como vamos a acceder a la tabla de controladores sacamos el Model con el Service Manager
         $this->moduleTable   = $this->sm->get('AmModule\Model\ModuleTable');
         $this->moduleService = $this->sm->get('AmModule\Service\ModuleService');
-        $this->formService   = $this->sm->get('Administrator\Service\AdministratorFormService')->setTable($this->moduleTable);
+        $this->formService   = $this->sm->get('Administrator\Service\AdministratorFormService');
     }
 
     /**
@@ -42,11 +42,9 @@ class AmModuleModuleController extends AuthController
             return $this->goToSection('module');
         }
 
-        $fieldset = new ModuleFieldset($this->serviceLocator, $gestorControlador, $this->moduleTable);
-
         $this->formService
-            ->setForm(new ModuleForm())
-            ->addFieldset($fieldset)
+            ->setForm(ModuleForm::class)
+            ->addFieldset(ModuleFieldset::class, $gestorControlador)
             ->addFields();
 
         $form = $this->formService->getForm();
@@ -63,10 +61,7 @@ class AmModuleModuleController extends AuthController
             }
         }
 
-        return array(
-            'id' => $id,
-            'form' => $form
-        );
+        return compact( 'form' );
     }
 
     /**

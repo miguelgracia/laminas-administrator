@@ -15,7 +15,14 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
     protected $serviceLocator;
     protected $tableGateway;
 
+    /**
+     * @var \Zend\Db\Metadata\Metadata
+     *
+     * Nos da acceso a métodos para tratamiento de las tablas de base de datos.
+     * Listado de columnas, tipo de dato de las columnas, etc
+     */
     protected $metadata;
+
     protected $table;
     protected $columnsTable;
 
@@ -23,16 +30,34 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
     protected $formActionType;
 
-    public function __construct($serviceLocator, $objectModel, $tableGateway, $name = false)
+    /**
+     * @var array
+     *
+     * Contiene el nombre de aquellos campos que no queremos pintar en la vista
+     */
+    protected $hiddenFields = array();
+
+    public function __construct($serviceLocator, $objectModel)
     {
-        $className = !$name ? get_class($this) : $name;
+        $className = get_class($this);
 
         parent::__construct($className);
 
         $this->serviceLocator = $serviceLocator;
-        $this->tableGateway = $tableGateway;
 
-        $this->table = $tableGateway->getTable();
+        /**
+         * El nombre del tableGateway lo vamos a extraer a raiz del nombre del Fieldset
+         * Por ejemplo: Si estamos instanciando BlogFieldset, buscaremos su correspondiente tableGateway
+         * que será BlogTable. Otro ejemplo sería BlogLocaleFieldset y su tableGateway BlogLocaleTable
+         * Debemos sustituir el sufijo "Fieldset" por "Table", además del segundo segmento del namespace
+         * que pasará a ser "Model" en vez de "Form"
+         */
+
+        $tableGateway = preg_replace('/^(Am\w+)\\\(\w+)\\\(\w+)(Fieldset)$/', "$1\\Model\\\\$3Table", $className);
+
+        $this->tableGateway = $serviceLocator->get($tableGateway);
+
+        $this->table = $this->tableGateway->getTable();
 
         $this->metadata = Factory::createSourceFromAdapter($serviceLocator->get('Zend\Db\Adapter\Adapter'));
 
@@ -142,10 +167,12 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
     public function getHiddenFields()
     {
-        return array(
-            'createdAt',
+        $this->hiddenFields = array(
+            'createdAt', //Cuidado con cambiar el orden de estos elementos!
             'updatedAt',
             'deletedAt'
         );
+
+        return $this->hiddenFields;
     }
 }

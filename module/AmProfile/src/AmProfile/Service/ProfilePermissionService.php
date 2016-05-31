@@ -10,13 +10,13 @@ class ProfilePermissionService implements FactoryInterface
 
     protected $isSuperUser;
 
-    protected $sm;
+    protected $serviceLocator;
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $this->sm = $serviceLocator;
+        $this->serviceLocator = $serviceLocator;
 
-        $authService = $this->sm->get('AuthService');
+        $authService = $this->serviceLocator->get('AuthService');
 
         $dataUser = $authService->getUserData();
 
@@ -31,17 +31,29 @@ class ProfilePermissionService implements FactoryInterface
         return $this->isSuperUser;
     }
 
+    /**
+     * @param $controller
+     * @param $action
+     * @return mixed
+     * @throws \Exception
+     *
+     * Devuelve 1 o 0 en función de si tiene o no tiene permiso de acceso. False si la ruta a comprobar no existe
+     */
     public function hasModuleAccess($controller, $action)
     {
+        $controllerActionModules = $this->serviceLocator->get('AmModule\Service\ModuleService')->getControllerActionsModules();
+        if (!array_key_exists($controller . '.' . $action, $controllerActionModules)) {
+            return false;
+        }
         if ($this->isSuperUser) {
-            return true;
+            return 1;
         }
 
         $permisos = json_decode($this->userData->permisos);
 
         $tienePermiso = in_array($controller.'.'.$action,$permisos);
 
-        return $tienePermiso;
+        return (int) $tienePermiso;
     }
 
     public function redibujarMenu(&$dataMenu)

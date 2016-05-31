@@ -14,18 +14,16 @@ class AmProfileModuleController extends AuthController
     public function setControllerVars()
     {
         $this->perfilTable = $this->sm->get('AmProfile\Model\ProfileTable');
-        $this->formService = $this->sm->get('Administrator\Service\AdministratorFormService')->setTable($this->perfilTable);
+        $this->formService = $this->sm->get('Administrator\Service\AdministratorFormService');
     }
 
     public function addAction()
     {
         $perfil = $this->perfilTable->getEntityModel();
 
-        $fieldset = new ProfileFieldset($this->serviceLocator,$perfil,$this->perfilTable);
-
         $this->formService
-            ->setForm(new ProfileForm())
-            ->addFieldset($fieldset)
+            ->setForm(ProfileForm::class)
+            ->addFieldset(ProfileFieldset::class, $perfil)
             ->addFields();
 
         $form = $this->formService->getForm();
@@ -74,11 +72,9 @@ class AmProfileModuleController extends AuthController
             return $this->goToSection('profile');
         }
 
-        $fieldset = new ProfileFieldset($this->serviceLocator,$perfil,$this->perfilTable);
-
         $this->formService
-            ->setForm(new ProfileForm())
-            ->addFieldset($fieldset)
+            ->setForm(ProfileForm::class)
+            ->addFieldset(ProfileFieldset::class, $perfil)
             ->addFields();
 
         $form = $this->formService->getForm();
@@ -108,7 +104,7 @@ class AmProfileModuleController extends AuthController
             }
         }
 
-        return compact( 'id', 'form' );
+        return compact( 'form' );
     }
 
     public function deleteAction()

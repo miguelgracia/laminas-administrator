@@ -5,7 +5,7 @@ namespace AmBlogCategory\Controller;
 use Administrator\Controller\AuthController;
 use AmBlogCategory\Form\BlogCategoryFieldset;
 use AmBlogCategory\Form\BlogCategoryForm;
-use Zend\View\Model\ViewModel;
+use AmBlogCategory\Form\BlogCategoryLocaleFieldset;
 
 class AmBlogCategoryModuleController extends AuthController
 {
@@ -15,18 +15,16 @@ class AmBlogCategoryModuleController extends AuthController
     public function setControllerVars()
     {
         $this->tableGateway = $this->sm->get('AmBlogCategory\Model\BlogCategoryTable');
-        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService')->setTable($this->tableGateway);
+        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService');
     }
 
     public function addAction()
     {
         $model = $this->tableGateway->getEntityModel();
 
-        $fieldset = new BlogCategoryFieldset($this->serviceLocator,$model,$this->tableGateway);
-
         $this->formService
-            ->setForm(new BlogCategoryForm())
-            ->addFieldset($fieldset)
+            ->setForm(BlogCategoryForm::class)
+            ->addFieldset(BlogCategoryFieldset::class, $model)
             ->addFields();
 
         $form = $this->formService->getForm();
@@ -65,11 +63,10 @@ class AmBlogCategoryModuleController extends AuthController
             return $this->goToSection('blog-category');
         }
 
-        $fieldset = new BlogCategoryFieldset($this->serviceLocator, $model, $this->tableGateway);
-
         $this->formService
-            ->setForm(new BlogCategoryForm())
-            ->addFieldset($fieldset)
+            ->setForm(BlogCategoryForm::class)
+            ->addFieldset(BlogCategoryFieldset::class, $model)
+            ->addLocaleFieldsets(BlogCategoryLocaleFieldset::class)
             ->addFields();
 
         $form = $this->formService->getForm();
@@ -82,10 +79,10 @@ class AmBlogCategoryModuleController extends AuthController
 
             if ($form->isValid()) {
 
-                $this->tableGateway->save($model);
+                $this->formService->save();
             }
         }
 
-        return compact('id', 'form');
+        return compact('form');
     }
 }

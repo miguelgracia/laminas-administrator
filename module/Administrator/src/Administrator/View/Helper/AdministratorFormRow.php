@@ -78,10 +78,9 @@ class AdministratorFormRow extends AbstractHelper
 
     public function renderFieldset($fieldset)
     {
-        $elements = $fieldset->getElements();
         $render = "";
 
-        foreach ($elements as $element) {
+        foreach ($fieldset as $element) {
             $render .= $this->render($element);
         }
 

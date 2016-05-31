@@ -539,7 +539,7 @@ EOD;
                     array(),
                     Generator\MethodGenerator::FLAG_PUBLIC,
                     "\$this->{$tableProperty} = \$this->sm->get('{$module}\\Model\\".ucfirst($tableProperty)."');
-\$this->formService  = \$this->sm->get('Administrator\\Service\\AdministratorFormService')->setTable(\$this->{$tableProperty});"
+\$this->formService  = \$this->sm->get('Administrator\\Service\\AdministratorFormService');"
                 ),
                 new Generator\MethodGenerator(
                     'indexAction',

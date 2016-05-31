@@ -1,15 +1,10 @@
 <?php
 
-/*
- * Esto es un servicio gen�rico de apoyo a formularios.
- */
-
 namespace Administrator\Service;
 
 use Administrator\Form\AdministratorFieldset;
-use Zend\Db\Adapter\AdapterAwareInterface;
-use Zend\Db\Metadata\Metadata;
 
+use Administrator\Model\AdministratorModel;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
@@ -18,6 +13,7 @@ use Zend\Filter\Word\CamelCaseToUnderscore;
 use Zend\Filter\Word\SeparatorToCamelCase;
 use Zend\Filter\Word\SeparatorToSeparator;
 use Zend\Filter\Word\UnderscoreToCamelCase;
+use Zend\Form\Fieldset;
 use Zend\Form\Form;
 
 use Zend\ServiceManager\FactoryInterface;
@@ -60,22 +56,6 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     protected $actionType = self::ACTION_ADD;
 
     /**
-     * @var \Zend\Db\Metadata\Metadata
-     *
-     * Nos da acceso a m�todos para tratamiento de las tablas de base de datos.
-     * Listado de columnas, tipo de dato de las columnas, etc
-     */
-    protected $metadata;
-
-    /**
-     * @var
-     *
-     * Objeto TableGateway de donde extraremos el nombre de la tabla de
-     * base de datos que alimentar� el formulario
-     */
-    protected $tableGateway;
-
-    /**
      * @var
      *
      * Objeto para acceso a los distintos servicios
@@ -93,16 +73,21 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     protected $fieldsets = array();
 
     /**
+     * @var Fieldset
+     */
+    protected $baseFieldset = null;
+
+    /**
      * @var array
      *
-     * Contiene los par�metros de la url: section, action e id
+     * Contiene los parámetros de la url: section, action e id
      */
     protected $routeParams = array();
 
     /**
      * @var array
      *
-     * Array asociativo que contendr� un conjunto de registros clave/valor para rellenar
+     * Array asociativo que contendrá un conjunto de registros clave/valor para rellenar
      * aquellos campos de tipo select.
      *
      * Ejemplo:
@@ -183,7 +168,6 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
-        $this->metadata = new Metadata($this->serviceLocator->get('Zend\Db\Adapter\Adapter'));
 
         $application = $this->serviceLocator->get('Application');
         $routeMatch  = $application->getMvcEvent()->getRouteMatch();
@@ -197,32 +181,6 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     public function getServiceLocator()
     {
         return $this->serviceLocator;
-    }
-
-    /**
-     * Seteamos el objeto tableGateway que va a alimentar el formulario.
-     * Se llama desde la función setControllerVars de los controladores.
-     *
-     * @param $table
-     * @return $this
-     *
-     * @param AdapterAwareInterface $table
-     * @return $this
-     */
-    public function setTable(AdapterAwareInterface $tablegateway)
-    {
-        $this->tableGateway = $tablegateway;
-        return $this;
-    }
-
-    public function getTableGateway()
-    {
-        return $this->tableGateway;
-    }
-
-    public function getTableEntityModel()
-    {
-        return $this->tableGateway->getEntityModel();
     }
 
     public function setPrimaryKey($primaryKey)
@@ -257,30 +215,75 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         return $this->actionType;
     }
 
-    public function addFieldset(AdministratorFieldset $fieldset, $isLocale = false)
+    public function addFieldset($fieldsetName, AdministratorModel $model)
     {
+        $fieldset = new $fieldsetName($this->serviceLocator, $model);
+
+        $objectModel = $fieldset->getObjectModel();
+
+        $isLocale = strpos(get_class($objectModel), "LocaleModel") !== false;
+
         $fieldset->setOption('is_locale', $isLocale);
 
         if ($isLocale) {
-            $fieldset->setName(get_class($fieldset) . "\\" . $fieldset->getObjectModel()->languageId);
+            $fieldset->setName(get_class($fieldset) . "\\" . $objectModel->languageId);
         }
 
         $className = $fieldset->getName();
 
         if (!array_key_exists($className, $this->fieldsets)) {
+            //El primer fieldset que introduzcamos será marcado como base_fieldset
+            $useAsBaseFieldset = count($this->fieldsets) == 0;
+
+            $fieldset->setOption('use_as_base_fieldset', $useAsBaseFieldset);
+
+            if ($useAsBaseFieldset) {
+                $this->baseFieldset = $fieldset;
+            }
+
             $this->initializers($fieldset);
             $this->fieldsets[$className] = $fieldset;
         }
         return $this;
     }
 
-    public function setForm(Form $form = null)
+    public function getBaseFieldset()
+    {
+        return $this->baseFieldset;
+    }
+
+    public function addLocaleFieldsets($localeClass)
+    {
+        $baseTableGateway = $this->baseFieldset->getTableGateway();
+        $objectModel = $this->baseFieldset->getObjectModel();
+
+        $primaryId = isset($objectModel->id) ? $objectModel->id : 0;
+
+        $localeTableGatewayName = preg_replace("/(Table)$/", "LocaleTable", get_class($baseTableGateway));
+
+        $localeModels = $this->serviceLocator->get($localeTableGatewayName)->findLocales($primaryId);
+
+        $baseDbTable = $baseTableGateway->getTable();
+
+        $filterUnderscoreToCamel = new UnderscoreToCamelCase();
+
+        $relationFieldName = lcfirst($filterUnderscoreToCamel->filter($baseDbTable) . 'Id');
+
+        foreach ($localeModels as $localModel) {
+            $localModel->$relationFieldName = $primaryId;
+            $this->addFieldset($localeClass, $localModel);
+        }
+
+        return $this;
+    }
+
+    public function setForm($form = null)
     {
         if (!$this->form) {
 
-            if (is_null($form) or !$form instanceof Form) {
-                $form = new Form();
-            }
+            $form = (is_null($form) or !$form instanceof Form)
+                ? new Form()
+                : new $form();
 
             //Como el nombre del formulario lo seteamos con el nombre de la clase,
             //Convertimos el separador de namespace en guiones bajos;

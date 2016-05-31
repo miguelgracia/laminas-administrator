@@ -12,6 +12,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class ModuleService implements FactoryInterface
 {
     protected $modules = array();
+    protected $controllerActions;
     protected $sm;
 
     public function createService(ServiceLocatorInterface $serviceLocator)
@@ -22,6 +23,7 @@ class ModuleService implements FactoryInterface
 
         $modules = $config['modules'];
 
+        //Devolvemos sólo aquellos módulos con el prefijo "Am" y que no estén en el array de hidden_modules
         $this->modules = array_filter($modules, function ($value) use($config) {
             return preg_match("/^Am/",$value) === 1 and !in_array($value, $config['hidden_modules']);
         });
@@ -66,6 +68,10 @@ class ModuleService implements FactoryInterface
 
     public function getControllerActionsModules()
     {
+        if ($this->controllerActions) {
+            return $this->controllerActions;
+        }
+
         $listaControladores = $this->sm->get('AmModule\Model\ModuleTable')->select();
 
         $filterDashToCamelCase = new DashToCamelCase();
@@ -103,6 +109,8 @@ class ModuleService implements FactoryInterface
 
             }
         }
+
+        $this->controllerActions = $controllerActions;
 
         return $controllerActions;
     }

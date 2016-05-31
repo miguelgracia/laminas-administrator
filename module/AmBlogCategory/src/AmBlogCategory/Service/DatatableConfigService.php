@@ -17,8 +17,9 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
 
         $disallowOrderTo = $disallowSearchTo;
 
-        $canEdit    = $this->permissions->hasModuleAccess('blog_category', 'edit');
-        $canDelete  = $this->permissions->hasModuleAccess('blog_category', 'delete');
+        $canEdit    = $this->permissions->hasModuleAccess('blog-category', 'edit');
+        $canDelete  = $this->permissions->hasModuleAccess('blog-category', 'delete');
+
 
         return array(
             'searchable' => $disallowSearchTo,
@@ -27,7 +28,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
                 //ocultamos la columna ID
                 $header['blog_categories.id']['options']['visible'] = false;
 
-                //A�adimos las columnas que contendr�n los iconos de edici�n y activar/desactivar
+                //Añadimos las columnas que contendrán los iconos de edición y activar/desactivar
                 $header['edit'] = array(
                     'value' => 'Modificar',
                     'options' => array(
@@ -57,8 +58,8 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
 
                 $controller = $controllerPlugin->getController();
 
-                $editUrl = $controller->goToSection('blog_category',array('action' => 'edit', 'id' => $row['id']),true);
-                $deleteUrl = $controller->goToSection('blog_category',array('action' => 'delete','id' => $row['id']),true);
+                $editUrl = $controller->goToSection('blog-category',array('action' => 'edit', 'id' => $row['id']),true);
+                $deleteUrl = $controller->goToSection('blog-category',array('action' => 'delete','id' => $row['id']),true);
 
                 $row['edit'] = $canEdit ? sprintf($link,$editUrl, 'fa-edit') : '';
                 $row['delete'] = $canDelete ? sprintf($link, $deleteUrl, 'fa-remove js-eliminar') : '';
@@ -71,7 +72,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
     public function getQueryConfig()
     {
         return array(
-            //En fields solo tenemos que a�adir los campos de la tabla indicada en 'from'
+            //En fields solo tenemos que añadir los campos de la tabla indicada en 'from'
             'fields' => array(
                 'id',
                 'key',
@@ -91,9 +92,9 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
                     'left'
                 ),*/
             ),
-            //Los campos que est�n dentro del 'having_fields' no se ver�n afectados por la clausula where al
+            //Los campos que están dentro del 'having_fields' no se veran afectados por la clausula where al
             //filtar, sino por la clausula having. Esto es necesario para aquellos campos cuyo valor dependen
-            //de una agrupaci�n y deseamos filtrar por ellos.
+            //de una agrupación y deseamos filtrar por ellos.
             'having_fields' => array(
 
             ),

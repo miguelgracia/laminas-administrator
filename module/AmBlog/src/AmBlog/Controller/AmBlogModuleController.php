@@ -15,18 +15,17 @@ class AmBlogModuleController extends AuthController
     public function setControllerVars()
     {
         $this->tableGateway = $this->sm->get('AmBlog\Model\BlogTable');
-        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService')->setTable($this->tableGateway);
+        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService');
     }
 
     public function addAction()
     {
         $row = $this->tableGateway->getEntityModel();
 
-        $fieldset = new BlogFieldset($this->serviceLocator,$row,$this->tableGateway);
-
         $this->formService
             ->setForm()
-            ->addFieldset($fieldset)
+            ->addFieldset(BlogFieldset::class, $row)
+            ->addLocaleFieldsets(BlogLocaleFieldset::class)
             ->addFields();
 
         $form = $this->formService->getForm();
@@ -64,21 +63,11 @@ class AmBlogModuleController extends AuthController
             return $this->goToSection('blog');
         }
 
-        $fieldset = new BlogFieldset($this->serviceLocator, $model, $this->tableGateway);
-        $localeTableGateway = $this->sm->get('AmBlog\Model\BlogLocaleTable');
-        $localeModels = $localeTableGateway->findLocales($id);
-
         $this->formService
-            ->setForm(new BlogForm())
-            ->addFieldset($fieldset);
-
-        foreach ($localeModels as $localModel) {
-            $localModel->blogEntriesId = $id;
-            $localeFieldset = new BlogLocaleFieldset($this->serviceLocator, $localModel, $localeTableGateway);
-            $this->formService->addFieldset($localeFieldset, true);
-        }
-
-        $this->formService->addFields();
+            ->setForm(BlogForm::class)
+            ->addFieldset(BlogFieldset::class, $model)
+            ->addLocaleFieldsets(BlogLocaleFieldset::class)
+            ->addFields();
 
         $form = $this->formService->getForm();
 
@@ -95,9 +84,6 @@ class AmBlogModuleController extends AuthController
             }
         }
 
-        return compact('id', 'form');
+        return compact('form');
     }
-
-
 }
-

@@ -23,7 +23,7 @@ class AmUserModuleController extends AuthController
     {
         $this->userTable    = $this->sm->get('AmUser\Model\UserTable');
         $this->perfilTable  = $this->sm->get('AmProfile\Model\ProfileTable');
-        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService')->setTable($this->userTable);
+        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService');
     }
 
     /**
@@ -33,11 +33,9 @@ class AmUserModuleController extends AuthController
     {
         $gestorUsuarios = $this->userTable->getEntityModel();
 
-        $fieldset = new UserFieldset($this->serviceLocator,$gestorUsuarios,$this->userTable);
-
         $this->formService
-            ->setForm(new AmUserForm())
-            ->addFieldset($fieldset)
+            ->setForm(AmUserForm::class)
+            ->addFieldset(UserFieldset::class, $gestorUsuarios)
             ->addFields();
 
         $form = $this->formService->getForm();
@@ -61,10 +59,9 @@ class AmUserModuleController extends AuthController
             }
         }
 
-        return array(
-            'form' => $form,
-            'messages' => array(),
-        );
+        $messages = array();
+
+        return compact('form', 'messages');
     }
 
     /**
@@ -86,13 +83,10 @@ class AmUserModuleController extends AuthController
             return $this->goToSection('user');
         }
 
-        $fieldset = new UserFieldset($this->serviceLocator, $gestorUsuarios, $this->userTable);
-
         $this->formService
-            ->setForm(new AmUserForm())
-            ->addFieldset($fieldset)
+            ->setForm(AmUserForm::class)
+            ->addFieldset(UserFieldset::class, $gestorUsuarios)
             ->addFields();
-
 
         $form = $this->formService->getForm();
 
@@ -118,11 +112,7 @@ class AmUserModuleController extends AuthController
             }
         }
 
-        return array(
-            'id'        => $id,
-            'form'      => $form,
-            'user'      => $gestorUsuarios
-        );
+        return compact('form');
     }
 
     /**

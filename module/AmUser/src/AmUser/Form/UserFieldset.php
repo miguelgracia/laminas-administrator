@@ -8,6 +8,18 @@ use Zend\Db\Sql\Expression;
 
 class UserFieldset extends AdministratorFieldset
 {
+    public function getHiddenFields()
+    {
+        $hiddenFields = parent::getHiddenFields();
+
+        $hiddenFields = array_merge($hiddenFields, array(
+            'lastLogin',
+            'validado'
+        ));
+
+        return $hiddenFields;
+    }
+
     public function initializers()
     {
         $serviceLocator = $this->serviceLocator;
@@ -40,8 +52,8 @@ class UserFieldset extends AdministratorFieldset
     public function addFields()
     {
         //fechaAlta y ultimoLogin nunca deben ser editables. Se marcan como Readonly
-        $this->get('createdAt')->setAttribute('readonly',true);
-        $this->get('lastLogin')->setAttribute('readonly',true);
+        //$this->get('createdAt')->setAttribute('readonly',true);
+        //$this->get('lastLogin')->setAttribute('readonly',true);
 
         $this->add(array(
             'name' => 'password2',
@@ -58,6 +70,8 @@ class UserFieldset extends AdministratorFieldset
                 'value' => '',
                 'class' => 'form-control',
             ),
+        ),array(
+            'priority' => -400,
         ));
 
         if ($this->formActionType == 'edit') {
@@ -76,6 +90,8 @@ class UserFieldset extends AdministratorFieldset
                     'id' => 'change_password',
                     'value' => '0',
                 )
+            ),array(
+                'priority' => -300,
             ));
         }
 

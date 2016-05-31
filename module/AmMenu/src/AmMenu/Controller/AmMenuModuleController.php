@@ -12,30 +12,28 @@ use Zend\Form\Element;
 
 class AmMenuModuleController extends AuthController
 {
-    protected $entradaMenuTable;
+    protected $tableGateway;
 
     public function setControllerVars()
     {
-        $this->entradaMenuTable = $this->sm->get('AmMenu\Model\MenuTable');
-        $this->formService      = $this->sm->get('Administrator\Service\AdministratorFormService')->setTable($this->entradaMenuTable);
+        $this->tableGateway = $this->sm->get('AmMenu\Model\MenuTable');
+        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService');
     }
 
     public function indexAction()
     {
-        $entradas = $this->entradaMenuTable->fetchAllOrdenados();
+        $entradas = $this->tableGateway->fetchAllOrdenados();
 
-        return new ViewModel(compact('entradas'));
+        return compact('entradas');
     }
 
     public function addAction()
     {
-        $entradaMenu = $this->entradaMenuTable->getEntityModel();
-
-        $fieldset = new MenuFieldset($this->serviceLocator,$entradaMenu,$this->entradaMenuTable);
+        $entradaMenu = $this->tableGateway->getEntityModel();
 
         $this->formService
-            ->setForm(new MenuForm())
-            ->addFieldset($fieldset)
+            ->setForm(MenuForm::class)
+            ->addFieldset(MenuFieldset::class, $entradaMenu)
             ->addFields();
 
         $form = $this->formService->getForm();
@@ -43,6 +41,7 @@ class AmMenuModuleController extends AuthController
         // Asignamos "padre" y "orden"
         $padre = (int) $this->params()->fromRoute('id', 0) ?: -1;
 
+        $fieldset = $this->formService->getBaseFieldset();
 
         $fieldset->get('padre')->setValue($padre);
 
@@ -58,7 +57,7 @@ class AmMenuModuleController extends AuthController
 
             if ($form->isValid()) {
 
-                $insertId = $this->entradaMenuTable->save($entradaMenu);
+                $insertId = $this->tableGateway->save($entradaMenu);
 
                 return $this->goToSection('menu', array(
                     'action'  => 'edit',
@@ -74,16 +73,14 @@ class AmMenuModuleController extends AuthController
     {
         try {
             $id = (int) $this->params()->fromRoute('id', 0);
-            $entradaMenu = $this->entradaMenuTable->find($id);
+            $entradaMenu = $this->tableGateway->find($id);
         } catch (\Exception $ex) {
             return $this->goToSection('menu');
         }
 
-        $fieldset = new MenuFieldset($this->serviceLocator, $entradaMenu, $this->entradaMenuTable);
-
         $this->formService
-            ->setForm(new MenuForm())
-            ->addFieldset($fieldset)
+            ->setForm(MenuForm::class)
+            ->addFieldset(MenuFieldset::class, $entradaMenu)
             ->addFields();
 
         $request = $this->getRequest();
@@ -96,7 +93,7 @@ class AmMenuModuleController extends AuthController
 
             if ($form->isValid()) {
 
-                $this->entradaMenuTable->save($entradaMenu);
+                $this->tableGateway->save($entradaMenu);
             }
         }
 
@@ -114,7 +111,7 @@ class AmMenuModuleController extends AuthController
         if ($request->isPost()) {
             $menuIds = $this->params()->fromPost('elements');
             foreach ($menuIds as $index => $id) {
-                $this->entradaMenuTable->save(array(
+                $this->tableGateway->save(array(
                     'orden' => (int) $index + 1
                 ),$id);
             }
@@ -131,7 +128,7 @@ class AmMenuModuleController extends AuthController
 
         if ($id != 0) {
             // Borramos con este ID
-            $this->entradaMenuTable->deleteEntradaMenu($id);
+            $this->tableGateway->deleteEntradaMenu($id);
         }
 
         // Nos vamos al listado general
