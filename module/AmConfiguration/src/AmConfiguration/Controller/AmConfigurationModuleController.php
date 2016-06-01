@@ -13,7 +13,6 @@ class AmConfigurationModuleController extends AuthController
     public function setControllerVars()
     {
         $this->valoresConfiguracionTable = $this->sm->get('AmConfiguration\Model\ValoresConfiguracionTable');
-        $this->formService = $this->sm->get('Administrator\Service\AdministratorFormService');
     }
 
     public function indexAction()

@@ -129,7 +129,9 @@ class AuthController extends AbstractActionController
     {
         $this->setControllerVars();
 
-        $this->sessionService = $this->sm->get('Administrator\Service\SessionService');
+        $this->sessionService   = $this->sm->get('Administrator\Service\SessionService');
+        $this->formService      = $this->sm->get('Administrator\Service\AdministratorFormService');
+
 
         // Sacamos la ruta para matchearla
         $match = $e->getRouteMatch();
@@ -166,11 +168,9 @@ class AuthController extends AbstractActionController
                 return $this->goToSection('login');
             }
 
-            $misPermisos = $this->sm->get('AmProfile\Service\ProfilePermissionService');
+            $permissionsService = $this->sm->get('AmProfile\Service\ProfilePermissionService');
 
-            $hasAccess = $misPermisos->hasModuleAccess($module,$action);
-
-            if (!$hasAccess)
+            if (!$permissionsService->hasModuleAccess($module,$action))
             {
                 return $this->redirect()->toRoute('administrator',array(
                     'module' => 'login',

@@ -373,7 +373,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         $this->fieldModifiers[$modifier] = $value;
     }
 
-    public function addFields($sourceTable = null)
+    public function addFields()
     {
         /**
          * Buscaremos en el objeto formulario y en los objectos Fieldset si existe el método addFields.

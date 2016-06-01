@@ -17,7 +17,6 @@ class AmMenuModuleController extends AuthController
     public function setControllerVars()
     {
         $this->tableGateway = $this->sm->get('AmMenu\Model\MenuTable');
-        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService');
     }
 
     public function indexAction()

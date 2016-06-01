@@ -6,12 +6,6 @@ use Administrator\Controller\AuthController;
 use AmUser\Form\AmUserForm;
 use AmUser\Form\UserFieldset;
 use Zend\Db\Sql\Predicate\Expression;
-use Zend\View\Model\ViewModel;
-
-// Para formularios
-use Zend\Captcha;
-use Zend\Form\Element;
-
 
 class AmUserModuleController extends AuthController
 {
@@ -23,7 +17,6 @@ class AmUserModuleController extends AuthController
     {
         $this->userTable    = $this->sm->get('AmUser\Model\UserTable');
         $this->perfilTable  = $this->sm->get('AmProfile\Model\ProfileTable');
-        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService');
     }
 
     /**

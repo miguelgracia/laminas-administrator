@@ -14,7 +14,6 @@ class AmProfileModuleController extends AuthController
     public function setControllerVars()
     {
         $this->perfilTable = $this->sm->get('AmProfile\Model\ProfileTable');
-        $this->formService = $this->sm->get('Administrator\Service\AdministratorFormService');
     }
 
     public function addAction()

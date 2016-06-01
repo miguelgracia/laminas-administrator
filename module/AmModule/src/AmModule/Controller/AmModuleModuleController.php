@@ -21,10 +21,8 @@ class AmModuleModuleController extends AuthController
      */
     public function setControllerVars()
     {
-        // Como vamos a acceder a la tabla de controladores sacamos el Model con el Service Manager
         $this->moduleTable   = $this->sm->get('AmModule\Model\ModuleTable');
         $this->moduleService = $this->sm->get('AmModule\Service\ModuleService');
-        $this->formService   = $this->sm->get('Administrator\Service\AdministratorFormService');
     }
 
     /**

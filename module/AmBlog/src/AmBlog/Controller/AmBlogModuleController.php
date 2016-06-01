@@ -15,7 +15,6 @@ class AmBlogModuleController extends AuthController
     public function setControllerVars()
     {
         $this->tableGateway = $this->sm->get('AmBlog\Model\BlogTable');
-        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService');
     }
 
     public function addAction()
@@ -25,7 +24,6 @@ class AmBlogModuleController extends AuthController
         $this->formService
             ->setForm()
             ->addFieldset(BlogFieldset::class, $row)
-            ->addLocaleFieldsets(BlogLocaleFieldset::class)
             ->addFields();
 
         $form = $this->formService->getForm();
