@@ -189,7 +189,7 @@ class AuthController extends AbstractActionController
 
         $tableGateway = preg_replace('/^(Am)(\w+)\\\(\w+)\\\(\w+)(ModuleController)$/', "$1$2\\Model\\\\$2Table", $className);
 
-        if ($this->serviceLocator->has($tableGateway)) {
+        if (class_exists($tableGateway)) {
             $this->tableGateway = $this->serviceLocator->get($tableGateway);
         }
     }

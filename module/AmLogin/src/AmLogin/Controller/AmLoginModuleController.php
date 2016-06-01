@@ -12,10 +12,6 @@ class AmLoginModuleController extends AuthController
 {
     protected $data = array();
 
-    public function setControllerVars() {
-
-    }
-
     public function indexAction()
     {
         if ($this->getAuthService()->hasIdentity()) {
