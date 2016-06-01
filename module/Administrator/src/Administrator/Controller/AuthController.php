@@ -206,6 +206,68 @@ class AuthController extends AbstractActionController
         return $datatable->run();
     }
 
+    public function addAction()
+    {
+        $formService = $this->formService;
+
+        $form = $formService
+            ->setForm()
+            ->addFields()
+            ->getForm();
+
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+
+            $isValid = $formService->resolveForm($request->getPost());
+
+            if ($isValid) {
+
+                $insertId = $formService->save();
+
+                return $this->goToSection($formService->getRouteParams('module'), array(
+                    'action'  => 'edit',
+                    'id'      => $insertId[0]
+                ));
+            }
+        }
+
+        $title = "Nuevo";
+
+        return $this->getAddView(compact( 'form', 'title' ));
+    }
+
+    public function editAction()
+    {
+        $thisModule = $this->formService->getRouteParams('module');
+
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        if (!$id) {
+            return $this->goToSection($thisModule);
+        }
+
+        $form = $this->formService->setForm()->addFields()->getForm();
+
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+
+            $isValid = $this->formService->resolveForm($request->getPost());
+
+            if ($isValid) {
+
+                $this->formService->save();
+
+                return $this->goToEditSection($thisModule, $id);
+            }
+        }
+
+        $title = 'Edición';
+
+        return $this->getEditView(compact( 'form', 'title' ));
+    }
+
     protected function getView($params = array(), $viewName)
     {
         $viewModel = new ViewModel($params);
