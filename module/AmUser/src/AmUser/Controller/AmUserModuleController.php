@@ -9,24 +9,16 @@ use AmUser\Form\UserFieldset;
 
 class AmUserModuleController extends AuthController
 {
-    protected $tableGateway;
-    protected $form;
-
-    public function setControllerVars()
-    {
-        $this->tableGateway    = $this->sm->get('AmUser\Model\UserTable');
-    }
-
     /**
      * @return array|\Zend\Http\Response
      */
     public function addAction()
     {
-        $gestorUsuarios = $this->tableGateway->getEntityModel();
+        $model = $this->tableGateway->getEntityModel();
 
         $this->formService
             ->setForm(AmUserForm::class)
-            ->addFieldset(UserFieldset::class, $gestorUsuarios)
+            ->addFieldset(UserFieldset::class, $model)
             ->addFields();
 
         $form = $this->formService->getForm();
@@ -39,7 +31,7 @@ class AmUserModuleController extends AuthController
 
             if ($form->isValid()) {
 
-                $gestorUsuarios->password = md5($gestorUsuarios->password);
+                $model->password = md5($model->password);
 
                 $insertId = $this->formService->save();
 
@@ -62,8 +54,8 @@ class AmUserModuleController extends AuthController
     {
         try {
             $id = (int) $this->params()->fromRoute('id', 0);
-            $gestorUsuarios = $this->tableGateway->find($id);
-            $auxGestorUsuarios = clone $gestorUsuarios;
+            $model = $this->tableGateway->find($id);
+            $auxModel = clone $model;
         }
         catch (\Exception $ex) {
             return $this->goToSection('user');
@@ -71,7 +63,7 @@ class AmUserModuleController extends AuthController
 
         $this->formService
             ->setForm(AmUserForm::class)
-            ->addFieldset(UserFieldset::class, $gestorUsuarios)
+            ->addFieldset(UserFieldset::class, $model)
             ->addFields();
 
         $form = $this->formService->getForm();
@@ -84,12 +76,12 @@ class AmUserModuleController extends AuthController
 
             if ($form->isValid()) {
 
-                $checkPassword =  (bool) $gestorUsuarios->getCheckPassword();
+                $checkPassword =  (bool) $model->getCheckPassword();
 
                 if (!$checkPassword) {
-                    $gestorUsuarios->password = $auxGestorUsuarios->getPassword();
+                    $model->password = $auxModel->getPassword();
                 } else {
-                    $gestorUsuarios->password = md5($gestorUsuarios->password);
+                    $model->password = md5($model->password);
                 }
 
                 $this->formService->save();

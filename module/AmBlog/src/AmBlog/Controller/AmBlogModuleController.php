@@ -10,13 +10,6 @@ use Zend\View\Model\ViewModel;
 
 class AmBlogModuleController extends AuthController
 {
-    protected $tableGateway = null;
-
-    public function setControllerVars()
-    {
-        $this->tableGateway = $this->sm->get('AmBlog\Model\BlogTable');
-    }
-
     public function addAction()
     {
         $row = $this->tableGateway->getEntityModel();

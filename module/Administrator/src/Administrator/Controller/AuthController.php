@@ -15,6 +15,8 @@ class AuthController extends AbstractActionController
     protected $sm;
     protected $storage;
     protected $authService;
+
+    protected $tableGateway;
     protected $formService;
 
     protected $sessionService;
@@ -179,6 +181,17 @@ class AuthController extends AbstractActionController
         }
 
         return parent::onDispatch($e);
+    }
+
+    public function setControllerVars()
+    {
+        $className = get_class($this);
+
+        $tableGateway = preg_replace('/^(Am)(\w+)\\\(\w+)\\\(\w+)(ModuleController)$/', "$1$2\\Model\\\\$2Table", $className);
+
+        if ($this->serviceLocator->has($tableGateway)) {
+            $this->tableGateway = $this->serviceLocator->get($tableGateway);
+        }
     }
 
     /**

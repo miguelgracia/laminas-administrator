@@ -9,13 +9,6 @@ use AmBlogCategory\Form\BlogCategoryLocaleFieldset;
 
 class AmBlogCategoryModuleController extends AuthController
 {
-    protected $blogcategoryTable = null;
-
-    public function setControllerVars()
-    {
-        $this->tableGateway = $this->sm->get('AmBlogCategory\Model\BlogCategoryTable');
-    }
-
     public function addAction()
     {
         $model = $this->tableGateway->getEntityModel();

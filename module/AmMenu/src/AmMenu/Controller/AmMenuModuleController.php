@@ -12,13 +12,6 @@ use Zend\Form\Element;
 
 class AmMenuModuleController extends AuthController
 {
-    protected $tableGateway;
-
-    public function setControllerVars()
-    {
-        $this->tableGateway = $this->sm->get('AmMenu\Model\MenuTable');
-    }
-
     public function indexAction()
     {
         $entradas = $this->tableGateway->fetchAllOrdenados();
