@@ -562,10 +562,14 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
     public function save()
     {
+        $result = array();
+
         foreach ($this->fieldsets as $fieldset) {
             $tableGateway = $fieldset->getTableGateway();
             $model = $fieldset->getObjectModel();
-            $tableGateway->save($model);
+            $result[] = $tableGateway->save($model);
         }
+
+        return $result;
     }
 }

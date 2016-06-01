@@ -36,11 +36,11 @@ class AmBlogModuleController extends AuthController
 
             if ($form->isValid()) {
 
-                $insertId = $this->tableGateway->save($row);
+                $insertId = $this->formService->save();
 
                 return $this->goToSection('blog', array(
                     'action'  => 'edit',
-                    'id'      => $insertId
+                    'id'      => $insertId[0]
                 ));
             }
         }

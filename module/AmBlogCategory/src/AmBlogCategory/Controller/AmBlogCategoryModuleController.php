@@ -37,11 +37,11 @@ class AmBlogCategoryModuleController extends AuthController
 
             if ($form->isValid()) {
 
-                $insertId = $this->tableGateway->save($model);
+                $insertId = $this->formService->save();
 
                 return $this->goToSection('blog-category', array(
                     'action' => 'edit',
-                    'id' => $insertId
+                    'id' => $insertId[0]
                 ));
             }
         }

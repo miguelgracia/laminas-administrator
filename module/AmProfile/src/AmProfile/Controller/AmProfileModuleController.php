@@ -48,11 +48,11 @@ class AmProfileModuleController extends AuthController
 
                 $perfil->permisos = json_encode($permisos);
 
-                $insertId = $this->perfilTable->save($perfil);
+                $insertId = $this->formService->save();
 
                 return $this->goToSection('profile', array(
                     'action' => 'edit',
-                    'id' => $insertId
+                    'id' => $insertId[0]
                 ));
             }
         }

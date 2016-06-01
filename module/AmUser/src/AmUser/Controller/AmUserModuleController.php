@@ -5,18 +5,16 @@ use Administrator\Controller\AuthController;
 
 use AmUser\Form\AmUserForm;
 use AmUser\Form\UserFieldset;
-use Zend\Db\Sql\Predicate\Expression;
+
 
 class AmUserModuleController extends AuthController
 {
-    protected $userTable;
-    protected $perfilTable;
+    protected $tableGateway;
     protected $form;
 
     public function setControllerVars()
     {
-        $this->userTable    = $this->sm->get('AmUser\Model\UserTable');
-        $this->perfilTable  = $this->sm->get('AmProfile\Model\ProfileTable');
+        $this->tableGateway    = $this->sm->get('AmUser\Model\UserTable');
     }
 
     /**
@@ -24,7 +22,7 @@ class AmUserModuleController extends AuthController
      */
     public function addAction()
     {
-        $gestorUsuarios = $this->userTable->getEntityModel();
+        $gestorUsuarios = $this->tableGateway->getEntityModel();
 
         $this->formService
             ->setForm(AmUserForm::class)
@@ -43,11 +41,11 @@ class AmUserModuleController extends AuthController
 
                 $gestorUsuarios->password = md5($gestorUsuarios->password);
 
-                $insertId = $this->userTable->save($gestorUsuarios);
+                $insertId = $this->formService->save();
 
                 return $this->goToSection('user', array(
                     'action' => 'edit',
-                    'id' => $insertId
+                    'id' => $insertId[0]
                 ));
             }
         }
@@ -62,14 +60,9 @@ class AmUserModuleController extends AuthController
      */
     public function editAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
-            return $this->goToSection('user');
-        }
-
         try {
-            // Sacamos los datos del usuario en concreto
-            $gestorUsuarios = $this->userTable->find($id);
+            $id = (int) $this->params()->fromRoute('id', 0);
+            $gestorUsuarios = $this->tableGateway->find($id);
             $auxGestorUsuarios = clone $gestorUsuarios;
         }
         catch (\Exception $ex) {
@@ -87,9 +80,7 @@ class AmUserModuleController extends AuthController
 
         if ($request->isPost()) {
 
-            $post = $request->getPost();
-
-            $form->bind($post);
+            $form->bind($request->getPost());
 
             if ($form->isValid()) {
 
@@ -98,14 +89,14 @@ class AmUserModuleController extends AuthController
                 if (!$checkPassword) {
                     $gestorUsuarios->password = $auxGestorUsuarios->getPassword();
                 } else {
-                    $gestorUsuarios->password = new Expression("md5('$gestorUsuarios->password')");
+                    $gestorUsuarios->password = md5($gestorUsuarios->password);
                 }
 
-                $this->userTable->save($gestorUsuarios);
+                $this->formService->save();
             }
         }
 
-        $title = 'Edición de Usuario';
+        $title = 'EdiciÃ³n de Usuario';
 
         return $this->getEditView(compact( 'form', 'title' ));
     }
@@ -119,7 +110,7 @@ class AmUserModuleController extends AuthController
 
         if ($id != 0) {
             // Borramos con este ID
-            $this->userTable->deleteGestorUsuarios($id);
+            $this->tableGateway->deleteGestorUsuarios($id);
         }
         // Nos vamos al listado general
         return $this->goToSection('user');

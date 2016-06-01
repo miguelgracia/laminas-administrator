@@ -51,11 +51,11 @@ class AmMenuModuleController extends AuthController
 
             if ($form->isValid()) {
 
-                $insertId = $this->tableGateway->save($entradaMenu);
+                $insertId = $this->formService->save();
 
                 return $this->goToSection('menu', array(
                     'action'  => 'edit',
-                    'id'      => $insertId
+                    'id'      => $insertId[0]
                 ));
             }
         }
