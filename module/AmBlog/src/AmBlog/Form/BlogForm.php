@@ -2,11 +2,19 @@
 
 namespace AmBlog\Form;
 
-use Zend\Form\Form;
+use Administrator\Form\AdministratorForm;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
-class BlogForm extends Form
+class BlogForm extends AdministratorForm
 {
-
+    public function initializers(ServiceLocatorInterface $serviceLocator)
+    {
+        return array(
+            'fieldsets' => array(
+                'baseFieldset' => BlogFieldset::class,
+                'localeFieldset' => BlogLocaleFieldset::class
+            )
+        );
+    }
 
 }
-
