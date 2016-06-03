@@ -12,14 +12,6 @@ use Zend\Form\Element;
 
 class AmMenuModuleController extends AuthController
 {
-    protected $tableGateway;
-
-    public function setControllerVars()
-    {
-        $this->tableGateway = $this->sm->get('AmMenu\Model\MenuTable');
-        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService');
-    }
-
     public function indexAction()
     {
         $entradas = $this->tableGateway->fetchAllOrdenados();
@@ -52,11 +44,11 @@ class AmMenuModuleController extends AuthController
 
             if ($form->isValid()) {
 
-                $insertId = $this->tableGateway->save($entradaMenu);
+                $insertId = $this->formService->save();
 
                 return $this->goToSection('menu', array(
                     'action'  => 'edit',
-                    'id'      => $insertId
+                    'id'      => $insertId[0]
                 ));
             }
         }

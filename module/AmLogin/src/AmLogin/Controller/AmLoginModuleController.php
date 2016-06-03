@@ -10,10 +10,6 @@ use Zend\View\Model\ViewModel;
 
 class AmLoginModuleController extends AuthController
 {
-    public function setControllerVars() {
-
-    }
-
     protected $data = array();
 
     public function indexAction()

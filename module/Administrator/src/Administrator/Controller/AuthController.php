@@ -15,6 +15,8 @@ class AuthController extends AbstractActionController
     protected $sm;
     protected $storage;
     protected $authService;
+
+    protected $tableGateway;
     protected $formService;
 
     protected $sessionService;
@@ -129,7 +131,9 @@ class AuthController extends AbstractActionController
     {
         $this->setControllerVars();
 
-        $this->sessionService = $this->sm->get('Administrator\Service\SessionService');
+        $this->sessionService   = $this->sm->get('Administrator\Service\SessionService');
+        $this->formService      = $this->sm->get('Administrator\Service\AdministratorFormService');
+
 
         // Sacamos la ruta para matchearla
         $match = $e->getRouteMatch();
@@ -166,11 +170,9 @@ class AuthController extends AbstractActionController
                 return $this->goToSection('login');
             }
 
-            $misPermisos = $this->sm->get('AmProfile\Service\ProfilePermissionService');
+            $permissionsService = $this->sm->get('AmProfile\Service\ProfilePermissionService');
 
-            $hasAccess = $misPermisos->hasModuleAccess($module,$action);
-
-            if (!$hasAccess)
+            if (!$permissionsService->hasModuleAccess($module,$action))
             {
                 return $this->redirect()->toRoute('administrator',array(
                     'module' => 'login',
@@ -179,6 +181,17 @@ class AuthController extends AbstractActionController
         }
 
         return parent::onDispatch($e);
+    }
+
+    public function setControllerVars()
+    {
+        $className = get_class($this);
+
+        $tableGateway = preg_replace('/^(Am)(\w+)\\\(\w+)\\\(\w+)(ModuleController)$/', "$1$2\\Model\\\\$2Table", $className);
+
+        if (class_exists($tableGateway)) {
+            $this->tableGateway = $this->serviceLocator->get($tableGateway);
+        }
     }
 
     /**
@@ -191,6 +204,68 @@ class AuthController extends AbstractActionController
         $datatable->init();
 
         return $datatable->run();
+    }
+
+    public function addAction()
+    {
+        $formService = $this->formService;
+
+        $form = $formService
+            ->setForm()
+            ->addFields()
+            ->getForm();
+
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+
+            $isValid = $formService->resolveForm($request->getPost());
+
+            if ($isValid) {
+
+                $insertId = $formService->save();
+
+                return $this->goToSection($formService->getRouteParams('module'), array(
+                    'action'  => 'edit',
+                    'id'      => $insertId[0]
+                ));
+            }
+        }
+
+        $title = "Nuevo";
+
+        return $this->getAddView(compact( 'form', 'title' ));
+    }
+
+    public function editAction()
+    {
+        $thisModule = $this->formService->getRouteParams('module');
+
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        if (!$id) {
+            return $this->goToSection($thisModule);
+        }
+
+        $form = $this->formService->setForm()->addFields()->getForm();
+
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+
+            $isValid = $this->formService->resolveForm($request->getPost());
+
+            if ($isValid) {
+
+                $this->formService->save();
+
+                return $this->goToEditSection($thisModule, $id);
+            }
+        }
+
+        $title = 'Edición';
+
+        return $this->getEditView(compact( 'form', 'title' ));
     }
 
     protected function getView($params = array(), $viewName)

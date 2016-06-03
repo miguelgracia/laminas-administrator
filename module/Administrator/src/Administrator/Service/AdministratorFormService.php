@@ -2,8 +2,6 @@
 
 namespace Administrator\Service;
 
-use Administrator\Form\AdministratorFieldset;
-
 use Administrator\Model\AdministratorModel;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
@@ -32,9 +30,20 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     /**
      * Constantes de eventos
      */
-    const EVENT_CREATE      = 'create';
     const EVENT_READ        = 'read';
-    const EVENT_UPDATE      = 'update';
+
+    const EVENT_CREATE                      = 'create';
+    const EVENT_CREATE_INIT_FORM            = 'create.init.form';
+    const EVENT_CREATE_VALID_FORM_SUCCESS   = 'create.form.valid.success';
+    const EVENT_CREATE_VALID_FORM_FAILED    = 'create.form.valid.failed';
+    const EVENT_CREATE_SAVE_FORM            = 'create.form.save';
+
+    const EVENT_UPDATE                      = 'update';
+    const EVENT_UPDATE_INIT_FORM            = 'update.init.form';
+    const EVENT_UPDATE_VALID_FORM_SUCCESS   = 'update.form.valid.success';
+    const EVENT_UPDATE_VALID_FORM_FAILED    = 'update.form.valid.failed';
+    const EVENT_UPDATE_SAVE_FORM            = 'update.form.save';
+
     const EVENT_DELETE      = 'delete';
 
     /**
@@ -165,7 +174,8 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         // CrudListener. Si hubiese algún otro Listener definido, sería para aplicar lógica
         // que no interfiera con el guardado en base de datos.
 
-        $result = $this->getEventManager()->trigger($eventName,null,$args)->first();
+
+        $result = $this->getEventManager()->trigger($eventName,null,$args)/*->first()*/;
 
         return $result;
     }
@@ -308,6 +318,12 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
                 ->addDefaultFields()
                 ->setDefaultFormAction()
                 ->initializers($this->form);
+
+            $triggerInit = $this->routeParams['action'] == 'add'
+                ? $this::EVENT_CREATE_INIT_FORM
+                : $this::EVENT_UPDATE_INIT_FORM;
+
+            $eventResult = $this->eventTrigger($triggerInit);
         }
 
         return $this;
@@ -373,7 +389,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         $this->fieldModifiers[$modifier] = $value;
     }
 
-    public function addFields($sourceTable = null)
+    public function addFields()
     {
         /**
          * Buscaremos en el objeto formulario y en los objectos Fieldset si existe el método addFields.
@@ -560,12 +576,32 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         $this->setAttribute('action', $url('administrator', $params));
     }
 
+    public function resolveForm($data)
+    {
+        $this->form->bind($data);
+
+        $isValid = true;
+
+        if ($this->form->isValid()) {
+            $this->eventTrigger($this::EVENT_CREATE_VALID_FORM_SUCCESS);
+        } else {
+            $isValid = false;
+            $this->eventTrigger($this::EVENT_CREATE_VALID_FORM_FAILED);
+        }
+
+        return $isValid;
+    }
+
     public function save()
     {
+        $result = array();
+
         foreach ($this->fieldsets as $fieldset) {
             $tableGateway = $fieldset->getTableGateway();
             $model = $fieldset->getObjectModel();
-            $tableGateway->save($model);
+            $result[] = $tableGateway->save($model);
         }
+
+        return $result;
     }
 }

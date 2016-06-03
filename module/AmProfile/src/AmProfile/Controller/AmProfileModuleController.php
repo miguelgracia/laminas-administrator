@@ -4,22 +4,12 @@ namespace AmProfile\Controller;
 use Administrator\Controller\AuthController;
 use AmProfile\Form\ProfileFieldset;
 use AmProfile\Form\ProfileForm;
-use Zend\View\Model\ViewModel;
-
 
 class AmProfileModuleController extends AuthController
 {
-    protected $perfilTable;
-
-    public function setControllerVars()
-    {
-        $this->perfilTable = $this->sm->get('AmProfile\Model\ProfileTable');
-        $this->formService = $this->sm->get('Administrator\Service\AdministratorFormService');
-    }
-
     public function addAction()
     {
-        $perfil = $this->perfilTable->getEntityModel();
+        $perfil = $this->tableGateway->getEntityModel();
 
         $this->formService
             ->setForm(ProfileForm::class)
@@ -49,11 +39,11 @@ class AmProfileModuleController extends AuthController
 
                 $perfil->permisos = json_encode($permisos);
 
-                $insertId = $this->perfilTable->save($perfil);
+                $insertId = $this->formService->save();
 
                 return $this->goToSection('profile', array(
                     'action' => 'edit',
-                    'id' => $insertId
+                    'id' => $insertId[0]
                 ));
             }
         }
@@ -67,7 +57,7 @@ class AmProfileModuleController extends AuthController
         try {
             $id = (int) $this->params()->fromRoute('id', 0);
 
-            $perfil = $this->perfilTable->find($id);
+            $perfil = $this->tableGateway->find($id);
             $perfil->permisos = $perfil->getPermisos();
 
         } catch (\Exception $ex) {
@@ -102,7 +92,7 @@ class AmProfileModuleController extends AuthController
 
                 $perfil->permisos = json_encode($permisos);
 
-                $this->perfilTable->save($perfil);
+                $this->tableGateway->save($perfil);
             }
         }
 
@@ -124,7 +114,7 @@ class AmProfileModuleController extends AuthController
 
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->perfilTable->deletePerfil($id);
+                $this->tableGateway->deletePerfil($id);
             }
 
             // Redirect to list of perfiles
@@ -133,7 +123,7 @@ class AmProfileModuleController extends AuthController
 
         return array(
             'id'    => $id,
-            'perfil' => $this->perfilTable->find($id)
+            'perfil' => $this->tableGateway->find($id)
         );
     }
 }

@@ -5,37 +5,20 @@ use Administrator\Controller\AuthController;
 
 use AmUser\Form\AmUserForm;
 use AmUser\Form\UserFieldset;
-use Zend\Db\Sql\Predicate\Expression;
-use Zend\View\Model\ViewModel;
-
-// Para formularios
-use Zend\Captcha;
-use Zend\Form\Element;
 
 
 class AmUserModuleController extends AuthController
 {
-    protected $userTable;
-    protected $perfilTable;
-    protected $form;
-
-    public function setControllerVars()
-    {
-        $this->userTable    = $this->sm->get('AmUser\Model\UserTable');
-        $this->perfilTable  = $this->sm->get('AmProfile\Model\ProfileTable');
-        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService');
-    }
-
     /**
      * @return array|\Zend\Http\Response
      */
     public function addAction()
     {
-        $gestorUsuarios = $this->userTable->getEntityModel();
+        $model = $this->tableGateway->getEntityModel();
 
         $this->formService
             ->setForm(AmUserForm::class)
-            ->addFieldset(UserFieldset::class, $gestorUsuarios)
+            ->addFieldset(UserFieldset::class, $model)
             ->addFields();
 
         $form = $this->formService->getForm();
@@ -48,13 +31,13 @@ class AmUserModuleController extends AuthController
 
             if ($form->isValid()) {
 
-                $gestorUsuarios->password = md5($gestorUsuarios->password);
+                $model->password = md5($model->password);
 
-                $insertId = $this->userTable->save($gestorUsuarios);
+                $insertId = $this->formService->save();
 
                 return $this->goToSection('user', array(
                     'action' => 'edit',
-                    'id' => $insertId
+                    'id' => $insertId[0]
                 ));
             }
         }
@@ -69,15 +52,10 @@ class AmUserModuleController extends AuthController
      */
     public function editAction()
     {
-        $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
-            return $this->goToSection('user');
-        }
-
         try {
-            // Sacamos los datos del usuario en concreto
-            $gestorUsuarios = $this->userTable->find($id);
-            $auxGestorUsuarios = clone $gestorUsuarios;
+            $id = (int) $this->params()->fromRoute('id', 0);
+            $model = $this->tableGateway->find($id);
+            $auxModel = clone $model;
         }
         catch (\Exception $ex) {
             return $this->goToSection('user');
@@ -85,7 +63,7 @@ class AmUserModuleController extends AuthController
 
         $this->formService
             ->setForm(AmUserForm::class)
-            ->addFieldset(UserFieldset::class, $gestorUsuarios)
+            ->addFieldset(UserFieldset::class, $model)
             ->addFields();
 
         $form = $this->formService->getForm();
@@ -94,25 +72,23 @@ class AmUserModuleController extends AuthController
 
         if ($request->isPost()) {
 
-            $post = $request->getPost();
-
-            $form->bind($post);
+            $form->bind($request->getPost());
 
             if ($form->isValid()) {
 
-                $checkPassword =  (bool) $gestorUsuarios->getCheckPassword();
+                $checkPassword =  (bool) $model->getCheckPassword();
 
                 if (!$checkPassword) {
-                    $gestorUsuarios->password = $auxGestorUsuarios->getPassword();
+                    $model->password = $auxModel->getPassword();
                 } else {
-                    $gestorUsuarios->password = new Expression("md5('$gestorUsuarios->password')");
+                    $model->password = md5($model->password);
                 }
 
-                $this->userTable->save($gestorUsuarios);
+                $this->formService->save();
             }
         }
 
-        $title = 'Edición de Usuario';
+        $title = 'EdiciÃ³n de Usuario';
 
         return $this->getEditView(compact( 'form', 'title' ));
     }
@@ -126,7 +102,7 @@ class AmUserModuleController extends AuthController
 
         if ($id != 0) {
             // Borramos con este ID
-            $this->userTable->deleteGestorUsuarios($id);
+            $this->tableGateway->deleteGestorUsuarios($id);
         }
         // Nos vamos al listado general
         return $this->goToSection('user');

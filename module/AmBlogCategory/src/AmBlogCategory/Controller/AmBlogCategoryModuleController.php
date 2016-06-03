@@ -9,15 +9,6 @@ use AmBlogCategory\Form\BlogCategoryLocaleFieldset;
 
 class AmBlogCategoryModuleController extends AuthController
 {
-
-    protected $blogcategoryTable = null;
-
-    public function setControllerVars()
-    {
-        $this->tableGateway = $this->sm->get('AmBlogCategory\Model\BlogCategoryTable');
-        $this->formService  = $this->sm->get('Administrator\Service\AdministratorFormService');
-    }
-
     public function addAction()
     {
         $model = $this->tableGateway->getEntityModel();
@@ -39,11 +30,11 @@ class AmBlogCategoryModuleController extends AuthController
 
             if ($form->isValid()) {
 
-                $insertId = $this->tableGateway->save($model);
+                $insertId = $this->formService->save();
 
                 return $this->goToSection('blog-category', array(
                     'action' => 'edit',
-                    'id' => $insertId
+                    'id' => $insertId[0]
                 ));
             }
         }

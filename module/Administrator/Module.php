@@ -96,41 +96,24 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
         );
     }
 
-   /* EN UN INTENTO DE HACER LA CARGA DE LOS MODULOS QUE PERTENECEN AL ADMINISTRADOR DE FORMA
-   INDEPENDIENTE AL RESTO DE LA PLATAFORMA SE HAN CREADO ESTOS DOS MÉTODOS.
-   HE CONSEGUIDO ACCEDER A TODA LA INFORMACIÓN NECESARIA PERO ZEND NO ES CAPAZ DE RECONOCER
-   LOS MÓDULOS CARGADOS DE DICHA FORMA.
-   
-    public function init(ModuleManager $moduleManager)
-    {
-        $eventManager = $moduleManager->getEventManager();
-        $eventManager->attach(ModuleEvent::EVENT_LOAD_MODULES_POST,array($this, 'onLoadModule'));
-    }
-
-    public function onLoadModule(ModuleEvent $event)
-    {
-        $serviceManager = $event->getParam('ServiceManager');
-
-        $router = $serviceManager->get('Router');
-        $request = $serviceManager->get('Request');
-
-        $routeMatch = $router->match($request);
-
-        if ($routeMatch->getParam('controller') == 'Administrator\Factory\AdminControllerFactory') {
-            $moduleManager = $serviceManager->get('ModuleManager');
-        }
-    }*/
-
     public function onBootstrap(MvcEvent $e)
     {
         $this->mvcEvent = $e;
 
-        $this->loadTranslations();
+        $eventManager        = $e->getApplication()->getEventManager();
+        $sharedEventManager  = $eventManager->getSharedManager();
+
+        $sharedEventManager->attach( 'Zend\Mvc\Controller\AbstractActionController', 'dispatch', array($this, 'settingEventController'), 3);
     }
 
-    private function loadTranslations()
+    public function settingEventController(MvcEvent $e)
     {
         $serviceManager = $this->mvcEvent->getApplication()->getServiceManager();
+        $this->loadTranslations($serviceManager);
+    }
+
+    private function loadTranslations($serviceManager)
+    {
         $translator = $serviceManager->get('translator');
 
         $locale = $translator->getLocale();

@@ -92,7 +92,7 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
         $rowset = $this->select(array($key => $id));
         $row = $rowset->current();
         if (!$row) {
-            throw new \Exception("Could not find row $id with key $key in table" . $this->table);
+            throw new \Exception("Could not find row $id with key $key in table " . $this->table);
         }
         return $row;
     }
