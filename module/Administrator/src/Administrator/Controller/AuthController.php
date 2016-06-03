@@ -210,8 +210,10 @@ class AuthController extends AbstractActionController
     {
         $formService = $this->formService;
 
+        $model = $this->tableGateway->getEntityModel();
+
         $form = $formService
-            ->setForm()
+            ->setForm($this->form, $model)
             ->addFields()
             ->getForm();
 
@@ -247,7 +249,13 @@ class AuthController extends AbstractActionController
             return $this->goToSection($thisModule);
         }
 
-        $form = $this->formService->setForm()->addFields()->getForm();
+        try {
+            $model = $this->tableGateway->find($id);
+        } catch (\Exception $ex) {
+            return $this->goToSection($thisModule);
+        }
+
+        $form = $this->formService->setForm($this->form, $model)->addFields()->getForm();
 
         $request = $this->getRequest();
 

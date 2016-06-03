@@ -96,6 +96,13 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     protected $baseFieldset = null;
 
     /**
+     * @var AdministratorModel
+     *
+     * Variable que almacenará los datos del fieldset base
+     */
+    protected $baseModel = null;
+
+    /**
      * @var array
      *
      * Contiene los parámetros de la url: section, action e id
@@ -234,35 +241,32 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         return $this->actionType;
     }
 
-    public function addFieldset($fieldsetName, AdministratorModel $model)
+    public function addFieldset($fieldsetName, AdministratorModel $model, $options = array())
     {
         $fieldset = new $fieldsetName($this->serviceLocator, $model);
 
         $objectModel = $fieldset->getObjectModel();
 
-        $isLocale = strpos(get_class($objectModel), "LocaleModel") !== false;
+        $isLocale = (isset($options['is_locale']) and $options['is_locale']);
 
-        $fieldset->setOption('is_locale', $isLocale);
+        $fieldset->setOption('is_locale',$isLocale);
 
         if ($isLocale) {
-            $fieldset->setName(get_class($fieldset) . "\\" . $objectModel->languageId);
+            $fieldsetName .= "\\" . $objectModel->languageId;
+            $fieldset->setName($fieldsetName);
             $fieldset->setOption('tab_name', $this->languages[$objectModel->languageId]);
         }
 
-        $className = $fieldset->getName();
+        if (!array_key_exists($fieldsetName, $this->fieldsets)) {
 
-        if (!array_key_exists($className, $this->fieldsets)) {
-            //El primer fieldset que introduzcamos será marcado como base_fieldset
-            $useAsBaseFieldset = count($this->fieldsets) == 0;
-
-            $fieldset->setOption('use_as_base_fieldset', $useAsBaseFieldset);
+            $useAsBaseFieldset = isset($options['use_as_base_fieldset']);
 
             if ($useAsBaseFieldset) {
                 $this->baseFieldset = $fieldset;
             }
 
             $this->initializers($fieldset);
-            $this->fieldsets[$className] = $fieldset;
+            $this->fieldsets[$fieldsetName] = $fieldset;
         }
         return $this;
     }
@@ -272,7 +276,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         return $this->baseFieldset;
     }
 
-    public function addLocaleFieldsets($localeClass)
+    public function addLocaleFieldsets($localeClass, $options = array())
     {
         $baseTableGateway = $this->baseFieldset->getTableGateway();
         $objectModel = $this->baseFieldset->getObjectModel();
@@ -291,21 +295,21 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
         foreach ($localeModels as $localModel) {
             $localModel->$relationFieldName = $primaryId;
-            $this->addFieldset($localeClass, $localModel);
+            $this->addFieldset($localeClass, $localModel, $options);
         }
 
         return $this;
     }
 
-    public function setForm($form = null)
+    public function setForm($form = null, AdministratorModel $model)
     {
         if (!$this->form) {
 
+            $this->baseModel = $model;
+
             $this->languages = $this->serviceLocator->get('Administrator\Model\LanguageTable')->all()->toKeyValueArray('id','name');
 
-            $form = (is_null($form) or !$form instanceof Form)
-                ? new Form()
-                : new $form();
+            $form = new $form();
 
             //Como el nombre del formulario lo seteamos con el nombre de la clase,
             //Convertimos el separador de namespace en guiones bajos;
@@ -387,6 +391,19 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     public function setFieldModifiers($modifier, $value)
     {
         $this->fieldModifiers[$modifier] = $value;
+    }
+
+    public function setFieldsets($fieldset, $options = array())
+    {
+        $isLocale = strpos($fieldset, "LocaleFieldset") !== false;
+
+        $options['is_locale'] = $isLocale;
+
+        if (!$isLocale) {
+            $this->addFieldset($fieldset, $this->baseModel, $options);
+        } else {
+            $this->addLocaleFieldsets($fieldset, $options);
+        }
     }
 
     public function addFields()
