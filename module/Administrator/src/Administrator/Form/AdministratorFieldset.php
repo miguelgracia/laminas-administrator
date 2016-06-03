@@ -37,7 +37,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
      */
     protected $hiddenFields = array();
 
-    public function __construct($serviceLocator)
+    public function __construct($serviceLocator, $objectModel)
     {
         $className = get_class($this);
 
@@ -61,15 +61,12 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
         $this->metadata = Factory::createSourceFromAdapter($serviceLocator->get('Zend\Db\Adapter\Adapter'));
 
-        $this->formActionType = $serviceLocator->get('Administrator\Service\AdministratorFormService')->getActionType();
-    }
+        $this->setHydrator(new ArraySerializable())
+            ->setObject($objectModel);
 
-    public function setObjectModel($objectModel)
-    {
         $this->objectModel = $objectModel;
 
-        $this->setHydrator(new ArraySerializable())
-            ->setObject($this->objectModel);
+        $this->formActionType = $serviceLocator->get('Administrator\Service\AdministratorFormService')->getActionType();
     }
 
 

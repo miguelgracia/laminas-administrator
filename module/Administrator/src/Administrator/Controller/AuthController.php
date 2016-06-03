@@ -197,26 +197,6 @@ class AuthController extends AbstractActionController
     /**
      * @return ViewModel
      */
-
-    protected function getView($params = array(), $viewName)
-    {
-        $viewModel = new ViewModel($params);
-        $viewModel->setTemplate('administrator/'.$viewName);
-
-        return $viewModel;
-    }
-
-
-    public function getAddView($params = array())
-    {
-        return $this->getView($params,'add');
-    }
-
-    public function getEditView($params = array())
-    {
-        return $this->getView($params,'edit');
-    }
-
     public function indexAction()
     {
         $datatable = $this->sm->get('Administrator\Service\DatatableService');
@@ -228,11 +208,12 @@ class AuthController extends AbstractActionController
 
     public function addAction()
     {
-        $formService = $this->formService->setForm();
+        $formService = $this->formService;
 
-        $this->setFieldsets();
-
-        $form = $formService->addFields()->getForm();
+        $form = $formService
+            ->setForm()
+            ->addFields()
+            ->getForm();
 
         $request = $this->getRequest();
 
@@ -266,18 +247,7 @@ class AuthController extends AbstractActionController
             return $this->goToSection($thisModule);
         }
 
-        try {
-            $model = $this->tableGateway->find($id);
-        } catch (\Exception $ex) {
-            return $this->goToSection($thisModule);
-        }
-
-        $formService = $this->formService->setForm($this->form);
-
-        $this->setFieldsets($model);
-        $this->setLocaleFieldsets();
-
-        $form = $formService->addFields()->getForm();
+        $form = $this->formService->setForm()->addFields()->getForm();
 
         $request = $this->getRequest();
 
@@ -296,5 +266,24 @@ class AuthController extends AbstractActionController
         $title = 'Edición';
 
         return $this->getEditView(compact( 'form', 'title' ));
+    }
+
+    protected function getView($params = array(), $viewName)
+    {
+        $viewModel = new ViewModel($params);
+        $viewModel->setTemplate('administrator/'.$viewName);
+
+        return $viewModel;
+    }
+
+
+    public function getAddView($params = array())
+    {
+        return $this->getView($params,'add');
+    }
+
+    public function getEditView($params = array())
+    {
+        return $this->getView($params,'edit');
     }
 }
