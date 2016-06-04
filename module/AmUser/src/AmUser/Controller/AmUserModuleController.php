@@ -3,14 +3,19 @@ namespace AmUser\Controller;
 
 use Administrator\Controller\AuthController;
 
+use Administrator\Traits\AddAction;
+use Administrator\Traits\EditAction;
+use Administrator\Traits\IndexAction;
 use AmUser\Form\AmUserForm;
 use AmUser\Form\UserFieldset;
 
 
 class AmUserModuleController extends AuthController
 {
-    protected $form = AmUserForm::class;
+    use IndexAction, AddAction, EditAction;
     
+    protected $form = AmUserForm::class;
+
     /**
      * @return \Zend\Http\Response
      */

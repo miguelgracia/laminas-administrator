@@ -2,10 +2,15 @@
 namespace AmProfile\Controller;
 
 use Administrator\Controller\AuthController;
+use Administrator\Traits\AddAction;
+use Administrator\Traits\EditAction;
+use Administrator\Traits\IndexAction;
 use AmProfile\Form\ProfileForm;
 
 class AmProfileModuleController extends AuthController
 {
+    use IndexAction, AddAction, EditAction;
+
     protected $form = ProfileForm::class;
 
     public function deleteAction()
