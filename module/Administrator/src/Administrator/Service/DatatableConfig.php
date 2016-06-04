@@ -37,7 +37,11 @@ abstract class DatatableConfig
         $addAction = 'add';
 
         if ($this->permissions->hasModuleAccess($module, $addAction)) {
-            $viewParams['add_action'] = $this->controllerPluginManager->getController()->goToSection($module, array('action' => $addAction), true);
+            $controller = $this->controllerPluginManager->getController();
+
+            if (method_exists($controller, $addAction .'Action')) {
+                $viewParams['add_action'] = $controller->goToSection($module, array('action' => $addAction), true);
+            }
         }
         return $viewParams;
     }

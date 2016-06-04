@@ -2,6 +2,7 @@
 
 namespace AmUser\Model;
 
+use Administrator\Model\AdministratorModel;
 use Administrator\Model\AdministratorTable;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Select;
@@ -36,6 +37,19 @@ class UserTable extends AdministratorTable
         $row = $resultSet->current();
 
         return $row;
+    }
+
+    public function save(AdministratorModel $model)
+    {
+        $checkPassword =  (bool) $model->getCheckPassword();
+
+        $model->password = md5($model->password);
+
+        if (!$checkPassword and $model->id > 0) {
+            unset($model->password);
+        }
+
+        return parent::save($model);
     }
 
     public function updateActivo($id,$activo)

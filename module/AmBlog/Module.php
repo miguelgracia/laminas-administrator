@@ -24,7 +24,7 @@ class Module
 
     public function onBootstrap(MvcEvent $e)
     {
-        $eventManager  = $e->getApplication()->getEventManager();
-        $eventManager->attach(new FormListener());
+        /*$eventManager  = $e->getApplication()->getEventManager();
+        $eventManager->attach(new FormListener());*/
     }
 }

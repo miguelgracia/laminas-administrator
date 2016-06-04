@@ -18,8 +18,6 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
 
     protected $entityModelName;
 
-    protected $entityModelGeneric;
-
     function __construct()
     {
         //extraemos el nombre de la clase del que hereda AdministratorTable y quitarmos los 5 últimos
@@ -75,6 +73,11 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
         $this->initialize();
     }
 
+    public function getRelatedKey()
+    {
+        return "related_table_id";
+    }
+
     public function isTableRow($id, $fieldKey = 'id')
     {
         $id  = (int) $id;
@@ -110,11 +113,9 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
     {
         $tableLocale = $this->table;
 
-        $table = preg_replace("/_locales$/","",$this->table);
+        $key = $this->getRelatedKey();
 
-        $key = $tableLocale . '.' . $table . '_id';
-
-        $resultSet = $this->select(function (Select $select) use($id, $key, $table, $tableLocale){
+        $resultSet = $this->select(function (Select $select) use($id, $key, $tableLocale){
             $select
                 ->join(
                 'languages',

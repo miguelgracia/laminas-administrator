@@ -34,6 +34,7 @@ class ProfileFieldset extends AdministratorFieldset
         $perm = $this->get('permisos');
 
         $perm->setAttribute('class', '');
+        $perm->setUseHiddenElement(true);
 
         $perm->setLabelAttributes(array(
             'class' => 'col-sm-4'

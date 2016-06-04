@@ -3,82 +3,14 @@
 namespace AmBlogCategory\Controller;
 
 use Administrator\Controller\AuthController;
-use AmBlogCategory\Form\BlogCategoryFieldset;
+use Administrator\Traits\AddAction;
+use Administrator\Traits\EditAction;
+use Administrator\Traits\IndexAction;
 use AmBlogCategory\Form\BlogCategoryForm;
-use AmBlogCategory\Form\BlogCategoryLocaleFieldset;
 
 class AmBlogCategoryModuleController extends AuthController
 {
-    public function addAction()
-    {
-        $model = $this->tableGateway->getEntityModel();
+    use IndexAction, AddAction, EditAction;
 
-        $this->formService
-            ->setForm(BlogCategoryForm::class)
-            ->addFieldset(BlogCategoryFieldset::class, $model)
-            ->addFields();
-
-        $form = $this->formService->getForm();
-
-        $request = $this->getRequest();
-
-        if ($request->isPost()) {
-
-            $post = $request->getPost();
-
-            $form->bind($post);
-
-            if ($form->isValid()) {
-
-                $insertId = $this->formService->save();
-
-                return $this->goToSection('blog-category', array(
-                    'action' => 'edit',
-                    'id' => $insertId[0]
-                ));
-            }
-        }
-
-        $title = 'Nueva Categoría de blog';
-
-        return $this->getAddView(compact( 'form', 'title' ));
-    }
-
-    /**
-     * @return array|\Zend\Http\Response
-     */
-    public function editAction()
-    {
-        try {
-            $id = (int) $this->params()->fromRoute('id', 0);
-            $model = $this->tableGateway->find($id);
-        }
-        catch (\Exception $ex) {
-            return $this->goToSection('blog-category');
-        }
-
-        $this->formService
-            ->setForm(BlogCategoryForm::class)
-            ->addFieldset(BlogCategoryFieldset::class, $model)
-            ->addLocaleFieldsets(BlogCategoryLocaleFieldset::class)
-            ->addFields();
-
-        $form = $this->formService->getForm();
-
-        $request = $this->getRequest();
-
-        if ($request->isPost()) {
-
-            $form->bind($request->getPost());
-
-            if ($form->isValid()) {
-
-                $this->formService->save();
-            }
-        }
-
-        $title = 'Edición de Categoría de blog';
-
-        return $this->getEditView(compact( 'form', 'title' ));
-    }
+    protected $form = BlogCategoryForm::class;
 }

@@ -109,7 +109,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
             $filterParams = array();
 
-            if ($columnName == 'id') {
+            if (in_array($columnName, array('id', 'related_table_id'))) {
                 $required = false;
             } else {
                 $required = $column->getIsNullable() ? false : true;

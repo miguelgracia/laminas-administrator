@@ -96,6 +96,13 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     protected $baseFieldset = null;
 
     /**
+     * @var AdministratorModel
+     *
+     * Variable que almacenará los datos del fieldset base
+     */
+    protected $baseModel = null;
+
+    /**
      * @var array
      *
      * Contiene los parámetros de la url: section, action e id
@@ -128,6 +135,13 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
      * de consulta cuando guardamos un formulario de edición
      */
     protected $hiddenPrimaryKey = 'id';
+
+    /**
+     * @var string
+     *
+     * Nombre del campo de la tabla locale que usaremos para relacionar con su tabla maestra
+     */
+    protected $hiddenRelatedKey = 'related_table_id';
 
     /**
      * @var array
@@ -234,35 +248,32 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         return $this->actionType;
     }
 
-    public function addFieldset($fieldsetName, AdministratorModel $model)
+    public function addFieldset($fieldsetName, AdministratorModel $model, $options = array())
     {
         $fieldset = new $fieldsetName($this->serviceLocator, $model);
 
         $objectModel = $fieldset->getObjectModel();
 
-        $isLocale = strpos(get_class($objectModel), "LocaleModel") !== false;
+        $isLocale = (isset($options['is_locale']) and $options['is_locale']);
 
-        $fieldset->setOption('is_locale', $isLocale);
+        $fieldset->setOption('is_locale',$isLocale);
 
         if ($isLocale) {
-            $fieldset->setName(get_class($fieldset) . "\\" . $objectModel->languageId);
+            $fieldsetName .= "\\" . $objectModel->languageId;
+            $fieldset->setName($fieldsetName);
             $fieldset->setOption('tab_name', $this->languages[$objectModel->languageId]);
         }
 
-        $className = $fieldset->getName();
+        if (!array_key_exists($fieldsetName, $this->fieldsets)) {
 
-        if (!array_key_exists($className, $this->fieldsets)) {
-            //El primer fieldset que introduzcamos será marcado como base_fieldset
-            $useAsBaseFieldset = count($this->fieldsets) == 0;
-
-            $fieldset->setOption('use_as_base_fieldset', $useAsBaseFieldset);
+            $useAsBaseFieldset = isset($options['use_as_base_fieldset']);
 
             if ($useAsBaseFieldset) {
                 $this->baseFieldset = $fieldset;
             }
 
             $this->initializers($fieldset);
-            $this->fieldsets[$className] = $fieldset;
+            $this->fieldsets[$fieldsetName] = $fieldset;
         }
         return $this;
     }
@@ -272,7 +283,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         return $this->baseFieldset;
     }
 
-    public function addLocaleFieldsets($localeClass)
+    public function addLocaleFieldsets($localeClass, $options = array())
     {
         $baseTableGateway = $this->baseFieldset->getTableGateway();
         $objectModel = $this->baseFieldset->getObjectModel();
@@ -281,31 +292,27 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
         $localeTableGatewayName = preg_replace("/(Table)$/", "LocaleTable", get_class($baseTableGateway));
 
-        $localeModels = $this->serviceLocator->get($localeTableGatewayName)->findLocales($primaryId);
+        $localeTableGateway = $this->serviceLocator->get($localeTableGatewayName);
 
-        $baseDbTable = $baseTableGateway->getTable();
-
-        $filterUnderscoreToCamel = new UnderscoreToCamelCase();
-
-        $relationFieldName = lcfirst($filterUnderscoreToCamel->filter($baseDbTable) . 'Id');
+        $localeModels = $localeTableGateway->findLocales($primaryId);
 
         foreach ($localeModels as $localModel) {
-            $localModel->$relationFieldName = $primaryId;
-            $this->addFieldset($localeClass, $localModel);
+            $localModel->relatedTableId = $primaryId;
+            $this->addFieldset($localeClass, $localModel, $options);
         }
 
         return $this;
     }
 
-    public function setForm($form = null)
+    public function setForm($form = null, AdministratorModel $model)
     {
         if (!$this->form) {
 
+            $this->baseModel = $model;
+
             $this->languages = $this->serviceLocator->get('Administrator\Model\LanguageTable')->all()->toKeyValueArray('id','name');
 
-            $form = (is_null($form) or !$form instanceof Form)
-                ? new Form()
-                : new $form();
+            $form = new $form();
 
             //Como el nombre del formulario lo seteamos con el nombre de la clase,
             //Convertimos el separador de namespace en guiones bajos;
@@ -389,6 +396,19 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         $this->fieldModifiers[$modifier] = $value;
     }
 
+    public function setFieldsets($fieldset, $options = array())
+    {
+        $isLocale = strpos($fieldset, "LocaleFieldset") !== false;
+
+        $options['is_locale'] = $isLocale;
+
+        if (!$isLocale) {
+            $this->addFieldset($fieldset, $this->baseModel, $options);
+        } else {
+            $this->addLocaleFieldsets($fieldset, $options);
+        }
+    }
+
     public function addFields()
     {
         /**
@@ -434,7 +454,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
                     )
                 );
 
-                if ($columnName == $this->hiddenPrimaryKey) {
+                if (in_array($column->getName(), array($this->hiddenPrimaryKey, $this->hiddenRelatedKey))) {
                     $fieldParams['type'] = 'Hidden';
                     $fieldset->add($fieldParams, $flags);
                     continue;
@@ -463,7 +483,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
             $fieldset->populateValues($fieldset->getObjectModel()->getArrayCopy());
 
             if (method_exists($fieldset, $thisMethod)) {
-                $fieldset->{$thisMethod}();
+                $fieldset->{$thisMethod}($this->serviceLocator);
             }
 
             $this->form->add($fieldset);
@@ -596,10 +616,28 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     {
         $result = array();
 
+        $baseFieldset = $this->baseFieldset;
+
+        $primaryId = $baseFieldset->getTableGateway()->save($baseFieldset->getObjectModel());
+
+        $result[] = $primaryId;
+
+        unset($this->fieldsets[get_class($baseFieldset)]);
+
         foreach ($this->fieldsets as $fieldset) {
-            $tableGateway = $fieldset->getTableGateway();
-            $model = $fieldset->getObjectModel();
-            $result[] = $tableGateway->save($model);
+
+            $tableGateway   = $fieldset->getTableGateway();
+            $model          = $fieldset->getObjectModel();
+
+            $isLocaleFieldset = $fieldset->getOption('is_locale');
+
+            if ($isLocaleFieldset) {
+
+                $model->relatedTableId = $primaryId;
+            }
+
+            $resultId = $tableGateway->save($model);
+            $result[] = $resultId;
         }
 
         return $result;
