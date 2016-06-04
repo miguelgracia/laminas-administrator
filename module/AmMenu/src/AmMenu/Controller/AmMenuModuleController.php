@@ -12,6 +12,8 @@ use Zend\Form\Element;
 
 class AmMenuModuleController extends AuthController
 {
+    protected $form = MenuForm::class;
+
     public function indexAction()
     {
         $entradas = $this->tableGateway->fetchAllOrdenados();
@@ -19,12 +21,12 @@ class AmMenuModuleController extends AuthController
         return compact('entradas');
     }
 
-    public function addAction()
+    public function addActionOld()
     {
         $entradaMenu = $this->tableGateway->getEntityModel();
 
         $this->formService
-            ->setForm(MenuForm::class)
+            ->setForm(MenuForm::class, $entradaMenu)
             ->addFieldset(MenuFieldset::class, $entradaMenu)
             ->addFields();
 

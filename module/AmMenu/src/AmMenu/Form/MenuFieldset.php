@@ -48,4 +48,17 @@ class MenuFieldset extends AdministratorFieldset
             ),
         );
     }
+
+    public function addFields(ServiceLocatorInterface $serviceLocator)
+    {
+        $formService = $serviceLocator->get('Administrator\Service\AdministratorFormService');
+
+        if ($formService->getActionType() == 'add') {
+            $padre = (int) $formService->getRouteParams('id');
+
+            $fieldset = $formService->getBaseFieldset();
+
+            $fieldset->get('padre')->setValue($padre);
+        }
+    }
 }
