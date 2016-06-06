@@ -7,7 +7,8 @@ trait EditAction
 {
     public function editAction()
     {
-        $thisModule = $this->formService->getRouteParams('module');
+        $formService = $this->serviceLocator->get('Administrator\Service\AdministratorFormService');
+        $thisModule = $formService->getRouteParams('module');
 
         $id = (int) $this->params()->fromRoute('id', 0);
 
@@ -21,17 +22,17 @@ trait EditAction
             return $this->goToSection($thisModule);
         }
 
-        $form = $this->formService->setForm($this->form, $model)->addFields()->getForm();
+        $form = $formService->setForm($this->form, $model)->addFields()->getForm();
 
         $request = $this->getRequest();
 
         if ($request->isPost()) {
 
-            $isValid = $this->formService->resolveForm($request->getPost());
+            $isValid = $formService->resolveForm($request->getPost());
 
             if ($isValid) {
 
-                $this->formService->save();
+                $formService->save();
 
                 return $this->goToEditSection($thisModule, $id);
             }
@@ -39,6 +40,8 @@ trait EditAction
 
         $title = 'Edición';
 
-        return $this->getEditView(compact( 'form', 'title' ));
+        $blocks = $this->parseTriggers();
+
+        return $this->getEditView(compact( 'form', 'title', 'blocks' ));
     }
 }

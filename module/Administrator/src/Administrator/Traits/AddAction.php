@@ -7,7 +7,7 @@ trait AddAction
 {
     public function addAction()
     {
-        $formService = $this->formService;
+        $formService = $this->serviceLocator->get('Administrator\Service\AdministratorFormService');
 
         $model = $this->tableGateway->getEntityModel();
 
@@ -35,6 +35,8 @@ trait AddAction
 
         $title = "Nuevo";
 
-        return $this->getAddView(compact( 'form', 'title' ));
+        $blocks = $this->parseTriggers();
+
+        return $this->getAddView(compact( 'form', 'title', 'blocks'));
     }
 }

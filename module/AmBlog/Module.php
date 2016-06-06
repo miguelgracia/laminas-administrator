@@ -1,6 +1,7 @@
 <?php
 namespace AmBlog;
 
+use AmBlog\Listener\BlogListener;
 use AmBlog\Listener\FormListener;
 use Zend\Mvc\MvcEvent;
 
@@ -24,7 +25,6 @@ class Module
 
     public function onBootstrap(MvcEvent $e)
     {
-        /*$eventManager  = $e->getApplication()->getEventManager();
-        $eventManager->attach(new FormListener());*/
+
     }
 }

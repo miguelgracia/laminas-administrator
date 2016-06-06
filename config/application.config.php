@@ -13,6 +13,7 @@ return array(
         'AmTool',
         'AmBlog',
         'AmBlogCategory',
+        'AmMedia'
     ),
     'hidden_modules' => array(
         'AmLogin',

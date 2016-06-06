@@ -10,6 +10,7 @@ $(document).ready(function () {
         '/admin/menu/edit/{:num}':       ['menu','addAndedit'],
         '/admin/menu/add/{:num}':        ['menu','addAndedit'],
         '/admin/menu':                   ['menu','index'],
+        '/admin/blog/edit/{:num}':       ['blog','edit'],
         '/admin/blog':                   ['blog','index'],
         '/admin/blog-category':          ['blog_category','index']
     }).run();
