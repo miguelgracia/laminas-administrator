@@ -5,6 +5,7 @@ namespace Administrator\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
+use Zend\Mvc\Router\Http\RouteMatch;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Model\ViewModel;
 
@@ -12,7 +13,7 @@ class AuthController extends AbstractActionController
 {
     // Whitelist de rutas con las que no se muestra login
     protected $whitelist = array('login');
-    protected $sm;
+
     protected $storage;
     protected $authService;
 
@@ -25,7 +26,7 @@ class AuthController extends AbstractActionController
     public function getAuthService($returnAuthInstance = true)
     {
         if (! $this->authService) {
-            $this->authService = $this->sm->get('AuthService');
+            $this->authService = $this->serviceLocator->get('AuthService');
         }
 
         return $returnAuthInstance ? $this->authService->getAuthInstance() : $this->authService;
@@ -34,16 +35,10 @@ class AuthController extends AbstractActionController
     public function getSessionStorage()
     {
         if (! $this->storage) {
-            $this->storage = $this->sm->get('Administrator\Model\AuthStorage');
+            $this->storage = $this->serviceLocator->get('Administrator\Model\AuthStorage');
         }
 
         return $this->storage;
-    }
-
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->sm = $serviceLocator;
-        parent::setServiceLocator($serviceLocator);
     }
 
     /**
@@ -131,14 +126,14 @@ class AuthController extends AbstractActionController
     {
         $this->setControllerVars();
 
-        $this->sessionService   = $this->sm->get('Administrator\Service\SessionService');
-        $this->formService      = $this->sm->get('Administrator\Service\AdministratorFormService');
+        $this->sessionService   = $this->serviceLocator->get('Administrator\Service\SessionService');
+        $this->formService      = $this->serviceLocator->get('Administrator\Service\AdministratorFormService');
 
 
         // Sacamos la ruta para matchearla
         $match = $e->getRouteMatch();
 
-        $this->config = $this->sm->get('Config');
+        $this->config = $this->serviceLocator->get('Config');
 
 
         $module = $match->getParam('module');
@@ -170,7 +165,7 @@ class AuthController extends AbstractActionController
                 return $this->goToSection('login');
             }
 
-            $permissionsService = $this->sm->get('AmProfile\Service\ProfilePermissionService');
+            $permissionsService = $this->serviceLocator->get('AmProfile\Service\ProfilePermissionService');
 
             if (!$permissionsService->hasModuleAccess($module,$action))
             {
@@ -180,7 +175,23 @@ class AuthController extends AbstractActionController
             }
         }
 
+        $this->runAdministratorTrigger($match);
+
         return parent::onDispatch($e);
+    }
+
+    private function runAdministratorTrigger(RouteMatch $match)
+    {
+        $eventManager = $this->getEventManager();
+
+        $requestMethod = strtolower($this->getRequest()->getMethod());
+
+        $module = $match->getParam('module');
+        $action = $match->getParam('action');
+
+        $triggerName = $requestMethod . '.' . $module . '.' . $action;
+
+        $eventManager->trigger($triggerName, null, array('serviceLocator' => $this->serviceLocator));
     }
 
     public function setControllerVars()

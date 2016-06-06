@@ -10,9 +10,7 @@ use Zend\EventManager\EventManagerInterface;
 use Zend\Filter\Word\CamelCaseToUnderscore;
 use Zend\Filter\Word\SeparatorToCamelCase;
 use Zend\Filter\Word\SeparatorToSeparator;
-use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\Form\Fieldset;
-use Zend\Form\Form;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
