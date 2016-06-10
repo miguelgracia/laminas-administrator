@@ -10,6 +10,8 @@
     "require": {
         "php": ">=5.5",
         "zendframework/zendframework": "2.5.*",
-        "evandotpro/edp-module-layouts": "1.0"
+        "evandotpro/edp-module-layouts": "1.0",
+        "zf-commons/zfc-base": "0.1.*",
+        "intervention/image": "2.3.*"
     }
 }

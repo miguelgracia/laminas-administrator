@@ -15,10 +15,35 @@ return array(
     ),
 
     'service_manager' => array(
-
+        'aliases' => array(
+            "plupload_adapter" => 'Zend\Db\Adapter\Adapter'
+        )
     ),
 
     'router' => array(
 
-    )
+    ),
+    'QuConfig' => array(
+        'AmMedia' => array(
+            'tableName'          => 'media',
+            'UrlUpload'          => '/quplupload/upload',
+            'UrlRemove'          => '/quplupload/remove',
+            'UrlLoad'            => '/quplupload/load',
+            'DirUpload'          => '/uploads/files/plupload',
+            'DirUploadAbsolute'  =>  dirname(dirname(dirname(__DIR__)))  . '/public/media',
+            'DirJs'              => 'js/plugins/plupload',
+            'Resize'             => array('1200','900'), //$width, $height
+            'ThumbResize'        => array(
+
+                'xl' => array('1170','420'),
+                'l'  => array('600','550'),
+                'm'  => array('500','418'),
+                's'  => array('30','20'),
+            ),
+            /**
+             * @package unfinished
+             * @todo finish config parameters Plupload
+             */
+        )
+    ),
 );
