@@ -47,27 +47,28 @@ class ThumbModel
 
             foreach($ThumbSize as $key => $size)
             {
-                if(!isset($size[1])){
+                if(!isset($size[0])){
                     throw new Exception\DomainException(
                         sprintf('Config Size not found.')
                     );
                 }
 
-                $image = $ThumbService->resize(@$size[1],@$size[2]);
+                $image = $ThumbService->resize(@$size[0],@$size[1],function($constraint){
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
 
                 if (!is_dir($UploadDir . DIRECTORY_SEPARATOR . $key)) {
                     mkdir($UploadDir . DIRECTORY_SEPARATOR . $key);
                 }
 
                 $image->save(
-
                         $UploadDir .
                         DIRECTORY_SEPARATOR .
                         $key . DIRECTORY_SEPARATOR .
                         $fileName
                 );
                 @chmod($UploadDir.$size.$fileName, 0777);
-
             }
         }
     }

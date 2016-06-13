@@ -2,6 +2,7 @@
 namespace AmMedia\Controller;
 
 use Administrator\Controller\AuthController;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class AmMediaModuleController extends AuthController
@@ -41,23 +42,23 @@ class AmMediaModuleController extends AuthController
     {
         if ($this->getRequest()->isPost()) {
 
+            $post = $this->getRequest()->getPost();
+            $files = $this->getRequest()->getFiles();
+
             $data = array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                $this->getRequest()->getFiles()->toArray()
+                $post->toArray(),
+                $files->toArray()
             );
 
-            $id    = $this->getEvent()->getRouteMatch()->getParam('id', 0);
-            $model = $this->getEvent()->getRouteMatch()->getParam('module');
+            $id    = $post->module_id;
+            $model = $post->module_target;
 
             $plUploadService = $this->serviceLocator->get('plupload_service');
 
             $plUploadService->uploadPlupload($id,$data,$model);
-
         }
 
-        $view = new ViewModel();
-        return $view->setTerminal(true);
-
+        return new JsonModel(array());
     }
 
     /**

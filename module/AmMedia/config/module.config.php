@@ -32,7 +32,7 @@ return array(
             'DirUpload'          => '/uploads/files/plupload',
             'DirUploadAbsolute'  =>  dirname(dirname(dirname(__DIR__)))  . '/public/media',
             'DirJs'              => 'js/plugins/plupload',
-            'Resize'             => array('1200','900'), //$width, $height
+            'Resize'             => array('1200','900'),
             'ThumbResize'        => array(
 
                 'xl' => array('1170','420'),
@@ -40,10 +40,6 @@ return array(
                 'm'  => array('500','418'),
                 's'  => array('30','20'),
             ),
-            /**
-             * @package unfinished
-             * @todo finish config parameters Plupload
-             */
         )
     ),
 );

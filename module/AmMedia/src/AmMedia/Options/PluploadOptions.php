@@ -128,11 +128,4 @@ class PluploadOptions extends AbstractOptions
     {
         return $this->DirUpload;
     }
-
-
-
-    /**
-     * @package unfinished
-     * @todo finish config parameters Plupload
-     */
 }

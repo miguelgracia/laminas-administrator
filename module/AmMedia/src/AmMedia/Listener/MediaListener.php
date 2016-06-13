@@ -37,9 +37,15 @@ class MediaListener implements ListenerAggregateInterface
     {
         $serviceLocator = $eventManager->getParam('serviceLocator');
 
-        $viewModel = new ViewModel(array(
-            'title' => 'Media Manager',
-        ));
+        $application = $serviceLocator->get('Application');
+
+        $params = $application->getMvcEvent()->getRouteMatch();
+
+        $title = 'Media Manager';
+        $moduleTarget = $params->getParam('module');
+        $id = $params->getParam('id');
+
+        $viewModel = new ViewModel(compact('title','moduleTarget','id'));
 
         $viewModel->setTemplate('block/block');
 

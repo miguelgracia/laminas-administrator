@@ -15,19 +15,6 @@ use Zend\ServiceManager\ServiceManager;
 class PluploadService extends EventProvider implements FactoryInterface
 {
     protected $serviceLocator;
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-
-        return $this;
-    }
-
 
     /**
      * @var
@@ -69,8 +56,6 @@ class PluploadService extends EventProvider implements FactoryInterface
      */
     protected $serviceManager;
 
-
-
     /**
      * @var string
      */
@@ -92,9 +77,18 @@ class PluploadService extends EventProvider implements FactoryInterface
     protected $DirUpload;
 
 
+    /**
+     * Create service
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     * @return mixed
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
 
-    /* UPLOAD!!! */
-
+        return $this;
+    }
 
     /**
      * @param $id_parent
@@ -106,7 +100,6 @@ class PluploadService extends EventProvider implements FactoryInterface
     public function uploadPlupload($id_parent,$data,$model)
     {
         $this->getPluploadOptions();
-
 
         $pluploadMapper      = $this->getPluploadMapper();
         $pluploadEntity      = $this->getPluploadEntity();
@@ -124,13 +117,13 @@ class PluploadService extends EventProvider implements FactoryInterface
         ;
         $this->getEventManager()->trigger(__FUNCTION__.'.pre', $this, array('plupload_entity' => $pluploadEntity));
 
-        if(isset($data["chunk"])){
+        if(isset($data["chunk"])) {
 
             // UploadModel
             $file = $pluploadModel->PluploadModel($data);
-            if($file){
+            if($file) {
 
-                if(($data["chunk"]+1) == $data["chunks"]){
+                if(($data["chunk"]+1) == $data["chunks"]) {
 
                     // Get db last id
                     $id = $pluploadMapper->insert($pluploadEntity);
@@ -140,10 +133,8 @@ class PluploadService extends EventProvider implements FactoryInterface
                     $NameRename  =  str_replace(DIRECTORY_SEPARATOR.'-',DIRECTORY_SEPARATOR.$id.'-',$file['filePath']);
                     rename($file['filePath'],$NameRename);
 
-
                     // Thumb
                    $thumbModel->ThumbModel($id.$file['fileName']);
-
 
                     // Update Db
                     $pluploadEntity
@@ -151,16 +142,11 @@ class PluploadService extends EventProvider implements FactoryInterface
                         ->setSize($fileSize)
                         ->setIdPlupload($id);
                     $pluploadMapper->update($pluploadEntity);
-
                 }
-
-            }else{
-
+            } else {
                 throw new \Exception('Not writable '.$this->getPluploadOptions()->DirUploadAbsolute);
-
             }
-
-        }else{
+        } else {
 
             // Get db last id
             $id = $pluploadMapper->insert($pluploadEntity);
@@ -169,7 +155,7 @@ class PluploadService extends EventProvider implements FactoryInterface
             $pluploadModel->setId($id);
             $file = $pluploadModel->PluploadModel($data);
 
-            if($file){
+            if ($file) {
 
                 // Thumb
                 $thumbModel->ThumbModel($file['fileName']);
@@ -180,26 +166,16 @@ class PluploadService extends EventProvider implements FactoryInterface
                     ->setIdPlupload($id);
                 $pluploadMapper->update($pluploadEntity);
 
-           }else{
-
+           } else {
                 $pluploadMapper->Remove($id);
-
                 throw new \Exception('Not writable '.$this->getPluploadOptions()->DirUploadAbsolute);
-
             }
-
         }
 
         $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('plupload_entity' => $pluploadEntity));
 
-
         return true;
     }
-
-
-
-    /* REMOVE!! */
-
 
     /**
      * @param $id
@@ -207,7 +183,6 @@ class PluploadService extends EventProvider implements FactoryInterface
      */
     public function PluploadRemove($id)
     {
-
         $this->getPluploadOptions();
 
         $pluploadMapper      = $this->getPluploadMapper();
@@ -215,10 +190,9 @@ class PluploadService extends EventProvider implements FactoryInterface
 
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('remove_model' => $RemoveModel));
 
-
-        if($pluploadMapper->find($id)){
+        if($pluploadMapper->find($id)) {
             $fileDb = $pluploadMapper->find($id)->getName();
-            if($RemoveModel->Remove($fileDb)){
+            if($RemoveModel->Remove($fileDb)) {
                 $pluploadMapper->Remove($id);
             }
         }
@@ -227,7 +201,6 @@ class PluploadService extends EventProvider implements FactoryInterface
 
         return true;
     }
-
 
     /**
      * @param $model
@@ -239,14 +212,13 @@ class PluploadService extends EventProvider implements FactoryInterface
         $pluploadMapper  = $this->getPluploadMapper();
         $m = $pluploadMapper->findByModel($model,$id_parent);
 
-        if( $m ){
-            foreach($m as $r){
+        if( $m ) {
+            foreach($m as $r) {
                 $this->PluploadRemove($r->getIdPlupload());
             }
         }
         return true;
     }
-
 
     /**
      * @param $model
@@ -259,8 +231,8 @@ class PluploadService extends EventProvider implements FactoryInterface
         $pluploadMapper      = $this->getPluploadMapper();
         $pluploadEntity      = $this->getPluploadEntity();
         $m = $pluploadMapper->findByModel($model,$id_parent);
-        if($m){
-            foreach($m as $r){
+        if($m) {
+            foreach($m as $r) {
                 $pluploadEntity
                     ->setName($r->getName())
                     ->setType($r->getType())
@@ -275,13 +247,6 @@ class PluploadService extends EventProvider implements FactoryInterface
         }
         return true;
     }
-
-
-    /* GET LIST!! */
-
-
-
-
 
     /**
      * @return mixed
@@ -303,7 +268,6 @@ class PluploadService extends EventProvider implements FactoryInterface
         $this->PluploadList = $this->getPluploadMapper()->findByParent($id);
         return $this;
     }
-
 
     /**
      * @return mixed
@@ -327,29 +291,17 @@ class PluploadService extends EventProvider implements FactoryInterface
         return $this;
     }
 
-
-
-
-
-    /* GET SERVICES */
-    /* OPTIONS */
-
-
-
-
-
     /**
      * GET OPTIONS
      * @return mixed
      */
-    public function getPluploadOptions(){
+    public function getPluploadOptions() {
 
         if (!$this->pluploadOptions) {
             $this->setPluploadOptions(
                 $this->serviceLocator->get('plupload_options')
             );
         }
-
 
         return $this->pluploadOptions;
     }
@@ -359,13 +311,12 @@ class PluploadService extends EventProvider implements FactoryInterface
      * @param PluploadOptions $PluploadOptions
      * @return $this
      */
-    public function setPluploadOptions(PluploadOptions $PluploadOptions){
+    public function setPluploadOptions(PluploadOptions $PluploadOptions) {
 
         $this->pluploadOptions = $PluploadOptions;
 
         return $this;
     }
-
 
     /**
      * GET MAPPER
@@ -395,7 +346,7 @@ class PluploadService extends EventProvider implements FactoryInterface
     /**
      * @return mixed
      */
-    public function getPluploadModel(){
+    public function getPluploadModel() {
 
         if (!$this->pluploadModel) {
             $this->setPluploadModel(
@@ -403,28 +354,27 @@ class PluploadService extends EventProvider implements FactoryInterface
             );
         }
 
-        if(!$this->DirUpload){
+        if(!$this->DirUpload) {
             $this->pluploadModel->setUploadDir($this->getPluploadOptions()->DirUploadAbsolute);
         }
 
-
         return $this->pluploadModel;
     }
+
     /**
      * @param $pluploadModel
      * @return $this
      */
-    public function setPluploadModel($pluploadModel){
+    public function setPluploadModel($pluploadModel) {
 
         $this->pluploadModel = $pluploadModel;
         return $this;
     }
 
-
     /**
      * @return mixed
      */
-    public function getRemoveModel(){
+    public function getRemoveModel() {
 
         if (!$this->RemoveModel) {
             $this->setRemoveModel(
@@ -432,13 +382,12 @@ class PluploadService extends EventProvider implements FactoryInterface
             );
         }
 
-        if(!$this->DirUpload){
+        if(!$this->DirUpload) {
             $this->RemoveModel->setUploadDir($this->getPluploadOptions()->DirUploadAbsolute);
         }
-        if(!$this->ThumbResize){
+        if(!$this->ThumbResize) {
             $this->RemoveModel->setThumbResize($this->getPluploadOptions()->ThumbResize);
         }
-
 
         return $this->RemoveModel;
     }
@@ -447,16 +396,15 @@ class PluploadService extends EventProvider implements FactoryInterface
      * @param $RemoveModel
      * @return $this
      */
-    public function setRemoveModel($RemoveModel){
+    public function setRemoveModel($RemoveModel) {
         $this->RemoveModel = $RemoveModel;
         return $this;
     }
 
-
     /**
      * @return mixed
      */
-    public function getThumbModel(){
+    public function getThumbModel() {
 
         if (!$this->ThumbModel) {
             $this->setThumbModel(
@@ -464,10 +412,10 @@ class PluploadService extends EventProvider implements FactoryInterface
             );
         }
 
-        if(!$this->DirUpload){
+        if(!$this->DirUpload) {
             $this->ThumbModel->setUploadDir($this->getPluploadOptions()->DirUploadAbsolute);
         }
-        if(!$this->ThumbResize){
+        if(!$this->ThumbResize) {
             $this->ThumbModel->setThumbResize($this->getPluploadOptions()->ThumbResize);
         }
 
@@ -478,21 +426,15 @@ class PluploadService extends EventProvider implements FactoryInterface
      * @param $ThumbModel
      * @return $this
      */
-    public function setThumbModel($ThumbModel){
+    public function setThumbModel($ThumbModel) {
         $this->ThumbModel = $ThumbModel;
         return $this;
     }
 
-
-    /* ENTITY */
-
-
-
-
     /**
      * @return mixed
      */
-    public function getPluploadEntity(){
+    public function getPluploadEntity() {
 
         if (!$this->pluploadEntity) {
             $this->setPluploadEntity(
@@ -506,9 +448,8 @@ class PluploadService extends EventProvider implements FactoryInterface
      * @param $pluploadEntity
      * @return $this
      */
-    public function setPluploadEntity($pluploadEntity){
+    public function setPluploadEntity($pluploadEntity) {
         $this->pluploadEntity = $pluploadEntity;
         return $this;
     }
-
 }
