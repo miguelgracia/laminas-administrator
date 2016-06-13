@@ -27,7 +27,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                 'plupload_options' => function ($sm) {
                     $config = $sm->get('Config');
                     return new Options\PluploadOptions(
-                        isset($config['QuConfig']['AmMedia']) ? $config['QuConfig']['AmMedia'] : array()
+                        isset($config['AmMedia']) ? $config['AmMedia'] : array()
                     );
                 },
                 'plupload_model' => function ($sm) {
@@ -45,20 +45,20 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $mapper->setHydrator(new PluploadHydrator());
                     return $mapper;
                 },
-                'thumb_model' => function ($sm) {
+                'resize_model' => function ($sm) {
 
                     $options = $sm->get('plupload_options');
-                    $ThumbModel = new Model\ThumbModel();
+                    $ThumbModel = new Model\ResizeModel();
                     $ThumbModel->setUploadDir($options->getDirUploadAbsolute());
-                    $ThumbModel->setThumbResize($options->getThumbResize());
-                    $ThumbModel->setThumbService($sm->get('intervention_image'));
+                    $ThumbModel->setResize($options->getResize());
+                    $ThumbModel->setResizeService($sm->get('intervention_image'));
                     return $ThumbModel;
                 },
                 'remove_model' => function ($sm) {
                     $options = $sm->get('plupload_options');
                     $RemoveModel = new Model\RemoveModel();
                     $RemoveModel->setUploadDir($options->getDirUploadAbsolute());
-                    $RemoveModel->setThumbResize($options->getThumbResize());
+                    $RemoveModel->setResize($options->getResize());
                     return $RemoveModel;
                 },
             ),
@@ -74,7 +74,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                 'PluploadHelp' => function ($sm) {
                     $config = $sm->getServiceLocator()->get('config');
                     return new PluploadHelp(
-                        isset($config['QuConfig']['AmMedia']) ? $config['QuConfig']['AmMedia'] : array()
+                        isset($config['AmMedia']) ? $config['AmMedia'] : array()
                     );
                 },
                 'PluploadHelpLoad' => function ($sm) {
@@ -82,7 +82,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $plupload_service = $sm->get('plupload_service');
                     $config = $sm->get('config');
                     return new PluploadHelpLoad($plupload_service,
-                        isset($config['QuConfig']['AmMedia']) ? $config['QuConfig']['AmMedia'] : array()
+                        isset($config['AmMedia']) ? $config['AmMedia'] : array()
                     );
                 },
             ),

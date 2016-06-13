@@ -7,7 +7,6 @@ use Zend\Http\Headers;
 
 class PluploadModel
 {
-
     /**
      * @var
      */
@@ -19,9 +18,7 @@ class PluploadModel
     protected $uploadDir;
 
 
-
-    public function PluploadModel($data){
-
+    public function PluploadModel($data) {
 
         if(!is_dir($this->uploadDir)){
            @mkdir($this->uploadDir);
@@ -31,7 +28,6 @@ class PluploadModel
         if (!is_writable($this->uploadDir)) {
             return false;
         }
-
 
         $contentType = '';
         $fileName_b = '';

@@ -4,9 +4,8 @@ namespace AmMedia\Model;
 
 use Zend\Validator\File;
 
-class ThumbModel
+class ResizeModel
 {
-
     /**
      * @var
      */
@@ -15,22 +14,21 @@ class ThumbModel
     /**
      * @var
      */
-    protected $ThumbResize;
-
+    protected $resize;
 
     /**
      * @var
      */
-    protected $ThumbService;
+    protected $resizeService;
 
-
-    public function ThumbModel($fileName){
-
-        $ThumbSize    = $this->ThumbResize;
-        $UploadDir    = $this->uploadDir;
-        $file         = $UploadDir . DIRECTORY_SEPARATOR . $fileName;
+    public function resize($fileName, $model)
+    {
+        $fileSizes    = $this->resize[$model];
+        $uploadDir    = $this->uploadDir;
+        $file         = $uploadDir . DIRECTORY_SEPARATOR . $model. DIRECTORY_SEPARATOR . $fileName;
 
         $fileTransfer = new File\NotExists($file);
+
         if(!$fileTransfer->isValid($file)){
             throw new Exception\DomainException(
                 sprintf($file.' file not found.')
@@ -39,13 +37,17 @@ class ThumbModel
 
         $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 
-        if($extension == 'jpg' or $extension == 'jpeg' or $extension == 'gif' or $extension == 'png'){
+        $validExtensions = [
+            'jpg','jpeg','gif','png'
+        ];
+
+        if(in_array($extension, $validExtensions)){
 
             $file = str_replace('/',DIRECTORY_SEPARATOR,$file);
 
-            $ThumbService = $this->ThumbService->make($file);
+            $ThumbService = $this->resizeService->make($file);
 
-            foreach($ThumbSize as $key => $size)
+            foreach($fileSizes as $key => $size)
             {
                 if(!isset($size[0])){
                     throw new Exception\DomainException(
@@ -58,17 +60,22 @@ class ThumbModel
                     $constraint->upsize();
                 });
 
-                if (!is_dir($UploadDir . DIRECTORY_SEPARATOR . $key)) {
-                    mkdir($UploadDir . DIRECTORY_SEPARATOR . $key);
+                if (!is_dir($uploadDir . DIRECTORY_SEPARATOR . $model)) {
+                    mkdir($uploadDir . DIRECTORY_SEPARATOR . $model);
+                }
+
+                if (!is_dir($uploadDir . DIRECTORY_SEPARATOR . $model . DIRECTORY_SEPARATOR . $key)) {
+                    mkdir($uploadDir . DIRECTORY_SEPARATOR . $model . DIRECTORY_SEPARATOR . $key);
                 }
 
                 $image->save(
-                        $UploadDir .
+                        $uploadDir .
                         DIRECTORY_SEPARATOR .
+                        $model . DIRECTORY_SEPARATOR .
                         $key . DIRECTORY_SEPARATOR .
                         $fileName
                 );
-                @chmod($UploadDir.$size.$fileName, 0777);
+                @chmod($uploadDir.$size.$fileName, 0777);
             }
         }
     }
@@ -93,30 +100,30 @@ class ThumbModel
     }
 
     /**
-     * @param array $ThumbResize
+     * @param array $resize
      * @return $this
      */
-    public function setThumbResize($ThumbResize)
+    public function setResize($resize)
     {
-        $this->ThumbResize = $ThumbResize;
+        $this->resize = $resize;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getThumbResize()
+    public function getResize()
     {
-        return $this->ThumbResize;
+        return $this->resize;
     }
 
     /**
      * @param $ThumbService
      * @return $this
      */
-    public function setThumbService($ThumbService)
+    public function setResizeService($resizeService)
     {
-        $this->ThumbService = $ThumbService;
+        $this->resizeService = $resizeService;
         return $this;
     }
 
@@ -125,7 +132,6 @@ class ThumbModel
      */
     public function getThumbService()
     {
-        return $this->ThumbService;
+        return $this->resizeService;
     }
-
 }

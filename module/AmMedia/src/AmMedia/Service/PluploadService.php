@@ -44,7 +44,7 @@ class PluploadService extends EventProvider implements FactoryInterface
     /**
      * @var
      */
-    protected $ThumbModel;
+    protected $resizeModel;
 
     /**
      * @var
@@ -64,12 +64,7 @@ class PluploadService extends EventProvider implements FactoryInterface
     /**
      * @var
      */
-    protected $ThumbResize;
-
-    /**
-     * @var
-     */
-    protected $Resize;
+    protected $resize;
 
     /**
      * @var
@@ -97,14 +92,14 @@ class PluploadService extends EventProvider implements FactoryInterface
      * @return bool
      * @throws \Exception
      */
-    public function uploadPlupload($id_parent,$data,$model)
+    public function upload($id_parent, $data, $model)
     {
         $this->getPluploadOptions();
 
         $pluploadMapper      = $this->getPluploadMapper();
         $pluploadEntity      = $this->getPluploadEntity();
         $pluploadModel       = $this->getPluploadModel();
-        $thumbModel          = $this->getThumbModel();
+        $resizeModel         = $this->getResizeModel();
 
         $pluploadEntity
         ->setName(      (string) $data['file']['name'])
@@ -119,8 +114,14 @@ class PluploadService extends EventProvider implements FactoryInterface
 
         if(isset($data["chunk"])) {
 
-            // UploadModel
+            $uploadDir = $pluploadModel->getUploadDir();
+
+            $uploadDir .= DIRECTORY_SEPARATOR . $model;
+
+            $pluploadModel->setUploadDir($uploadDir);
+
             $file = $pluploadModel->PluploadModel($data);
+
             if($file) {
 
                 if(($data["chunk"]+1) == $data["chunks"]) {
@@ -131,10 +132,11 @@ class PluploadService extends EventProvider implements FactoryInterface
                     // Get size and rename
                     $fileSize = filesize ( $file['filePath'] );
                     $NameRename  =  str_replace(DIRECTORY_SEPARATOR.'-',DIRECTORY_SEPARATOR.$id.'-',$file['filePath']);
+
                     rename($file['filePath'],$NameRename);
 
                     // Thumb
-                   $thumbModel->ThumbModel($id.$file['fileName']);
+                   $resizeModel->resize($id.$file['fileName'], $model);
 
                     // Update Db
                     $pluploadEntity
@@ -158,7 +160,7 @@ class PluploadService extends EventProvider implements FactoryInterface
             if ($file) {
 
                 // Thumb
-                $thumbModel->ThumbModel($file['fileName']);
+                $resizeModel->resizeModel($file['fileName']);
 
                 // Update Db
                 $pluploadEntity
@@ -385,8 +387,8 @@ class PluploadService extends EventProvider implements FactoryInterface
         if(!$this->DirUpload) {
             $this->RemoveModel->setUploadDir($this->getPluploadOptions()->DirUploadAbsolute);
         }
-        if(!$this->ThumbResize) {
-            $this->RemoveModel->setThumbResize($this->getPluploadOptions()->ThumbResize);
+        if(!$this->resize) {
+            $this->RemoveModel->setThumbResize($this->getPluploadOptions()->resize);
         }
 
         return $this->RemoveModel;
@@ -404,22 +406,22 @@ class PluploadService extends EventProvider implements FactoryInterface
     /**
      * @return mixed
      */
-    public function getThumbModel() {
+    public function getResizeModel() {
 
-        if (!$this->ThumbModel) {
+        if (!$this->resizeModel) {
             $this->setThumbModel(
-                $this->serviceLocator->get('thumb_model')
+                $this->serviceLocator->get('resize_model')
             );
         }
 
         if(!$this->DirUpload) {
-            $this->ThumbModel->setUploadDir($this->getPluploadOptions()->DirUploadAbsolute);
+            $this->resizeModel->setUploadDir($this->getPluploadOptions()->DirUploadAbsolute);
         }
-        if(!$this->ThumbResize) {
-            $this->ThumbModel->setThumbResize($this->getPluploadOptions()->ThumbResize);
+        if(!$this->resize) {
+            $this->resizeModel->setResize($this->getPluploadOptions()->Resize);
         }
 
-        return $this->ThumbModel;
+        return $this->resizeModel;
     }
 
     /**
@@ -427,7 +429,7 @@ class PluploadService extends EventProvider implements FactoryInterface
      * @return $this
      */
     public function setThumbModel($ThumbModel) {
-        $this->ThumbModel = $ThumbModel;
+        $this->resizeModel = $ThumbModel;
         return $this;
     }
 

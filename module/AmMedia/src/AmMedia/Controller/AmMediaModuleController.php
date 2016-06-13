@@ -16,7 +16,7 @@ class AmMediaModuleController extends AuthController
         $view->id      = $this->getEvent()->getRouteMatch()->getParam('id', 0);
         $view->model   = $this->getEvent()->getRouteMatch()->getParam('model', 'model');
         $this->Config  = $this->serviceLocator->get('Config');
-        $view->DirJs   = $this->Config['QuConfig']['QuPlupload']['DirJs'];
+        $view->DirJs   = $this->Config['AmMedia']['DirJs'];
 
         return $view;
     }
@@ -43,11 +43,9 @@ class AmMediaModuleController extends AuthController
         if ($this->getRequest()->isPost()) {
 
             $post = $this->getRequest()->getPost();
-            $files = $this->getRequest()->getFiles();
-
             $data = array_merge_recursive(
                 $post->toArray(),
-                $files->toArray()
+                $this->getRequest()->getFiles()->toArray()
             );
 
             $id    = $post->module_id;
@@ -55,7 +53,7 @@ class AmMediaModuleController extends AuthController
 
             $plUploadService = $this->serviceLocator->get('plupload_service');
 
-            $plUploadService->uploadPlupload($id,$data,$model);
+            $plUploadService->upload($id,$data,$model);
         }
 
         return new JsonModel(array());
