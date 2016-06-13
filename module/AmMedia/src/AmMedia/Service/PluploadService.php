@@ -2,15 +2,11 @@
 
 namespace AmMedia\Service;
 
+use Administrator\Model\AdministratorTable;
 use AmMedia\Options\PluploadOptions;
-use AmMedia\Entity\PluploadMapperInterface;
-use Zend\EventManager\EventManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZfcBase\EventManager\EventProvider;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\ServiceManager\ServiceManager;
-
+use Administrator\EventManager\EventProvider;
 
 class PluploadService extends EventProvider implements FactoryInterface
 {
@@ -34,7 +30,7 @@ class PluploadService extends EventProvider implements FactoryInterface
     /**
      * @var
      */
-    protected $pluploadMapper;
+    protected $mediaTableGateway;
 
     /**
      * @var
@@ -96,7 +92,7 @@ class PluploadService extends EventProvider implements FactoryInterface
     {
         $this->getPluploadOptions();
 
-        $pluploadMapper      = $this->getPluploadMapper();
+        $mediaTableGateway      = $this->getTableGateway();
         $pluploadEntity      = $this->getPluploadEntity();
         $pluploadModel       = $this->getPluploadModel();
         $resizeModel         = $this->getResizeModel();
@@ -127,7 +123,7 @@ class PluploadService extends EventProvider implements FactoryInterface
                 if(($data["chunk"]+1) == $data["chunks"]) {
 
                     // Get db last id
-                    $id = $pluploadMapper->insert($pluploadEntity);
+                    $id = $mediaTableGateway->save($pluploadEntity);
 
                     // Get size and rename
                     $fileSize = filesize ( $file['filePath'] );
@@ -142,8 +138,8 @@ class PluploadService extends EventProvider implements FactoryInterface
                     $pluploadEntity
                         ->setName($id.$file['fileName'])
                         ->setSize($fileSize)
-                        ->setIdPlupload($id);
-                    $pluploadMapper->update($pluploadEntity);
+                        ->setId($id);
+                    $mediaTableGateway->save($pluploadEntity);
                 }
             } else {
                 throw new \Exception('Not writable '.$this->getPluploadOptions()->DirUploadAbsolute);
@@ -151,7 +147,7 @@ class PluploadService extends EventProvider implements FactoryInterface
         } else {
 
             // Get db last id
-            $id = $pluploadMapper->insert($pluploadEntity);
+            $id = $mediaTableGateway->save($pluploadEntity);
 
             // Upload and set Name
             $pluploadModel->setId($id);
@@ -165,11 +161,11 @@ class PluploadService extends EventProvider implements FactoryInterface
                 // Update Db
                 $pluploadEntity
                     ->setName($file['fileName'])
-                    ->setIdPlupload($id);
-                $pluploadMapper->update($pluploadEntity);
+                    ->setId($id);
+                $mediaTableGateway->save($pluploadEntity);
 
            } else {
-                $pluploadMapper->Remove($id);
+                $mediaTableGateway->Remove($id);
                 throw new \Exception('Not writable '.$this->getPluploadOptions()->DirUploadAbsolute);
             }
         }
@@ -187,15 +183,15 @@ class PluploadService extends EventProvider implements FactoryInterface
     {
         $this->getPluploadOptions();
 
-        $pluploadMapper      = $this->getPluploadMapper();
+        $mediaTableGateway      = $this->getTableGateway();
         $RemoveModel         = $this->getRemoveModel();
 
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('remove_model' => $RemoveModel));
 
-        if($pluploadMapper->find($id)) {
-            $fileDb = $pluploadMapper->find($id)->getName();
+        if($mediaTableGateway->find($id)) {
+            $fileDb = $mediaTableGateway->find($id)->getName();
             if($RemoveModel->Remove($fileDb)) {
-                $pluploadMapper->Remove($id);
+                $mediaTableGateway->Remove($id);
             }
         }
 
@@ -211,8 +207,8 @@ class PluploadService extends EventProvider implements FactoryInterface
      */
     public function pluploadRemoveAll($model,$id_parent)
     {
-        $pluploadMapper  = $this->getPluploadMapper();
-        $m = $pluploadMapper->findByModel($model,$id_parent);
+        $mediaTableGateway  = $this->getTableGateway();
+        $m = $mediaTableGateway->findByModel($model,$id_parent);
 
         if( $m ) {
             foreach($m as $r) {
@@ -230,9 +226,9 @@ class PluploadService extends EventProvider implements FactoryInterface
      */
     public function pluploadUpdate($model,$id_parent,$id)
     {
-        $pluploadMapper      = $this->getPluploadMapper();
+        $mediaTableGateway      = $this->getTableGateway();
         $pluploadEntity      = $this->getPluploadEntity();
-        $m = $pluploadMapper->findByModel($model,$id_parent);
+        $m = $mediaTableGateway->findByModel($model,$id_parent);
         if($m) {
             foreach($m as $r) {
                 $pluploadEntity
@@ -244,7 +240,7 @@ class PluploadService extends EventProvider implements FactoryInterface
                     ->setIdParent($id)
                     ->setModel($r->getModel())
                     ->setIdPlupload($r->getIdPlupload());
-                $pluploadMapper->update($pluploadEntity);
+                $mediaTableGateway->update($pluploadEntity);
             }
         }
         return true;
@@ -267,7 +263,7 @@ class PluploadService extends EventProvider implements FactoryInterface
      */
     public function setPluploadIdList($id)
     {
-        $this->PluploadList = $this->getPluploadMapper()->findByParent($id);
+        $this->PluploadList = $this->getTableGateway()->findByParent($id);
         return $this;
     }
 
@@ -280,17 +276,6 @@ class PluploadService extends EventProvider implements FactoryInterface
             $this->setPluploadIdList(0);
         }
         return $this->PluploadList;
-    }
-
-    /**
-     * @param $id
-     * @param $model
-     * @return $this
-     */
-    public function setPluploadIdAndModelList($id,$model)
-    {
-        $this->PluploadList = $this->getPluploadMapper()->findByParentByModel($id,$model);
-        return $this;
     }
 
     /**
@@ -321,27 +306,27 @@ class PluploadService extends EventProvider implements FactoryInterface
     }
 
     /**
-     * GET MAPPER
+     * GET TableGateway
      * @return mixed
      */
-    public function getPluploadMapper()
+    public function getTableGateway()
     {
-        if (!$this->pluploadMapper) {
-            $this->setPluploadMapper(
-                $this->serviceLocator->get('plupload_mapper')
+        if (!$this->mediaTableGateway) {
+            $this->setTableGateway(
+                $this->serviceLocator->get('AmMedia\Model\MediaTable')
             );
         }
-        return $this->pluploadMapper;
+        return $this->mediaTableGateway;
     }
 
     /**
-     * SET MAPPER
-     * @param PluploadMapperInterface $pluploadMapper
+     * SET TABLEGATEWAY
+     * @param AdministratorTable $tableGateway
      * @return $this
      */
-    public function setPluploadMapper(PluploadMapperInterface $pluploadMapper)
+    public function setTableGateway(AdministratorTable $tableGateway)
     {
-        $this->pluploadMapper = $pluploadMapper;
+        $this->mediaTableGateway = $tableGateway;
         return $this;
     }
 
@@ -440,7 +425,7 @@ class PluploadService extends EventProvider implements FactoryInterface
 
         if (!$this->pluploadEntity) {
             $this->setPluploadEntity(
-                $this->serviceLocator->get('plupload_entity')
+                $this->serviceLocator->get('AmMedia\Model\MediaModel')
             );
         }
         return $this->pluploadEntity;

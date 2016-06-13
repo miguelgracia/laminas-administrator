@@ -2,9 +2,9 @@
 
 namespace AmMedia;
 
-use AmMedia\Entity\PluploadHydrator;
 use AmMedia\Listener\MediaListener;
 use AmMedia\View\Helper\PluploadHelp;
+use AmMedia\View\Helper\PluploadHelpLoad;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\Mvc\MvcEvent;
@@ -19,7 +19,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
     {
         return array(
             'invokables' => array(
-                'plupload_entity'   => 'AmMedia\Entity\PluploadEntity',
+                'AmMedia\Model\MediaModel'   => 'AmMedia\Model\MediaModel',
             ),
             'factories' => array(
                 'plupload_service'  => 'AmMedia\Service\PluploadService',
@@ -35,15 +35,6 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $PluploadModel = new Model\PluploadModel();
                     $PluploadModel->setUploadDir($options->getDirUploadAbsolute());
                     return $PluploadModel;
-                },
-                'plupload_mapper' => function ($sm) {
-                    $options = $sm->get('plupload_options');
-                    $mapper  = new Entity\PluploadMapper();
-                    $mapper->setTableName($options->getTableName());
-                    $mapper->setDbAdapter($sm->get('plupload_adapter'));
-                    $mapper->setEntityPrototype($sm->get('plupload_entity'));
-                    $mapper->setHydrator(new PluploadHydrator());
-                    return $mapper;
                 },
                 'resize_model' => function ($sm) {
 

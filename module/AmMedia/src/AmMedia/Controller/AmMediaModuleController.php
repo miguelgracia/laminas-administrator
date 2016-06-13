@@ -7,32 +7,22 @@ use Zend\View\Model\ViewModel;
 
 class AmMediaModuleController extends AuthController
 {
+    protected $config;
+
     /**
      * @return array|\Zend\View\Model\ViewModel
      */
     public function indexAction()
     {
-        $view          = new ViewModel();
-        $view->id      = $this->getEvent()->getRouteMatch()->getParam('id', 0);
-        $view->model   = $this->getEvent()->getRouteMatch()->getParam('model', 'model');
-        $this->Config  = $this->serviceLocator->get('Config');
-        $view->DirJs   = $this->Config['AmMedia']['DirJs'];
+
+        $id      = $this->getEvent()->getRouteMatch()->getParam('id', 0);
+        $model   = $this->getEvent()->getRouteMatch()->getParam('model', 'model');
+        $this->config  = $this->serviceLocator->get('Config');
+        $DirJs   = $this->config['AmMedia']['DirJs'];
+
+        $view  = new ViewModel(compact('id','model','DirJs'));
 
         return $view;
-    }
-
-    /**
-     * @return array
-     */
-    public function loadAction()
-    {
-        $view        = new ViewModel();
-        $view->id    = $this->getEvent()->getRouteMatch()->getParam('id', 0);
-        $view->model = $this->getEvent()->getRouteMatch()->getParam('model', 'model');
-
-        $this->getEventManager()->trigger(__FUNCTION__, $this, array('test' => 'test'));
-
-        return $view->setTerminal(true);
     }
 
     /**
