@@ -29,5 +29,9 @@ $(function () {
                     .on('click','.js-eliminar',clickDelete);
             });
         };
+
+        this.edit = function() {
+
+        };
     });
 });

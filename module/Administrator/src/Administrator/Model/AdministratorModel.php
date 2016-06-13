@@ -22,6 +22,7 @@ class AdministratorModel
                 case "set":
                     $property = $this->parseProperty($output_array[2]);
                     $this->{$property} = $arguments[0];
+                    return $this;
                     break;
             }
         }

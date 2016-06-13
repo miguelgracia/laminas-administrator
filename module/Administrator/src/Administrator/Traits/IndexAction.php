@@ -10,7 +10,7 @@ trait IndexAction
      */
     public function indexAction()
     {
-        $datatable = $this->sm->get('Administrator\Service\DatatableService');
+        $datatable = $this->serviceLocator->get('Administrator\Service\DatatableService');
 
         $datatable->init();
 

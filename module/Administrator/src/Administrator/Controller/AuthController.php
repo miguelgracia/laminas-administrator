@@ -18,7 +18,8 @@ class AuthController extends AbstractActionController
     protected $authService;
 
     protected $tableGateway;
-    protected $formService;
+
+    protected $triggerResults;
 
     protected $sessionService;
     protected $config;
@@ -127,8 +128,6 @@ class AuthController extends AbstractActionController
         $this->setControllerVars();
 
         $this->sessionService   = $this->serviceLocator->get('Administrator\Service\SessionService');
-        $this->formService      = $this->serviceLocator->get('Administrator\Service\AdministratorFormService');
-
 
         // Sacamos la ruta para matchearla
         $match = $e->getRouteMatch();
@@ -175,7 +174,7 @@ class AuthController extends AbstractActionController
             }
         }
 
-        $this->runAdministratorTrigger($match);
+        $this->triggerResults = $this->runAdministratorTrigger($match);
 
         return parent::onDispatch($e);
     }
@@ -191,7 +190,7 @@ class AuthController extends AbstractActionController
 
         $triggerName = $requestMethod . '.' . $module . '.' . $action;
 
-        $eventManager->trigger($triggerName, null, array('serviceLocator' => $this->serviceLocator));
+        return $eventManager->trigger($triggerName, null, array('serviceLocator' => $this->serviceLocator));
     }
 
     public function setControllerVars()
@@ -222,5 +221,16 @@ class AuthController extends AbstractActionController
     public function getEditView($params = array())
     {
         return $this->getView($params,'edit');
+    }
+
+    public function parseTriggers()
+    {
+        $html = "";
+        $viewRenderer = $this->serviceLocator->get('ViewRenderer');
+        foreach ($this->triggerResults as $result) {
+            $html .= $viewRenderer->render($result);
+        }
+
+        return $html;
     }
 }
