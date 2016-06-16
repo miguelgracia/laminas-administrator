@@ -11,6 +11,6 @@ gulp.task('build', function () {
         'js/ready.js'
     ])
         .pipe(concat('administrator.min.js'))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(gulp.dest('js/build/'))
 });

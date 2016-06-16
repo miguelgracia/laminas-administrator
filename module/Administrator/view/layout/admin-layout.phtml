@@ -18,16 +18,18 @@ $basePath = $this->basePath() . '/administrator';
 
     <!-- Le styles -->
     <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $basePath . '/img/favicon.ico'))
-        ->appendStylesheet($basePath . '/libs/bootstrap/css/bootstrap.min.css')
-        ->appendStylesheet('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
-        ->appendStylesheet('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css')
-        ->appendStylesheet($basePath . '/libs/select2/css/select2.min.css')
-        ->appendStylesheet($basePath . '/css/AdminLTE.min.css')
-        ->appendStylesheet($basePath . '/css/skins/skin-blue.min.css')
-        ->appendStylesheet($basePath . '/libs/datatables/dataTables.bootstrap.css')
-        ->appendStylesheet($basePath . '/libs/daterangepicker/daterangepicker-bs3.css')
-        ->appendStylesheet($basePath . '/libs/plupload/2.1.9/js/jquery.plupload.queue/css/jquery.plupload.queue.css')
-        ->appendStylesheet($basePath . '/css/style.css')
+
+
+        ->prependStylesheet($basePath . '/css/style.css')
+        ->prependStylesheet($basePath . '/libs/plupload/2.1.9/js/jquery.plupload.queue/css/jquery.plupload.queue.css')
+        ->prependStylesheet($basePath . '/libs/daterangepicker/daterangepicker-bs3.css')
+        ->prependStylesheet($basePath . '/libs/datatables/dataTables.bootstrap.css')
+        ->prependStylesheet($basePath . '/css/skins/skin-blue.min.css')
+        ->prependStylesheet($basePath . '/css/AdminLTE.min.css')
+        ->prependStylesheet($basePath . '/libs/select2/css/select2.min.css')
+        ->prependStylesheet('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css')
+        ->prependStylesheet('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
+        ->prependStylesheet($basePath . '/libs/bootstrap/css/bootstrap.min.css')
 
          ?>
 </head>
@@ -186,19 +188,22 @@ $basePath = $this->basePath() . '/administrator';
 
 <!-- Scripts -->
 <?php echo $this->headScript()
-    ->appendFile($basePath . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
-    ->appendFile($basePath . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
-    ->appendFile($basePath . '/libs/jQuery/jQuery-2.1.4.min.js')
-    ->appendFile($basePath . '/libs/jQueryUI/jQuery-ui.min.js')
-    ->appendFile($basePath . '/libs/bootstrap/js/bootstrap.min.js')
-    ->appendFile($basePath . '/libs/datatables/jquery.dataTables.js')
-    ->appendFile($basePath . '/libs/datatables/dataTables.bootstrap.min.js')
-    ->appendFile($basePath . '/libs/daterangepicker/moment-with-locales.js')
-    ->appendFile($basePath . '/libs/select2/js/select2.min.js')
-    ->appendFile($basePath . '/libs/sortable/sortable.min.js')
-    ->appendFile($basePath . '/libs/plupload/2.1.9/js/plupload.full.min.js')
-    ->appendFile($basePath . '/libs/plupload/2.1.9/js/jquery.plupload.queue/jquery.plupload.queue.min.js')
-    ->appendFile($basePath . '/js/build/administrator.min.js')
+
+    ->prependFile($basePath . '/js/build/administrator.min.js')
+    ->prependFile($basePath . '/libs/plupload/2.1.9/js/jquery.plupload.queue/jquery.plupload.queue.min.js')
+    ->prependFile($basePath . '/libs/plupload/2.1.9/js/plupload.full.min.js')
+    ->prependFile($basePath . '/libs/sortable/sortable.min.js')
+    ->prependFile($basePath . '/libs/select2/js/select2.min.js')
+    ->prependFile($basePath . '/libs/daterangepicker/moment-with-locales.js')
+    ->prependFile($basePath . '/libs/datatables/dataTables.bootstrap.min.js')
+    ->prependFile($basePath . '/libs/datatables/jquery.dataTables.js')
+    ->prependFile($basePath . '/libs/bootstrap/js/bootstrap.min.js')
+    ->prependFile($basePath . '/libs/jQueryUI/jQuery-ui.min.js')
+    ->prependFile($basePath . '/libs/jQuery/jQuery-2.1.4.min.js')
+    ->prependFile($basePath . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+    ->prependFile($basePath . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
+
+
 ;
 
 ?>

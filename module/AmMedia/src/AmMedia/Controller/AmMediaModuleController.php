@@ -15,14 +15,6 @@ class AmMediaModuleController extends AuthController
     public function indexAction()
     {
 
-        $id      = $this->getEvent()->getRouteMatch()->getParam('id', 0);
-        $model   = $this->getEvent()->getRouteMatch()->getParam('model', 'model');
-        $this->config  = $this->serviceLocator->get('Config');
-        $DirJs   = $this->config['AmMedia']['DirJs'];
-
-        $view  = new ViewModel(compact('id','model','DirJs'));
-
-        return $view;
     }
 
     /**
