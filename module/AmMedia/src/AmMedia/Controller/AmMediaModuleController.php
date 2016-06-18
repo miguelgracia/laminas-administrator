@@ -17,6 +17,13 @@ class AmMediaModuleController extends AuthController
 
     }
 
+    public function connectorAction()
+    {
+        $baseClass = str_replace("/",DIRECTORY_SEPARATOR,__DIR__ . "/../connectors/php/filemanager.php");
+        require $baseClass;
+        die;
+    }
+
     /**
      * @return mixed
      */

@@ -3310,16 +3310,16 @@
         },
         {
             "name": "zendframework/zend-mvc",
-            "version": "2.7.9",
+            "version": "2.7.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-mvc.git",
-                "reference": "10dcadc6727cc2df8f7d594a308e9616ad9ee4ad"
+                "reference": "9b705d5d5c7ed3808f8d52b440f612d9dc28c395"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-mvc/zipball/10dcadc6727cc2df8f7d594a308e9616ad9ee4ad",
-                "reference": "10dcadc6727cc2df8f7d594a308e9616ad9ee4ad",
+                "url": "https://api.github.com/repos/zendframework/zend-mvc/zipball/9b705d5d5c7ed3808f8d52b440f612d9dc28c395",
+                "reference": "9b705d5d5c7ed3808f8d52b440f612d9dc28c395",
                 "shasum": ""
             },
             "require": {
@@ -3330,11 +3330,10 @@
                 "zendframework/zend-hydrator": "^1.1 || ^2.1",
                 "zendframework/zend-psr7bridge": "^0.2",
                 "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3",
-                "zendframework/zend-servicemanager-di": "^1.0.1",
                 "zendframework/zend-stdlib": "^2.7.5 || ^3.0"
             },
             "require-dev": {
-                "fabpot/php-cs-fixer": "1.7.*",
+                "friendsofphp/php-cs-fixer": "1.7.*",
                 "phpunit/phpunit": "^4.5",
                 "sebastian/version": "^1.0.4",
                 "zendframework/zend-authentication": "^2.5.3",
@@ -3369,6 +3368,7 @@
                 "zendframework/zend-log": "Zend\\Log component",
                 "zendframework/zend-modulemanager": "Zend\\ModuleManager component",
                 "zendframework/zend-serializer": "Zend\\Serializer component",
+                "zendframework/zend-servicemanager-di": "^1.0.1, if using zend-servicemanager v3 and requiring the zend-di integration",
                 "zendframework/zend-session": "Zend\\Session component for FlashMessenger, PRG, and FPRG plugins",
                 "zendframework/zend-text": "Zend\\Text component",
                 "zendframework/zend-uri": "Zend\\Uri component",
@@ -3397,7 +3397,7 @@
                 "mvc",
                 "zf2"
             ],
-            "time": "2016-06-11 18:44:55"
+            "time": "2016-06-13 16:52:36"
         },
         {
             "name": "zendframework/zend-navigation",
@@ -3880,57 +3880,6 @@
                 "zf2"
             ],
             "time": "2016-04-27 19:07:40"
-        },
-        {
-            "name": "zendframework/zend-servicemanager-di",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zendframework/zend-servicemanager-di.git",
-                "reference": "d894ab9e517ea711772480acb0ecb88deee14672"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-servicemanager-di/zipball/d894ab9e517ea711772480acb0ecb88deee14672",
-                "reference": "d894ab9e517ea711772480acb0ecb88deee14672",
-                "shasum": ""
-            },
-            "require": {
-                "container-interop/container-interop": "^1.1",
-                "php": "^5.5 || ^7.0",
-                "zendframework/zend-di": "^2.6",
-                "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.5",
-                "squizlabs/php_codesniffer": "^2.3.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev",
-                    "dev-develop": "1.1-dev"
-                },
-                "zf": {
-                    "component": "Zend\\ServiceManager\\Di",
-                    "config-provider": "Zend\\ServiceManager\\Di\\ConfigProvider"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zend\\ServiceManager\\Di\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "homepage": "https://github.com/zendframework/zend-servicemanager-di",
-            "keywords": [
-                "di",
-                "zf2"
-            ],
-            "time": "2016-06-09 21:23:32"
         },
         {
             "name": "zendframework/zend-session",
