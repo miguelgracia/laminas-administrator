@@ -11,6 +11,11 @@
  *	@copyright	Authors
  */
 
+namespace AmMedia\FileManager;
+
+use Zend\Http\Response;
+use Zend\View\Model\JsonModel;
+
 abstract class BaseFilemanager
 {
     const FILE_TYPE_DIR = 'dir';
@@ -58,18 +63,8 @@ abstract class BaseFilemanager
         $config_default = json_decode($content, true);
 
         // getting user config file
-        if(isset($_REQUEST['config'])) {
-            $this->getvar('config');
-            if (file_exists($this->fm_path . "/" . $_REQUEST['config'])) {
-                $this->__log('Loading ' . basename($this->get['config']) . ' config file.');
-                $content = file_get_contents($this->fm_path . "/" . basename($this->get['config']));
-            } else {
-                $this->__log($this->get['config'] . ' config file does not exists.');
-                $this->error("Given config file (".basename($this->get['config']).") does not exist !");
-            }
-        } else {
-            $content = file_get_contents($this->fm_path . "/filemanager.config.json");
-        }
+        $content = file_get_contents($this->fm_path . "/filemanager.config.json");
+
         $config = json_decode($content, true);
 
         // Prevent following bug https://github.com/simogeo/Filemanager/issues/398
@@ -78,37 +73,29 @@ abstract class BaseFilemanager
         if(!$config) {
             $this->error("Error parsing the settings file! Please check your JSON syntax.");
         }
-        $this->config = array_replace_recursive ($config_default, $config);
+
+        $config_default = array_replace_recursive ($config_default, $config);
 
         // override config options if needed
         if(!empty($extraConfig)) {
-            $this->setup($extraConfig);
+            $config_default = array_replace_recursive($config_default, $extraConfig);
         }
 
+        $this->config = new FileManagerOptions($config_default);
+
         // set logfile path according to system if not set into config file
-        if(!isset($this->config['options']['logfile'])) {
-            $this->config['options']['logfile'] = sys_get_temp_dir() . '/filemanager.log';
+
+        if(!isset($this->config->options['logfile'])) {
+            $this->config->options['logfile'] = sys_get_temp_dir() . '/filemanager.log';
         }
 
         // Log actions or not?
-        if ($this->config['options']['logger'] == true ) {
-            if(isset($this->config['options']['logfile'])) {
-                $this->logfile = $this->config['options']['logfile'];
+        if ($this->config->options['logger'] == true ) {
+            if(isset($this->config->options['logfile'])) {
+                $this->logfile = $this->config->options['logfile'];
             }
             $this->enableLog();
         }
-    }
-
-    /**
-     * Extend config from file
-     * @param array $extraConfig Should be formatted as json config array.
-     */
-    public function setup($extraConfig)
-    {
-        // Prevent following bug https://github.com/simogeo/Filemanager/issues/398
-        $config_default['security']['uploadRestrictions'] = array();
-
-        $this->config = array_replace_recursive($this->config, $extraConfig);
     }
 
     /**
@@ -199,116 +186,120 @@ abstract class BaseFilemanager
     {
         $response = '';
 
-        if(!isset($_GET)) {
-            $this->error($this->lang('INVALID_ACTION'));
-        } else {
+        $request = $this->serviceLocator->get('Request');
 
-            if(isset($_GET['mode']) && $_GET['mode']!='') {
+        $get = $request->getQuery();
+        $post = $request->getPost();
 
-                switch($_GET['mode']) {
+        $this->get = $get;
+        $this->post = $post;
 
-                    default:
-                        $this->error($this->lang('MODE_ERROR'));
-                        break;
+        if(isset($get->mode) && $get->mode != '') {
 
-                    case 'getinfo':
-                        if($this->getvar('path')) {
-                            $response = $this->getinfo();
-                        }
-                        break;
+            switch($get->mode) {
 
-                    case 'getfolder':
-                        if($this->getvar('path')) {
-                            $response = $this->getfolder();
-                        }
-                        break;
+                default:
+                    $this->error($this->lang('MODE_ERROR'));
+                    break;
 
-                    case 'rename':
-                        if($this->getvar('old') && $this->getvar('new')) {
-                            $response = $this->rename();
-                        }
-                        break;
+                case 'getinfo':
+                    if($this->getvar('path')) {
+                        $response = $this->getinfo();
+                    }
+                    break;
 
-                    case 'move':
-                        if($this->getvar('old') && $this->getvar('new')) {
-                            $response = $this->move();
-                        }
-                        break;
+                case 'getfolder':
+                    if($this->getvar('path')) {
 
-                    case 'editfile':
-                        if($this->getvar('path')) {
-                            $response = $this->editfile();
-                        }
-                        break;
+                        return $this->getfolder();
+                    }
+                    break;
 
-                    case 'delete':
-                        if($this->getvar('path')) {
-                            $response = $this->delete();
-                        }
-                        break;
+                case 'rename':
+                    if($this->getvar('old') && $this->getvar('new')) {
+                        $response = $this->rename();
+                    }
+                    break;
 
-                    case 'addfolder':
-                        if($this->getvar('path') && $this->getvar('name')) {
-                            $response = $this->addfolder();
-                        }
-                        break;
+                case 'move':
+                    if($this->getvar('old') && $this->getvar('new')) {
+                        $response = $this->move();
+                    }
+                    break;
 
-                    case 'download':
-                        if($this->getvar('path')) {
-                            $force = isset($_GET['force']);
-                            $response = $this->download($force);
-                        }
-                        break;
+                case 'editfile':
+                    if($this->getvar('path')) {
+                        return $this->editfile();
+                    }
+                    break;
 
-                    case 'getimage':
-                        if($this->getvar('path')) {
-                            $thumbnail = isset($_GET['thumbnail']);
-                            $this->getimage($thumbnail);
-                        }
-                        break;
+                case 'delete':
+                    if($this->getvar('path')) {
+                        return $this->delete();
+                    }
+                    break;
 
-                    case 'readfile':
-                        if($this->getvar('path')) {
-                            $this->readfile();
-                        }
-                        break;
+                case 'addfolder':
+                    if($this->getvar('path') && $this->getvar('name')) {
 
-                    case 'summarize':
-                        $response = $this->summarize();
-                        break;
-                }
+                        return $this->addfolder();
+                    }
+                    break;
 
-            } else if(isset($_POST['mode']) && $_POST['mode']!='') {
+                case 'download':
+                    if($this->getvar('path')) {
+                        $force = isset($get->force);
+                        return $this->download($force);
+                    }
+                    break;
 
-                switch($_POST['mode']) {
+                case 'getimage':
+                    if($this->getvar('path')) {
+                        $thumbnail = isset($get->thumbnail);
+                        return $this->getimage($thumbnail);
+                    }
+                    break;
 
-                    default:
-                        $this->error($this->lang('MODE_ERROR'));
-                        break;
+                case 'readfile':
+                    if($this->getvar('path')) {
+                        $this->readfile();
+                    }
+                    break;
 
-                    case 'add':
-                        if($this->postvar('currentpath')) {
-                            $this->add();
-                        }
-                        break;
+                case 'summarize':
+                    $response = $this->summarize();
+                    break;
+            }
 
-                    case 'replace':
-                        if($this->postvar('newfilepath')) {
-                            $this->replace();
-                        }
-                        break;
+        } else if(isset($post->mode) && $post->mode != '') {
 
-                    case 'savefile':
-                        if($this->postvar('content', false) && $this->postvar('path')) {
-                            $response = $this->savefile();
-                        }
-                        break;
-                }
+            switch($post->mode) {
+
+                default:
+                    $this->error($this->lang('MODE_ERROR'));
+                    break;
+
+                case 'add':
+                    if($this->postvar('currentpath')) {
+                        $this->add();
+                    }
+                    break;
+
+                case 'replace':
+                    if($this->postvar('newfilepath')) {
+                        $this->replace();
+                    }
+                    break;
+
+                case 'savefile':
+                    if($this->postvar('content', false) && $this->postvar('path')) {
+                        $response = $this->savefile();
+                    }
+                    break;
             }
         }
 
-        echo json_encode($response);
-        die();
+        return $response;
     }
 
     /**
@@ -317,16 +308,16 @@ abstract class BaseFilemanager
      */
     public function error($string)
     {
-        $array = array(
+        $this->__log('error message: "' . $string . '"', 2);
+
+        $response = new Response();
+        $json = new JsonModel(array(
             'Error' => $string,
             'Code' => '-1',
             'Properties' => $this->defaultInfo['Properties'],
-        );
+        ));
 
-        $this->__log('error message: "' . $string . '"', 2);
-
-        echo json_encode($array);
-        die();
+        return $response->setContent($json->serialize());
     }
 
     /**
@@ -401,6 +392,7 @@ abstract class BaseFilemanager
         return $ip;
     }
 
+
     /**
      * Retrieve data from $_GET global var
      * @param string $var
@@ -409,15 +401,14 @@ abstract class BaseFilemanager
      */
     public function getvar($var, $sanitize = true)
     {
-        if(!isset($_GET[$var]) || $_GET[$var]=='') {
+        if(!isset($this->get->{$var}) || $this->get->{$var} == '') {
             $this->error(sprintf($this->lang('INVALID_VAR'),$var));
         } else {
             if($sanitize) {
-                $this->get[$var] = $this->sanitize($_GET[$var]);
+                return $this->sanitize($this->get->{$var});
             } else {
-                $this->get[$var] = $_GET[$var];
+                return $this->get->{$var};
             }
-            return true;
         }
     }
 
@@ -519,17 +510,17 @@ abstract class BaseFilemanager
         // if there is no extension
         if (!isset($path_parts['extension'])) {
             // we check if no extension file are allowed
-            return (bool)$this->config['security']['allowNoExtension'];
+            return (bool)$this->config->security['allowNoExtension'];
         }
 
-        $exts = array_map('strtolower', $this->config['security']['uploadRestrictions']);
+        $exts = array_map('strtolower', $this->config->security['uploadRestrictions']);
 
-        if($this->config['security']['uploadPolicy'] == 'DISALLOW_ALL') {
+        if($this->config->security['uploadPolicy'] == 'DISALLOW_ALL') {
 
             if(!in_array(strtolower($path_parts['extension']), $exts))
                 return false;
         }
-        if($this->config['security']['uploadPolicy'] == 'ALLOW_ALL') {
+        if($this->config->security['uploadPolicy'] == 'ALLOW_ALL') {
 
             if(in_array(strtolower($path_parts['extension']), $exts))
                 return false;

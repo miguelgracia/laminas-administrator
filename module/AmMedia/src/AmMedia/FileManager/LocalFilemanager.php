@@ -11,8 +11,12 @@
  *	@copyright	Authors
  */
 
-require_once('BaseFilemanager.php');
-require_once('LocalUploadHandler.php');
+namespace AmMedia\FileManager;
+
+use Zend\Http\Headers;
+use Zend\Http\Response;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Model\JsonModel;
 
 class LocalFilemanager extends BaseFilemanager
 {
@@ -24,14 +28,18 @@ class LocalFilemanager extends BaseFilemanager
 	protected $connector_script_url;
 	protected $dynamic_fileroot = 'userfiles';
 
-	public function __construct($extraConfig = array())
+	protected $serviceLocator;
+
+	public function __construct(ServiceLocatorInterface $serviceLocator, $extraConfig = array())
     {
+		$this->serviceLocator = $serviceLocator;
+
 		parent::__construct($extraConfig);
 
-		$fileRoot = $this->config['options']['fileRoot'];
+		$fileRoot = $this->config->options['fileRoot'];
 		if ($fileRoot !== false) {
 			// takes $_SERVER['DOCUMENT_ROOT'] as files root; "fileRoot" is a suffix
-			if($this->config['options']['serverRoot'] === true) {
+			if($this->config->options['serverRoot'] === true) {
 				$this->doc_root = $_SERVER['DOCUMENT_ROOT'];
 				$this->dynamic_fileroot = $fileRoot;
 				$this->path_to_files = $_SERVER['DOCUMENT_ROOT'] . '/' . $fileRoot;
@@ -49,8 +57,8 @@ class LocalFilemanager extends BaseFilemanager
 		$this->path_to_files = $this->cleanPath($this->path_to_files);
 
 		// set path to the connector script file
-		if($this->config['options']['fileConnector']) {
-			$this->connector_script_url = $this->config['options']['fileConnector'];
+		if($this->config->options['fileConnector']) {
+			$this->connector_script_url = $this->config->options['fileConnector'];
 		} else {
 			$script_path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']);
 			$this->connector_script_url = $this->cleanPath('/' . $script_path);
@@ -74,7 +82,7 @@ class LocalFilemanager extends BaseFilemanager
      */
 	public function setFileRoot($path, $mkdir = false)
     {
-		if($this->config['options']['serverRoot'] === true) {
+		if($this->config->options['serverRoot'] === true) {
 			$this->dynamic_fileroot = $path;
 			$this->path_to_files = $this->cleanPath($this->doc_root . '/' . $path);
 		} else {
@@ -98,7 +106,7 @@ class LocalFilemanager extends BaseFilemanager
 	public function initUploader($settings = array())
 	{
 		$data = array(
-			'images_only' => $this->config['upload']['imagesOnly'] || (isset($this->refParams['type']) && strtolower($this->refParams['type'])=='images'),
+			'images_only' => $this->config->upload['imagesOnly'] || (isset($this->refParams['type']) && strtolower($this->refParams['type'])=='images'),
 		) + $settings;
 
 		if(isset($data['upload_dir'])) {
@@ -147,14 +155,14 @@ class LocalFilemanager extends BaseFilemanager
 				$file_path = $this->get['path'] . $file;
 
 				if(is_dir($current_path . $file)) {
-					if(!in_array($file, $this->config['exclude']['unallowed_dirs']) && !preg_match($this->config['exclude']['unallowed_dirs_REGEXP'], $file)) {
+					if(!in_array($file, $this->config->exclude['unallowed_dirs']) && !preg_match($this->config->exclude['unallowed_dirs_REGEXP'], $file)) {
 						$array[$file_path . '/'] = $this->get_file_info($file_path . '/', true);
 					}
-				} else if (!in_array($file, $this->config['exclude']['unallowed_files']) && !preg_match($this->config['exclude']['unallowed_files_REGEXP'], $file)) {
+				} else if (!in_array($file, $this->config->exclude['unallowed_files']) && !preg_match($this->config->exclude['unallowed_files_REGEXP'], $file)) {
 					$item = $this->get_file_info($file_path, true);
 
-					if(!isset($this->refParams['type']) || (isset($this->refParams['type']) && strtolower($this->refParams['type']) === 'images' && in_array(strtolower($item['filetype']), array_map('strtolower', $this->config['images']['imagesExt'])))) {
-						if($this->config['upload']['imagesOnly']== false || ($this->config['upload']['imagesOnly'] === true && in_array(strtolower($item['filetype']), array_map('strtolower', $this->config['images']['imagesExt'])))) {
+					if(!isset($this->refParams['type']) || (isset($this->refParams['type']) && strtolower($this->refParams['type']) === 'images' && in_array(strtolower($item['filetype']), array_map('strtolower', $this->config->images['imagesExt'])))) {
+						if($this->config->upload['imagesOnly']== false || ($this->config->upload['imagesOnly'] === true && in_array(strtolower($item['filetype']), array_map('strtolower', $this->config->images['imagesExt'])))) {
 							$array[$file_path] = $item;
 						}
 					}
@@ -162,7 +170,10 @@ class LocalFilemanager extends BaseFilemanager
 			}
 		}
 
-		return $array;
+		$response = new Response();
+		$jsonModel = new JsonModel($array);
+		$response->setContent($jsonModel->serialize());
+		return $response;
 	}
 
 	/**
@@ -182,11 +193,14 @@ class LocalFilemanager extends BaseFilemanager
 		}
 
 		// check if file is allowed regarding the security Policy settings
-		if(in_array($filename, $this->config['exclude']['unallowed_files']) || preg_match($this->config['exclude']['unallowed_files_REGEXP'], $filename)) {
+		if(in_array($filename, $this->config->exclude['unallowed_files']) || preg_match($this->config->exclude['unallowed_files_REGEXP'], $filename)) {
 			$this->error(sprintf($this->lang('NOT_ALLOWED')));
 		}
 
-		return $this->get_file_info($path, false);
+		$response = new Response();
+		$jsonModel = new JsonModel($this->get_file_info($path, false));
+		$response->setContent($jsonModel->serialize());
+		return $response;
 	}
 
 	/**
@@ -234,13 +248,15 @@ class LocalFilemanager extends BaseFilemanager
 			$this->error(sprintf($this->lang('UNABLE_TO_CREATE_DIRECTORY'), $new_dir));
 		}
 
-		$array = array(
+		$response = new Response();
+		$json = new JsonModel(array(
 			'Parent' => $this->get['path'],
 			'Name' => $this->get['name'],
 			'Error' => "",
 			'Code' => 0,
-		);
-		return $array;
+		));
+
+		return $response->setContent($json->serialize());
 	}
 
 	/**
@@ -285,7 +301,7 @@ class LocalFilemanager extends BaseFilemanager
 		}
 
 		// for file only - we check if the new given extension is allowed regarding the security Policy settings
-		if(is_file($old_file) && $this->config['security']['allowChangeExtensions'] && !$this->is_allowed_file_type($new_file)) {
+		if(is_file($old_file) && $this->config->security['allowChangeExtensions'] && !$this->is_allowed_file_type($new_file)) {
 			$this->error(sprintf($this->lang('INVALID_FILE_TYPE')));
 		}
 
@@ -317,15 +333,17 @@ class LocalFilemanager extends BaseFilemanager
 			}
 		}
 
-		$array = array(
+		$response = new Response();
+		$json = new JsonModel(array(
 			'Old Path' => $this->get['old'] . $suffix,
 			'Old Name' => $filename,
 			'New Path' => $newPath . '/' . $newName . $suffix,
 			'New Name' => $newName,
 			'Error' => "",
 			'Code' => 0,
-		);
-		return $array;
+		));
+
+		return $response->setContent($json->serialize());
 	}
 
 	/**
@@ -403,15 +421,17 @@ class LocalFilemanager extends BaseFilemanager
 			}
 		}
 
-		$array = array(
+		$response = new Response();
+		$json = new JsonModel(array(
 			'Old Path' => $this->getRelativePath($oldPath),
 			'Old Name' => $isDirOldPath ? '' : $filename,
 			'New Path' => $this->getRelativePath($newPath),
 			'New Name' => $filename,
 			'Error' => "",
 			'Code' => 0,
-		);
-		return $array;
+		));
+
+		return $response->setContent($json->serialize());
 	}
 
 	/**
@@ -433,7 +453,7 @@ class LocalFilemanager extends BaseFilemanager
 		}
 
 		// we check the given file has the same extension as the old one
-		if(strtolower(pathinfo($_FILES[$this->config['upload']['paramName']]['name'], PATHINFO_EXTENSION)) != strtolower(pathinfo($this->post['newfilepath'], PATHINFO_EXTENSION))) {
+		if(strtolower(pathinfo($_FILES[$this->config->upload['paramName']]['name'], PATHINFO_EXTENSION)) != strtolower(pathinfo($this->post['newfilepath'], PATHINFO_EXTENSION))) {
 			$this->error(sprintf($this->lang('ERROR_REPLACING_FILE') . ' ' . pathinfo($this->post['newfilepath'], PATHINFO_EXTENSION)));
 		}
 
@@ -489,14 +509,15 @@ class LocalFilemanager extends BaseFilemanager
 			$this->error(sprintf($this->lang('ERROR_OPENING_FILE')));
 		}
 
-		$array = array(
+		$response = new Response();
+		$json = new JsonModel(array(
 			'Path' => $this->get['path'],
 			'Content' => $content,
 			'Error' => "",
 			'Code' => 0,
-		);
+		));
 
-		return $array;
+		return $response->setContent($json->serialize());
 	}
 
 	/**
@@ -525,13 +546,14 @@ class LocalFilemanager extends BaseFilemanager
 
 		$this->__log('saved "' . $current_path . '"');
 
-		$array = array(
+		$response = new Response();
+		$json = new JsonModel(array(
 			'Error' => "",
 			'Code' => 0,
 			'Path' => $this->post['path'],
-		);
+		));
 
-		return $array;
+		return $response->setContent($json->serialize());
 	}
 
 	/**
@@ -551,20 +573,28 @@ class LocalFilemanager extends BaseFilemanager
 		$this->__log('loading image "' . $current_path . '"');
 
 		// if $thumbnail is set to true we return the thumbnail
-		if($thumbnail === true && $this->config['images']['thumbnail']['enabled'] === true) {
+		if($thumbnail === true && $this->config->images['thumbnail']['enabled'] === true) {
 			// get thumbnail (and create it if needed)
 			$returned_path = $this->get_thumbnail($current_path);
 		} else {
 			$returned_path = $current_path;
 		}
 
-		header("Content-type: image/octet-stream");
-		header("Content-Transfer-Encoding: binary");
-		header("Content-length: " . $this->get_real_filesize($returned_path));
-		header('Content-Disposition: inline; filename="' . basename($returned_path) . '"');
+		$headers = new Headers();
+		$headers->addHeaders(array(
+			"Content-type" 				=> "image/octet-stream",
+			"Content-Transfer-Encoding" => "binary",
+			"Content-length" 			=> $this->get_real_filesize($returned_path),
+			"Content-Disposition" 		=> "inline; filename='" . basename($returned_path) . "'"
+		));
 
-		readfile($returned_path);
-		exit();
+		$response = new Response();
+
+		$response->setHeaders($headers);
+
+		$response->setContent(file_get_contents($returned_path));
+
+		return $response;
 	}
 
 	/**
@@ -609,11 +639,14 @@ class LocalFilemanager extends BaseFilemanager
 			}
 		}
 
-		return array(
+		$response = new Response();
+		$json = new JsonModel(array(
 			'Path' => $this->get['path'],
 			'Error' => "",
 			'Code' => 0,
-		);
+		));
+
+		return $response->setContent($json->serialize());
 	}
 
 	/**
@@ -642,7 +675,7 @@ class LocalFilemanager extends BaseFilemanager
 			}
 		} else {
 			// check if permission is granted
-			if(is_dir($current_path) && $this->config['security']['allowFolderDownload'] == false ) {
+			if(is_dir($current_path) && $this->config->security['allowFolderDownload'] == false ) {
 				$this->error(sprintf($this->lang('NOT_ALLOWED')));
 			}
 
@@ -661,28 +694,37 @@ class LocalFilemanager extends BaseFilemanager
 			}
 		}
 
+		$response = new Response();
+
 		if(!$force) {
-			$array = array(
+			$json = new JsonModel(array(
 				'Path' => $this->get['path'],
 				'Error' => "",
 				'Code' => 0,
-			);
-			return $array;
+			));
+			return $response->setContent($json->serialize());
 		}
 
-		header('Content-Description: File Transfer');
-		header('Content-Type: ' . mime_content_type($current_path));
-		header('Content-Disposition: attachment; filename=' . $filename);
-		header('Content-Transfer-Encoding: binary');
-		header('Content-Length: ' . $this->get_real_filesize($current_path));
-		// handle caching
-		header('Pragma: public');
-		header('Expires: 0');
-		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		$headers = new Headers();
 
-		readfile($current_path);
+		$headers->addHeaders(array(
+			"Content-Description" 		=> "File Transfer",
+			"Content-Type" 				=> mime_content_type($current_path),
+			"Content-Disposition" 		=> "attachment; filename='" . $filename . "'",
+			"Content-Transfer-Encoding" => "binary",
+			"Content-Length" 			=> $this->get_real_filesize($current_path),
+			"Pragma" 					=> "public",
+			"Expires" 					=> "@0",
+			"Cache-Control" 			=> "must-revalidate",
+		));
+
+		$response->setHeaders($headers);
+
+		$response->setContent(file_get_contents($current_path));
+
 		$this->__log('file downloaded "' . $current_path . '"');
-		exit();
+
+		return $response;
 	}
 
 	/**
@@ -701,11 +743,14 @@ class LocalFilemanager extends BaseFilemanager
 		$path = rtrim($this->path_to_files, '/') . '/';
 		try {
 			$this->getDirSummary($path, $result);
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			$this->error(sprintf($this->lang('ERROR_SERVER')));
 		}
 
-		return $result;
+		$response = new Response();
+		$json = new JsonModel($result);
+
+		return $response->setContent($json->serialize());
 	}
 
 	/**
@@ -722,8 +767,8 @@ class LocalFilemanager extends BaseFilemanager
 			return false;
 		}
 
-		$zip = new ZipArchive();
-		if (!$zip->open($destination, ZIPARCHIVE::CREATE)) {
+		$zip = new \ZipArchive();
+		if (!$zip->open($destination, \ZipArchive::CREATE)) {
 			return false;
 		}
 
@@ -739,9 +784,9 @@ class LocalFilemanager extends BaseFilemanager
 			// add file to prevent empty archive error on download
 			$zip->addFromString('fm', "This archive has been generated by simogeo's Filemanager : https://github.com/simogeo/Filemanager/");
 
-			$files = new RecursiveIteratorIterator(
-				new RecursiveDirectoryIterator($source),
-				RecursiveIteratorIterator::SELF_FIRST
+			$files = new \RecursiveIteratorIterator(
+				new \RecursiveDirectoryIterator($source),
+				\RecursiveIteratorIterator::SELF_FIRST
 			);
 			foreach ($files as $file)
 			{
@@ -786,8 +831,8 @@ class LocalFilemanager extends BaseFilemanager
 
     protected function setPermissions()
     {
-		$this->allowed_actions = $this->config['options']['capabilities'];
-		if($this->config['edit']['enabled']) {
+		$this->allowed_actions = $this->config->options['capabilities'];
+		if($this->config->edit['enabled']) {
 			array_push($this->allowed_actions, 'edit');
 		}
 	}
@@ -828,23 +873,23 @@ class LocalFilemanager extends BaseFilemanager
 		$item = $this->defaultInfo;
 		$pathInfo = pathinfo($current_path);
 		$filemtime = filemtime($current_path);
-		$iconsFolder = $this->getFmUrl($this->config['icons']['path']);
+		$iconsFolder = $this->getFmUrl($this->config->icons['path']);
 
 		// check if file is writable and readable
 		$protected = $this->has_system_permission($current_path, array('w', 'r')) ? 0 : 1;
 
 		if(is_dir($current_path)) {
 			$fileType = self::FILE_TYPE_DIR;
-			$thumbPath = $iconsFolder . ($protected ? 'locked_' : '') . $this->config['icons']['directory'];
+			$thumbPath = $iconsFolder . ($protected ? 'locked_' : '') . $this->config->icons['directory'];
 		} else {
 			$fileType = $pathInfo['extension'];
 			if($protected == 1) {
-				$thumbPath = $iconsFolder . 'locked_' . $this->config['icons']['default'];
+				$thumbPath = $iconsFolder . 'locked_' . $this->config->icons['default'];
 			} else {
-				$thumbPath = $iconsFolder . $this->config['icons']['default'];
+				$thumbPath = $iconsFolder . $this->config->icons['default'];
 				$item['Properties']['Size'] = $this->get_real_filesize($current_path);
 
-				if($this->config['options']['showThumbs'] && in_array(strtolower($fileType), array_map('strtolower', $this->config['images']['imagesExt']))) {
+				if($this->config->options['showThumbs'] && in_array(strtolower($fileType), array_map('strtolower', $this->config->images['imagesExt']))) {
 					// svg should not be previewed as raster formats images
 					if($fileType === 'svg') {
 						$thumbPath = $relative_path;
@@ -861,7 +906,7 @@ class LocalFilemanager extends BaseFilemanager
 
 					$item['Properties']['Height'] = $height;
 					$item['Properties']['Width'] = $width;
-				} else if(file_exists($this->fm_path . '/' . $this->config['icons']['path'] . strtolower($fileType) . '.png')) {
+				} else if(file_exists($this->fm_path . '/' . $this->config->icons['path'] . strtolower($fileType) . '.png')) {
 					$thumbPath = $iconsFolder . strtolower($fileType) . '.png';
 				}
 			}
@@ -1012,7 +1057,7 @@ class LocalFilemanager extends BaseFilemanager
 			}
 		}
 
-		if($this->config['security']['normalizeFilename'] === true) {
+		if($this->config->security['normalizeFilename'] === true) {
 			// Remove path information and dots around the filename, to prevent uploading
 			// into different directories or replacing hidden system files.
 			// Also remove control characters and spaces (\x00..\x20) around the filename:
@@ -1023,7 +1068,7 @@ class LocalFilemanager extends BaseFilemanager
 			$string = strtr($string, $replacements);
 		}
 
-		if($this->config['options']['charsLatinOnly'] === true) {
+		if($this->config->options['charsLatinOnly'] === true) {
 			// transliterate if extension is loaded
 			if(extension_loaded('intl') === true && function_exists('transliterator_transliterate')) {
 				$options = 'Any-Latin; Latin-ASCII; NFD; [:Nonspacing Mark:] Remove; NFC;';
@@ -1055,7 +1100,7 @@ class LocalFilemanager extends BaseFilemanager
      */
 	protected function loadLanguageFile()
     {
-		$lang = $this->config['options']['culture'];
+		$lang = $this->config->options['culture'];
 		if(isset($this->refParams['langCode']) && in_array($this->refParams['langCode'], $this->languages)) {
 			$lang = $this->refParams['langCode'];
 		}
@@ -1070,7 +1115,7 @@ class LocalFilemanager extends BaseFilemanager
 				$this->language = json_decode($stream, true);
 			} else {
 				// we include default language file
-				$stream = file_get_contents($this->fm_path . '/languages/'.$this->config['options']['culture'].'.json');
+				$stream = file_get_contents($this->fm_path . '/languages/'.$this->config->options['culture'].'.json');
 				$this->language = json_decode($stream, true);
 			}
 		}
@@ -1109,7 +1154,7 @@ class LocalFilemanager extends BaseFilemanager
 	protected function is_editable($file)
     {
 		$path_parts = pathinfo($file);
-		$exts = array_map('strtolower', $this->config['edit']['editExt']);
+		$exts = array_map('strtolower', $this->config->edit['editExt']);
 
 		return in_array($path_parts['extension'], $exts);
 	}
@@ -1148,8 +1193,8 @@ class LocalFilemanager extends BaseFilemanager
 	 */
 	protected function getFmUrl($path)
 	{
-		if(isset($this->config['fmUrl']) && !empty($this->config['fmUrl']) && strpos($path, '/') !== 0) {
-			$url = $this->config['fmUrl'] . '/' . $path;
+		if(isset($this->config->fmUrl) && !empty($this->config->fmUrl) && strpos($path, '/') !== 0) {
+			$url = $this->config->fmUrl . '/' . $path;
 			return $this->cleanPath($url);
 		}
 		return $path;
@@ -1162,7 +1207,7 @@ class LocalFilemanager extends BaseFilemanager
 	 */
 	protected function formatDate($timestamp)
 	{
-		return date($this->config['options']['dateFormat'], $timestamp);
+		return date($this->config->options['dateFormat'], $timestamp);
 	}
 
 	/**
@@ -1187,14 +1232,14 @@ class LocalFilemanager extends BaseFilemanager
 			$subPath = substr($path, strlen($dir));
 
 			if (is_dir($path)) {
-				if (!in_array($subPath, $this->config['exclude']['unallowed_dirs']) &&
-					!preg_match($this->config['exclude']['unallowed_dirs_REGEXP'], $subPath)) {
+				if (!in_array($subPath, $this->config->exclude['unallowed_dirs']) &&
+					!preg_match($this->config->exclude['unallowed_dirs_REGEXP'], $subPath)) {
 					$result['Folders']++;
 					$this->getDirSummary($path . '/', $result);
 				}
 			} else if (
-				!in_array($subPath, $this->config['exclude']['unallowed_files']) &&
-				!preg_match($this->config['exclude']['unallowed_files_REGEXP'], $subPath)) {
+				!in_array($subPath, $this->config->exclude['unallowed_files']) &&
+				!preg_match($this->config->exclude['unallowed_files_REGEXP'], $subPath)) {
 				$result['Files']++;
 				$result['Size'] += filesize($path);
 			}
@@ -1222,7 +1267,7 @@ class LocalFilemanager extends BaseFilemanager
 	protected function get_thumbnail_path($path)
 	{
 		$relative_path = $this->getRelativePath($path);
-		$thumbnail_path = $this->path_to_files . '/' . $this->config['images']['thumbnail']['dir'] . '/';
+		$thumbnail_path = $this->path_to_files . '/' . $this->config->images['thumbnail']['dir'] . '/';
 
 		if(is_dir($path)) {
 			$thumbnail_fullpath = $thumbnail_path . $relative_path . '/';
@@ -1243,7 +1288,7 @@ class LocalFilemanager extends BaseFilemanager
 		$thumbnail_fullpath = $this->get_thumbnail_path($path);
 
 		// generate thumbnail if it doesn't exist or caching is disabled
-		if(!file_exists($thumbnail_fullpath) || $this->config['images']['thumbnail']['cache'] === false) {
+		if(!file_exists($thumbnail_fullpath) || $this->config->images['thumbnail']['cache'] === false) {
 			$this->createThumbnail($path, $thumbnail_fullpath);
 		}
 
@@ -1257,7 +1302,7 @@ class LocalFilemanager extends BaseFilemanager
 	 */
 	protected function createThumbnail($imagePath, $thumbnailPath)
 	{
-		if($this->config['images']['thumbnail']['enabled'] === true) {
+		if($this->config->images['thumbnail']['enabled'] === true) {
 			$this->__log('generating thumbnail "' . $thumbnailPath . '"');
 
 			// create folder if it does not exist

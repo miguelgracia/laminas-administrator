@@ -1,6 +1,6 @@
 <?php
 
-require_once('BaseUploadHandler.php');
+namespace AmMedia\FileManager;
 
 class LocalUploadHandler extends BaseUploadHandler
 {
@@ -25,9 +25,9 @@ class LocalUploadHandler extends BaseUploadHandler
         $this->fmData = $this->options['fm']['data'];
 
         $this->options['upload_dir'] = $this->fmData['upload_dir'];
-        $this->options['param_name'] = $this->fm->config['upload']['paramName'];
-        $this->options['readfile_chunk_size'] = $this->fm->config['upload']['chunkSize'];
-        $this->options['max_file_size'] = $this->fm->config['upload']['fileSizeLimit'];
+        $this->options['param_name'] = $this->fm->config->upload['paramName'];
+        $this->options['readfile_chunk_size'] = $this->fm->config->upload['chunkSize'];
+        $this->options['max_file_size'] = $this->fm->config->upload['fileSizeLimit'];
         // BaseFilemanager::is_allowed_file_type() is used instead of this regex check
         $this->options['accept_file_types'] = '/.+$/i';
         // may be overridden with $this->fm->config['images']['imagesExt'], but this list can be better for images handling libs
@@ -39,7 +39,7 @@ class LocalUploadHandler extends BaseUploadHandler
         // http://stackoverflow.com/a/10037579/1789808
         //$this->options['image_library'] = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') ? 0 : 1;
 
-        $images = $this->fm->config['images'];
+        $images = $this->fm->config->images;
         // original image settings
         $this->options['image_versions'] = array(
             '' => array(
@@ -59,8 +59,8 @@ class LocalUploadHandler extends BaseUploadHandler
         }
 
         $this->error_messages['accept_file_types'] = $this->fm->lang('INVALID_FILE_TYPE');
-        $this->error_messages['max_file_size'] = sprintf($this->fm->lang('UPLOAD_FILES_SMALLER_THAN'), (round($this->fm->config['upload']['fileSizeLimit'] / 1000 / 1000, 2)) . ' ' . $this->fm->lang('mb'));
-        $this->error_messages['max_storage_size'] = sprintf($this->fm->lang('STORAGE_SIZE_EXCEED'), (round($this->fm->config['options']['fileRootSizeLimit'] / 1000 / 1000, 2)) . ' ' . $this->fm->lang('mb'));
+        $this->error_messages['max_file_size'] = sprintf($this->fm->lang('UPLOAD_FILES_SMALLER_THAN'), (round($this->fm->config->upload['fileSizeLimit'] / 1000 / 1000, 2)) . ' ' . $this->fm->lang('mb'));
+        $this->error_messages['max_storage_size'] = sprintf($this->fm->lang('STORAGE_SIZE_EXCEED'), (round($this->fm->config->options['fileRootSizeLimit'] / 1000 / 1000, 2)) . ' ' . $this->fm->lang('mb'));
     }
 
     public function create_thumbnail_image($image_path)
@@ -84,7 +84,7 @@ class LocalUploadHandler extends BaseUploadHandler
     }
 
     protected function get_unique_filename($file_path, $name, $size, $type, $error, $index, $content_range) {
-        if($this->fm->config['upload']['overwrite']) {
+        if($this->fm->config->upload['overwrite']) {
             return $name;
         }
         return parent::get_unique_filename($file_path, $name, $size, $type, $error, $index, $content_range);
@@ -113,8 +113,8 @@ class LocalUploadHandler extends BaseUploadHandler
         } else {
             $file_size = $content_length;
         }
-        if ($this->fm->config['options']['fileRootSizeLimit'] > 0 &&
-            ($file_size + $this->fm->getRootTotalSize()) > $this->fm->config['options']['fileRootSizeLimit']) {
+        if ($this->fm->config->options['fileRootSizeLimit'] > 0 &&
+            ($file_size + $this->fm->getRootTotalSize()) > $this->fm->config->options['fileRootSizeLimit']) {
             $file->error = $this->get_error_message('max_storage_size');
             return false;
         }
