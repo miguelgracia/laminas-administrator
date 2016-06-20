@@ -148,6 +148,8 @@
 
 .fm-container #toolbar button {
 	cursor: pointer;
+	padding: 10px;
+	margin: 10px;
 }
 
 .fm-container button,
@@ -492,23 +494,23 @@ x:-o-prefocus,
 
 /* these apply to the context menus as well as the buttons */
 .fm-container #select span,
-.fm-container .context-menu-item.select:before { background-image: url(../images/accept.png); }
+.fm-container .context-menu-item.select:before { background: url(../images/accept.png) no-repeat; padding-left: 20px;}
 .fm-container #download span,
-.fm-container .context-menu-item.download:before { background-image: url(../images/download.png); }
+.fm-container .context-menu-item.download:before { background: url(../images/download.png) no-repeat; padding-left: 20px;}
 .fm-container #rename span,
-.fm-container .context-menu-item.rename:before { background-image: url(../images/tag.png); }
+.fm-container .context-menu-item.rename:before { background: url(../images/tag.png) no-repeat; padding-left: 20px;}
 .fm-container #move span,
-.fm-container .context-menu-item.move:before { background-image: url(../images/move.png); }
+.fm-container .context-menu-item.move:before { background: url(../images/move.png) no-repeat; padding-left: 20px;}
 .fm-container #replace span,
-.fm-container .context-menu-item.replace:before { background-image: url(../images/replace.png); }
+.fm-container .context-menu-item.replace:before { background: url(../images/replace.png) no-repeat; padding-left: 20px;}
 .fm-container #delete span,
-.fm-container .context-menu-item.delete:before { background-image: url(../images/bin_closed.png); }
-.fm-container #upload span { background-image: url(../images/upload.png); }
-.fm-container #upload.loading span { background-image: url(../images/ajax-loader.gif);color:#555555;font-size:0.9em; }
-.fm-container #parentfolder span { background-image: url(../images/parentfolder.png); }
-.fm-container #newfolder span { background-image: url(../images/folder_add.png); }
-.fm-container #home span { background-image: url(../images/house.png); background-position: center; }
-.fm-container #level-up span { background-image: url(../images/level-up.png); background-position: center; }
+.fm-container .context-menu-item.delete:before { background: url(../images/bin_closed.png) no-repeat; padding-left: 20px;}
+.fm-container #upload span { background: url(../images/upload.png) no-repeat; }
+.fm-container #upload.loading span { background: url(../images/ajax-loader.gif) no-repeat;color:#555555;font-size:0.9em; }
+.fm-container #parentfolder span { background: url(../images/parentfolder.png) no-repeat; padding-left: 20px;}
+.fm-container #newfolder span { background: url(../images/folder_add.png) no-repeat; }
+.fm-container #home span { background: url(../images/house.png) no-repeat; background-position: center; }
+.fm-container #level-up span { background: url(../images/level-up.png) no-repeat; background-position: center; }
 
 .fm-container a#edit-file span,
 .fm-container a#copy-button span {display:none}
