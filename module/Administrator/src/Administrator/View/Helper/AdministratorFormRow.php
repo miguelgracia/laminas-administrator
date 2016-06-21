@@ -15,6 +15,8 @@ class AdministratorFormRow extends AbstractHelper
     protected $elementError;
     protected $formElement;
 
+    protected $elementsId = array();
+
     protected $elementTemplates = array();
 
     function __construct($serviceLocator)
@@ -111,6 +113,23 @@ class AdministratorFormRow extends AbstractHelper
 
         return $render;
     }
+
+    /**
+     * @param $formElement
+     *
+     * Comprobamos que los id's que se han asignado a los elementos de formulario no están repetidos
+     * Si encontramos un caso en el que sí este, añadimos un prefijo al id
+     */
+    private function checkId(&$formElement)
+    {
+        $id = $formElement->getAttribute('id');
+        if (array_key_exists($id, $this->elementsId)) {
+            $this->elementsId[$id]++;
+            $formElement->setAttribute("id",$id . "_" . $this->elementsId[$id]);
+        } else {
+            $this->elementsId[$id] = 0;
+        }
+    }
     public function render($formElement)
     {
         if ($formElement instanceof Form) {
@@ -145,6 +164,8 @@ class AdministratorFormRow extends AbstractHelper
 
             return sprintf($this->formTemplate(),$boxBody,$tabTpl,$boxFooter);
         }
+
+        $this->checkId($formElement);
 
         $label = $this->label;
         $elementError = $this->elementError;

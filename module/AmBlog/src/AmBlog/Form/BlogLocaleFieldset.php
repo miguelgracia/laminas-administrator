@@ -20,6 +20,13 @@ class BlogLocaleFieldset extends AdministratorFieldset
         );
     }
 
+    public function addFields()
+    {
+        $metaDescription = $this->get('metaDescription');
+        $classes = $metaDescription->getAttribute('class');
+        $metaDescription->setAttribute('class', $classes . ' no-editor');
+    }
+
     public function getHiddenFields()
     {
         return array(

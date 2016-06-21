@@ -1,4 +1,7 @@
 <?php
+$basePath = $this->basePath() . '/administrator/libs/';
+
+$this->headScript()->appendFile($basePath . "ckeditor/ckeditor.js");
 
 $this->headTitle($this->title);
 

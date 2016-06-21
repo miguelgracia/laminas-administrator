@@ -15,7 +15,11 @@ class AmMediaModuleController extends AuthController
      */
     public function indexAction()
     {
+        $queryParams = $this->getRequest()->getQuery();
 
+        if ($queryParams->modal == 'on') {
+            $this->layout()->setTemplate('layout/filemanager-layout');
+        }
     }
 
     public function connectorAction()

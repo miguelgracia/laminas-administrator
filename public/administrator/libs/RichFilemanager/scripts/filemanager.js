@@ -277,7 +277,7 @@ var setViewButtonsFor = function(viewMode) {
 };
 
 // Test if a given url exists
-var file_exists = function(url) {
+function file_exists(url) {
     // http://kevin.vanzonneveld.net
     // +   original by: Enrique Gonzalez
     // +      input by: Jani Hartikainen
