@@ -1,0 +1,77 @@
+<?php
+$basePath = $this->basePath() . '/administrator/libs/RichFilemanager/';
+$this->headLink()
+    ->appendStylesheet($basePath . 'scripts/jquery.filetree/src/jQueryFileTree.css')
+    ->appendStylesheet($basePath . 'scripts/jquery.contextmenu/dist/jquery.contextMenu.min.css')
+    ->appendStylesheet($basePath . 'scripts/custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css');
+
+$this->headScript()
+->appendFile($basePath . "scripts/jquery-browser.js")
+->appendFile($basePath . "scripts/jquery.splitter/jquery.splitter-1.5.1.js")
+->appendFile($basePath . "scripts/jquery.filetree/src/jQueryFileTree.js")
+->appendFile($basePath . "scripts/jquery.contextmenu/dist/jquery.contextMenu.min.js")
+->appendFile($basePath . "scripts/jquery.impromptu/dist/jquery-impromptu.min.js")
+->appendFile($basePath . "scripts/TinySort/dist/tinysort.js")
+->appendFile($basePath . "scripts/TinySort/dist/jquery.tinysort.js")
+->appendFile($basePath . "scripts/javascript-templates/js/tmpl.min.js")
+->appendFile($basePath . "scripts/jQuery-File-Upload/js/vendor/jquery.ui.widget.js")
+->appendFile($basePath . "scripts/jQuery-File-Upload/js/canvas-to-blob.min.js")
+->appendFile($basePath . "scripts/jQuery-File-Upload/js/load-image.all.min.js")
+->appendFile($basePath . "scripts/jQuery-File-Upload/js/jquery.iframe-transport.js")
+->appendFile($basePath . "scripts/jQuery-File-Upload/js/jquery.fileupload.js")
+->appendFile($basePath . "scripts/jQuery-File-Upload/js/jquery.fileupload-process.js")
+->appendFile($basePath . "scripts/jQuery-File-Upload/js/jquery.fileupload-image.js")
+->appendFile($basePath . "scripts/jQuery-File-Upload/js/jquery.fileupload-validate.js")
+->appendFile($basePath . "scripts/filemanager.js");
+?>
+<script>
+    window._FMConfig = {
+        pluginPath: "/administrator/libs/RichFilemanager"
+    };
+</script>
+<div class="fm-container">
+    <div id="loading-wrap"><!-- loading wrapper / removed when loaded --></div>
+    <div>
+        <form id="uploader" method="post">
+            <h1></h1>
+            <a id="level-up" name="level-up" class="btn btn-app"><i class="fa fa-arrow-left"></i></a>
+            <a id="home" name="home" class="btn btn-app"><i class="fa fa-home"></i> Inicio</a>
+            <input id="mode" name="mode" type="hidden" value="add"/>
+            <input id="currentpath" name="currentpath" type="hidden"/>
+            <div id="file-input-container">
+                <div id="alt-fileinput">
+                    <input id="filepath" name="filepath" type="text"/>
+                    <button id="browse" name="browse" type="button" value="Browse"></button>
+                </div>
+                <input id="newfile" name="newfile" type="file"/>
+            </div>
+            <a id="upload" name="upload" class="em btn btn-app"><i class="fa fa-upload"></i></a>
+            <a id="newfolder" name="newfolder" class="em btn btn-app"><i class="fa fa-folder"></i></a>
+            <button id="grid" class="ON btn btn-default" type="button"><i class="fa fa-th"></i></button>
+            <button id="list" type="button" class="btn btn-default"><i class="fa fa-list"></i></button>
+        </form>
+
+        <div id="splitter">
+            <div id="filetree"></div>
+            <div id="fileinfo">
+                <h1></h1>
+            </div>
+        </div>
+
+        <div id="footer">
+            <form name="search" id="search" method="get">
+                <div>
+                    <input type="text" value="" name="q" id="q"/>
+                    <a id="reset" href="#" class="q-reset"></a>
+                    <span class="q-inactive"></span>
+                </div>
+            </form>
+            <div class="right">
+                <div id="folder-info">
+                    <span id="items-counter"></span> - <span id="items-size"></span>
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+    </div>
+</div>

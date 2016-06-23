@@ -2,6 +2,7 @@
 namespace AmMedia\Controller;
 
 use Administrator\Controller\AuthController;
+use Zend\Http\Headers;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
@@ -14,15 +15,27 @@ class AmMediaModuleController extends AuthController
      */
     public function indexAction()
     {
+        $queryParams = $this->getRequest()->getQuery();
 
-        $id      = $this->getEvent()->getRouteMatch()->getParam('id', 0);
-        $model   = $this->getEvent()->getRouteMatch()->getParam('model', 'model');
-        $this->config  = $this->serviceLocator->get('Config');
-        $DirJs   = $this->config['AmMedia']['DirJs'];
+        if ($queryParams->modal == 'on') {
+            $this->layout()->setTemplate('layout/filemanager-layout');
+        }
+    }
 
-        $view  = new ViewModel(compact('id','model','DirJs'));
+    public function connectorAction()
+    {
+        $fileManager = $this->serviceLocator->get('AmMedia\FileManager\FileManagerService');
+        $fileManagerResponse = $fileManager->handleRequest();
 
-        return $view;
+        $controllerResponse = $this->getResponse();
+        $controllerResponse->setContent($fileManagerResponse->getContent());
+
+        $fileManagerHeaders = $fileManagerResponse->getHeaders()->toArray();
+
+        $controllerHeaders = $controllerResponse->getHeaders();
+        $controllerHeaders->clearHeaders()->addHeaders($fileManagerHeaders);
+
+        return $controllerResponse;
     }
 
     /**
