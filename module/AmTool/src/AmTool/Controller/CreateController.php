@@ -524,41 +524,22 @@ EOD;
         $ctrlPath   = $path . '/module/' . $module . '/src/' . $module . '/Controller/' . $ucName.'Controller.php';
         $controller = $ucName . 'Controller';
 
+        $formClass = ucfirst(preg_replace("/^Am/","",$module)) . 'Form';
+
         $code = new Generator\ClassGenerator();
         $code->setNamespaceName(ucfirst($module) . '\Controller')
             ->addUse('Administrator\Controller\AuthController')
-            ->addUse('Zend\View\Model\ViewModel');
-
-        $tableProperty = strtolower(preg_replace("/^Am/","",$module)) . 'Table';
+            ->addUse('Administrator\Traits\AddAction')
+            ->addUse('Administrator\Traits\EditAction')
+            ->addUse('Administrator\Traits\IndexAction')
+        ;
 
         $code->setName($controller)
-            ->addProperty($tableProperty,null,Generator\PropertyGenerator::FLAG_PROTECTED)
-            ->addMethods(array(
-                new Generator\MethodGenerator(
-                    'setControllerVars',
-                    array(),
-                    Generator\MethodGenerator::FLAG_PUBLIC,
-                    "\$this->{$tableProperty} = \$this->sm->get('{$module}\\Model\\".ucfirst($tableProperty)."');
-\$this->formService  = \$this->sm->get('Administrator\\Service\\AdministratorFormService');"
-                ),
-                new Generator\MethodGenerator(
-                    'indexAction',
-                    array(),
-                    Generator\MethodGenerator::FLAG_PUBLIC,
-                    'return new ViewModel();'
-                ),
-                new Generator\MethodGenerator(
-                    'addAction',
-                    array(),
-                    Generator\MethodGenerator::FLAG_PUBLIC,
-                    'return new ViewModel();'
-                ),
-                new Generator\MethodGenerator(
-                    'editAction',
-                    array(),
-                    Generator\MethodGenerator::FLAG_PUBLIC,
-                    'return new ViewModel();'
-                ),
+            ->addProperty("form",$module.'\Form\\'.$formClass,Generator\PropertyGenerator::FLAG_PROTECTED)
+            ->addTraits(array(
+                'indexAction',
+                'addAction',
+                'editAction',
             ))
             ->setExtendedClass('AuthController');
 
@@ -568,34 +549,54 @@ EOD;
             )
         );
 
-        $filter = new CamelCaseToDashFilter();
-        $viewfolder = strtolower($filter->filter($module));
+        if (file_put_contents($ctrlPath, $file->generate())) {
+            $console->writeLine("The controller $name has been created in module $module.", Color::GREEN);
+        } else {
+            $console->writeLine("There was an error during controller creation.", Color::RED);
+        }
+    }
 
-        $dir = $path . "/module/$module/view/$viewfolder/" . strtolower($filter->filter($name));
+    public function adminViewsAction()
+    {
+        $console = $this->serviceLocator->get('console');
+
+        $request = $this->getRequest();
+        $name    = $request->getParam('name');
+        $path    = $request->getParam('path', '.');
+
+        if (!file_exists("$path/module") || !file_exists("$path/config/application.config.php")) {
+            $console->writeLine("The path $path doesn't contain a ZF2 application. I cannot create a module here.", Color::RED);
+            return;
+        }
+
+        $filter = new CamelCaseToDashFilter();
+        $viewfolder = strtolower($filter->filter($name));
+
+        $dir = $path . "/module/$name/view/$viewfolder/" . strtolower($filter->filter($name) . '-module');
         if (!file_exists($dir)) {
             mkdir($dir, 0777, true);
         }
 
-        $phtml = array();
         $phtmlPath = $dir . "/index.phtml";
-        if (file_put_contents($phtmlPath, Skeleton::getIndexView())) {
-            $phtml[] = true;
+        if (!file_exists($phtmlPath)) {
+            if (file_put_contents($phtmlPath, Skeleton::getIndexView())) {
+                $console->writeLine("The view index.phtml has been created in module $name.", Color::GREEN);
+            }
         }
 
         $phtmlPath = $dir . "/add.phtml";
-        if (file_put_contents($phtmlPath, Skeleton::getAddView())) {
-            $phtml[] = true;
+        if (!file_exists($phtmlPath)) {
+            if (file_put_contents($phtmlPath, Skeleton::getAddView())) {
+                $console->writeLine("The view add.phtml has been created in module $name.", Color::GREEN);
+            }
         }
+
 
         $phtmlPath = $dir . "/edit.phtml";
-        if (file_put_contents($phtmlPath, Skeleton::getEditView())) {
-            $phtml[] = true;
-        }
-
-        if (file_put_contents($ctrlPath, $file->generate()) && count($phtml) == 3) {
-            $console->writeLine("The controller $name has been created in module $module.", Color::GREEN);
-        } else {
-            $console->writeLine("There was an error during controller creation.", Color::RED);
+        if (!file_exists($phtmlPath)) {
+            if (file_put_contents($phtmlPath, Skeleton::getAddView())) {
+                $console->writeLine("The view edit.phtml has been created in module $name.", Color::GREEN);
+            }
         }
     }
 

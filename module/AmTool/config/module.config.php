@@ -108,6 +108,15 @@ return array(
                         ),
                     ),
                 ),
+                'zftool-add-views-admin-module' => array(
+                    'options' => array(
+                        'route'    => 'create view-module <name> [<path>]',
+                        'defaults' => array(
+                            'controller' => 'AmTool\Controller\Create',
+                            'action'     => 'adminViews',
+                        ),
+                    ),
+                ),
                 'zftool-create-controller' => array(
                     'options' => array(
                         'route'    => 'create controller <name> <module> [<path>]',
