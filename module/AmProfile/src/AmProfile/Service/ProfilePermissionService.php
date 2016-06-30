@@ -1,6 +1,7 @@
 <?php
 namespace AmProfile\Service;
 
+use Zend\Filter\Word\DashToCamelCase;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -42,6 +43,11 @@ class ProfilePermissionService implements FactoryInterface
     public function hasModuleAccess($controller, $action)
     {
         $controllerActionModules = $this->serviceLocator->get('AmModule\Service\ModuleService')->getControllerActionsModules();
+
+        $dashToCamelFilter = new DashToCamelCase();
+
+        $action = lcfirst($dashToCamelFilter->filter($action));
+
         if (!array_key_exists($controller . '.' . $action, $controllerActionModules)) {
             return false;
         }
