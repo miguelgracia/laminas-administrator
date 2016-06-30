@@ -12,6 +12,7 @@ $(document).ready(function () {
         '/admin/menu':                   ['menu','index'],
         '/admin/blog/edit/{:num}':       ['blog','edit'],
         '/admin/blog':                   ['blog','index'],
-        '/admin/blog-category':          ['blog_category','index']
+        '/admin/blog-category':          ['blog_category','index'],
+        '/admin/megabanner':             ['megabanner','index']
     }).run();
 });

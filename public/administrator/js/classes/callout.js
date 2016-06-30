@@ -4,9 +4,9 @@ $(function () {
         var $dsCallout, $applicationContent;
 
         this.init = function() {
-            $applicationContent = $('#ds_application_content');
+            $applicationContent = $('#admin_app');
 
-            $dsCallout = $(document.getElementById('ds_callout'));
+            $dsCallout = $('#ds_callout');
 
             if($dsCallout.length == 0) {
                 $dsCallout = $('<div id="ds_callout"></div>');

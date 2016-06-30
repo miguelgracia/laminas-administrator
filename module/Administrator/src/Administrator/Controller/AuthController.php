@@ -9,7 +9,7 @@ use Zend\Mvc\Router\Http\RouteMatch;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Model\ViewModel;
 
-class AuthController extends AbstractActionController
+abstract class AuthController extends AbstractActionController
 {
     // Whitelist de rutas con las que no se muestra login
     protected $whitelist = array('login');

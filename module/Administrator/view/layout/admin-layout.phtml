@@ -102,10 +102,7 @@ $basePath = $this->basePath() . '/administrator';
     </header>
     <aside class="main-sidebar">
 
-        <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-
-            <!-- Sidebar user panel (optional) -->
 
             <div class="user-panel">
                 <div class="pull-left image">
@@ -119,7 +116,6 @@ $basePath = $this->basePath() . '/administrator';
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
-
 
             <!-- Sidebar Menu -->
             <?php
@@ -136,38 +132,14 @@ $basePath = $this->basePath() . '/administrator';
                 ->setUlClassMenuOpen('menu-open')
                 ->setUlClass('sidebar-menu');
             ?>
-            <!--<ul class="sidebar-menu">
-                <li class="active"><a href="#"><i class="fa fa-circle-thin"></i> <span>Link</span></a></li>
-                <li><a href="#"><i class="fa fa-circle-thin"></i> <span>Another Link</span></a></li>
-                <li class="treeview">
-                    <a href="#"><i class="fa fa-circle-thin"></i> <span>Multilevel</span> <i
-                            class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li><a href="#">Link in level 2</a></li>
-                        <li><a href="#">Link in level 2</a></li>
-                    </ul>
-                </li>
-            </ul> -->
         </section>
-        <!-- /.sidebar -->
     </aside>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <!--<section class="content-header">
-            <!--<h1>
-                Page Header
-                <small>Optional description</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
-            </ol>
-        </section> -->
 
         <!-- Main content -->
-        <section class="content">
+        <section class="content" id="admin_app">
 
             <!-- Your Page Content Here -->
             <?php echo $this->content; ?>

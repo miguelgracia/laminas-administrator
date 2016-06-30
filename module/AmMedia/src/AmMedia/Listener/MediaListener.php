@@ -16,7 +16,7 @@ class MediaListener implements ListenerAggregateInterface
     {
         $sharedEvents = $events->getSharedManager();
 
-        $this->listeners[] = $sharedEvents->attach('AmBlog\Controller\AmBlogModuleController','get.blog.edit',array($this,'onGetBlogEdit'),100);
+        //$this->listeners[] = $sharedEvents->attach('AmBlog\Controller\AmBlogModuleController','get.blog.edit',array($this,'onGetBlogEdit'),100);
     }
 
     public function detach(EventManagerInterface $events)
