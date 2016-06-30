@@ -79,15 +79,15 @@ CREATE TABLE `blog_entries_locales` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `related_table_id` int(10) unsigned NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `content` text COLLATE utf8_unicode_ci,
   `meta_description` text COLLATE utf8_unicode_ci,
+  `content` text COLLATE utf8_unicode_ci,
   `language_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `blog_entries_locales` */
 
-insert  into `blog_entries_locales`(`id`,`related_table_id`,`title`,`content`,`meta_description`,`language_id`) values (1,1,'pepe11111112222','','',1),(2,1,'juan','ssss','',2),(3,1,'Venga, que estamos que lo tiramos','contenidoooorrrr','ffff',3),(4,1,'que tal','','',4),(5,1,'estamos','','',5),(6,9,'www','ww','wwww',2);
+insert  into `blog_entries_locales`(`id`,`related_table_id`,`title`,`meta_description`,`content`,`language_id`) values (1,1,'pepe11111112222','','<p>Contenido en ingles</p>\r\n',1),(2,1,'juan','','<p>ssss</p>\r\n',2),(3,1,'Venga, que estamos que lo tiramos','fff\r\n','<p>contenidoooorrrr</p>\r\n',3),(4,1,'que tal','','',4),(5,1,'estamos','','<p>ASS</p>\r\n',5),(6,9,'www','wwww','ww',2);
 
 /*Table structure for table `estadisticaslogins` */
 
@@ -132,11 +132,11 @@ CREATE TABLE `gestor_menu` (
   `accion` varchar(255) DEFAULT NULL,
   `orden` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=215 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=utf8;
 
 /*Data for the table `gestor_menu` */
 
-insert  into `gestor_menu`(`id`,`gestor_module_id`,`padre`,`texto`,`accion`,`orden`) values (2,0,0,'Configuración','',90),(201,2,2,'Valores Generales','index',3),(202,3,2,'Usuarios','index',2),(203,4,2,'Perfil','index',4),(205,6,2,'Menú','index',1),(206,19,2,'Módulos','index',5),(207,0,0,'Blog','',1),(208,20,207,'Listado','index',1),(209,20,207,'Nueva entrada','add',1),(210,0,0,'Categorías de Blog','',1),(211,23,210,'Listado','index',1),(214,1,0,'Home','index',0);
+insert  into `gestor_menu`(`id`,`gestor_module_id`,`padre`,`texto`,`accion`,`orden`) values (2,0,0,'Configuración','',90),(201,2,2,'Valores Generales','index',3),(202,3,2,'Usuarios','index',2),(203,4,2,'Perfil','index',4),(205,6,2,'Menú','index',1),(206,19,2,'Módulos','index',5),(207,0,0,'Blog','',1),(208,20,207,'Listado','index',1),(209,20,207,'Nueva entrada','add',1),(210,0,0,'Categorías de Blog','',1),(211,23,210,'Listado','index',1),(214,1,0,'Home','index',0),(215,24,0,'Media','index',0),(216,26,0,'Megabanners','index',0),(217,23,207,'Categorías','index',0);
 
 /*Table structure for table `gestor_modules` */
 
@@ -148,11 +148,11 @@ CREATE TABLE `gestor_modules` (
   `nombre_usable` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombreZend` (`nombre_zend`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 /*Data for the table `gestor_modules` */
 
-insert  into `gestor_modules`(`id`,`nombre_zend`,`nombre_usable`) values (1,'home','home'),(2,'configuration','Valores de configuración'),(3,'user','User'),(4,'profile','Perfiles'),(6,'menu','Entradas de menú'),(19,'module','Module'),(20,'blog','blog'),(23,'blog-category','blog-category'),(24,'media','media');
+insert  into `gestor_modules`(`id`,`nombre_zend`,`nombre_usable`) values (1,'home','home'),(2,'configuration','Valores de configuración'),(3,'user','User'),(4,'profile','Perfiles'),(6,'menu','Entradas de menú'),(19,'module','Module'),(20,'blog','blog'),(23,'blog-category','blog-category'),(24,'media','media'),(25,'pepe','pepe'),(26,'megabanner','megabanner');
 
 /*Table structure for table `gestor_perfiles` */
 
@@ -169,7 +169,7 @@ CREATE TABLE `gestor_perfiles` (
 
 /*Data for the table `gestor_perfiles` */
 
-insert  into `gestor_perfiles`(`id`,`nombre`,`descripcion`,`es_admin`,`permisos`) values (1,'Superadmin','Administrador de la plataforma',1,'[]'),(2,'Coordinador','Usuario normal de la plataforma',0,'[\"home.index\",\"configuration.index\",\"user.index\",\"profile.add\",\"profile.delete\",\"menu.index\"]'),(3,'Director de Relacion','descripcion',0,'[\"user.edit\",\"menu.index\",\"menu.edit\"]'),(4,'Administrador','Administrador',1,'[\"user.index\",\"profile.add\",\"menu.add\",\"menu.saveOrder\",\"menu.delete\"]'),(5,'Soldado Raso33','Permisos básicos',0,'[]'),(9,'zxcvzxcv','zxcvxzcv',1,'[\"user.delete\",\"profile.add\",\"menu.saveOrder\",\"module.delete\"]'),(10,'Perfilico','esto es un perfil',0,'[\"user.index\",\"profile.edit\",\"menu.edit\"]'),(11,'Venga tron','hola que tal',0,'[\"profile.add\",\"profile.edit\",\"menu.saveOrder\",\"menu.delete\"]'),(12,'aaaa','dddd',0,'[]');
+insert  into `gestor_perfiles`(`id`,`nombre`,`descripcion`,`es_admin`,`permisos`) values (1,'Superadmin','Administrador de la plataforma',1,'[]'),(2,'Coordinador','Usuario normal de la plataforma',0,'[\"home.index\",\"configuration.index\",\"user.index\",\"profile.add\",\"profile.delete\",\"menu.index\"]'),(3,'Director de Relacion','descripcion',0,'[\"user.edit\",\"menu.index\",\"menu.edit\"]'),(4,'Administrador','Administrador',1,'[\"user.index\",\"profile.add\",\"menu.add\",\"menu.saveOrder\",\"menu.delete\"]');
 
 /*Table structure for table `gestor_permisos` */
 
@@ -240,7 +240,7 @@ CREATE TABLE `languages` (
 
 /*Data for the table `languages` */
 
-insert  into `languages`(`id`,`name`,`code`,`active`) values (1,'English','en','1'),(2,'Spanish','es','1'),(3,'Italian','it','1'),(4,'German','de','1'),(5,'French','fr','1');
+insert  into `languages`(`id`,`name`,`code`,`active`) values (1,'English','en','0'),(2,'Spanish','es','1'),(3,'Italian','it','0'),(4,'German','de','0'),(5,'French','fr','0');
 
 /*Table structure for table `media` */
 
@@ -257,9 +257,47 @@ CREATE TABLE `media` (
   `size` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `media` */
+
+insert  into `media`(`id`,`id_parent`,`model`,`name`,`type`,`tmp_name`,`error`,`size`,`created_at`) values (1,1,'blog','1-imgres2.jpg','image/jpeg','C:\\xampp\\tmp\\phpB2A8.tmp',0,8171,'2016-06-13 14:29:22'),(2,1,'blog','2-imgres2.jpg','image/jpeg','C:\\xampp\\tmp\\php99BE.tmp',0,8171,'2016-06-13 14:30:21'),(3,1,'blog','3-imgres2.jpg','image/jpeg','C:\\xampp\\tmp\\php4D8E.tmp',0,8171,'2016-06-13 14:31:07'),(4,1,'blog','4-imgres2.jpg','image/jpeg','C:\\xampp\\tmp\\php8D52.tmp',0,8171,'2016-06-13 14:32:29'),(5,1,'blog','5-imgres2.jpg','image/jpeg','C:\\xampp\\tmp\\php283A.tmp',0,8171,'2016-06-13 14:40:47'),(6,1,'blog','6-imgres2.jpg','image/jpeg','C:\\xampp\\tmp\\phpA6FA.tmp',0,8171,'2016-06-13 14:50:04');
+
+/*Table structure for table `megabanners` */
+
+DROP TABLE IF EXISTS `megabanners`;
+
+CREATE TABLE `megabanners` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `active` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `deleted_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `megabanners` */
+
+/*Table structure for table `megabanners_locales` */
+
+DROP TABLE IF EXISTS `megabanners_locales`;
+
+CREATE TABLE `megabanners_locales` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `related_table_id` int(10) unsigned NOT NULL,
+  `image_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `image_title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `image_alt` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `link` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `target_link` enum('_self','_blank') COLLATE utf8_unicode_ci NOT NULL DEFAULT '_blank',
+  `language_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `related_table_id` (`related_table_id`),
+  CONSTRAINT `megabanners_locales_ibfk_1` FOREIGN KEY (`related_table_id`) REFERENCES `megabanners` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `megabanners_locales` */
 
 /*Table structure for table `valores_configuracion` */
 
