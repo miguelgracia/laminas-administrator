@@ -45,7 +45,7 @@ class AdministratorFormRow extends AbstractHelper
                         <ul class='nav nav-tabs'>
                             %s
                         </ul>
-                        <div class='tab-content'>
+                        <div class='tab-content languages'>
                         %s
                         </div>
                     </div>

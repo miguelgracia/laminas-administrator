@@ -48,14 +48,6 @@ div.horizontal-scroll {
     overflow-x: auto ;
 }
 
-.tabla-destaca {
-    color: #0000fe;
-}
-
-.rojo {
-    color: #ff3333;
-}
-
 .fuentegrande {
     font-size: 26px;
 }
@@ -92,28 +84,16 @@ div.horizontal-scroll {
     background-color: #48bbe6;
 }
 
-
 /**
-    PAGINA PRESENTACION
+LANGUAGE TABS
+**/
+.nav-tabs-custom>.tab-content.languages {
+    padding: 10px 0;
+}
+
+/*
+    FILE MANAGER
 */
-
-.color-azul {
-    color: #034B94
-}
-
-/*.js-pagina-oficina .nav-tabs-custom > .nav-tabs > li.active {
-    border-top-color: #non;
-}*/
-.js-pagina-oficina .nav-tabs-custom > .nav-tabs > li.active a,
-.js-pagina-oficina .nav-tabs-custom > .nav-tabs > li.active:first-of-type a {
-    background-color: #ddd;
-    border: 1px solid #ddd;
-}
-
-.btn-download {
-
-}
-
 .fm-modal {
     z-index: 10011; /** Because CKEditor image dialog was at 10010 */
     width:80%;
