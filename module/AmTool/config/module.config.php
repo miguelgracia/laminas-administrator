@@ -110,10 +110,19 @@ return array(
                 ),
                 'zftool-add-views-admin-module' => array(
                     'options' => array(
-                        'route'    => 'create view-module <name> [<path>]',
+                        'route'    => 'create am-view-module <name> [<path>]',
                         'defaults' => array(
                             'controller' => 'AmTool\Controller\Create',
                             'action'     => 'adminViews',
+                        ),
+                    ),
+                ),
+                'zftool-locale-classes-admin-module' => array(
+                    'options' => array(
+                        'route'    => 'create am-locale-classes <name> [<path>]',
+                        'defaults' => array(
+                            'controller' => 'AmTool\Controller\Create',
+                            'action'     => 'adminLocaleClasses',
                         ),
                     ),
                 ),
