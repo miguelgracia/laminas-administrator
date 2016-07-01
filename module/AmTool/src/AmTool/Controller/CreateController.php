@@ -3,8 +3,6 @@
 namespace AmTool\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Stdlib\Parameters;
-use Zend\View\Model\ViewModel;
 use Zend\View\Model\ConsoleModel;
 use AmTool\Model\Skeleton;
 use AmTool\Model\Utility;
@@ -284,15 +282,10 @@ class CreateController extends AbstractActionController
             );
         }
 
-        $filter = new CamelCaseToDashFilter();
-        $viewfolder = strtolower($filter->filter($name));
-
         $name = ucfirst($name);
         mkdir("$path/module/$name/config", 0777, true);
         mkdir("$path/module/$name/src/$name/Controller", 0777, true);
         mkdir("$path/module/$name/src/$name/Form", 0777, true);
-        mkdir("$path/module/$name/view/$viewfolder", 0777, true);
-        mkdir("$path/module/$name/view/$viewfolder/$viewfolder-module", 0777, true);
 
         // Create the Module.php
         file_put_contents("$path/module/$name/Module.php", Skeleton::getModule($name));
@@ -320,7 +313,7 @@ EOD;
         }
     }
 
-    public function adminModelAction()
+    public function adminModelAction($isLocale = false)
     {
         $console = $this->serviceLocator->get('console');
         $request = $this->getRequest();
@@ -334,7 +327,9 @@ EOD;
             mkdir($modelPath, 0777, true);
         }
 
-        $name = preg_replace("/^Am/","",$name);
+        $module = $name;
+
+        $name = preg_replace("/^Am/","",$name) . ($isLocale ? "Locale" : "");
 
         if (!file_exists("$path/module") || !file_exists("$path/config/application.config.php")) {
             $console->writeLine("The path $path doesn't contain a ZF2 application. I cannot create a module here.", Color::RED);
@@ -369,12 +364,11 @@ EOD;
         }
     }
 
-    public function adminTableAction()
+    public function adminTableAction($isLocale = false)
     {
         $console = $this->serviceLocator->get('console');
         $request = $this->getRequest();
         $name    = $request->getParam('name');
-        $module  = $request->getParam('module');
         $path    = $request->getParam('path', '.');
 
         $modelPath = "$path/module/$name/src/$name/Model";
@@ -383,7 +377,9 @@ EOD;
             mkdir($modelPath, 0777, true);
         }
 
-        $name = preg_replace("/^Am/","",$name);
+        $module = $name;
+
+        $name = preg_replace("/^Am/","",$name) . ($isLocale ? "Locale" : "");
 
         if (!file_exists("$path/module") || !file_exists("$path/config/application.config.php")) {
             $console->writeLine("The path $path doesn't contain a ZF2 application. I cannot create a module here.", Color::RED);
@@ -396,6 +392,7 @@ EOD;
 
         $ucName     = ucfirst($name);
         $ctrlPath   = $path . '/module/' . $module . '/src/' . $module . '/Model/' . $ucName.'Table.php';
+
         $table = $ucName . 'Table';
 
         $code = new Generator\ClassGenerator();
@@ -419,6 +416,59 @@ EOD;
         }
     }
 
+    public function adminFieldsetAction($isLocale = false)
+    {
+        $console = $this->serviceLocator->get('console');
+        $request = $this->getRequest();
+        $name    = $request->getParam('name');
+        $path    = $request->getParam('path', '.');
+
+        $formPath = "$path/module/$name/src/$name/Form";
+
+        if (!is_dir($formPath)) {
+            mkdir($formPath, 0777, true);
+        }
+
+        $module = $name;
+
+        $name = preg_replace("/^Am/","",$name) . ($isLocale ? "Locale" : "") . "Fieldset";
+
+        if (!file_exists("$path/module") || !file_exists("$path/config/application.config.php")) {
+            $console->writeLine("The path $path doesn't contain a ZF2 application. I cannot create a module here.", Color::RED);
+            return;
+        }
+
+        $ucName     = ucfirst($name);
+
+        $ctrlPath   = $path . '/module/' . $module . '/src/' . $module . '/Form/' . $ucName.'.php';
+
+        //Generamos el fieldset
+        if (file_exists($ctrlPath)) {
+            $console->writeLine("The fieldset $name already exists in module $module.", Color::RED);
+            return;
+        }
+
+        $fieldset = $ucName;
+
+        $code = new Generator\ClassGenerator();
+        $code->setNamespaceName(ucfirst($module) . '\Form')
+            ->addUse('Administrator\Form\AdministratorFieldset')
+            ->setName($fieldset)
+            ->setExtendedClass('AdministratorFieldset');
+
+        $file = new Generator\FileGenerator(
+            array(
+                'classes'  => array($code),
+            )
+        );
+
+        if (file_put_contents($ctrlPath, $file->generate())) {
+            $console->writeLine("The fieldset $name has been created in module $module.", Color::GREEN);
+        } else {
+            $console->writeLine("There was an error during fieldset creation.", Color::RED);
+        }
+    }
+
     public function adminFormAction()
     {
         $console = $this->serviceLocator->get('console');
@@ -439,19 +489,19 @@ EOD;
             $console->writeLine("The path $path doesn't contain a ZF2 application. I cannot create a module here.", Color::RED);
             return;
         }
+
         $formExists = false;
 
-        if (file_exists("$path/module/$module/src/$module/Form/{$name}Form.php")) {
+        $ucName     = ucfirst($name);
+
+        $ctrlPath   = $path . '/module/' . $module . '/src/' . $module . '/Form/' . $ucName.'Form.php';
+
+        if (file_exists($ctrlPath)) {
             $console->writeLine("The form $name already exists in module $module.", Color::RED);
             $formExists = true;
         }
 
-        $ucName     = ucfirst($name);
-
-        $ctrlPath   = $path . '/module/' . $module . '/src/' . $module . '/Form/' . $ucName.'%s.php';
-
         $form = $ucName . 'Form';
-
 
         $code = new Generator\ClassGenerator();
         $code->setNamespaceName(ucfirst($module) . '\Form')
@@ -467,7 +517,7 @@ EOD;
         );
 
         if (!$formExists) {
-            if (file_put_contents(sprintf($ctrlPath,'Form'), $file->generate())) {
+            if (file_put_contents($ctrlPath, $file->generate())) {
                 $console->writeLine("The form $name has been created in module $module.", Color::GREEN);
             } else {
                 $console->writeLine("There was an error during form creation.", Color::RED);
@@ -475,31 +525,7 @@ EOD;
         }
 
         //Generamos el fieldset
-        if (file_exists("$path/module/$module/src/$module/Form/{$name}Fieldset.php")) {
-            $console->writeLine("The fieldset $name already exists in module $module.", Color::RED);
-            return;
-        }
-
-        $fieldset = $ucName . 'Fieldset';
-
-        $code = new Generator\ClassGenerator();
-        $code->setNamespaceName(ucfirst($module) . '\Form')
-            ->addUse('Administrator\Form\AdministratorFieldset')
-            ->setName($fieldset)
-            ->setExtendedClass('AdministratorFieldset');
-
-        $file = new Generator\FileGenerator(
-            array(
-                'classes'  => array($code),
-            )
-        );
-
-
-        if (file_put_contents(sprintf($ctrlPath,'Fieldset'), $file->generate())) {
-            $console->writeLine("The fieldset $name has been created in module $module.", Color::GREEN);
-        } else {
-            $console->writeLine("There was an error during fieldset creation.", Color::RED);
-        }
+        $this->adminFieldsetAction();
     }
 
     public function adminControllerAction()
@@ -556,6 +582,9 @@ EOD;
         }
     }
 
+    /**
+     * Genera las vistas para los módulos de admin que las requieran
+     */
     public function adminViewsAction()
     {
         $console = $this->serviceLocator->get('console');
@@ -598,6 +627,24 @@ EOD;
                 $console->writeLine("The view edit.phtml has been created in module $name.", Color::GREEN);
             }
         }
+    }
+
+    public function adminLocaleClassesAction()
+    {
+        /*$console = $this->serviceLocator->get('console');
+
+        $request = $this->getRequest();
+        $name    = $request->getParam('name');
+        $path    = $request->getParam('path', '.');
+
+        if (!file_exists("$path/module") || !file_exists("$path/config/application.config.php")) {
+            $console->writeLine("The path $path doesn't contain a ZF2 application. I cannot create a module here.", Color::RED);
+            return;
+        }*/
+
+        $this->adminTableAction(true);
+        $this->adminModelAction(true);
+        $this->adminFieldsetAction(true);
     }
 
     /**
