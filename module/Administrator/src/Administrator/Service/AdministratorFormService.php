@@ -153,6 +153,16 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     protected $fieldModifiers = array();
 
     /**
+     * @var array
+     *
+     * Array clave / valor.
+     * La clave corresponde a los id's que se van asignando a los elementos del formulario.
+     * El valor es el número de veces que aparece ese id en el formulario.
+     * Si un id se repite, le añadimos un sufijo númerico.
+     */
+    protected $elementsId = array();
+
+    /**
      * @param  EventManagerInterface $eventManager
      * @return void
      */
@@ -447,8 +457,8 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
                         'priority' => -($column->getOrdinalPosition() * 100),
                     ),
                     'attributes' => array(
-                        'id' => $columnName,
-                        'class' => 'form-control',
+                        'id' => $this->checkId($columnName),
+                        'class' => 'form-control js-'.$columnName,
                     )
                 );
 
@@ -492,6 +502,24 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         }
 
         return $this;
+    }
+
+    /**
+     * @param $formElement
+     *
+     * Comprobamos que los id's que se han asignado a los elementos de formulario no están repetidos
+     * Si encontramos un caso en el que sí este, añadimos un prefijo al id
+     */
+    private function checkId($id)
+    {
+        if (array_key_exists($id, $this->elementsId)) {
+            $this->elementsId[$id]++;
+            $id = $id . "_" . $this->elementsId[$id];
+        } else {
+            $this->elementsId[$id] = 0;
+        }
+
+        return $id;
     }
 
     public function postCamelToUnderscore($post)

@@ -3,6 +3,7 @@
 namespace Administrator\Form;
 
 
+use Administrator\Filter\SlugFilter;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Metadata\Source\Factory;
 use Zend\Filter\Word\UnderscoreToCamelCase;
@@ -107,7 +108,9 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
             $columnName = $column->getName();
 
-            $filterParams = array();
+            $filterParams = array(
+                'filters' => $this->setFilters($column)
+            );
 
             if (in_array($columnName, array('id', 'related_table_id'))) {
                 $required = false;
@@ -130,6 +133,22 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
         }
 
         return $filter;
+    }
+
+    protected function setFilters(ColumnObject $column)
+    {
+        $filters = array();
+
+        $columnName = $column->getName();
+
+        if ($columnName == 'url_key') {
+            $filters[] = array(
+                'name' => SlugFilter::class,
+                'options' => array()
+            );
+        }
+
+        return $filters;
     }
 
     protected function setValidators(ColumnObject $column)

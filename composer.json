@@ -11,6 +11,7 @@
         "php": ">=5.5",
         "zendframework/zendframework": "2.5.*",
         "evandotpro/edp-module-layouts": "1.0",
-        "intervention/image": "2.3.*"
+        "intervention/image": "2.3.*",
+        "cocur/slugify": "^2.1"
     }
 }
