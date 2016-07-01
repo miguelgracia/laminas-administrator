@@ -15,6 +15,7 @@ return array(
         'AmBlogCategory',
         'AmMedia',
         'AmMegabanner',
+        'AmStaticPage',
     ),
     'hidden_modules' => array(
         'AmLogin',

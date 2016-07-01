@@ -13,6 +13,7 @@ $(document).ready(function () {
         '/admin/blog/edit/{:num}':       ['blog','edit'],
         '/admin/blog':                   ['blog','index'],
         '/admin/blog-category':          ['blog_category','index'],
-        '/admin/megabanner':             ['megabanner','index']
+        '/admin/megabanner':             ['megabanner','index'],
+        '/admin/static-page':            ['static_page','index']
     }).run();
 });
