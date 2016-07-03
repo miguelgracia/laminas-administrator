@@ -281,7 +281,7 @@ abstract class BaseFilemanager
 
                 case 'add':
                     if($this->postvar('currentpath')) {
-                        $this->add();
+                        $response = $this->add();
                     }
                     break;
 

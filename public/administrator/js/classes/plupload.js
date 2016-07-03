@@ -1,9 +1,15 @@
+/**
+ * Temporalmente deprecated
+ *
+ */
 $(function () {
     $.AdminLTE.srClass('plupload', function() {
 
         var plUploadContainer = document.getElementById('uploader');
 
         this.init = function() {
+            return; //Plupload no lo usamos actualmente.
+
             if(plUploadContainer) {
                 $(plUploadContainer).pluploadQueue({
                     // General settings

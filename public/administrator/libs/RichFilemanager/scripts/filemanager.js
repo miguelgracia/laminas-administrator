@@ -519,7 +519,7 @@ var isDocumentFile = function(filename) {
 
 // Build url to preview office and media files
 var createPreviewUrl = function(path) {
-	return location.origin + location.pathname + path;
+	return location.origin + path;
 };
 
 // Return HTML video player

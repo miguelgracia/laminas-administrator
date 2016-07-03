@@ -221,7 +221,7 @@ class LocalFilemanager extends BaseFilemanager
 			$this->error(sprintf($this->lang('NOT_ALLOWED')));
 		}
 
-		$this->initUploader(array(
+		return $this->initUploader(array(
 			'upload_dir' => $current_path,
 		))->post(true);
 

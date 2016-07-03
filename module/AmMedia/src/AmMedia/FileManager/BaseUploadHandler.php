@@ -12,6 +12,10 @@
 
 namespace AmMedia\FileManager;
 
+use Zend\Http\Headers;
+use Zend\Http\PhpEnvironment\Response;
+use Zend\View\Model\JsonModel;
+
 class BaseUploadHandler
 {
 
@@ -1275,26 +1279,39 @@ class BaseUploadHandler
         }
     }
 
-    protected function send_access_control_headers() {
-        $this->header('Access-Control-Allow-Origin: '.$this->options['access_control_allow_origin']);
-        $this->header('Access-Control-Allow-Credentials: '
-            .($this->options['access_control_allow_credentials'] ? 'true' : 'false'));
-        $this->header('Access-Control-Allow-Methods: '
-            .implode(', ', $this->options['access_control_allow_methods']));
-        $this->header('Access-Control-Allow-Headers: '
-            .implode(', ', $this->options['access_control_allow_headers']));
+    protected function send_access_control_headers(Headers &$headers = null) {
+        if ($headers instanceof Headers) {
+            $headers->addHeaders(array(
+                'Access-Control-Allow-Origin' => $this->options['access_control_allow_origin'],
+                'Access-Control-Allow-Credentials' => ($this->options['access_control_allow_credentials'] ? 'true' : 'false'),
+                'Access-Control-Allow-Methods' => implode(', ', $this->options['access_control_allow_methods']),
+                'Access-Control-Allow-Headers' => implode(', ', $this->options['access_control_allow_headers'])
+            ));
+        } else {
+            $this->header('Access-Control-Allow-Origin: '.$this->options['access_control_allow_origin']);
+            $this->header('Access-Control-Allow-Credentials: '
+                .($this->options['access_control_allow_credentials'] ? 'true' : 'false'));
+            $this->header('Access-Control-Allow-Methods: '
+                .implode(', ', $this->options['access_control_allow_methods']));
+            $this->header('Access-Control-Allow-Headers: '
+                .implode(', ', $this->options['access_control_allow_headers']));
+        }
     }
 
     public function generate_response($content, $print_response = true) {
         $this->response = $content;
         if ($print_response) {
-            $json = json_encode($content);
+            $response = new Response();
+            $headers = new Headers();
+            $json = new JsonModel($content);
+            //$json = json_encode($content);
             $redirect = stripslashes($this->get_post_param('redirect'));
             if ($redirect && preg_match($this->options['redirect_allow_target'], $redirect)) {
+                //MIGUEL: EL REDIRECT NO ESTÁ ADAPTADO A ZEND TODAVIA
                 $this->header('Location: '.sprintf($redirect, rawurlencode($json)));
                 return;
             }
-            $this->head();
+            $this->head($headers);
             if ($this->get_server_var('HTTP_CONTENT_RANGE')) {
                 $files = isset($content[$this->options['param_name']]) ?
                     $content[$this->options['param_name']] : null;
@@ -1340,10 +1357,14 @@ class BaseUploadHandler
                     } else {
                         $size = ($size == 0) ? 0 : $size - $subBytes;
                     }
-                    $this->header('Range: 0-' . $size);
+                    $headers->addHeader('Range','0-'.$size);
+                    //$this->header('Range: 0-' . $size);
                 }
             }
-            $this->body($json);
+
+            $response->setContent($json->serialize());
+            return $response;
+            //$this->body($json);
         }
         return $content;
     }
@@ -1352,16 +1373,28 @@ class BaseUploadHandler
         return $this->response;
     }
 
-    public function head() {
-        $this->header('Pragma: no-cache');
-        $this->header('Cache-Control: no-store, no-cache, must-revalidate');
-        $this->header('Content-Disposition: inline; filename="files.json"');
-        // Prevent Internet Explorer from MIME-sniffing the content-type:
-        $this->header('X-Content-Type-Options: nosniff');
-        if ($this->options['access_control_allow_origin']) {
-            $this->send_access_control_headers();
+    public function head(Headers &$headers = null) {
+        if ($headers instanceof Headers) {
+
+            $headers->addHeaders(array(
+               'Pragma' => 'no-cache',
+               'Cache-Control' => 'no-store, no-cache, must-revalidate',
+                'X-Content-Type-Options' => 'nosniff'
+            ));
+            if ($this->options['access_control_allow_origin']) {
+                $this->send_access_control_headers($headers);
+            }
+        } else {
+            $this->header('Pragma: no-cache');
+            $this->header('Cache-Control: no-store, no-cache, must-revalidate');
+            $this->header('Content-Disposition: inline; filename="files.json"');
+            // Prevent Internet Explorer from MIME-sniffing the content-type:
+            $this->header('X-Content-Type-Options: nosniff');
+            if ($this->options['access_control_allow_origin']) {
+                $this->send_access_control_headers();
+            }
+            $this->send_content_type_header();
         }
-        $this->send_content_type_header();
     }
 
     public function get($print_response = true) {
