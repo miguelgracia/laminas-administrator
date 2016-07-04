@@ -11,34 +11,6 @@ class UserTable extends AdministratorTable
 {
     public $table = 'gestor_usuarios';
 
-    /**
-     * Devuelve el password desencriptado de base de datos.
-     *
-     * @param array $whereFields. Array asociativo con los campos que el usuario introduce en el formulario
-     */
-    public function getUserdata($login, $decryptKey = false)
-    {
-        $select = new Select();
-        $select->from($this->table)
-            ->columns(array(
-            'id',
-            'login',
-            'password' => ($decryptKey ? new Expression("AES_DECRYPT(password,'$decryptKey')") : 'password'),
-            'fecha_alta',
-            'ultimo_login',
-            'gestor_perfil_id',
-            'validado'
-        ))->where(array(
-            'login' => $login
-        ));
-
-        $resultSet = $this->selectWith($select);
-
-        $row = $resultSet->current();
-
-        return $row;
-    }
-
     public function save(AdministratorModel $model)
     {
         $checkPassword =  (bool) $model->getCheckPassword();

@@ -68,7 +68,7 @@ class AuthService implements FactoryInterface
                 ->join(
                     'gestor_perfiles',
                     'gestor_perfiles.id = gestor_usuarios.gestor_perfil_id',
-                    array('es_admin','permisos')
+                    array('es_admin','permisos','key')
                 )
                 ->where(array(
                     'login' => $username

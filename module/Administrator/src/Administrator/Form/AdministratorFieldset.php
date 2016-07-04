@@ -6,6 +6,7 @@ namespace Administrator\Form;
 use Administrator\Filter\SlugFilter;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Metadata\Source\Factory;
+use Zend\Filter\Word\DashToCamelCase;
 use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\Form\Fieldset;
 use Zend\Hydrator\ArraySerializable;
@@ -141,11 +142,23 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
         $columnName = $column->getName();
 
-        if ($columnName == 'url_key') {
-            $filters[] = array(
-                'name' => SlugFilter::class,
-                'options' => array()
-            );
+        switch ($columnName) {
+            case 'url_key':
+                $filters[] = array(
+                    'name' => SlugFilter::class,
+                    'options' => array()
+                );
+                break;
+            case 'key':
+                $filters[] = array(
+                    'name' => SlugFilter::class,
+                    'options' => array()
+                );
+                $filters[] = array(
+                    'name' => DashToCamelCase::class,
+                    'options' => array()
+                );
+                break;
         }
 
         return $filters;
@@ -156,6 +169,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
         $validators = array();
 
         $dataType = $column->getDataType();
+        $columnName = $column->getName();
 
         switch ($dataType) {
             case 'int':
@@ -172,6 +186,24 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
                     )
                 );
                 break;
+        }
+
+        /**
+         * Los campos que se llamen key o url_key serán tratados como campos únicos.
+         */
+        if (in_array($columnName, array('key','url_key'))) {
+            $validators[] = array(
+                'name' => 'Zend\Validator\Db\NoRecordExists',
+                'options' => array(
+                    'table' => $this->tableGateway->getTable(),
+                    'field' => $columnName,
+                    'adapter' => $this->tableGateway->getAdapter(),
+                    'exclude' => array(
+                        'field' => 'id',
+                        'value' => $this->get('id')->getValue()
+                    )
+                )
+            );
         }
 
         return $validators;
