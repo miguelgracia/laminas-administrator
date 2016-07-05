@@ -33,12 +33,20 @@ class ProfileFieldset extends AdministratorFieldset
     {
         $perm = $this->get('permisos');
 
+        $perm->setOption('partial_view','am-profile/am-profile-module/form-partial/permission');
+
+        $perm->setOption('label','permisos');
         $perm->setAttribute('class', '');
         $perm->setUseHiddenElement(true);
 
         $perm->setLabelAttributes(array(
-            'class' => 'col-sm-4'
+            'class' => 'col-sm-3'
         ));
+
+        //Añadimos la clase no-editor para que no cargue el plugin ckeditor en este campo
+        $description = $this->get('descripcion');
+        $classes = $description->getAttribute('class');
+        $description->setAttribute('class', $classes . ' no-editor');
 
         return $this;
     }

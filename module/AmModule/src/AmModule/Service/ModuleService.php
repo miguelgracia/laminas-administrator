@@ -102,7 +102,7 @@ class ModuleService implements FactoryInterface
 
                     if (stripos($name, 'action') !== false and !in_array($name,$hiddenMethods)) {
                         $action = preg_replace("/(Action)$/", "$2", $name);
-                        $controllerActions[$controller->nombreZend . '.' .$action] = $controller->nombreUsable . ' ' . $action;
+                        $controllerActions[$controller->nombreZend . '.' .$action] = $action;
                     }
                 }
                 asort($actions);

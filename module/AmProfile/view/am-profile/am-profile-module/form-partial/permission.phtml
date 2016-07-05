@@ -1,0 +1,60 @@
+<?php
+
+/**
+ * VARIABLES DISPONIBLES
+ *      $element
+ *      $label
+ *      $labelAttributes
+ *      $labelPosition
+ *      $renderErrors
+ */
+
+$selectedValues = $element->getValue();
+
+$options = $element->getValueOptions();
+
+$permissions = [];
+
+//Vamos a agrupar los checkbox por módulo
+
+foreach ($options as $permission => $permissionName) {
+    $permission = explode('.',$permission);
+    $module = $permission[0];
+    $action = $permission[1];
+    if (!isset($permissions[$module])) {
+        $permissions[$module] = [];
+    }
+
+    $permissions[$module][$module.'.'.$action] = $permissionName;
+}
+
+//Recorremos el nuevo array para poder pintar los checkbox agrupados por módulos
+$counter = 0;
+$html = '';
+foreach ($permissions as $module => $modulePermissions) {
+
+    $element->setUseHiddenElement($counter == 0);
+
+    asort($modulePermissions);
+
+    $element->setValueOptions($modulePermissions);
+    $html .= "<div class='box'>
+            <div class='box-header'><h3 class='box-title'>".strtoupper($module)."</h3></div>
+            <div class='box-body'>";
+    $html .= $this->formMultiCheckbox()->render($element);
+    $html .= "</div></div>";
+    $counter++;
+}
+?>
+<div class="box box-warning collapsed-box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Permisos</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body">
+        <?=$html;?>
+    </div>
+</div>
