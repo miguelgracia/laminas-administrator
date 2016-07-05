@@ -14,6 +14,7 @@ $(document).ready(function () {
         '/admin/blog':                   ['blog','index'],
         '/admin/blog-category':          ['blog_category','index'],
         '/admin/megabanner':             ['megabanner','index'],
-        '/admin/static-page':            ['static_page','index']
+        '/admin/static-page':            ['static_page','index'],
+        '/admin/job':                    ['job','index']
     }).run();
 });

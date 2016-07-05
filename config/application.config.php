@@ -16,6 +16,7 @@ return array(
         'AmMedia',
         'AmMegabanner',
         'AmStaticPage',
+        'AmJob',
     ),
     'hidden_modules' => array(
         'AmLogin',
