@@ -15,6 +15,7 @@ $(document).ready(function () {
         '/admin/blog-category':          ['blog_category','index'],
         '/admin/megabanner':             ['megabanner','index'],
         '/admin/static-page':            ['static_page','index'],
-        '/admin/job':                    ['job','index']
+        '/admin/job':                    ['job','index'],
+        '/admin/job-category':           ['job_category','index']
     }).run();
 });

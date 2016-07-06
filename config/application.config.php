@@ -17,6 +17,7 @@ return array(
         'AmMegabanner',
         'AmStaticPage',
         'AmJob',
+        'AmJobCategory',
     ),
     'hidden_modules' => array(
         'AmLogin',
