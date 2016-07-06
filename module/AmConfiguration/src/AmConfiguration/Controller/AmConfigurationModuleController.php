@@ -3,6 +3,7 @@
 namespace AmConfiguration\Controller;
 
 use Administrator\Controller\AuthController;
+use Administrator\Traits\AddAction;
 use AmConfiguration\Form\ConfigurationForm;
 use Zend\Filter\File\Rename;
 
@@ -12,7 +13,7 @@ class AmConfigurationModuleController extends AuthController
 
     public function setControllerVars()
     {
-        $this->valoresConfiguracionTable = $this->sm->get('AmConfiguration\Model\ValoresConfiguracionTable');
+        $this->valoresConfiguracionTable = $this->serviceLocator->get('AmConfiguration\Model\ConfigurationTable');
     }
 
     public function indexAction()
@@ -37,7 +38,7 @@ class AmConfigurationModuleController extends AuthController
                 {
                     // Cargamos el objeto con lo que queremos grabar
 
-                    $objetoDatos = $this->sm->create('AmConfiguration\Model\ValoresConfiguracionModel');
+                    $objetoDatos = $this->serviceLocator->create('AmConfiguration\Model\ConfigurationModel');
 
                     $objetoDatos->setEntryKey($postEntryKey);
 
@@ -51,7 +52,7 @@ class AmConfigurationModuleController extends AuthController
                             $filter = new Rename(array(
                                 'randomize' => false,
                                 'overwrite' => true,
-                                'target'    => "./public/gestor/img/gestor/images/$postEntryKey.jpg",
+                                'target'    => "./public/administrator/img/administrator/images/$postEntryKey.jpg",
                             ));
                             $filter->filter($postParamValue);
                             $postParamValue = $postParamValue['name'];

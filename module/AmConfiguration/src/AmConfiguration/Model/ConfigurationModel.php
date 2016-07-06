@@ -5,7 +5,7 @@ namespace AmConfiguration\Model;
 use Administrator\Model\AdministratorModel;
 use \Zend\Filter\StripTags;
 
-class ValoresConfiguracionModel extends AdministratorModel
+class ConfigurationModel extends AdministratorModel
 {
     public function setEntryValue($value) {
         if (!is_array($value)) {

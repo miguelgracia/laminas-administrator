@@ -5,7 +5,7 @@ namespace AmConfiguration\Model;
 use Administrator\Model\AdministratorModel;
 use Administrator\Model\AdministratorTable;
 
-class ValoresConfiguracionTable extends AdministratorTable
+class ConfigurationTable extends AdministratorTable
 {
     protected $table = 'valores_configuracion';
 
