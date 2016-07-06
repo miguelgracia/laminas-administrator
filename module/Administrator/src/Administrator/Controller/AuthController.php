@@ -7,6 +7,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\Http\RouteMatch;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 abstract class AuthController extends AbstractActionController
@@ -146,13 +147,31 @@ abstract class AuthController extends AbstractActionController
 
         if (!in_array($module, $this->whitelist)) {
 
+            $request = $this->serviceLocator->get('Request');
+
             $this->layout('layout/admin-layout');
 
             // Comprobamos si esta autenticado
             $authService = $this->getAuthService();
+
             if (!$authService->hasIdentity()){
+
                 $this->sessionService->section_referer = $match->getParams();
-                return $this->goToSection('login');
+                if ($request->isXmlHttpRequest()) {
+
+                    $response = $this->getResponse();
+
+                    $jsonModel = new JsonModel(array(
+                        'status' => 'ok',
+                        'response' => 'false',
+                        'error' => true,
+                        'message' => 'La sesión ha caducado'
+                    ));
+                    $response->setContent($jsonModel->serialize());
+                    return $response;
+                } else {
+                    return $this->goToSection('login');
+                }
             }
 
             $userData = $this->getUserData();
@@ -160,8 +179,19 @@ abstract class AuthController extends AbstractActionController
             $this->layout()->userData = $userData;
 
             if (!$this->isActiveUser($userData)) {
-                $this->flashMessenger()->addMessage("Tu usuario ha sido desactivado");
-                return $this->goToSection('login');
+                $message = "Tu usuario ha sido desactivado";
+                if ($request->isXmlHttpRequest()) {
+                    return new JsonModel(array(
+                        'status' => 'ok',
+                        'response' => 'false',
+                        'error' => true,
+                        'message' => $message
+                    ));
+
+                } else {
+                    $this->flashMessenger()->addMessage($message);
+                    return $this->goToSection('login');
+                }
             }
 
             $permissionsService = $this->serviceLocator->get('AmProfile\Service\ProfilePermissionService');

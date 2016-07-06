@@ -102,16 +102,7 @@ $(function () {
                 "serverSide": true,
                 "sDom": "lip<'horizontal-scroll't>ipr",
                 "ajax": {
-                    'url': document.location.href,
-                    "data": function(json) {
-                        $.AdminLTE.simpleRouting.ajax.run({
-                            url: '/admin/login/check-auth-session'
-                        }, function(data) {
-                            if(data.response != true) {
-                                location.reload();
-                            }
-                        });
-                    }
+                    'url': document.location.href
                 },
                 "language": language,
                 "columns": columns,
@@ -149,7 +140,15 @@ $(function () {
                 }
             };
 
-            dataTable = $table.DataTable(defaultConfig);
+            dataTable = $table.on('xhr.dt',function(e, settings, json, xhr) {
+                if(typeof json.data == 'undefined') {
+                    if(typeof json.error != 'undefined' && json.error == true) {
+                        alert(json.message);
+                        location.reload();
+                    }
+                }
+
+            }).DataTable(defaultConfig);
 
             return dataTable;
         };
