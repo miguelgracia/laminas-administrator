@@ -6,9 +6,9 @@ $(function () {
             var $listGroupSubMenu = $('.list-group.sub-menu');
 
             var updateOrderCallback = function(e) {
-
-                var $target = $(e.originalTarget);
+                var $target = $(e.target);
                 var elementIds = [];
+
                 $target.children().each(function (x, elem) {
                     elementIds.push($(elem).data('id'));
                 });
