@@ -437,6 +437,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
                 $toCamel = new SeparatorToCamelCase('_');
                 $columnName = lcfirst($toCamel->filter($column->getName()));
+                $dataType = $column->getDataType();
 
                 if (in_array($columnName, $hiddenFields)) {
                     continue;
@@ -446,10 +447,20 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
                     'priority' => -($column->getOrdinalPosition() * 100),
                 );
 
+
+                $fieldClasses = 'form-control js-'.$columnName;
+
+                switch ($dataType) {
+                    case 'timestamp':
+                        $fieldClasses .= ' datepicker';
+                        break;
+                }
+
                 $fieldParams = array(
                     'name' => $columnName,
                     'label' => $columnName,
                     'options' => array(
+                        'data_type' => $dataType,
                         'label' => $columnName,
                         'label_attributes' => array(
                             'class' => 'col-sm-2 control-label'
@@ -458,7 +469,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
                     ),
                     'attributes' => array(
                         'id' => $this->checkId($columnName),
-                        'class' => 'form-control js-'.$columnName,
+                        'class' => $fieldClasses,
                     )
                 );
 

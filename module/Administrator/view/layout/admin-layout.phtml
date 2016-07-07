@@ -19,17 +19,17 @@ $basePath = $this->basePath() . '/administrator';
     <!-- Le styles -->
     <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $basePath . '/img/favicon.ico'))
 
-
         ->prependStylesheet($basePath . '/css/style.css')
         ->prependStylesheet($basePath . '/libs/RichFilemanager/themes/administrator/styles/filemanager.css')
         ->prependStylesheet($basePath . '/libs/plupload/2.1.9/js/jquery.plupload.queue/css/jquery.plupload.queue.css')
-        ->prependStylesheet($basePath . '/libs/daterangepicker/daterangepicker-bs3.css')
+        //->prependStylesheet($basePath . '/libs/daterangepicker/daterangepicker-bs3.css')
         ->prependStylesheet($basePath . '/libs/datatables/dataTables.bootstrap.css')
         ->prependStylesheet($basePath . '/css/skins/skin-blue.min.css')
         ->prependStylesheet($basePath . '/css/AdminLTE.min.css')
         ->prependStylesheet($basePath . '/libs/select2/css/select2.min.css')
         ->prependStylesheet($basePath . '/libs/font-awesome/css/font-awesome.min.css')
         ->prependStylesheet($basePath . '/libs/bootstrap/css/bootstrap.min.css')
+        ->prependStylesheet($basePath . '/libs/datepicker/datepicker3.css')
 
          ?>
 </head>
@@ -166,6 +166,7 @@ $basePath = $this->basePath() . '/administrator';
     ->prependFile($basePath . '/libs/plupload/2.1.9/js/plupload.full.min.js')
     ->prependFile($basePath . '/libs/sortable/sortable.min.js')
     ->prependFile($basePath . '/libs/select2/js/select2.min.js')
+    ->prependFile($basePath . '/libs/datepicker/bootstrap-datepicker.js')
     ->prependFile($basePath . '/libs/daterangepicker/moment-with-locales.js')
     ->prependFile($basePath . '/libs/datatables/dataTables.bootstrap.min.js')
     ->prependFile($basePath . '/libs/datatables/jquery.dataTables.js')

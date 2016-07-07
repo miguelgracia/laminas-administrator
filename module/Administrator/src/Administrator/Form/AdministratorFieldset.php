@@ -123,6 +123,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
             $name = lcfirst($dashToCamel->filter($columnName));
 
+            //Los campos seteados como ocultos no se validan
             if (in_array($name, $hiddenFields)) {
                 continue;
             }
@@ -183,6 +184,14 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
                     'options' => array(
                         'min' => '1',
                         'max' => $column->getCharacterMaximumLength()
+                    )
+                );
+                break;
+            case 'timestamp':
+                $validators[] = array(
+                    'name' => 'Zend\Validator\Date',
+                    'options' => array(
+                        'format' => 'd-m-Y'
                     )
                 );
                 break;

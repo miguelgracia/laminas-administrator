@@ -15,7 +15,7 @@ class JobFieldset extends AdministratorFieldset
             ),
             'fieldValueOptions' => array(
                 'jobCategoriesId' => function () use($serviceLocator) {
-                    return array();// $serviceLocator->get('AmBlogCategory\Model\BlogCategoryTable')->all()->toKeyValueArray('id','key');
+                    $serviceLocator->get('AmJobCategory\Model\JobCategoryTable')->all()->toKeyValueArray('id','key');
                 },
                 'active' => array(
                     '0' => 'NO',
@@ -23,6 +23,12 @@ class JobFieldset extends AdministratorFieldset
                 ),
             )
         );
+    }
+
+    public function addFields()
+    {
+        $date = $this->get('date');
+        $date->setAttribute('placeholder','dd-mm-yyyy');
     }
 }
 
