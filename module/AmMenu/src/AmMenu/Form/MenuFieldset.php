@@ -12,21 +12,21 @@ class MenuFieldset extends AdministratorFieldset
     {
         $moduleTable = $serviceLocator->get('AmModule\Model\ModuleTable');
 
-        $moduleController = $moduleTable->all()->toKeyValueArray('id','nombreZend');
+        $moduleController = $moduleTable->all()->toKeyValueArray('id','zendName');
 
         return array(
             'fieldModifiers' => array(
-                'padre'         => 'Hidden',
-                'orden'         => 'Hidden',
-                'gestorModuleId' => 'Select',
-                'accion'        => 'Select'
+                'parent'         => 'Hidden',
+                'order'         => 'Hidden',
+                'adminModuleId' => 'Select',
+                'action'        => 'Select'
             ),
             'fieldValueOptions' => array(
-                'gestorModuleId' => function () use($moduleController) {
+                'adminModuleId' => function () use($moduleController) {
 
                     return array('' => '[Ninguno]') + $moduleController;
                 },
-                'accion' => function () use($serviceLocator, $moduleController) {
+                'action' => function () use($serviceLocator, $moduleController) {
 
                     $modules = $serviceLocator->get('AmModule\Service\ModuleService')->getControllerActionsModules();
 
@@ -58,7 +58,7 @@ class MenuFieldset extends AdministratorFieldset
 
             $fieldset = $formService->getBaseFieldset();
 
-            $fieldset->get('padre')->setValue($padre);
+            $fieldset->get('parent')->setValue($padre);
         }
     }
 }

@@ -7,8 +7,8 @@ use Administrator\Model\AdministratorModel;
 
 class ProfileModel extends AdministratorModel
 {
-    public function getPermisos()
+    public function getPermissions()
     {
-        return json_decode($this->permisos);
+        return json_decode($this->permissions);
     }
 }

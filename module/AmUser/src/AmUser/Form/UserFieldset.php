@@ -27,23 +27,27 @@ class UserFieldset extends AdministratorFieldset
         return array(
 
             'fieldModifiers' => array(
-                'gestorPerfilId' => 'Select',
+                'adminProfileId' => 'Select',
                 'password' => 'password'
             ),
             'fieldValueOptions' => array(
+                'active' => array(
+                    '0' => 'NO',
+                    '1' => 'SI'
+                ),
                 /**
                  * El campo idPerfil se va a reflejar como un select de perfiles. Debemos indicar los valores
                  * de dicho select. La funci�n setIdPerfil guarda, para el campo idPerfil, los valores que va
                  * a tener el <select> de idPerfil
                  */
 
-                'gestorPerfilId' => function () use($serviceLocator) {
+                'adminProfileId' => function () use($serviceLocator) {
 
                     $gestorPerfilTable = $serviceLocator->get('AmProfile\Model\ProfileTable');
 
                     $gestorPerfil = $gestorPerfilTable->all();
 
-                    return $gestorPerfil->toKeyValueArray('id','nombre');
+                    return $gestorPerfil->toKeyValueArray('id','name');
                 }
             )
         );
@@ -103,11 +107,11 @@ class UserFieldset extends AdministratorFieldset
     {
         $filter = parent::getInputFilterSpecification();
 
-        $filter['login']['validators'][] = array(
+        $filter['username']['validators'][] = array(
             'name' => 'Zend\Validator\Db\NoRecordExists',
             'options' => array(
                 'table' => $this->tableGateway->getTable(),
-                'field' => 'login',
+                'field' => 'username',
                 'adapter' => $this->tableGateway->getAdapter(),
                 'exclude' => array(
                     'field' => 'id',

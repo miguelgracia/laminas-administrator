@@ -28,7 +28,7 @@ class AuthService implements FactoryInterface
         $dbAdapter = $serviceLocator->get('Zend\Db\Adapter\Adapter');
 
         $dbTableAuthAdapter  = new  AuthAdapter($dbAdapter,
-            'gestor_usuarios','login','password', "md5(?)");
+            'admin_users','username','password', "md5(?)");
 
         $storage = $serviceLocator->get('Administrator\Model\AuthStorage');
 
@@ -66,12 +66,12 @@ class AuthService implements FactoryInterface
             $select
                 ->columns(array('*'))
                 ->join(
-                    'gestor_perfiles',
-                    'gestor_perfiles.id = gestor_usuarios.gestor_perfil_id',
-                    array('es_admin','permisos','key')
+                    'admin_profiles',
+                    'admin_profiles.id = admin_users.admin_profile_id',
+                    array('is_admin','permissions','key')
                 )
                 ->where(array(
-                    'login' => $username
+                    'username' => $username
                 ));
         });
 

@@ -12,7 +12,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
         $controllerPlugin = $this->controllerPluginManager;
 
         $disallowSearchTo = array (
-            'gestor_modules.id' => false,
+            'admin_modules.id' => false,
         );
 
         $disallowOrderTo = $disallowSearchTo;
@@ -25,7 +25,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             'orderable' => $disallowOrderTo,
             'columns' => function ($header) use ($canDelete, $canEdit) {
                 //ocultamos la columna ID
-                $header['gestor_modules.id']['options']['visible'] = false;
+                $header['admin_modules.id']['options']['visible'] = false;
 
                 $header['edit'] = array(
                     'value' => 'Modificar',
@@ -72,10 +72,10 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             //En fields solo tenemos que añadir los campos de la tabla indicada en 'from'
             'fields' => array(
                 'id',
-                'nombre_zend',
-                'nombre_usable'
+                'zend_name',
+                'public_name'
             ),
-            'from' => 'gestor_modules',
+            'from' => 'admin_modules',
             'join' => array(
 
             ),

@@ -12,7 +12,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
         $controllerPlugin = $this->controllerPluginManager;
 
         $disallowSearchTo = array (
-            'gestor_usuarios.id' => false,
+            'admin_users.id' => false,
         );
 
         $disallowOrderTo = $disallowSearchTo;
@@ -25,10 +25,10 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             'orderable' => $disallowOrderTo,
             'columns' => function ($header) use ($canDelete, $canEdit) {
                 //ocultamos la columna ID
-                $header['gestor_usuarios.id']['options']['visible'] = false;
+                $header['admin_users.id']['options']['visible'] = false;
 
                 //Renombramos las columnas para darles un nombre más descriptivo en el header de la tabla
-                $header['gestor_usuarios.login']['value'] = 'Usuario';
+                $header['admin_users.username']['value'] = 'Usuario';
 
                 //Añadimos las columnas que contendrán los iconos de edición y activar/desactivar
                 $header['edit'] = array(
@@ -88,19 +88,19 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             //En fields solo tenemos que añadir los campos de la tabla indicada en 'from'
             'fields' => array(
                 'id',
-                'login',
+                'username',
                 'last_login',
             ),
-            'from' => 'gestor_usuarios',
+            'from' => 'admin_users',
             'join' => array(
                 array(
                     //Tabla con la que hacemos join
-                    'gestor_perfiles',
+                    'admin_profiles',
                     //ON tal = tal
-                    'gestor_perfil_id = gestor_perfiles.id',
+                    'admin_profile_id = admin_profiles.id',
                     array(
                         //Campos del join. La key es el alias del campo y el valor es el nombre del campo en sí
-                        'nombre' => 'nombre'
+                        'name' => 'name'
                     ),
                     //Tipo de join
                     'left'

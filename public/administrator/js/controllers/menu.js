@@ -45,11 +45,11 @@ $(function () {
         };
 
         this.addAndedit = function() {
-            var $accion = $('#accion').select2({width: '100%'});
+            var $accion = $('#action').select2({width: '100%'});
 
             var $optGroupAccion = $accion.find('optgroup');
 
-            var $gestorModuleId = $('#gestorModuleId').select2({width: '100%'});
+            var $gestorModuleId = $('#adminModuleId').select2({width: '100%'});
 
             var changeModuleId = function(e) {
                 var optionSelected = $(e.target).find('option:selected').text();

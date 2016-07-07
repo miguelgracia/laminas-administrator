@@ -79,18 +79,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             ),
             'from' => 'blog_categories',
             'join' => array(
-                /*array(
-                    //Tabla con la que hacemos join
-                    'gestor_perfiles',
-                    //ON tal = tal
-                    'gestor_perfil_id = gestor_perfiles.id',
-                    array(
-                        //Campos del join. La key es el alias del campo y el valor es el nombre del campo en s�
-                        'nombre' => 'nombre'
-                    ),
-                    //Tipo de join
-                    'left'
-                ),*/
+
             ),
             //Los campos que están dentro del 'having_fields' no se veran afectados por la clausula where al
             //filtar, sino por la clausula having. Esto es necesario para aquellos campos cuyo valor dependen

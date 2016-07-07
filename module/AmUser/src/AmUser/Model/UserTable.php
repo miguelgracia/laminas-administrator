@@ -9,7 +9,7 @@ use Zend\Db\Sql\Select;
 
 class UserTable extends AdministratorTable
 {
-    public $table = 'gestor_usuarios';
+    public $table = 'admin_users';
 
     public function save(AdministratorModel $model)
     {
@@ -24,16 +24,16 @@ class UserTable extends AdministratorTable
         return parent::save($model);
     }
 
-    public function updateActivo($id,$activo)
+    public function updateActivo($id,$active)
     {
-        $this->update(array('activo' => $activo),
+        $this->update(array('active' => $active),
             array('id' => $id)
         );
     }
 
-    public function updateLogin($id,$login)
+    public function updateLogin($id,$username)
     {
-        $this->update(array('login' => $login),
+        $this->update(array('username' => $username),
             array('id' => $id)
         );
     }
@@ -61,9 +61,9 @@ class UserTable extends AdministratorTable
     public function updateLastLogin($userCheck, $passwordCheck)
     {
         $this->update(array(
-            'ultimo_login' => date('Y-m-d H:i:s')
+            'last_login' => date('Y-m-d H:i:s')
         ),array(
-            'login' => $userCheck,
+            'username' => $userCheck,
             'password' => $passwordCheck
         ));
     }

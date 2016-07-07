@@ -162,7 +162,7 @@ class AdministratorFormRow extends AbstractHelper
                 $input = $this->view->formSelect($formElement);
                 break;
             case 'checkbox':
-                $input = $this->view->formRow($formElement);
+                $input = $this->view->formRow($formElement,'append');
                 break;
             case 'multi_checkbox':
                 $partialView = $formElement->getOption('partial_view');

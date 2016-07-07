@@ -7,7 +7,7 @@ use Administrator\Model\AdministratorTable;
 
 class ConfigurationTable extends AdministratorTable
 {
-    protected $table = 'valores_configuracion';
+    protected $table = 'configuration';
 
     public function getValue($entryKey)
     {

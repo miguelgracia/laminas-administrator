@@ -11,16 +11,16 @@ class ProfileFieldset extends AdministratorFieldset
     {
         return array(
             'fieldModifiers' => array(
-                'descripcion'   => 'textarea',
-                'permisos' => 'MultiCheckbox',
-                'esAdmin' => 'Select'
+                'description'   => 'textarea',
+                'permissions' => 'MultiCheckbox',
+                'isAdmin' => 'Select'
             ),
             'fieldValueOptions' => array(
-                'esAdmin' => array(
+                'isAdmin' => array(
                     '0' => 'NO',
                     '1' => 'SI'
                 ),
-                'permisos' => function () use($serviceLocator) {
+                'permissions' => function () use($serviceLocator) {
 
                     return $serviceLocator->get('AmModule\Service\ModuleService')->getControllerActionsModules();
 
@@ -31,11 +31,11 @@ class ProfileFieldset extends AdministratorFieldset
 
     public function addFields()
     {
-        $perm = $this->get('permisos');
+        $perm = $this->get('permissions');
 
         $perm->setOption('partial_view','am-profile/am-profile-module/form-partial/permission');
 
-        $perm->setOption('label','permisos');
+        $perm->setOption('label','permissions');
         $perm->setAttribute('class', '');
         $perm->setUseHiddenElement(true);
 
@@ -44,7 +44,7 @@ class ProfileFieldset extends AdministratorFieldset
         ));
 
         //Añadimos la clase no-editor para que no cargue el plugin ckeditor en este campo
-        $description = $this->get('descripcion');
+        $description = $this->get('description');
         $classes = $description->getAttribute('class');
         $description->setAttribute('class', $classes . ' no-editor');
 

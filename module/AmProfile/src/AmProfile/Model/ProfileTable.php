@@ -7,7 +7,7 @@ use Administrator\Model\AdministratorTable;
 
 class ProfileTable extends AdministratorTable
 {
-    protected $table = "gestor_perfiles";
+    protected $table = "admin_profiles";
 
     public function deletePerfil($id)
     {
@@ -17,14 +17,14 @@ class ProfileTable extends AdministratorTable
     public function find($id, $key = 'id')
     {
         $row = parent::find($id, $key);
-        $row->permisos = $row->getPermisos();
+        $row->permissions = $row->getPermissions();
         return $row;
     }
 
     public function save(AdministratorModel $model)
     {
-        if (is_array($model->permisos)) {
-            $model->permisos = json_encode($model->permisos);
+        if (is_array($model->permissions)) {
+            $model->permissions = json_encode($model->permissions);
         }
 
         return parent::save($model);

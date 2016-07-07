@@ -6,6 +6,6 @@ use Administrator\Model\AdministratorTable;
 
 class ModuleTable extends AdministratorTable
 {
-    protected $table = "gestor_modules";
+    protected $table = "admin_modules";
 
 }

@@ -22,7 +22,7 @@ class ProfilePermissionService implements FactoryInterface
         $dataUser = $authService->getUserData();
 
         $this->userData = $dataUser;
-        $this->isSuperUser = (bool) $this->userData->esAdmin;
+        $this->isSuperUser = (bool) $this->userData->isAdmin;
 
         return $this;
     }
@@ -55,7 +55,7 @@ class ProfilePermissionService implements FactoryInterface
             return 1;
         }
 
-        $permisos = json_decode($this->userData->permisos);
+        $permisos = json_decode($this->userData->permissions);
 
         $tienePermiso = in_array($controller.'.'.$action,$permisos);
 
@@ -70,20 +70,20 @@ class ProfilePermissionService implements FactoryInterface
 
         foreach ($dataMenu as $i => $menuTemp) {
 
-            if ($menuTemp->nombreZend != '') {
-                if (!$this->hasModuleAccess($menuTemp->nombreZend,$menuTemp->accion)) {
+            if ($menuTemp->zendName != '') {
+                if (!$this->hasModuleAccess($menuTemp->zendName,$menuTemp->action)) {
                     //El usuario no tiene permisos de acceso. Eliminamos el registro del array
                     unset($dataMenu[$i]);
                     //no es necesario comprobar si hay acceso a los hijos porque directamente
-                    //no hay acceso al padre, as� que continuamos con la siguiente iteraci�n.
+                    //no hay acceso al padre, así que continuamos con la siguiente iteración.
 
                     continue;
                 }
             }
 
             foreach($menuTemp->hijos as $indexHijo => $hijo) {
-                if ($hijo->accion != '') {
-                    if (!$this->hasModuleAccess($hijo->nombreZend, $hijo->accion)) {
+                if ($hijo->action != '') {
+                    if (!$this->hasModuleAccess($hijo->zendName, $hijo->action)) {
                         //El usuario no tiene permisos de acceso. Eliminamos el registro del array
                         unset($menuTemp->hijos[$indexHijo]);
                     }

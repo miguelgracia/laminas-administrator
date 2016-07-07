@@ -37,7 +37,7 @@ class ModuleService implements FactoryInterface
     {
         $moduleTable = $this->sm->get('AmModule\Model\ModuleTable');
 
-        $availableModules = $moduleTable->select()->toKeyValueArray('id','nombreZend');
+        $availableModules = $moduleTable->select()->toKeyValueArray('id','zendName');
 
         $newModules = array();
 
@@ -52,8 +52,8 @@ class ModuleService implements FactoryInterface
                 $newModules[] = $module;
 
                 $moduleTable->save(array(
-                    'nombre_zend' => $module,
-                    'nombre_usable' => $module
+                    'zend_name' => $module,
+                    'public_name' => $module
                 ));
             }
         }
@@ -87,7 +87,7 @@ class ModuleService implements FactoryInterface
 
             $controllerNamespace = '\Am%s\Controller\Am%sModuleController';
 
-            $controllerName = $filterDashToCamelCase->filter($controller->nombreZend);
+            $controllerName = $filterDashToCamelCase->filter($controller->zendName);
 
             $class = sprintf($controllerNamespace,$controllerName,$controllerName);
 
@@ -102,7 +102,7 @@ class ModuleService implements FactoryInterface
 
                     if (stripos($name, 'action') !== false and !in_array($name,$hiddenMethods)) {
                         $action = preg_replace("/(Action)$/", "$2", $name);
-                        $controllerActions[$controller->nombreZend . '.' .$action] = $action;
+                        $controllerActions[$controller->zendName . '.' .$action] = $action;
                     }
                 }
                 asort($actions);

@@ -25,7 +25,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             'orderable' => $disallowOrderTo,
             'columns' => function ($header) use ($canDelete, $canEdit) {
                 //ocultamos la columna ID
-                $header['gestor_perfiles.id']['options']['visible'] = false;
+                $header['admin_profiles.id']['options']['visible'] = false;
 
                 $header['edit'] = array(
                     'value' => 'Modificar',
@@ -72,9 +72,9 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             //En fields solo tenemos que añadir los campos de la tabla indicada en 'from'
             'fields' => array(
                 'id',
-                'nombre',
+                'name',
             ),
-            'from' => 'gestor_perfiles',
+            'from' => 'admin_profiles',
             'join' => array(
 
             ),

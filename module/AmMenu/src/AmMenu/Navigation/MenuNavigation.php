@@ -34,21 +34,20 @@ class MenuNavigation extends DefaultNavigationFactory
 
             $dataMenu = $this->entradaMenuTable->fetchAllOrdenados();
 
-            // --------- Seguridad en el pintado de men� ----------
-            // antes de pintarlos vamos a ir viendo a cu�les de ellos
-            // hay acceso, y por tanto, qu� opciones pintar
+            // --------- Seguridad en el pintado de menú ----------
+            // antes de pintarlos vamos a ir viendo a cuáles de ellos
+            // hay acceso, y por tanto, qué opciones pintar
 
             $misPermisos = $serviceLocator->get('AmProfile\Service\ProfilePermissionService');
 
-            // Ahora, vamos a recorrer el men� y a ver lo que es imprimible y lo que no.
-            // La versi�n final va a pasar de $dataMenuTemp a $dataMenu
+            // Ahora, vamos a recorrer el menú y a ver lo que es imprimible y lo que no.
 
             $misPermisos->redibujarMenu($dataMenu);
 
             foreach ($dataMenu as $i => $menu)
             {
                 // Pintamos las opciones base de men�
-                $label = '<i class="fa fa-circle-thin"></i>'.$menu->texto;
+                $label = '<i class="fa fa-circle-thin"></i>'.$menu->title;
 
                 if (count($menu->hijos) > 0) {
                     $label .= '<i class="fa fa-angle-left pull-right"></i>';
@@ -58,14 +57,20 @@ class MenuNavigation extends DefaultNavigationFactory
                     'label' => $label
                 );
 
-                if ($menu->accion != '') {
+                if ($menu->action != '') {
                     $parentMenuSection['route'] = "administrator";
                     $parentMenuSection['params'] = array(
-                        'module' => $menu->nombreZend,
-                        'action' => $menu->accion,
+                        'module' => $menu->zendName,
+                        'action' => $menu->action,
                     );
                 } else {
                     $parentMenuSection['uri'] = "#";
+                    if (count($menu->hijos) == 0) {
+                        //Si el menú padre no contiene ningún vìnculo y además no tiene hijos, no tiene
+                        //sentido pintarlo. Es más, no se debe pintar porque puede dar pistas a usuarios
+                        //con menos permisos de que hay secciones que se le están ocultando.
+                        continue;
+                    }
                 }
 
                 // Ahora vamos a pintar sus hijos
@@ -75,14 +80,14 @@ class MenuNavigation extends DefaultNavigationFactory
                     foreach ($menu->hijos as $hijo) {
 
                         $page = array(
-                            'label' => $hijo->texto,
+                            'label' => $hijo->title,
                             'pagesWrapClass' => "treeview-menu",
                             'route' => 'administrator',
                             'params' => array(
-                                'module' => $hijo->nombreZend,
-                                'action' => $hijo->accion,
+                                'module' => $hijo->zendName,
+                                'action' => $hijo->action,
                             ),
-                            'active' => ($hijo->nombreZend == $rutaController and $actionController == $hijo->accion)
+                            'active' => ($hijo->zendName == $rutaController and $actionController == $hijo->action)
                         );
 
                         $parentMenuSection['pages'][] = $page;

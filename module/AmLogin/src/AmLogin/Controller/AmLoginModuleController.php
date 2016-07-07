@@ -78,7 +78,7 @@ class AmLoginModuleController extends AuthController
                 if ($form->isValid()) {
                     $userTable = $this->sm->get('Gestor\Model\GestorUsuariosTable');
 
-                    $userData = $userTable->getUserdata($request->getPost('login'),$this->config['encrypt_key']);
+                    $userData = $userTable->getUserdata($request->getPost('username'),$this->config['encrypt_key']);
                     $email = $request->getPost('email');
 
                     if ($userData) {
