@@ -77,4 +77,17 @@ class AmMediaModuleController extends AuthController
         $view->model = $this->getEvent()->getRouteMatch()->getParam('model', 'model');
         return $view->setTerminal(true);
     }
+
+    protected function accessErrorHandler($errorKey)
+    {
+        $request = $this->serviceLocator->get('Request');
+
+        if ($request->isXmlHttpRequest()) {
+            $fileManager = $this->serviceLocator->get('AmMedia\FileManager\FileManagerService');
+            return $fileManager->error($this->errorMessages[$errorKey]);
+        }
+
+        $this->flashMessenger()->addMessage($this->errorMessages[$errorKey]);
+        return $this->goToSection('login');
+    }
 }

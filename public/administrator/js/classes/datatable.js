@@ -95,6 +95,8 @@ $(function () {
                 $header.html(inputElem);
             });
 
+            $.fn.dataTable.ext.errMode = "none";
+
             var defaultConfig = {
                 "iDisplayLength": 10,
                 "sServerMethod": "post",
@@ -148,6 +150,10 @@ $(function () {
                     }
                 }
 
+            }).on('error.dt',function(e, settings, techNote, message) {
+                console.log('Datatable Error');
+                console.log(techNote);
+                console.log(message);
             }).DataTable(defaultConfig);
 
             return dataTable;

@@ -114,6 +114,8 @@ class AmLoginModuleController extends AuthController
     {
         $redirectTo = 'login';
         $redirectParams = array();
+        $queryParams = array();
+
         if ($this->getRequest()->isPost()) {
             // sacamos los datos del login
             $postFields = $this->params()->fromPost();
@@ -131,6 +133,8 @@ class AmLoginModuleController extends AuthController
                 if ($result->isValid()) {
                     if ($this->sessionService->section_referer) {
                         $params = $this->sessionService->section_referer;
+                        $queryParams = $this->sessionService->query_params;
+
                         $redirectTo = $params['module'];
                         unset($params['module']);
                         $redirectParams = $params;
@@ -139,7 +143,6 @@ class AmLoginModuleController extends AuthController
                     } else {
                         $redirectTo = 'home';
                     }
-
 
                     //$this->getSessionStorage()->setRememberMe(0);
                     $this->saveLastLogin($userCheck,$passwordCheck);
@@ -151,7 +154,7 @@ class AmLoginModuleController extends AuthController
             }
         }
 
-        return $this->goToSection($redirectTo, $redirectParams);
+        return $this->goToSection($redirectTo, $redirectParams, false, array('query' => $queryParams));
     }
 
     private function saveLastLogin($userCheck, $passwordCheck)

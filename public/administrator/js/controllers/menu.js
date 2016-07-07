@@ -17,8 +17,11 @@ $(function () {
                     data: {
                         elements:elementIds
                     }
-                }, function(data) {
-
+                }, function(json) {
+                    if(typeof json.error != 'undefined' && json.error == true) {
+                        alert(json.message);
+                        location.reload();
+                    }
                 });
             };
 

@@ -12,8 +12,15 @@ use Zend\View\Model\ViewModel;
 
 abstract class AuthController extends AbstractActionController
 {
+    protected $errorMessages = array(
+        'ACCESS_SESSION_EXPIRED'    => 'La sesión ha caducado',
+        'ACCESS_USER_DEACTIVATE'    => 'Tu usuario ha sido desactivado',
+        'ACCESS_PERMISSION_DENIED'  => 'Acceso denegado'
+    );
+
     // Whitelist de rutas con las que no se muestra login
     protected $whitelist = array('login');
+    protected $routeMatch = null;
 
     protected $storage;
     protected $authService;
@@ -52,7 +59,7 @@ abstract class AuthController extends AbstractActionController
      *
      * @return \Zend\Http\Response
      */
-    public function goToSection($module, $params = array(), $returnLink = false)
+    public function goToSection($module, $params = array(), $returnLink = false, $options = array())
     {
         $defaultParams = array(
             'module' => $module
@@ -65,18 +72,18 @@ abstract class AuthController extends AbstractActionController
         $defaultParams = array_merge($defaultParams, $params);
 
         return $returnLink
-            ? $this->url()->fromRoute('administrator', $defaultParams)
-            : $this->redirect()->toRoute('administrator', $defaultParams);
+            ? $this->url()->fromRoute('administrator', $defaultParams, $options)
+            : $this->redirect()->toRoute('administrator', $defaultParams, $options);
     }
 
-    public function gotoAddSection($module, $returnLink = false)
+    public function gotoAddSection($module, $returnLink = false, $options = array())
     {
-        return $this->goToSection($module,array('action' => 'add'),$returnLink);
+        return $this->goToSection($module,array('action' => 'add'),$returnLink, $options);
     }
 
-    public function goToEditSection($module, $id, $returnLink = false)
+    public function goToEditSection($module, $id, $returnLink = false, $options = array())
     {
-        return $this->goToSection($module,array('action' => 'edit', 'id' => $id), $returnLink);
+        return $this->goToSection($module,array('action' => 'edit', 'id' => $id), $returnLink, $options);
     }
 
     protected function getUserData()
@@ -133,11 +140,12 @@ abstract class AuthController extends AbstractActionController
         // Sacamos la ruta para matchearla
         $match = $e->getRouteMatch();
 
+        $this->routeMatch = $match;
+
         $this->config = $this->serviceLocator->get('Config');
 
-
-        $module = $match->getParam('module');
-        $action = $match->getParam('action');
+        $module = $this->routeMatch->getParam('module');
+        $action = $this->routeMatch->getParam('action');
 
         if ($module == "") {
             return $this->goToSection('login');
@@ -147,66 +155,70 @@ abstract class AuthController extends AbstractActionController
 
         if (!in_array($module, $this->whitelist)) {
 
-            $request = $this->serviceLocator->get('Request');
-
             $this->layout('layout/admin-layout');
 
-            // Comprobamos si esta autenticado
-            $authService = $this->getAuthService();
+            $canAccess = $this->canAccess($module, $action);
 
-            if (!$authService->hasIdentity()){
+            if ($canAccess !== true) {
 
-                $this->sessionService->section_referer = $match->getParams();
-                if ($request->isXmlHttpRequest()) {
-
-                    $response = $this->getResponse();
-
-                    $jsonModel = new JsonModel(array(
-                        'status' => 'ok',
-                        'response' => 'false',
-                        'error' => true,
-                        'message' => 'La sesión ha caducado'
-                    ));
-                    $response->setContent($jsonModel->serialize());
-                    return $response;
-                } else {
-                    return $this->goToSection('login');
-                }
-            }
-
-            $userData = $this->getUserData();
-
-            $this->layout()->userData = $userData;
-
-            if (!$this->isActiveUser($userData)) {
-                $message = "Tu usuario ha sido desactivado";
-                if ($request->isXmlHttpRequest()) {
-                    return new JsonModel(array(
-                        'status' => 'ok',
-                        'response' => 'false',
-                        'error' => true,
-                        'message' => $message
-                    ));
-
-                } else {
-                    $this->flashMessenger()->addMessage($message);
-                    return $this->goToSection('login');
-                }
-            }
-
-            $permissionsService = $this->serviceLocator->get('AmProfile\Service\ProfilePermissionService');
-
-            if (!$permissionsService->hasModuleAccess($module,$action))
-            {
-                return $this->redirect()->toRoute('administrator',array(
-                    'module' => 'login',
-                ));
+                return $this->accessErrorHandler($canAccess);
             }
         }
 
-        $this->triggerResults = $this->runAdministratorTrigger($match);
+        $this->triggerResults = $this->runAdministratorTrigger($this->routeMatch);
 
         return parent::onDispatch($e);
+    }
+
+    protected function accessErrorHandler($errorKey)
+    {
+        $request = $this->serviceLocator->get('Request');
+
+        $jsonModel = new JsonModel(array(
+            'status'    => 'ok',
+            'response'  => 'false',
+            'error'     => true,
+            'message'   => $this->errorMessages[$errorKey]
+        ));
+
+        if ($request->isXmlHttpRequest()) {
+            $response = $this->getResponse();
+            $response->setContent($jsonModel->serialize());
+            return $response;
+        }
+
+        $this->flashMessenger()->addMessage($this->errorMessages[$errorKey]);
+        return $this->goToSection('login');
+    }
+
+    private function canAccess($module, $action)
+    {
+        // Comprobamos si esta autenticado
+        $authService = $this->getAuthService();
+
+        if (!$authService->hasIdentity()){
+
+            $this->sessionService->section_referer = $this->routeMatch->getParams();
+            $this->sessionService->query_params = $this->getRequest()->getQuery()->toArray();
+
+            return 'ACCESS_SESSION_EXPIRED';
+        }
+
+        $userData = $this->getUserData();
+
+        $this->layout()->userData = $userData;
+
+        if (!$this->isActiveUser($userData)) {
+            return 'ACCESS_USER_DEACTIVATE';
+        }
+
+        $permissionsService = $this->serviceLocator->get('AmProfile\Service\ProfilePermissionService');
+
+        if (!$permissionsService->hasModuleAccess($module,$action)) {
+            return 'ACCESS_PERMISSION_DENIED';
+        }
+
+        return true;
     }
 
     private function runAdministratorTrigger(RouteMatch $match)

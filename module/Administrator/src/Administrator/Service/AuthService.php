@@ -77,12 +77,8 @@ class AuthService implements FactoryInterface
 
         $row = $rowset->current();
 
-        if (!$row) {
-            throw new \Exception("Could not find row");
-        }
+        $this->userData = $row ?: false;
 
-        $this->userData = $row;
-
-        return $row;
+        return $this->userData;
     }
 }
