@@ -18,5 +18,12 @@ class StaticPageFieldset extends AdministratorFieldset
             )
         );
     }
+
+    public function addFields()
+    {
+        if ($this->formActionType == 'edit') {
+            $this->get('key')->setAttribute('readonly','readonly');
+        }
+    }
 }
 
