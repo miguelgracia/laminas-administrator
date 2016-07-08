@@ -15,7 +15,7 @@ class JobFieldset extends AdministratorFieldset
             ),
             'fieldValueOptions' => array(
                 'jobCategoriesId' => function () use($serviceLocator) {
-                    $serviceLocator->get('AmJobCategory\Model\JobCategoryTable')->all()->toKeyValueArray('id','key');
+                    return $serviceLocator->get('AmJobCategory\Model\JobCategoryTable')->all()->toKeyValueArray('id','key');
                 },
                 'active' => array(
                     '0' => 'NO',
