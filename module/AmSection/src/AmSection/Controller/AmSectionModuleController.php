@@ -10,6 +10,6 @@ use Administrator\Traits\DeleteAction;
 
 class AmSectionModuleController extends AuthController
 {
-    use indexAction, addAction, editAction, deleteAction;
+    use IndexAction, AddAction, EditAction, DeleteAction;
     protected $form = 'AmSection\\Form\\SectionForm';
 }

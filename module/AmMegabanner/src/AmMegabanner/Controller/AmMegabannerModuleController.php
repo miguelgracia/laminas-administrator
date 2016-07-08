@@ -10,11 +10,7 @@ use Administrator\Traits\IndexAction;
 
 class AmMegabannerModuleController extends AuthController
 {
-
     use indexAction, addAction, editAction, DeleteAction;
 
     protected $form = 'AmMegabanner\\Form\\MegabannerForm';
-
-
 }
-

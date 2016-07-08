@@ -7,8 +7,7 @@ $(function () {
 
         var plUploadContainer = document.getElementById('uploader');
 
-        this.init = function() {
-            return; //Plupload no lo usamos actualmente.
+        this.init_ = function() { //Plupload no lo usamos actualmente.
 
             if(plUploadContainer) {
                 $(plUploadContainer).pluploadQueue({

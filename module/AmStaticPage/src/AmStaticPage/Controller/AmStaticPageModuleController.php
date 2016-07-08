@@ -10,11 +10,7 @@ use Administrator\Traits\DeleteAction;
 
 class AmStaticPageModuleController extends AuthController
 {
-
     use indexAction, addAction, editAction, DeleteAction;
 
     protected $form = 'AmStaticPage\\Form\\StaticPageForm';
-
-
 }
-

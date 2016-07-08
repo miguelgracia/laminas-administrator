@@ -15,6 +15,10 @@ class SectionFieldset extends AdministratorFieldset
                     'header' => 'cabecera',
                     'footer' => 'Pie de página'
                 ),
+                'active' => array(
+                    '0' => 'NO',
+                    '1' => 'SI'
+                )
             )
         );
     }
