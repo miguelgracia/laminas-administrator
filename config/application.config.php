@@ -19,6 +19,7 @@ return array(
         'AmJob',
         'AmJobCategory',
         'AmSection',
+        'AmJobVideo',
     ),
     'hidden_modules' => array(
         'AmLogin',
