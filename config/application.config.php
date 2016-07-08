@@ -18,6 +18,7 @@ return array(
         'AmStaticPage',
         'AmJob',
         'AmJobCategory',
+        'AmSection',
     ),
     'hidden_modules' => array(
         'AmLogin',
