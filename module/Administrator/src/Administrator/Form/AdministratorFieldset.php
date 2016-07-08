@@ -142,6 +142,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
         $filters = array();
 
         $columnName = $column->getName();
+        $dataType = $column->getDataType();
 
         switch ($columnName) {
             case 'url_key':
@@ -158,6 +159,14 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
                 $filters[] = array(
                     'name' => DashToCamelCase::class,
                     'options' => array()
+                );
+                break;
+        }
+
+        switch ($dataType) {
+            case 'timestamp':
+                $filters[] = array(
+                    'name' => 'DateSelect'
                 );
                 break;
         }
@@ -191,7 +200,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
                 $validators[] = array(
                     'name' => 'Zend\Validator\Date',
                     'options' => array(
-                        'format' => 'd-m-Y'
+                        'format' => 'Y-m-d'
                     )
                 );
                 break;

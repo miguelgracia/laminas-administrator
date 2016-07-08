@@ -24,11 +24,4 @@ class JobFieldset extends AdministratorFieldset
             )
         );
     }
-
-    public function addFields()
-    {
-        $date = $this->get('date');
-        $date->setAttribute('placeholder','dd-mm-yyyy');
-    }
 }
-

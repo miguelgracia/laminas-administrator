@@ -153,6 +153,7 @@ class AdministratorFormRow extends AbstractHelper
         $elementError = $this->elementError;
 
         $elementType = $formElement->getAttribute('type');
+        $dataType = $formElement->getOption('data_type');
 
         switch ($elementType) {
             case 'textarea':
@@ -174,7 +175,11 @@ class AdministratorFormRow extends AbstractHelper
                 break;
             case 'text':
             default:
+            if ($dataType == 'timestamp') {
+                $input = $this->view->formDateSelect($formElement);
+            } else {
                 $input = $this->view->formInput($formElement);
+            }
         }
 
         return $this->printTemplate($elementType, array(

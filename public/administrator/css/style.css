@@ -48,15 +48,16 @@ div.horizontal-scroll {
     overflow-x: auto ;
 }
 
-.fuentegrande {
-    font-size: 26px;
-}
-
 .form-block {
     padding-bottom: 20px;
     margin-bottom: 20px;
     border-bottom: 1px solid #d2d6de;
     overflow: hidden;
+}
+
+.form-control.select-timestamp {
+    display: inline-block;
+    width: auto;
 }
 
 .pointer {

@@ -3,6 +3,7 @@
 namespace Administrator\Service;
 
 use Administrator\Model\AdministratorModel;
+use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
@@ -437,7 +438,6 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
                 $toCamel = new SeparatorToCamelCase('_');
                 $columnName = lcfirst($toCamel->filter($column->getName()));
-                $dataType = $column->getDataType();
 
                 if (in_array($columnName, $hiddenFields)) {
                     continue;
@@ -447,31 +447,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
                     'priority' => -($column->getOrdinalPosition() * 100),
                 );
 
-
-                $fieldClasses = 'form-control js-'.$columnName;
-
-                switch ($dataType) {
-                    case 'timestamp':
-                        $fieldClasses .= ' datepicker';
-                        break;
-                }
-
-                $fieldParams = array(
-                    'name' => $columnName,
-                    'label' => $columnName,
-                    'options' => array(
-                        'data_type' => $dataType,
-                        'label' => $columnName,
-                        'label_attributes' => array(
-                            'class' => 'col-sm-2 control-label'
-                        ),
-                        'priority' => -($column->getOrdinalPosition() * 100),
-                    ),
-                    'attributes' => array(
-                        'id' => $this->checkId($columnName),
-                        'class' => $fieldClasses,
-                    )
-                );
+                $fieldParams = $this->setFieldParams($column);
 
                 if (in_array($column->getName(), array($this->hiddenPrimaryKey, $this->hiddenRelatedKey))) {
                     $fieldParams['type'] = 'Hidden';
@@ -513,6 +489,58 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
         }
 
         return $this;
+    }
+
+    protected function setFieldParams(ColumnObject $column)
+    {
+        $toCamel = new SeparatorToCamelCase('_');
+        $columnName = lcfirst($toCamel->filter($column->getName()));
+
+        $dataType = $column->getDataType();
+
+        $fieldClasses =  array(
+            'form-control',
+            'js-'.$columnName
+        );
+
+        $options = array(
+            'data_type' => $dataType,
+            'label'     => $columnName,
+            'label_attributes' => array(
+                'class' => 'col-sm-2 control-label'
+            ),
+            'priority' => -($column->getOrdinalPosition() * 100),
+        );
+
+        $attributes = array(
+            'id'    => $this->checkId($columnName),
+            'class' => implode(' ',$fieldClasses),
+        );
+
+        switch ($dataType) {
+            case 'timestamp':
+                $class = 'form-control select-timestamp';
+                $options['day_attributes'] = array(
+                    'class' => $class . ' day'
+                );
+                $options['month_attributes'] = array(
+                    'class' => $class . ' month'
+                );
+                $options['year_attributes'] = array(
+                    'class' => $class . ' year'
+                );
+
+                break;
+        }
+
+        $fieldParams = array(
+            'name'       => $columnName,
+            'label'      => $columnName,
+            'options'    => $options,
+            'attributes' => $attributes
+        );
+
+        return $fieldParams;
     }
 
     /**
@@ -562,6 +590,9 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
                 break;
             case 'enum':
                 $fieldType = 'Select';
+                break;
+            case 'timestamp':
+                $fieldType =  'DateSelect';
                 break;
             default:
 
