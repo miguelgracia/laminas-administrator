@@ -3,9 +3,12 @@
 namespace AmBlog\Form;
 
 use Administrator\Form\AdministratorFieldset;
+use AmBlog\Model\BlogTable;
 
 class BlogFieldset extends AdministratorFieldset
 {
+    protected $tableGatewayName = BlogTable::class;
+
     public function initializers()
     {
         $serviceLocator = $this->serviceLocator->getServiceLocator();

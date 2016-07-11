@@ -3,9 +3,12 @@
 namespace AmBlog\Form;
 
 use Administrator\Form\AdministratorFieldset;
+use AmBlog\Model\BlogLocaleTable;
 
 class BlogLocaleFieldset extends AdministratorFieldset
 {
+    protected $tableGatewayName = BlogLocaleTable::class;
+
     public function initializers()
     {
         return array(

@@ -3,9 +3,12 @@
 namespace AmBlogCategory\Form;
 
 use Administrator\Form\AdministratorFieldset;
+use AmBlogCategory\Model\BlogCategoryTable;
 
 class BlogCategoryFieldset extends AdministratorFieldset
 {
+    protected $tableGatewayName = BlogCategoryTable::class;
+
     public function initializers()
     {
         return array(

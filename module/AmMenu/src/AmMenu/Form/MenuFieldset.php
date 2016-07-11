@@ -2,12 +2,13 @@
 
 namespace AmMenu\Form;
 
-
 use Administrator\Form\AdministratorFieldset;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use AmMenu\Model\MenuTable;
 
 class MenuFieldset extends AdministratorFieldset
 {
+    protected $tableGatewayName = MenuTable::class;
+
     public function initializers()
     {
         $serviceLocator = $this->serviceLocator->getServiceLocator();

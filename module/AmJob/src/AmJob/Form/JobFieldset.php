@@ -3,9 +3,12 @@
 namespace AmJob\Form;
 
 use Administrator\Form\AdministratorFieldset;
+use AmJob\Model\JobTable;
 
 class JobFieldset extends AdministratorFieldset
 {
+    protected $tableGatewayName = JobTable::class;
+
     public function initializers()
     {
         $serviceLocator = $this->serviceLocator->getServiceLocator();

@@ -3,9 +3,12 @@
 namespace AmUser\Form;
 
 use Administrator\Form\AdministratorFieldset;
+use AmUser\Model\UserTable;
 
 class UserFieldset extends AdministratorFieldset
 {
+    protected $tableGatewayName = UserTable::class;
+
     public function getHiddenFields()
     {
         $hiddenFields = parent::getHiddenFields();

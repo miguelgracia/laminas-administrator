@@ -3,9 +3,12 @@
 namespace AmSection\Form;
 
 use Administrator\Form\AdministratorFieldset;
+use AmSection\Model\SectionTable;
 
 class SectionFieldset extends AdministratorFieldset
 {
+    protected $tableGatewayName = SectionTable::class;
+
     public function initializers()
     {
         return array(

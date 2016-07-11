@@ -3,9 +3,12 @@
 namespace AmMegabanner\Form;
 
 use Administrator\Form\AdministratorFieldset;
+use AmMegabanner\Model\MegabannerTable;
 
 class MegabannerFieldset extends AdministratorFieldset
 {
+    protected $tableGatewayName = MegabannerTable::class;
+
     public function initializers()
     {
         return array(

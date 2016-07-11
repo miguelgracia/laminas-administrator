@@ -3,9 +3,12 @@
 namespace AmStaticPage\Form;
 
 use Administrator\Form\AdministratorFieldset;
+use AmStaticPage\Model\StaticPageTable;
 
 class StaticPageFieldset extends AdministratorFieldset
 {
+    protected $tableGatewayName = StaticPageTable::class;
+
     public function initializers()
     {
         return array(

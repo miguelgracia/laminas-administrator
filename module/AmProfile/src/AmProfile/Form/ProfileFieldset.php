@@ -3,9 +3,12 @@
 namespace AmProfile\Form;
 
 use Administrator\Form\AdministratorFieldset;
+use AmProfile\Model\ProfileTable;
 
 class ProfileFieldset extends AdministratorFieldset
 {
+    protected $tableGatewayName = ProfileTable::class;
+
     public function initializers()
     {
         $serviceLocator = $this->serviceLocator->getServiceLocator();

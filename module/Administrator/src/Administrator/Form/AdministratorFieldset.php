@@ -54,17 +54,8 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
     public function init()
     {
         $serviceLocator = $this->serviceLocator->getServiceLocator();
-        /**
-         * El nombre del tableGateway lo vamos a extraer a raiz del nombre del Fieldset
-         * Por ejemplo: Si estamos instanciando BlogFieldset, buscaremos su correspondiente tableGateway
-         * que será BlogTable. Otro ejemplo sería BlogLocaleFieldset y su tableGateway BlogLocaleTable
-         * Debemos sustituir el sufijo "Fieldset" por "Table", además del segundo segmento del namespace
-         * que pasará a ser "Model" en vez de "Form"
-         */
 
-        $tableGateway = preg_replace('/^(Am\w+)\\\(\w+)\\\(\w+)(Fieldset)$/', "$1\\Model\\\\$3Table", get_class($this));
-
-        $this->tableGateway = $serviceLocator->get($tableGateway);
+        $this->tableGateway = $serviceLocator->get($this->tableGatewayName);
 
         $this->table = $this->tableGateway->getTable();
 
