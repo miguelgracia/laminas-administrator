@@ -2,13 +2,14 @@
 
 namespace AmModule\Form;
 
-
 use Administrator\Form\AdministratorFieldset;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use AmModule\Model\ModuleTable;
 
 class ModuleFieldset extends AdministratorFieldset
 {
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    protected $tableGatewayName = ModuleTable::class;
+
+    public function initializers()
     {
         return array(
             'fieldModifiers' => array(

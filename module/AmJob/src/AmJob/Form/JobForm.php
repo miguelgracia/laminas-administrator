@@ -2,12 +2,11 @@
 
 namespace AmJob\Form;
 
-use Zend\Form\Form;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Administrator\Form\AdministratorForm;
 
-class JobForm extends Form
+class JobForm extends AdministratorForm
 {
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    public function initializers()
     {
         return array(
             'fieldsets' => array(

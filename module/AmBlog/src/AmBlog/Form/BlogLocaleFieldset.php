@@ -3,11 +3,13 @@
 namespace AmBlog\Form;
 
 use Administrator\Form\AdministratorFieldset;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use AmBlog\Model\BlogLocaleTable;
 
 class BlogLocaleFieldset extends AdministratorFieldset
 {
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    protected $tableGatewayName = BlogLocaleTable::class;
+
+    public function initializers()
     {
         return array(
             'fieldModifiers' => array(

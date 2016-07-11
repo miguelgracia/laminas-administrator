@@ -3,11 +3,10 @@
 namespace AmUser\Form;
 
 use Administrator\Form\AdministratorForm;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AmUserForm extends AdministratorForm {
 
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    public function initializers()
     {
         return array(
             'fieldsets' => array(

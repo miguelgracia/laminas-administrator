@@ -3,11 +3,13 @@
 namespace AmStaticPage\Form;
 
 use Administrator\Form\AdministratorFieldset;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use AmStaticPage\Model\StaticPageTable;
 
 class StaticPageFieldset extends AdministratorFieldset
 {
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    protected $tableGatewayName = StaticPageTable::class;
+
+    public function initializers()
     {
         return array(
             'fieldValueOptions' => array(

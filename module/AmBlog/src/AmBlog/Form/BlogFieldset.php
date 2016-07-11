@@ -3,12 +3,16 @@
 namespace AmBlog\Form;
 
 use Administrator\Form\AdministratorFieldset;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use AmBlog\Model\BlogTable;
 
 class BlogFieldset extends AdministratorFieldset
 {
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    protected $tableGatewayName = BlogTable::class;
+
+    public function initializers()
     {
+        $serviceLocator = $this->serviceLocator->getServiceLocator();
+
         return array(
             'fieldModifiers' => array(
                 'blogCategoriesId' => 'Select'

@@ -3,11 +3,13 @@
 namespace AmSection\Form;
 
 use Administrator\Form\AdministratorFieldset;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use AmSection\Model\SectionLocaleTable;
 
 class SectionLocaleFieldset extends AdministratorFieldset
 {
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    protected $tableGatewayName = SectionLocaleTable::class;
+
+    public function initializers()
     {
         return array(
             'fieldModifiers' => array(

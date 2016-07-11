@@ -3,11 +3,13 @@
 namespace AmSection\Form;
 
 use Administrator\Form\AdministratorFieldset;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use AmSection\Model\SectionTable;
 
 class SectionFieldset extends AdministratorFieldset
 {
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    protected $tableGatewayName = SectionTable::class;
+
+    public function initializers()
     {
         return array(
             'fieldValueOptions' => array(
@@ -28,4 +30,3 @@ class SectionFieldset extends AdministratorFieldset
 
     }
 }
-

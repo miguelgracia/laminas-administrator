@@ -3,11 +3,12 @@
 namespace AmUser\Form;
 
 use Administrator\Form\AdministratorFieldset;
-use Zend\Db\Sql\Expression;
-
+use AmUser\Model\UserTable;
 
 class UserFieldset extends AdministratorFieldset
 {
+    protected $tableGatewayName = UserTable::class;
+
     public function getHiddenFields()
     {
         $hiddenFields = parent::getHiddenFields();
@@ -22,7 +23,7 @@ class UserFieldset extends AdministratorFieldset
 
     public function initializers()
     {
-        $serviceLocator = $this->serviceLocator;
+        $serviceLocator = $this->serviceLocator->getServiceLocator();
 
         return array(
 

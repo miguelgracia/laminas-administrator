@@ -11,10 +11,13 @@ use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\Form\Fieldset;
 use Zend\Hydrator\ArraySerializable;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
-abstract class AdministratorFieldset extends Fieldset implements InputFilterProviderInterface
+abstract class AdministratorFieldset extends Fieldset implements InputFilterProviderInterface, ServiceLocatorAwareInterface
 {
-    protected $serviceLocator;
+    use ServiceLocatorAwareTrait;
+
     protected $tableGateway;
 
     /**
@@ -39,38 +42,32 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
      */
     protected $hiddenFields = array();
 
-    public function __construct($serviceLocator, $objectModel)
+    public function __construct()
     {
-        $className = get_class($this);
+        parent::__construct(get_class($this));
 
-        parent::__construct($className);
+        $this->setHydrator(new ArraySerializable());
+    }
 
-        $this->serviceLocator = $serviceLocator;
+    public function init()
+    {
+        $serviceLocator = $this->serviceLocator->getServiceLocator();
 
-        /**
-         * El nombre del tableGateway lo vamos a extraer a raiz del nombre del Fieldset
-         * Por ejemplo: Si estamos instanciando BlogFieldset, buscaremos su correspondiente tableGateway
-         * que será BlogTable. Otro ejemplo sería BlogLocaleFieldset y su tableGateway BlogLocaleTable
-         * Debemos sustituir el sufijo "Fieldset" por "Table", además del segundo segmento del namespace
-         * que pasará a ser "Model" en vez de "Form"
-         */
-
-        $tableGateway = preg_replace('/^(Am\w+)\\\(\w+)\\\(\w+)(Fieldset)$/', "$1\\Model\\\\$3Table", $className);
-
-        $this->tableGateway = $serviceLocator->get($tableGateway);
+        $this->tableGateway = $serviceLocator->get($this->tableGatewayName);
 
         $this->table = $this->tableGateway->getTable();
 
         $this->metadata = Factory::createSourceFromAdapter($serviceLocator->get('Zend\Db\Adapter\Adapter'));
 
-        $this->setHydrator(new ArraySerializable())
-            ->setObject($objectModel);
-
-        $this->objectModel = $objectModel;
-
         $this->formActionType = $serviceLocator->get('Administrator\Service\AdministratorFormService')->getActionType();
     }
 
+    public function setObjectModel($objectModel)
+    {
+        $this->setObject($objectModel);
+        $this->objectModel = $objectModel;
+        return $this;
+    }
 
     public function getObjectModel()
     {

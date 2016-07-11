@@ -2,11 +2,9 @@
 
 namespace AmJobVideo\Form;
 
-use Zend\Form\Form;
+use Administrator\Form\AdministratorForm;
 
-class JobVideoForm extends Form
+class JobVideoForm extends AdministratorForm
 {
 
-
 }
-

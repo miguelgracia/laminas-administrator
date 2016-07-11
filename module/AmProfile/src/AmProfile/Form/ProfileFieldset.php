@@ -3,12 +3,16 @@
 namespace AmProfile\Form;
 
 use Administrator\Form\AdministratorFieldset;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use AmProfile\Model\ProfileTable;
 
 class ProfileFieldset extends AdministratorFieldset
 {
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    protected $tableGatewayName = ProfileTable::class;
+
+    public function initializers()
     {
+        $serviceLocator = $this->serviceLocator->getServiceLocator();
+
         return array(
             'fieldModifiers' => array(
                 'description'   => 'textarea',
