@@ -16,7 +16,7 @@ use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
 abstract class AdministratorFieldset extends Fieldset implements InputFilterProviderInterface, ServiceLocatorAwareInterface
 {
-    use ServiceLocatorAwareTrait
+    use ServiceLocatorAwareTrait;
 
     protected $tableGateway;
 

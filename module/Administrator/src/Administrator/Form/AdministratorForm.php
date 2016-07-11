@@ -10,5 +10,5 @@ use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
 class AdministratorForm extends Form implements ServiceLocatorAwareInterface
 {
-    use ServiceLocatorAwareTrait
+    use ServiceLocatorAwareTrait;
 }
