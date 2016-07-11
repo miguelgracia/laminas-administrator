@@ -4,10 +4,9 @@ namespace Administrator\Service;
 
 use Administrator\Model\AdministratorModel;
 use Zend\Db\Metadata\Object\ColumnObject;
-use Zend\EventManager\EventManager;
+
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerAwareTrait;
-use Zend\EventManager\EventManagerInterface;
 
 use Zend\Filter\Word\CamelCaseToUnderscore;
 use Zend\Filter\Word\SeparatorToCamelCase;
@@ -20,7 +19,6 @@ class AdministratorFormService implements EventManagerAwareInterface
 {
     use EventManagerAwareTrait;
 
-    protected $eventManager;
     protected $formManager;
 
     const ACTION_DEFAULT    = 'index';
