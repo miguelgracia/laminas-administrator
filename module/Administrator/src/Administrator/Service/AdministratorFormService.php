@@ -457,7 +457,7 @@ class AdministratorFormService implements EventManagerAwareInterface
             $fieldset->populateValues($fieldset->getObjectModel()->getArrayCopy());
 
             if (method_exists($fieldset, $thisMethod)) {
-                $fieldset->{$thisMethod}($this->serviceLocator);
+                $fieldset->{$thisMethod}();
             }
 
             $this->form->add($fieldset);
