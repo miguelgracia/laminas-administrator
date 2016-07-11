@@ -6,6 +6,7 @@ use Administrator\Model\AdministratorModel;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
+use Zend\EventManager\EventManagerAwareTrait;
 use Zend\EventManager\EventManagerInterface;
 
 use Zend\Filter\Word\CamelCaseToUnderscore;
@@ -17,6 +18,8 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AdministratorFormService implements EventManagerAwareInterface
 {
+    use EventManagerAwareTrait;
+
     protected $eventManager;
     protected $formManager;
 
@@ -163,32 +166,6 @@ class AdministratorFormService implements EventManagerAwareInterface
      */
     protected $elementsId = array();
 
-    /**
-     * @param  EventManagerInterface $eventManager
-     * @return void
-     */
-    public function setEventManager(EventManagerInterface $eventManager)
-    {
-        $eventManager->addIdentifiers(array(
-            'Application\Service\ServiceInterface',
-            get_called_class()
-        ));
-
-        $this->eventManager = $eventManager;
-    }
-
-    /**
-     * @return EventManagerInterface
-     */
-    public function getEventManager()
-    {
-        if (null === $this->eventManager) {
-            $this->setEventManager(new EventManager());
-        }
-
-        return $this->eventManager;
-    }
-
     public function eventTrigger($eventName,  $args = array())
     {
         $args = array('formService' => $this) + $args;
@@ -261,7 +238,7 @@ class AdministratorFormService implements EventManagerAwareInterface
 
     public function addFieldset($fieldsetName, AdministratorModel $model, $options = array())
     {
-        $fieldset = $this->formManager->get($fieldsetName); // new $fieldsetName($this->serviceLocator);
+        $fieldset = $this->formManager->get($fieldsetName);
 
         $fieldset->setObjectModel($model);
 

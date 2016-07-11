@@ -44,9 +44,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
     public function __construct()
     {
-        $className = get_class($this);
-
-        parent::__construct($className);
+        parent::__construct(get_class($this));
 
         $this->setHydrator(new ArraySerializable());
     }
