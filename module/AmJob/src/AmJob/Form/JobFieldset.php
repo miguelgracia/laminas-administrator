@@ -3,12 +3,12 @@
 namespace AmJob\Form;
 
 use Administrator\Form\AdministratorFieldset;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class JobFieldset extends AdministratorFieldset
 {
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    public function initializers()
     {
+        $serviceLocator = $this->serviceLocator->getServiceLocator();
         return array(
             'fieldModifiers' => array(
                 'jobCategoriesId' => 'Select'

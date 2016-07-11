@@ -11,10 +11,13 @@ use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\Form\Fieldset;
 use Zend\Hydrator\ArraySerializable;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
-abstract class AdministratorFieldset extends Fieldset implements InputFilterProviderInterface
+abstract class AdministratorFieldset extends Fieldset implements InputFilterProviderInterface, ServiceLocatorAwareInterface
 {
-    protected $serviceLocator;
+    use ServiceLocatorAwareTrait
+
     protected $tableGateway;
 
     /**
@@ -39,14 +42,18 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
      */
     protected $hiddenFields = array();
 
-    public function __construct($serviceLocator, $objectModel)
+    public function __construct()
     {
         $className = get_class($this);
 
         parent::__construct($className);
 
-        $this->serviceLocator = $serviceLocator;
+        $this->setHydrator(new ArraySerializable());
+    }
 
+    public function init()
+    {
+        $serviceLocator = $this->serviceLocator->getServiceLocator();
         /**
          * El nombre del tableGateway lo vamos a extraer a raiz del nombre del Fieldset
          * Por ejemplo: Si estamos instanciando BlogFieldset, buscaremos su correspondiente tableGateway
@@ -55,15 +62,13 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
          * que pasará a ser "Model" en vez de "Form"
          */
 
-        $tableGateway = preg_replace('/^(Am\w+)\\\(\w+)\\\(\w+)(Fieldset)$/', "$1\\Model\\\\$3Table", $className);
+        $tableGateway = preg_replace('/^(Am\w+)\\\(\w+)\\\(\w+)(Fieldset)$/', "$1\\Model\\\\$3Table", get_class($this));
 
         $this->tableGateway = $serviceLocator->get($tableGateway);
 
         $this->table = $this->tableGateway->getTable();
 
         $this->metadata = Factory::createSourceFromAdapter($serviceLocator->get('Zend\Db\Adapter\Adapter'));
-
-        $this->setHydrator(new ArraySerializable());
 
         $this->formActionType = $serviceLocator->get('Administrator\Service\AdministratorFormService')->getActionType();
     }

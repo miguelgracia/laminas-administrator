@@ -3,12 +3,10 @@
 namespace AmMegabanner\Form;
 
 use Administrator\Form\AdministratorFieldset;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class MegabannerFieldset extends AdministratorFieldset
 {
-
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    public function initializers()
     {
         return array(
             'fieldValueOptions' => array(
@@ -19,6 +17,4 @@ class MegabannerFieldset extends AdministratorFieldset
             )
         );
     }
-
 }
-

@@ -5,14 +5,10 @@ namespace Administrator\Form;
 
 
 use Zend\Form\Form;
-use Zend\Form\FormInterface;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
-class AdministratorForm extends Form
+class AdministratorForm extends Form implements ServiceLocatorAwareInterface
 {
-    public function bind($object, $flags = FormInterface::VALUES_NORMALIZED)
-    {
-        $parent = parent::bind($object, $flags);
-
-        return $parent;
-    }
+    use ServiceLocatorAwareTrait
 }

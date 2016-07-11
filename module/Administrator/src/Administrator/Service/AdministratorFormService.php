@@ -13,12 +13,12 @@ use Zend\Filter\Word\SeparatorToCamelCase;
 use Zend\Filter\Word\SeparatorToSeparator;
 use Zend\Form\Fieldset;
 
-use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class AdministratorFormService implements FactoryInterface, EventManagerAwareInterface
+class AdministratorFormService implements EventManagerAwareInterface
 {
     protected $eventManager;
+    protected $formManager;
 
     const ACTION_DEFAULT    = 'index';
     const ACTION_ADD        = 'add';
@@ -207,9 +207,11 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
      * @param ServiceLocatorInterface $serviceLocator
      * @return $this
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
+
+        $this->formManager = $serviceLocator->get('FormElementManager');
 
         $application = $this->serviceLocator->get('Application');
         $routeMatch  = $application->getMvcEvent()->getRouteMatch();
@@ -259,7 +261,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
     public function addFieldset($fieldsetName, AdministratorModel $model, $options = array())
     {
-        $fieldset = new $fieldsetName($this->serviceLocator, $model);
+        $fieldset = $this->formManager->get($fieldsetName); // new $fieldsetName($this->serviceLocator);
 
         $fieldset->setObjectModel($model);
 
@@ -323,7 +325,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
 
             $this->languages = $this->serviceLocator->get('Administrator\Model\LanguageTable')->all()->toKeyValueArray('id','name');
 
-            $form = new $form();
+            $form = $this->formManager->get($form);
 
             //Como el nombre del formulario lo seteamos con el nombre de la clase,
             //Convertimos el separador de namespace en guiones bajos;
@@ -350,7 +352,7 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     public function initializers($instance)
     {
         if (method_exists($instance, 'initializers')) {
-            $initializers = $instance->initializers($this->serviceLocator);
+            $initializers = $instance->initializers();
 
             foreach ($initializers as $property => $initializer) {
 

@@ -3,8 +3,6 @@
 namespace AmUser\Form;
 
 use Administrator\Form\AdministratorFieldset;
-use Zend\Db\Sql\Expression;
-
 
 class UserFieldset extends AdministratorFieldset
 {
@@ -22,7 +20,7 @@ class UserFieldset extends AdministratorFieldset
 
     public function initializers()
     {
-        $serviceLocator = $this->serviceLocator;
+        $serviceLocator = $this->serviceLocator->getServiceLocator();
 
         return array(
 

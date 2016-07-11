@@ -1,15 +1,15 @@
 <?php
 namespace AmConfiguration\Form;
 
+use Administrator\Form\AdministratorForm;
 use Zend\Captcha;
 use Zend\Form\Element;
-use Zend\Form\Form;
 use Zend\InputFilter\FileInput;
 use Zend\InputFilter\Input;
 use Zend\InputFilter\InputFilter;
 
 
-class ConfigurationForm extends Form
+class ConfigurationForm extends AdministratorForm
 {
     protected $arrayListado;
 
@@ -24,7 +24,7 @@ class ConfigurationForm extends Form
 
     public function addElements()
     {
-        // Creamos din�micamente el elemento
+        // Creamos dinámicamente el elemento
         foreach ($this->arrayListado as $elementoConfiguracion) {
 
             // Vamos a ponerle el valor de entryKey como nombre

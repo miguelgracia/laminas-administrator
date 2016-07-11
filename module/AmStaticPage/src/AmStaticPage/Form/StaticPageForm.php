@@ -2,12 +2,11 @@
 
 namespace AmStaticPage\Form;
 
-use Zend\Form\Form;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Administrator\Form\AdministratorForm;
 
-class StaticPageForm extends Form
+class StaticPageForm extends AdministratorForm
 {
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    public function initializers()
     {
         return array(
             'fieldsets' => array(

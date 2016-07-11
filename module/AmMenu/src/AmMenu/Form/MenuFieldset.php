@@ -8,8 +8,10 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class MenuFieldset extends AdministratorFieldset
 {
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    public function initializers()
     {
+        $serviceLocator = $this->serviceLocator->getServiceLocator();
+
         $moduleTable = $serviceLocator->get('AmModule\Model\ModuleTable');
 
         $moduleController = $moduleTable->all()->toKeyValueArray('id','zendName');
@@ -49,8 +51,10 @@ class MenuFieldset extends AdministratorFieldset
         );
     }
 
-    public function addFields(ServiceLocatorInterface $serviceLocator)
+    public function addFields()
     {
+        $serviceLocator = $this->serviceLocator->getServiceLocator();
+
         $formService = $serviceLocator->get('Administrator\Service\AdministratorFormService');
 
         if ($formService->getActionType() == 'add') {

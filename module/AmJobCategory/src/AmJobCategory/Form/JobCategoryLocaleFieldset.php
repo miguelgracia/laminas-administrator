@@ -3,12 +3,11 @@
 namespace AmJobCategory\Form;
 
 use Administrator\Form\AdministratorFieldset;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class JobCategoryLocaleFieldset extends AdministratorFieldset
 {
 
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    public function initializers()
     {
         return array(
             'fieldModifiers' => array(
