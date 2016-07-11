@@ -261,6 +261,8 @@ class AdministratorFormService implements FactoryInterface, EventManagerAwareInt
     {
         $fieldset = new $fieldsetName($this->serviceLocator, $model);
 
+        $fieldset->setObjectModel($model);
+
         $objectModel = $fieldset->getObjectModel();
 
         $isLocale = (isset($options['is_locale']) and $options['is_locale']);
