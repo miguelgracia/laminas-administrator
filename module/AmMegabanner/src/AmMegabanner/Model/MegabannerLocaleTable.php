@@ -8,5 +8,5 @@ class MegabannerLocaleTable extends AdministratorTable
 {
     protected $table = 'megabanners_locales';
 
+    protected $entityModelName =  MegabannerLocaleModel::class;
 }
-

@@ -18,13 +18,7 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
 
     protected $entityModelName;
 
-    function __construct()
-    {
-        //extraemos el nombre de la clase del que hereda AdministratorTable y quitarmos los 5 últimos
-        //caracteres (que corresponderán a la palabra Table). De esta forma podemos llamar al modelo
-
-        $this->entityModelName = (substr(get_class($this),0, -5)) . 'Model';
-    }
+    protected $relatedKey = 'related_table_id';
 
 
     /**
@@ -56,8 +50,6 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
         return $entityModel;
     }
 
-
-
     public function setDbAdapter(Adapter $adapter)
     {
         $this->adapter = $adapter;
@@ -75,7 +67,7 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
 
     public function getRelatedKey()
     {
-        return "related_table_id";
+        return $this->relatedKey;
     }
 
     public function isTableRow($id, $fieldKey = 'id')
@@ -113,7 +105,7 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
     {
         $tableLocale = $this->table;
 
-        $key = $this->getRelatedKey();
+        $key = $this->relatedKey;
 
         $resultSet = $this->select(function (Select $select) use($id, $key, $tableLocale){
             $select

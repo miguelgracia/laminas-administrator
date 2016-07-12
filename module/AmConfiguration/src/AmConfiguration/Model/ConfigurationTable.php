@@ -9,6 +9,8 @@ class ConfigurationTable extends AdministratorTable
 {
     protected $table = 'configuration';
 
+    protected $entityModelName =  ConfigurationModel::class;
+
     public function getValue($entryKey)
     {
         $rowset = $this->select(array('entry_key' => $entryKey));

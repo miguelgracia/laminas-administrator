@@ -8,5 +8,6 @@ class BlogLocaleTable extends AdministratorTable
 {
     protected $table = 'blog_entries_locales';
 
+    protected $entityModelName = BlogLocaleModel::class;
 }
 

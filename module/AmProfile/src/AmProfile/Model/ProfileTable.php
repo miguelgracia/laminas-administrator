@@ -9,6 +9,8 @@ class ProfileTable extends AdministratorTable
 {
     protected $table = "admin_profiles";
 
+    protected $entityModelName =  ProfileModel::class;
+
     public function deletePerfil($id)
     {
         $this->delete(array('id' => (int) $id));

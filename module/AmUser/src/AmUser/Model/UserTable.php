@@ -11,6 +11,8 @@ class UserTable extends AdministratorTable
 {
     public $table = 'admin_users';
 
+    protected $entityModelName =  UserModel::class;
+
     public function save(AdministratorModel $model)
     {
         $checkPassword =  (bool) $model->getCheckPassword();

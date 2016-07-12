@@ -7,4 +7,6 @@ use Administrator\Model\AdministratorTable;
 class SectionTable extends AdministratorTable
 {
     protected $table = 'sections';
+
+    protected $entityModelName =  SectionModel::class;
 }

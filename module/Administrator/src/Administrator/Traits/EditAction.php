@@ -7,8 +7,14 @@ trait EditAction
 {
     public function editAction()
     {
-        $formService = $this->serviceLocator->get('Administrator\Service\AdministratorFormService');
-        $thisModule = $formService->getRouteParams('module');
+        $serviceLocator = $this->serviceLocator;
+
+        $formService = $serviceLocator->get('Administrator\Service\AdministratorFormService');
+
+        $application = $serviceLocator->get('Application');
+        $routeMatch  = $application->getMvcEvent()->getRouteMatch();
+
+        $thisModule =  $routeMatch->getParam('module');
 
         $id = (int) $this->params()->fromRoute('id', 0);
 
@@ -31,9 +37,7 @@ trait EditAction
             $isValid = $formService->resolveForm($request->getPost());
 
             if ($isValid) {
-
                 $formService->save();
-
                 return $this->goToEditSection($thisModule, $id);
             }
         }

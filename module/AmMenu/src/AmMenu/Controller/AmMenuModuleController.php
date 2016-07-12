@@ -30,7 +30,7 @@ class AmMenuModuleController extends AuthController
             $menuIds = $this->params()->fromPost('elements');
             foreach ($menuIds as $index => $id) {
                 $this->tableGateway->save(array(
-                    'orden' => (int) $index + 1
+                    'order' => (int) $index + 1
                 ),$id);
             }
             echo json_encode($result);

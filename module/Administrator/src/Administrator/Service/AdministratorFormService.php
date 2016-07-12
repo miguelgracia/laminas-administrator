@@ -21,49 +21,6 @@ class AdministratorFormService implements EventManagerAwareInterface
 
     protected $formManager;
 
-    const ACTION_DEFAULT    = 'index';
-    const ACTION_ADD        = 'add';
-    const ACTION_EDIT       = 'edit';
-    const ACTION_DELETE     = 'delete';
-
-
-    /**
-     * Constantes de eventos
-     */
-    const EVENT_READ        = 'read';
-
-    const EVENT_CREATE                      = 'create';
-    const EVENT_CREATE_INIT_FORM            = 'create.init.form';
-    const EVENT_CREATE_VALID_FORM_SUCCESS   = 'create.form.valid.success';
-    const EVENT_CREATE_VALID_FORM_FAILED    = 'create.form.valid.failed';
-    const EVENT_CREATE_SAVE_FORM            = 'create.form.save';
-
-    const EVENT_UPDATE                      = 'update';
-    const EVENT_UPDATE_INIT_FORM            = 'update.init.form';
-    const EVENT_UPDATE_VALID_FORM_SUCCESS   = 'update.form.valid.success';
-    const EVENT_UPDATE_VALID_FORM_FAILED    = 'update.form.valid.failed';
-    const EVENT_UPDATE_SAVE_FORM            = 'update.form.save';
-
-    const EVENT_DELETE      = 'delete';
-
-    /**
-     * @var array
-     *
-     * Tipos de action de formulario permitidos y su correspondencia con eventos
-     */
-    protected $allowedActionType = array(
-        self::ACTION_ADD        => self::EVENT_CREATE,
-        self::ACTION_DEFAULT    => self::EVENT_READ,
-        self::ACTION_EDIT       => self::EVENT_UPDATE,
-        self::ACTION_DELETE     => self::EVENT_DELETE,
-    );
-
-    protected $defaultAttributes = array(
-        'class' => 'form-horizontal'
-    );
-
-    protected $actionType = self::ACTION_ADD;
-
     /**
      * @var
      *
@@ -102,12 +59,6 @@ class AdministratorFormService implements EventManagerAwareInterface
      */
     protected $baseModel = null;
 
-    /**
-     * @var array
-     *
-     * Contiene los parámetros de la url: section, action e id
-     */
-    protected $routeParams = array();
 
     /**
      * @var array
@@ -188,12 +139,6 @@ class AdministratorFormService implements EventManagerAwareInterface
 
         $this->formManager = $serviceLocator->get('FormElementManager');
 
-        $application = $this->serviceLocator->get('Application');
-        $routeMatch  = $application->getMvcEvent()->getRouteMatch();
-        $this->routeParams = $routeMatch->getParams();
-
-        $this->setActionType($this->routeParams['action']);
-
         return $this;
     }
 
@@ -205,33 +150,6 @@ class AdministratorFormService implements EventManagerAwareInterface
     public function setPrimaryKey($primaryKey)
     {
         $this->hiddenPrimaryKey = $primaryKey;
-    }
-
-    /**
-     * Seteamos el tipo de action del formulario
-     *
-     * @param string $actionType
-     */
-    public function setActionType($actionType)
-    {
-        if ($this->form and !array_key_exists($actionType, $this->allowedActionType)) {
-            throw new \Exception('Action Type ' . $actionType . ' not allowed');
-        }
-
-        $this->actionType = $actionType;
-
-        return $this;
-    }
-
-    /**
-     * Devuelve el tipo de action del formulario
-     * Los resultados posibles son los definidos en la propiedad $allowedActionType
-     *
-     * @return string
-     */
-    public function getActionType()
-    {
-        return $this->actionType;
     }
 
     public function addFieldset($fieldsetName, AdministratorModel $model, $options = array())
@@ -298,25 +216,17 @@ class AdministratorFormService implements EventManagerAwareInterface
 
             $this->baseModel = $model;
 
-            $this->languages = $this->serviceLocator->get('Administrator\Model\LanguageTable')->all()->toKeyValueArray('id','name');
+            $this->languages = $this->serviceLocator->get('AmLanguage\Model\LanguageTable')->all()->toKeyValueArray('id','name');
 
-            $form = $this->formManager->get($form);
+            $this->form = $this->formManager->get($form);
 
-            //Como el nombre del formulario lo seteamos con el nombre de la clase,
-            //Convertimos el separador de namespace en guiones bajos;
-            $separatorToSeparator = new SeparatorToSeparator('\\','_');
+            $this->initializers($this->form);
 
-            $this->form = $form->setName($separatorToSeparator->filter(get_class($form)));
-            $this->form->setAttributes($this->defaultAttributes);
+            $form = $this->form;
 
-            $this
-                ->addDefaultFields()
-                ->setDefaultFormAction()
-                ->initializers($this->form);
-
-            $triggerInit = $this->routeParams['action'] == 'add'
-                ? $this::EVENT_CREATE_INIT_FORM
-                : $this::EVENT_UPDATE_INIT_FORM;
+            $triggerInit = $form->getRouteParams('action') == 'add'
+                ? $form::EVENT_CREATE_INIT_FORM
+                : $form::EVENT_UPDATE_INIT_FORM;
 
             $eventResult = $this->eventTrigger($triggerInit);
         }
@@ -351,21 +261,12 @@ class AdministratorFormService implements EventManagerAwareInterface
 
     public function getForm()
     {
-        if (!$this->form) {
-            $this->setForm();
-        }
         return $this->form;
     }
 
     public function getRouteParams($param = false)
     {
-        if (is_string($param)) {
-            return isset($this->routeParams[$param])
-                ? $this->routeParams[$param]
-                : false;
-        }
-
-        return $this->routeParams;
+        return $this->form->getRouteParams($param);
     }
 
     /**
@@ -400,7 +301,7 @@ class AdministratorFormService implements EventManagerAwareInterface
     public function addFields()
     {
         /**
-         * Buscaremos en el objeto formulario y en los objectos Fieldset si existe el método addFields.
+         * Buscaremos en el objeto formulario y en los objetos Fieldset si existe el método addFields.
          * En caso afirmativo, lo ejecutamos para poder añadir campos adicionales
          * que se salga de la lógica predeterminada o, por ejemplo, redefinir
          * el atributo de algún campo concreto. (Vease Gestor\Form\GestorUsuariosForm)
@@ -540,16 +441,6 @@ class AdministratorFormService implements EventManagerAwareInterface
         return $id;
     }
 
-    public function postCamelToUnderscore($post)
-    {
-        $toUnderscore = new CamelCaseToUnderscore();
-        $underscoreVars = array();
-        foreach ($post as $key => $value) {
-            $underscoreVars[strtolower($toUnderscore->filter($key))] = $value;
-        }
-        return $underscoreVars;
-    }
-
     protected function setFormDataType($columnName, $dataType)
     {
         if (array_key_exists($columnName, $this->fieldModifiers)) {
@@ -580,80 +471,19 @@ class AdministratorFormService implements EventManagerAwareInterface
         return $fieldType;
     }
 
-    /**
-     *  Seteamos el action por defecto en función de la url en la que nos encontramos
-     *  Busca los segmentos "section", "action" e "id" y los
-     *  rellena automáticamente.
-     */
-    private function setDefaultFormAction()
-    {
-        $viewHelper  = $this->serviceLocator->get('ViewHelperManager');
-
-        $params = array(
-            'module' => $this->routeParams['module'],
-            'action'  => $this->routeParams['action'],
-        );
-
-        if (isset($this->routeParams['id'])) {
-            $params['id'] = $this->routeParams['id'];
-        }
-
-        $url = $viewHelper->get('url');
-
-        $this->form->setAttribute('action', $url('administrator',$params));
-
-        return $this;
-    }
-
-    /**
-     *  Añadimos los elementos de formulario que en principio deben aparecer por defecto
-     *  Dicha función se ejecute desde el servicio GestorFormService
-     */
-    private function addDefaultFields()
-    {
-        $actionType = $this->actionType == self::ACTION_ADD ? 'Add' : 'Edit';
-
-        $this->form->add(array(
-            'name' => 'submit',
-            'type' => 'Submit',
-            'attributes' => array(
-                'value' => $actionType,
-                'id' => 'submitbutton',
-                'class' => 'btn btn-primary',
-            ),
-            'options' => array(
-                'label' => $actionType,
-            )
-        ),array(
-            'priority' => '-9999'
-        ));
-
-        return $this;
-    }
-
-    /**
-     * @param array $params - Redefine los parámetros que se setean automáticamente
-     */
-    public function setUrlAction($params = array())
-    {
-        $viewHelper  = $this->serviceLocator->get('ViewHelperManager');
-
-        $url = $viewHelper->get('url');
-
-        $this->setAttribute('action', $url('administrator', $params));
-    }
-
     public function resolveForm($data)
     {
-        $this->form->bind($data);
+        $form = $this->form;
+
+        $form->bind($data);
 
         $isValid = true;
 
-        if ($this->form->isValid()) {
-            $this->eventTrigger($this::EVENT_CREATE_VALID_FORM_SUCCESS);
+        if ($form->isValid()) {
+            $this->eventTrigger($form::EVENT_CREATE_VALID_FORM_SUCCESS);
         } else {
             $isValid = false;
-            $this->eventTrigger($this::EVENT_CREATE_VALID_FORM_FAILED);
+            $this->eventTrigger($form::EVENT_CREATE_VALID_FORM_FAILED);
         }
 
         return $isValid;

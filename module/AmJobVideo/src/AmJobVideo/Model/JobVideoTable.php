@@ -7,4 +7,6 @@ use Administrator\Model\AdministratorTable;
 class JobVideoTable extends AdministratorTable
 {
     protected $table = 'jobs_videos';
+
+    protected $entityModelName =  JobVideoModel::class;
 }

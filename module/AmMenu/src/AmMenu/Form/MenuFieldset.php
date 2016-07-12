@@ -58,7 +58,7 @@ class MenuFieldset extends AdministratorFieldset
 
         $formService = $serviceLocator->get('Administrator\Service\AdministratorFormService');
 
-        if ($formService->getActionType() == 'add') {
+        if ($formService->getForm()->getActionType() == 'add') {
             $padre = (int) $formService->getRouteParams('id');
 
             $fieldset = $formService->getBaseFieldset();

@@ -8,6 +8,8 @@ class MenuTable extends AdministratorTable
 {
     protected $table = "admin_menus";
 
+    protected $entityModelName =  MenuModel::class;
+
     public function fetchAllOrdenados()
     {
         $arrayResult = array();

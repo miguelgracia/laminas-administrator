@@ -3,6 +3,7 @@
 namespace AmBlog\Form;
 
 use Administrator\Form\AdministratorFieldset;
+use AmBlog\Model\BlogModel;
 use AmBlog\Model\BlogTable;
 
 class BlogFieldset extends AdministratorFieldset
