@@ -20,6 +20,7 @@ return array(
         'AmJobCategory',
         'AmSection',
         'AmJobVideo',
+        'AmLanguage',
     ),
     'hidden_modules' => array(
         'AmLogin',

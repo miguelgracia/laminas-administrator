@@ -17,6 +17,7 @@ $(document).ready(function () {
         '/admin/static-page':            ['static_page','index'],
         '/admin/job':                    ['job','index'],
         '/admin/job-category':           ['job_category','index'],
-        '/admin/section':                ['section','index']
+        '/admin/section':                ['section','index'],
+        '/admin/language':               ['language','index']
     }).run();
 });
