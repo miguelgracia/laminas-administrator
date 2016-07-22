@@ -8,25 +8,17 @@ use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerAwareTrait;
 
-use Zend\Filter\Word\CamelCaseToUnderscore;
 use Zend\Filter\Word\SeparatorToCamelCase;
-use Zend\Filter\Word\SeparatorToSeparator;
 use Zend\Form\Fieldset;
 
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AdministratorFormService implements EventManagerAwareInterface
 {
-    use EventManagerAwareTrait;
+    use EventManagerAwareTrait, ServiceLocatorAwareTrait;
 
     protected $formManager;
-
-    /**
-     * @var
-     *
-     * Objeto para acceso a los distintos servicios
-     */
-    protected $serviceLocator;
 
     /**
      * @var \Zend\Form\Form
@@ -139,12 +131,9 @@ class AdministratorFormService implements EventManagerAwareInterface
 
         $this->formManager = $serviceLocator->get('FormElementManager');
 
-        return $this;
-    }
+        $this->languages = $this->serviceLocator->get('AmLanguage\Model\LanguageTable')->all()->toKeyValueArray('id','name');
 
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
+        return $this;
     }
 
     public function setPrimaryKey($primaryKey)
@@ -172,9 +161,7 @@ class AdministratorFormService implements EventManagerAwareInterface
 
         if (!array_key_exists($fieldsetName, $this->fieldsets)) {
 
-            $useAsBaseFieldset = isset($options['use_as_base_fieldset']);
-
-            if ($useAsBaseFieldset) {
+            if ($fieldset->isPrimaryFieldset()) {
                 $this->baseFieldset = $fieldset;
             }
 
@@ -215,8 +202,6 @@ class AdministratorFormService implements EventManagerAwareInterface
         if (!$this->form) {
 
             $this->baseModel = $model;
-
-            $this->languages = $this->serviceLocator->get('AmLanguage\Model\LanguageTable')->all()->toKeyValueArray('id','name');
 
             $this->form = $this->formManager->get($form);
 

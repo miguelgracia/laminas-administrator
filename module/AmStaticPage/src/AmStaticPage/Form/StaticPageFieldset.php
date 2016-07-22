@@ -7,6 +7,8 @@ use AmStaticPage\Model\StaticPageTable;
 
 class StaticPageFieldset extends AdministratorFieldset
 {
+    protected $isPrimaryFieldset = true;
+
     protected $tableGatewayName = StaticPageTable::class;
 
     public function initializers()

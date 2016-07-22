@@ -7,6 +7,8 @@ use AmModule\Model\ModuleTable;
 
 class ModuleFieldset extends AdministratorFieldset
 {
+    protected $isPrimaryFieldset = true;
+
     protected $tableGatewayName = ModuleTable::class;
 
     public function initializers()

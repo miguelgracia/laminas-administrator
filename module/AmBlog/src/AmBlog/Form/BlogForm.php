@@ -10,9 +10,7 @@ class BlogForm extends AdministratorForm
     {
         return array(
             'fieldsets' => array(
-                BlogFieldset::class => array(
-                    'use_as_base_fieldset' => true
-                ),
+                BlogFieldset::class => array(),
                 BlogLocaleFieldset::class => array(),
             )
         );

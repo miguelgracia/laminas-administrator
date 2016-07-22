@@ -50,12 +50,29 @@ class AdministratorForm extends Form implements ServiceLocatorAwareInterface
     );
 
     protected $actionType = self::ACTION_ADD;
+
     /**
      * @var array
      *
      * Contiene los parámetros de la url: section, action e id
      */
     protected $routeParams = array();
+
+    /**
+     * @var Fieldset Primario.
+     */
+    protected $primaryFieldset = null;
+
+
+    protected function setPrimaryFieldset(AdministratorFieldset $fieldset)
+    {
+        $this->primaryFieldset = $fieldset;
+    }
+
+    protected function getPrimaryFieldset()
+    {
+        return $this->primaryFieldset;
+    }
 
 
     public function init()

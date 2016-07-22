@@ -7,6 +7,8 @@ use AmSection\Model\SectionTable;
 
 class SectionFieldset extends AdministratorFieldset
 {
+    protected $isPrimaryFieldset = true;
+
     protected $tableGatewayName = SectionTable::class;
 
     public function initializers()

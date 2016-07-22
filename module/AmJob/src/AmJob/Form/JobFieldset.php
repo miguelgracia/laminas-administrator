@@ -7,6 +7,8 @@ use AmJob\Model\JobTable;
 
 class JobFieldset extends AdministratorFieldset
 {
+    protected $isPrimaryFieldset = true;
+
     protected $tableGatewayName = JobTable::class;
 
     public function initializers()

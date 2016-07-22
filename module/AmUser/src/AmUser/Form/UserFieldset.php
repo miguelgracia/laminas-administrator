@@ -7,6 +7,8 @@ use AmUser\Model\UserTable;
 
 class UserFieldset extends AdministratorFieldset
 {
+    protected $isPrimaryFieldset = true;
+
     protected $tableGatewayName = UserTable::class;
 
     public function getHiddenFields()

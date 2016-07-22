@@ -21,6 +21,18 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
     protected $tableGateway;
 
     /**
+     * @var bool
+     *
+     * Lo usaremos para indicar si el fieldset a instanciar se considera el fieldset primario
+     * No usamos la funcionalidad que nos proporciona el setear la opcion "use_as_base_fieldset"
+     * porque nos da error. De ahí que implementemos nuestro propio sistema.
+     *
+     * TODO: Intentar averiguar si podemos usar use_as_base_fieldset.
+     *
+     */
+    protected $isPrimaryFieldset = false;
+
+    /**
      * @var \Zend\Db\Metadata\Metadata
      *
      * Nos da acceso a métodos para tratamiento de las tablas de base de datos.
@@ -72,6 +84,11 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
     public function getObjectModel()
     {
         return $this->objectModel;
+    }
+
+    public function isPrimaryFieldset()
+    {
+        return $this->isPrimaryFieldset;
     }
 
     public function getTableGateway()

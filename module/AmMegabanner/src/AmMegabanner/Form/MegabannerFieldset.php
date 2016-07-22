@@ -7,6 +7,8 @@ use AmMegabanner\Model\MegabannerTable;
 
 class MegabannerFieldset extends AdministratorFieldset
 {
+    protected $isPrimaryFieldset = true;
+
     protected $tableGatewayName = MegabannerTable::class;
 
     public function initializers()

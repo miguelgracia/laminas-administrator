@@ -8,6 +8,8 @@ use AmBlog\Model\BlogTable;
 
 class BlogFieldset extends AdministratorFieldset
 {
+    protected $isPrimaryFieldset = true;
+
     protected $tableGatewayName = BlogTable::class;
 
     public function initializers()
