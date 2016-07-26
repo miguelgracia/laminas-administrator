@@ -10,9 +10,7 @@ class ProfileForm extends AdministratorForm {
     {
         return array(
             'fieldsets' => array(
-                ProfileFieldset::class => array(
-                    'use_as_base_fieldset' => true
-                )
+                ProfileFieldset::class => array()
             )
         );
     }

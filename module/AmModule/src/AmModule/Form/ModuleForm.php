@@ -10,9 +10,7 @@ class ModuleForm extends AdministratorForm {
     {
         return array(
             'fieldsets' => array(
-                ModuleFieldset::class => array(
-                    'use_as_base_fieldset' => true
-                )
+                ModuleFieldset::class => array()
             )
         );
     }

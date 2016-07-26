@@ -10,9 +10,7 @@ class SectionForm extends AdministratorForm
     {
         return array(
             'fieldsets' => array(
-                SectionFieldset::class => array(
-                    'use_as_base_fieldset' => true
-                ),
+                SectionFieldset::class => array(),
                 SectionLocaleFieldset::class => array(),
             )
         );

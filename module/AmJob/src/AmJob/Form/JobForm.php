@@ -10,9 +10,7 @@ class JobForm extends AdministratorForm
     {
         return array(
             'fieldsets' => array(
-                JobFieldset::class => array(
-                    'use_as_base_fieldset' => true
-                ),
+                JobFieldset::class => array(),
                 JobLocaleFieldset::class => array(),
             )
         );

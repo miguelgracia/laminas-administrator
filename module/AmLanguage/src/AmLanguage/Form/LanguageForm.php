@@ -10,9 +10,7 @@ class LanguageForm extends AdministratorForm
     {
         return array(
             'fieldsets' => array(
-                LanguageFieldset::class => array(
-                    'use_as_base_fieldset' => true
-                )
+                LanguageFieldset::class => array()
             )
         );
     }

@@ -10,9 +10,7 @@ class MenuForm extends AdministratorForm {
     {
         return array(
             'fieldsets' => array(
-                MenuFieldset::class => array(
-                    'use_as_base_fieldset' => true
-                )
+                MenuFieldset::class => array()
             )
         );
     }

@@ -10,9 +10,7 @@ class AmUserForm extends AdministratorForm {
     {
         return array(
             'fieldsets' => array(
-                UserFieldset::class => array(
-                    'use_as_base_fieldset' => true
-                ),
+                UserFieldset::class => array(),
             )
         );
     }

@@ -10,9 +10,7 @@ class MegabannerForm extends AdministratorForm
     {
         return array(
             'fieldsets' => array(
-                MegabannerFieldset::class => array(
-                    'use_as_base_fieldset' => true
-                ),
+                MegabannerFieldset::class => array(),
                 MegabannerLocaleFieldset::class => array(),
             )
         );
