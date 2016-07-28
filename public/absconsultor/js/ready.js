@@ -5,6 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     simpleJSRoutingManager.settings({
         route_mode: true
     }).routes({
-        '/': ['srmJuanController','run']
+        '/': ['srmHomeController','run']
     }).run();
 }, false);

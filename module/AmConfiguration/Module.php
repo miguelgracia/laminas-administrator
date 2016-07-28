@@ -43,7 +43,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 
     public function onBootstrap(MvcEvent $e)
     {
-        $translator = $e->getApplication()->getServiceManager()->get('translator');
+        /*$translator = $e->getApplication()->getServiceManager()->get('translator');
 
         $locale = $translator->getLocale();
 
@@ -55,6 +55,6 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             'default',
             $locale);
 
-        AbstractValidator::setDefaultTranslator($translator);
+        AbstractValidator::setDefaultTranslator($translator);*/
     }
 }

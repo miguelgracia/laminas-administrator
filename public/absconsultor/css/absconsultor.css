@@ -1,0 +1,120 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.abs > .container:first-child {
+    padding-top: 80px;
+}
+
+.nav.navbar-nav {
+    padding-top: 30px;
+    float: right;
+}
+
+.navbar-toggle {
+    border: 1px solid white;
+}
+
+.navbar-toggle .icon-bar {
+    border: 1px solid white;
+}
+
+.nav.navbar-nav a {
+    color: white;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.nav>li>a:focus,
+.nav>li>a:hover {
+    background-color: transparent;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+    padding-top: 13px;
+    padding-bottom: 13px;
+}
+
+.btn.btn-default {
+    font-family: 'Open Sans Condensed',sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    box-shadow: none;
+    background-color: #00344F;
+    background-image: none;
+    border: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    text-shadow: none;
+    color: white;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+/**
+    HOME
+**/
+
+.abs > .container-fluid.home {
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.abs .video-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.abs .video-filter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 99.5%;
+    background-color: rgba(0, 51, 78, 0.5);
+}
+
+.abs .home-module {
+    position: relative;
+}
+
+.abs .home-module > div {
+    padding-left: 0;
+    padding-right: 0;
+    height: 100%;
+}
+
+.abs .home-module:nth-child(odd) > div:nth-child(2) {
+    padding-left: 25px;
+}
+
+.abs .home-module h2 {
+    font-family: 'Open Sans Condensed',sans-serif;
+    font-weight: bold;
+    color: #00344F;
+}
+
+.abs .home-module p {
+    height: 225px;
+    text-align: justify;
+    line-height: 30px;
+}
+
+.abs .home-module:nth-child(even) p {
+    padding-right: 25px;
+}
+
+.abs .home-module:nth-child(odd) .btn {
+    float: right;
+}
+
+@-webkit-viewport   { width: device-width; }
+@-moz-viewport      { width: device-width; }
+@-ms-viewport       { width: device-width; }
+@-o-viewport        { width: device-width; }
+@viewport           { width: device-width; }

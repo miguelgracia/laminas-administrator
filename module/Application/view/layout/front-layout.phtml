@@ -1,6 +1,6 @@
 <?php echo $this->doctype(); ?>
 
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="utf-8">
         <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
@@ -12,22 +12,15 @@
 
         <!-- Le styles -->
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-                        ->prependStylesheet($this->basePath('css/style.css'))
-                        ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
-                        ->prependStylesheet($this->basePath('css/bootstrap.min.css')) ?>
-
-        <!-- Scripts -->
-        <?php echo $this->headScript()
-            ->prependFile($this->basePath('js/bootstrap.min.js'))
-            ->prependFile($this->basePath('js/jquery.min.js'))
-            ->prependFile($this->basePath('absconsultor/dist/dist.js'))
-            ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
-            ->prependFile($this->basePath('js/html5shiv.min.js'),   'text/javascript', array('conditional' => 'lt IE 9',))
-        ; ?>
+                        ->prependStylesheet($this->basePath('absconsultor/css/absconsultor.css'))
+                        ->prependStylesheet($this->basePath('absconsultor/vendor/bootstrap/css/bootstrap-theme.min.css'))
+                        ->prependStylesheet($this->basePath('absconsultor/vendor/bootstrap/css/bootstrap.min.css'))
+                        ->prependStylesheet('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans')
+        ?>
 
     </head>
     <body>
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -35,22 +28,32 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?php echo $this->basePath('img/zf2-logo.png') ?>" alt="Zend Framework 2"/>&nbsp;<?php echo $this->translate('Skeleton Application') ?></a>
+                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img width="150" src="<?php echo $this->basePath('img/white-logo.png') ?>" alt="Zend Framework 2"/>&nbsp;</a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
+                        <!--<li class="active"><a href="<?php /*echo $this->url('home') */?>"><?php /*echo $this->translate('Home') */?></a></li>-->
+                        <li><a href="/empresa">Empresa</a></li>
+                        <li><a href="/trabajos">Trabajos</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                        <li><a href="/contacto">Contacto</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
         </nav>
-        <div class="container">
+        <div class="container-fluid abs">
             <?php echo $this->content; ?>
-            <hr>
+
             <footer>
                 <p>&copy; 2005 - <?php echo date('Y') ?> by Zend Technologies Ltd. <?php echo $this->translate('All rights reserved.') ?></p>
             </footer>
         </div> <!-- /container -->
+        <!-- Scripts -->
+        <?php echo $this->headScript()
+            ->prependFile($this->basePath('absconsultor/vendor/bootstrap/js/bootstrap.min.js'))
+            ->prependFile($this->basePath('absconsultor/vendor/jquery/jquery.min.js'))
+            ->prependFile($this->basePath('absconsultor/dist/dist.js'))
+        ; ?>
         <?php echo $this->inlineScript() ?>
     </body>
 </html>
