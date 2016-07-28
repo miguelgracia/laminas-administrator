@@ -12,45 +12,174 @@ namespace Application;
 return array(
     'router' => array(
         'routes' => array(
-            'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
             // using the path /application/:controller/:action
-            'application' => array(
+            'home' => array(
                 'type'    => 'Literal',
                 'options' => array(
-                    'route'    => '/application',
+                    'route'    => '/',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Index',
+                        'controller'    => 'Home',
+                        'action'        => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+            ),
+            'jobs' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/trabajos',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Job',
                         'action'        => 'index',
                     ),
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
-                    'default' => array(
+                    'category' => array(
                         'type'    => 'Segment',
+                        'may_terminate' => true,
                         'options' => array(
-                            'route'    => '/[:controller[/:action]]',
+                            'route'    => '/[:slug-category]',
                             'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'slug-category' => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
                             'defaults' => array(
+                                '__NAMESPACE__' => 'Application\Controller',
+                                'controller'    => 'Job',
+                                'action'        => 'category',
+                            ),
+                        ),
+                        'child_routes' => array(
+                            'detail' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/[:slug-title]',
+                                    'constraints' => array(
+                                        'slug-title'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    ),
+                                    'defaults' => array(
+                                        '__NAMESPACE__' => 'Application\Controller',
+                                        'controller'    => 'Job',
+                                        'action'        => 'detail',
+                                    ),
+                                ),
+                            ),
+                        )
+                    ),
+                ),
+            ),
+            'blog' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/blog',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Blog',
+                        'action'        => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'category' => array(
+                        'type'    => 'Segment',
+                        'may_terminate' => true,
+                        'options' => array(
+                            'route'    => '/[:slug-category]',
+                            'constraints' => array(
+                                'slug-category' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Application\Controller',
+                                'controller'    => 'Blog',
+                                'action'        => 'category',
+                            ),
+                        ),
+                        'child_routes' => array(
+                            'detail' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/[:slug-title]',
+                                    'constraints' => array(
+                                        'slug-title'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    ),
+                                    'defaults' => array(
+                                        '__NAMESPACE__' => 'Application\Controller',
+                                        'controller'    => 'Blog',
+                                        'action'        => 'detail',
+                                    ),
+                                ),
+                            ),
+                        )
+                    ),
+                ),
+            ),
+            'company' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/empresa',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Company',
+                        'action'        => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'colaborator' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/[:colaborator]',
+                            'constraints' => array(
+                                'slug-title'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Application\Controller',
+                                'controller'    => 'Company',
+                                'action'        => 'colaborator',
                             ),
                         ),
                     ),
+                )
+            ),
+            'contact' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/contacto',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Contact',
+                        'action'        => 'index',
+                    ),
                 ),
+                'may_terminate' => true,
+            ),
+            'legal' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/legales',
+                ),
+                'may_terminate' => false,
+                'child_routes' => array(
+                    'coookies' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/[:legal-page]',
+                            'constraints' => array(
+                                'legal-page'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Application\Controller',
+                                'controller'    => 'Legal',
+                                'action'        => 'index',
+                            ),
+                        ),
+                    ),
+                )
             ),
         ),
     ),
@@ -75,7 +204,12 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => Controller\IndexController::class
+            'Application\Controller\Home'    => Controller\HomeController::class,
+            'Application\Controller\Job'     => Controller\JobController::class,
+            'Application\Controller\Blog'    => Controller\BlogController::class,
+            'Application\Controller\Contact' => Controller\ContactController::class,
+            'Application\Controller\Company' => Controller\CompanyController::class,
+            'Application\Controller\Legal'   => Controller\LegalController::class,
         ),
     ),
     'view_manager' => array(

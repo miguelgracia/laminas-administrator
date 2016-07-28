@@ -12,9 +12,22 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class HomeController extends AbstractActionController
+class JobController extends AbstractActionController
 {
     public function indexAction()
+    {
+        return new ViewModel();
+    }
+
+    public function categoryAction()
+    {
+        echo "<pre>";
+        var_dump($this->params()->fromRoute('slug-category'));
+        echo "</pre>";
+        return new ViewModel();
+    }
+
+    public function detailAction()
     {
         return new ViewModel();
     }
