@@ -5,14 +5,34 @@ body {
     box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
+.abs {
+    padding-bottom: 80px;
+}
+
 .abs > .container:first-child {
     padding-top: 80px;
+}
+
+nav {
+    overflow: hidden;
+    background-color: rgba(0, 52, 79, 0.9);
 }
 
 .nav.navbar-nav {
     padding-top: 30px;
     float: right;
+    /*min-height: 120px;*/
 }
+
+@media (min-width: 768px) {
+    .navbar>.container .navbar-brand,
+    .navbar>.container-fluid .navbar-brand {
+        overflow: hidden;
+        display: block;
+        height: auto;
+    }
+}
+
 
 .navbar-toggle {
     border: 1px solid white;
@@ -55,6 +75,57 @@ body {
     padding-right: 25px;
 }
 
+footer {
+    color: white;
+    padding-top: 20px;
+    min-height: 200px;
+    background-color: #00344F;
+    font-family: 'Open Sans Condensed';
+    font-weight: bold;
+}
+
+footer > div.container > div.row {
+    margin-bottom: 20px;
+}
+
+footer .footer-menu a {
+    color: white;
+    padding:0 10px;
+    font-size: 20px;
+}
+
+footer .contact-info > div {
+    margin-bottom: 20px;
+}
+
+footer .contact-icons {
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+footer .contact-icons a {
+    padding: 0 5px;
+    color: white;
+}
+
+footer .contact-icons i {
+    font-size: 30px;
+}
+
+footer .contact-icons a.phone,
+footer .contact-icons a.mail
+{
+    display: block;
+    font-size: 20px;
+}
+
+footer .contact-icons a.phone i,
+footer .contact-icons a.mail i {
+    font-size: 19px;
+}
+
+
 /**
     HOME
 **/
@@ -81,6 +152,59 @@ body {
 
 .abs .home-module {
     position: relative;
+}
+
+/* FLECHA IZQUIERDA */
+.home-module:nth-child(odd) > div:nth-child(2):after,
+.home-module:nth-child(odd) > div:nth-child(2):before {
+    right: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.home-module:nth-child(odd) > div:nth-child(2):after {
+    border-color: rgba(255, 255, 255, 0);
+    border-right-color: #ffffff;
+    border-width: 30px;
+    margin-top: -30px;
+}
+.home-module:nth-child(odd) > div:nth-child(2):before {
+    border-color: rgba(255, 255, 255, 0);
+    border-right-color: #ffffff;
+    border-width: 36px;
+    margin-top: -36px;
+}
+
+/* FLECHA DERECHA */
+
+.home-module:nth-child(even) > div:nth-child(2):after,
+.home-module:nth-child(even) > div:nth-child(2):before {
+    left: 0%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.home-module:nth-child(even) > div:nth-child(2):after {
+    border-color: rgba(255, 255, 255, 0);
+    border-left-color: #ffffff;
+    border-width: 30px;
+    margin-top: -30px;
+}
+.home-module:nth-child(even) > div:nth-child(2):before {
+    border-color: rgba(255, 255, 255, 0);
+    border-left-color: #FFFFFF;
+    border-width: 36px;
+    margin-top: -36px;
 }
 
 .abs .home-module > div {
