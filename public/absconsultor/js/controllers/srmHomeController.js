@@ -2,9 +2,15 @@ import simpleJSRoutingManager from './../simple-js-routing-manager';
 
 function srmHomeController() {
 
-    this.run = function() {
-        console.log(this);
-        console.log('Juan controller');
+    this.index = function() {
+
+        /*$('.bxslider').bxSlider({
+            mode: 'fade',
+            video: true,
+            adaptiveHeight: true,
+            useCSS: false,
+            pager: false
+        });*/
     };
 }
 simpleJSRoutingManager.srmController(srmHomeController);

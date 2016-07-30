@@ -3,7 +3,7 @@
 <html lang="es">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle('ABS Consultor')->setSeparator(' - ')->setAutoEscape(false) ?>
 
         <?php echo $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
@@ -11,8 +11,11 @@
         ?>
 
         <!-- Le styles -->
-        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.jpg'))
                         ->prependStylesheet($this->basePath('absconsultor/css/absconsultor.css'))
+                        ->prependStylesheet($this->basePath('absconsultor/vendor/bxslider/jquery.bxslider.css'))
+                        ->prependStylesheet($this->basePath('absconsultor/vendor/owl-carousel/owl.theme.css'))
+                        ->prependStylesheet($this->basePath('absconsultor/vendor/owl-carousel/owl.carousel.css'))
                         ->prependStylesheet($this->basePath('absconsultor/vendor/bootstrap/css/bootstrap-theme.min.css'))
                         ->prependStylesheet($this->basePath('absconsultor/vendor/bootstrap/css/bootstrap.min.css'))
                         ->prependStylesheet($this->basePath('absconsultor/vendor/font-awesome/css/font-awesome.min.css'))
@@ -45,6 +48,7 @@
             </div>
         </nav>
         <div class="container-fluid abs">
+
             <?php echo $this->content; ?>
 
         </div> <!-- /container -->
@@ -59,12 +63,13 @@
                     </div>
 
                     <div class="col-md-4">
-                        <div class="footer-menu">
-                            <a>Empresa</a>
-                            <a>Trabajos</a>
-                            <a>Blog</a>
-                            <a>Contacto</a>
-                        </div>
+                        <ul class="nav navbar-nav footer-nav">
+                            <!--<li class="active"><a href="<?php /*echo $this->url('home') */?>"><?php /*echo $this->translate('Home') */?></a></li>-->
+                            <li><a href="/empresa">Empresa</a></li>
+                            <li><a href="/trabajos">Trabajos</a></li>
+                            <li><a href="/blog">Blog</a></li>
+                            <li><a href="/contacto">Contacto</a></li>
+                        </ul>
                     </div>
 
                     <div class="col-md-4 text-right contact-info">
@@ -99,9 +104,14 @@
         </footer>
         <!-- Scripts -->
         <?php echo $this->headScript()
-            ->prependFile($this->basePath('absconsultor/vendor/bootstrap/js/bootstrap.min.js'))
-            ->prependFile($this->basePath('absconsultor/vendor/jquery/jquery.min.js'))
-            ->prependFile($this->basePath('absconsultor/dist/dist.js'))
+            ->appendFile($this->basePath('absconsultor/vendor/jquery/jquery.min.js'))
+            ->appendFile($this->basePath('absconsultor/vendor/bootstrap/js/bootstrap.min.js'))
+            ->appendFile($this->basePath('absconsultor/vendor/owl-carousel/owl.carousel.min.js'))
+            ->appendFile($this->basePath('absconsultor/vendor/bxslider/plugins/jquery.fitvids.js'))
+            ->appendFile($this->basePath('absconsultor/vendor/bxslider/plugins/jquery.easing.1.3.js'))
+            ->appendFile($this->basePath('absconsultor/vendor/bxslider/jquery.bxslider.min.js'))
+            ->appendFile($this->basePath('absconsultor/dist/dist.js'))
+
         ; ?>
         <?php echo $this->inlineScript() ?>
     </body>

@@ -130,19 +130,17 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
-                    'colaborator' => array(
-                        'type'    => 'Segment',
+                    'collaborators' => array(
+                        'type'    => 'Literal',
                         'options' => array(
-                            'route'    => '/[:colaborator]',
-                            'constraints' => array(
-                                'slug-title'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
+                            'route'    => '/colaboradores',
                             'defaults' => array(
                                 '__NAMESPACE__' => 'Application\Controller',
                                 'controller'    => 'Company',
-                                'action'        => 'colaborator',
+                                'action'        => 'collaborators',
                             ),
                         ),
+                        'may_terminate' => true,
                     ),
                 )
             ),

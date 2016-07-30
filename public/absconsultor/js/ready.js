@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
     simpleJSRoutingManager.settings({
         route_mode: true
     }).routes({
-        '/': ['srmHomeController','run']
+        '/contacto':                ['srmContactController','index'],
+        '/trabajos/{:any}/{:any}':  ['srmJobController','detail'],
+        '/empresa':                 ['srmCompanyController','index'],
+        '/':                        ['srmHomeController','index']
     }).run();
 }, false);

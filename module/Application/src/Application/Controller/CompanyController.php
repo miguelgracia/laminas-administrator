@@ -11,7 +11,7 @@ class CompanyController extends AbstractActionController
         return new ViewModel();
     }
 
-    public function colaboratorAction()
+    public function collaboratorsAction()
     {
         return new ViewModel();
     }
