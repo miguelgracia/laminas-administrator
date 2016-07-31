@@ -239,6 +239,13 @@ footer .contact-icons a.mail i {
     font-size: 19px;
 }
 
+.transition {
+    -webkit-transition: all .6s ease;
+    -moz-transition: all .6s ease;
+    -ms-transition: all .6s ease;
+    -o-transition: all .6s ease;
+    transition: all .6s ease;
+}
 
 /**
     HOME
@@ -269,6 +276,33 @@ footer .contact-icons a.mail i {
 
 .abs .video-wrapper video {
     margin-top: -150px;
+}
+
+.abs .video-wrapper .nav.navbar-nav{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top:190px;
+    padding:0;
+    margin-left: -172.5px;
+}
+
+.abs .video-wrapper .nav.navbar-nav.header {
+    opacity: 0;
+}
+
+.abs .video-wrapper img {
+    position:  absolute;
+    width: 500px;
+    height: 300px;
+    top: 50%;
+    left: 50%;
+    margin-left: -250px;
+    margin-top: -150px;
+}
+
+.abs .video-wrapper img.header {
+    opacity: 0;
 }
 
 .abs .video-filter {
