@@ -331,7 +331,8 @@ var simpleJSRoutingManager = simpleJSRoutingManager || {};
             currentPath = location.pathname;
             var regExp;
             for(var path in _routes) {
-                var strRegEx = path.replace('{:num}','[0-9]+').replace('{:any}','[A-z0-9_.\-\~]+');
+                var strRegEx = path.replace(new RegExp('{:num}', 'g') ,'[0-9]+').replace(new RegExp('{:any}','g'),'[A-z0-9_.\-\~]+');
+
                 regExp = new RegExp(strRegEx + '$');
                 if(regExp.test(currentPath)) {
 
