@@ -5,6 +5,7 @@
 /module/Gestor_old
 # Created by .ignore support plugin (hsz.mobi)
 /public/absconsultor/node_modules
+/public/absconsultor/screens
 ### ZendFramework template
 # Composer files
 composer.phar
