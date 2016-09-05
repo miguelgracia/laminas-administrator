@@ -11,10 +11,10 @@ class MegabannerLocaleFieldset extends AdministratorFieldset
 
     public function addFields()
     {
-        $imageUrl = $this->get('imageUrl');
-        $class = $imageUrl->getAttribute('class');
+        $elementUrl = $this->get('elementUrl');
+        $class = $elementUrl->getAttribute('class');
         $class .= ' browsefile';
-        $imageUrl->setAttribute('class',$class);
+        $elementUrl->setAttribute('class',$class);
     }
 
     public function getHiddenFields()

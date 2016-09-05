@@ -19,6 +19,10 @@ class MegabannerFieldset extends AdministratorFieldset
                     '0' => 'NO',
                     '1' => 'SI'
                 ),
+                'isVideo' => array(
+                    '0' => 'NO',
+                    '1' => 'SI'
+                ),
             )
         );
     }
