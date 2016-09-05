@@ -4,14 +4,51 @@ function srmHomeController() {
 
     this.index = function() {
 
-        var bxSlider = $('.bxslider').bxSlider({
+        var $slides = $('.bxslider'), video;
+
+        var bxSlider = $slides.bxSlider({
             mode: 'fade',
             adaptiveHeight: true,
             pager: false,
             preloadImages: 'all',
-            onSliderLoad: function (s) {
-                var video = document.getElementById('video');
-                video.play();
+            onSlideAfter: function ($slideElement, oldIndex, newIndex) {
+                var $videoWrapper = $slideElement.find('.video-wrapper'), $play, $pause;
+
+                if($videoWrapper) {
+
+                    $play = $videoWrapper.find('.fa-play');
+                    $pause = $videoWrapper.find('.fa-pause');
+
+                    if(video) {
+                        video.pause();
+                        $slides.children().eq(oldIndex).find('.fa-play').removeClass('hide');
+                        $slides.children().eq(oldIndex).find('.fa-pause').addClass('hide');
+                    }
+
+                    video = $videoWrapper.find('video')[0];
+
+                    var videoControlEvents = function(controlType) {
+
+                        return function(e) {
+
+                            switch (controlType) {
+                                case 'play':
+                                    $play.addClass('hide');
+                                    $pause.removeClass('hide');
+                                    break;
+                                case 'pause':
+                                    $play.removeClass('hide');
+                                    $pause.addClass('hide');
+                                    break;
+                            }
+
+                            video[controlType]();
+                        };
+                    };
+
+                    $play.click(videoControlEvents('play'));
+                    $pause.click(videoControlEvents('pause'));
+                }
             }
         });
 

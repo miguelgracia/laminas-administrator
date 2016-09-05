@@ -10,10 +10,15 @@ $this->headLink()->appendStylesheet($this->basePath('absconsultor/css/home.css')
             </li>
             <li>
                 <div class="video-wrapper">
-                    <video id="video" width="100%" autoplay loop>
+                    <video class="video" width="100%">
                         <source src="/media/video/grua.mp4" type="video/mp4"/>
                     </video>
-                    <div class="video-filter"></div>
+                    <div class="video-filter">
+                        <div class="video-controls">
+                            <i class="fa fa-play"></i>
+                            <i class="fa fa-pause hide"></i>
+                        </div>
+                    </div>
                 </div>
             </li>
         </ul>
@@ -76,16 +81,7 @@ $this->headLink()->appendStylesheet($this->basePath('absconsultor/css/home.css')
         </div>
     </div>
     <div class="row home-module">
-        <div class="col-md-6 col-xs-12">
-            <h2>Trabajos</h2>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id nunc convallis, accumsan enim ac, convallis risus.
-                Aliquam facilisis mi lectus, nec vestibulum ipsum vestibulum nec. Curabitur tincidunt ultricies nisi eu mattis.
-                Donec blandit vitae mi vitae commodo. Ut tortor dui, vulputate et nunc et, suscipit vestibulum ipsum.
-            </p>
-            <a class="btn btn-default">+ Información</a>
-        </div>
-        <div class="col-md-6 col-xs-12">
+        <div class="col-md-6 col-md-push-6 col-xs-12">
             <div class="owl-carousel-home">
                 <div class="item">
                     <img class="img-responsive" src="media/maqueta/home2.png" />
@@ -100,6 +96,15 @@ $this->headLink()->appendStylesheet($this->basePath('absconsultor/css/home.css')
                     <img class="img-responsive" src="media/maqueta/home2.png" />
                 </div>
             </div>
+        </div>
+        <div class="col-md-6 col-md-pull-6 col-xs-12">
+            <h2>Trabajos</h2>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id nunc convallis, accumsan enim ac, convallis risus.
+                Aliquam facilisis mi lectus, nec vestibulum ipsum vestibulum nec. Curabitur tincidunt ultricies nisi eu mattis.
+                Donec blandit vitae mi vitae commodo. Ut tortor dui, vulputate et nunc et, suscipit vestibulum ipsum.
+            </p>
+            <a class="btn btn-default">+ Información</a>
         </div>
     </div>
     <div class="row home-module">
