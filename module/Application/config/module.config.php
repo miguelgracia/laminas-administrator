@@ -12,13 +12,38 @@ namespace Application;
 use Application\Router\Http\LocaleTreeRouteStack;
 
 return array(
-    'languages' => array(
-        'es_ES',
-        'en_EN'
+    'default_language' => 'es_ES',
+    'languages_by_host' => array(
+        'absconsultor.local'    => 'es_ES',
+        'absconsultor.es'       => 'es_ES',
+        'absconsultor.com'      => 'en_EN'
     ),
     'router' => array(
         'router_class' => LocaleTreeRouteStack::class,
         'frontend_routes_locale' => array(
+            'change_language' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/change-lang',
+                ),
+                'may_terminate' => false,
+                'child_routes' => array(
+                    'detail' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/[:lang]',
+                            'constraints' => array(
+                                'lang'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Application\Controller',
+                                'controller'    => 'Application',
+                                'action'        => 'changeLanguage',
+                            ),
+                        ),
+                    ),
+                )
+            ),
             'home' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -208,7 +233,8 @@ return array(
             'Zend\Log\LoggerAbstractServiceFactory',
         ),
         'factories' => array(
-            'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
+            'translator'                         => 'Zend\Mvc\Service\TranslatorServiceFactory',
+            'Application\Service\SessionService' => 'Application\Service\SessionService',
         ),
     ),
     'translator' => array(
@@ -224,12 +250,13 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Home'    => Controller\HomeController::class,
-            'Application\Controller\Job'     => Controller\JobController::class,
-            'Application\Controller\Blog'    => Controller\BlogController::class,
-            'Application\Controller\Contact' => Controller\ContactController::class,
-            'Application\Controller\Company' => Controller\CompanyController::class,
-            'Application\Controller\Legal'   => Controller\LegalController::class,
+            'Application\Controller\Application' => Controller\ApplicationController::class,
+            'Application\Controller\Home'        => Controller\HomeController::class,
+            'Application\Controller\Job'         => Controller\JobController::class,
+            'Application\Controller\Blog'        => Controller\BlogController::class,
+            'Application\Controller\Contact'     => Controller\ContactController::class,
+            'Application\Controller\Company'     => Controller\CompanyController::class,
+            'Application\Controller\Legal'       => Controller\LegalController::class,
         ),
     ),
     'view_manager' => array(
