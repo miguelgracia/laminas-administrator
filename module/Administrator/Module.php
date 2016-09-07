@@ -98,43 +98,6 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 
     public function onBootstrap(MvcEvent $e)
     {
-        $this->mvcEvent = $e;
 
-        $eventManager        = $e->getApplication()->getEventManager();
-        $sharedEventManager  = $eventManager->getSharedManager();
-
-        $sharedEventManager->attach( 'Zend\Mvc\Controller\AbstractActionController', 'dispatch', array($this, 'settingEventController'), 3);
-    }
-
-    public function settingEventController(MvcEvent $e)
-    {
-        $serviceManager = $this->mvcEvent->getApplication()->getServiceManager();
-        $this->loadTranslations($serviceManager);
-    }
-
-    private function loadTranslations($serviceManager)
-    {
-        $translator = $serviceManager->get('translator');
-
-        $locale = $translator->getLocale();
-
-        $translateFilePath = __DIR__."/language/$locale/";
-        $tranlationFiles = array(
-            "Zend_Validate",
-            "locale",
-        );
-
-        foreach ($tranlationFiles as $file) {
-            $translateFile = $translateFilePath . "$file.php";
-            $translateFile = str_replace('/',DIRECTORY_SEPARATOR,$translateFile);
-            $translator->getTranslator()->addTranslationFile(
-                'phpArray',
-                $translateFile,
-                'default',
-                $locale);
-        }
-
-
-        AbstractValidator::setDefaultTranslator($translator);
     }
 }
