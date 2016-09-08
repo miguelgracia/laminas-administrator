@@ -12,7 +12,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
         $controllerPlugin = $this->controllerPluginManager;
 
         $disallowSearchTo = array (
-            'sections.id' => false,
+            'app_routes.id' => false,
         );
 
         $disallowOrderTo = $disallowSearchTo;
@@ -25,7 +25,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             'orderable' => $disallowOrderTo,
             'columns' => function ($header) use ($canDelete, $canEdit) {
                 //ocultamos la columna ID
-                $header['sections.id']['options']['visible'] = false;
+                $header['app_routes.id']['options']['visible'] = false;
 
                 //A�adimos las columnas que contendr�n los iconos de edici�n y activar/desactivar
                 $header['edit'] = array(
@@ -73,9 +73,9 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             //En fields solo tenemos que añadir los campos de la tabla indicada en 'from'
             'fields' => array(
                 'id',
-                'key',
+                'route_key',
             ),
-            'from' => 'sections',
+            'from' => 'app_routes',
             'join' => array(
             ),
             //Los campos que están dentro del 'having_fields' no se verán afectados por la clausula where al

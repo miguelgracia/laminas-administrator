@@ -6,7 +6,7 @@ use Administrator\Model\AdministratorTable;
 
 class SectionLocaleTable extends AdministratorTable
 {
-    protected $table = 'sections_locales';
+    protected $table = 'app_routes_locales';
 
     protected $entityModelName =  SectionLocaleModel::class;
 }

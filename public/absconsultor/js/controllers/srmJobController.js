@@ -4,6 +4,8 @@ function srmJobController() {
 
     this.indexAction = function() {};
 
+    this.categoryAction = function() {};
+
     this.detailAction = function() {
 
         $("#owl_carousel").owlCarousel({
