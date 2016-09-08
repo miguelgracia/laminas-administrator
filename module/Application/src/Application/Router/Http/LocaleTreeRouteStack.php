@@ -16,8 +16,13 @@ class LocaleTreeRouteStack extends TranslatorAwareTreeRouteStack
                 call_user_func_array([$this,'setLocaleRoutes'],array(&$routeConfig['child_routes'],$webLanguage));
             }
 
-            if (is_array($routeConfig['options']['route'])) {
-                $routeConfig['options']['route'] = $routeConfig['options']['route'][$webLanguage];
+            if (isset($routeConfig['options']['constraints'])) {
+                foreach ($routeConfig['options']['constraints'] as &$constraint) {
+                    if (is_array($constraint)) {
+                        $constraint = $constraint[$webLanguage];
+                    }
+                }
+                //$routeConfig['options']['route'] = $routeConfig['options']['route'][$webLanguage];
             }
         }
     }

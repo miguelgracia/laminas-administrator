@@ -24,12 +24,12 @@ return array(
             'lang' => array(
                 'type'    => 'Segment',
                 'options' => array(
-                    'route'    => array(
-                        'es_ES' => '/[:lang]',
-                        'en_EN' => '/[:lang]',
-                    ),
+                    'route'    => '/[:lang]',
                     'constraints' => array(
-                        'lang' => "es_es|en_en"
+                        'lang' => array(
+                            'es_ES' => 'es_es',
+                            'en_EN' => 'en_en',
+                        )
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'Application\Controller',
@@ -40,11 +40,14 @@ return array(
                 'may_terminate' => true,
                 'child_routes' => array(
                     'company' => array(
-                        'type'    => 'Literal',
+                        'type'    => 'Segment',
                         'options' => array(
-                            'route'    => array(
-                                'es_ES' => '/empresa',
-                                'en_EN' => '/company',
+                            'route'    => '/[:section]',
+                            'constraints' => array(
+                                'section' => array(
+                                    'es_ES' => 'empresa',
+                                    'en_EN' => 'company',
+                                )
                             ),
                             'defaults' => array(
                                 '__NAMESPACE__' => 'Application\Controller',
@@ -55,11 +58,14 @@ return array(
                         'may_terminate' => true,
                         'child_routes' => array(
                             'collaborators' => array(
-                                'type'    => 'Literal',
+                                'type'    => 'Segment',
                                 'options' => array(
-                                    'route'    => array(
-                                        'es_ES' => '/colaboradores',
-                                        'en_EN' => '/colaborators',
+                                    'route'    => '/[:colaborators]',
+                                    'constraints' => array(
+                                        'colaborators' => array(
+                                            'es_ES' => 'colaboradores',
+                                            'en_EN' => 'colaborators',
+                                        )
                                     ),
                                     'defaults' => array(
                                         '__NAMESPACE__' => 'Application\Controller',
@@ -72,11 +78,14 @@ return array(
                         )
                     ),
                     'jobs' => array(
-                        'type'    => 'Literal',
+                        'type'    => 'Segment',
                         'options' => array(
-                            'route'    => array(
-                                'es_ES' => '/trabajos',
-                                'en_EN' => '/works',
+                            'route'    => '/[:section]',
+                            'constraints' => array(
+                                'section' => array(
+                                    'es_ES' => 'trabajos',
+                                    'en_EN' => 'works',
+                                )
                             ),
                             'defaults' => array(
                                 '__NAMESPACE__' => 'Application\Controller',
@@ -165,11 +174,14 @@ return array(
                         ),
                     ),
                     'contact' => array(
-                        'type'    => 'Literal',
+                        'type'    => 'Segment',
                         'options' => array(
-                            'route'    => array(
-                                'es_ES' => '/contacto',
-                                'en_EN' => '/contact',
+                            'route'    => '/[:section]',
+                            'constraints' => array(
+                                'section' => array(
+                                    'es_ES' => 'contacto',
+                                    'en_EN' => 'contact',
+                                ),
                             ),
                             'defaults' => array(
                                 '__NAMESPACE__' => 'Application\Controller',
@@ -180,12 +192,15 @@ return array(
                         'may_terminate' => true,
                     ),
                     'legal' => array(
-                        'type'    => 'Literal',
+                        'type'    => 'Segment',
                         'options' => array(
-                            'route'    => array(
-                                'es_ES' => '/legales',
-                                'en_EN' => '/legal',
-                            ),
+                            'route'    => '/[:section]',
+                            'constraints' => array(
+                                'section' => array(
+                                    'es_ES' => 'legales',
+                                    'en_EN' => 'legal',
+                                )
+                            )
                         ),
                         'may_terminate' => false,
                         'child_routes' => array(
