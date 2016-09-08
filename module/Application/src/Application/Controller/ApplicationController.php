@@ -9,18 +9,13 @@ use Zend\Mvc\MvcEvent;
 class ApplicationController extends AbstractActionController
 {
 
-    public function changeLanguageAction()
+    protected $session;
+
+    public function onDispatch(MvcEvent $e)
     {
-        $config = $this->serviceLocator->get('Config');
+        $this->session = $this->serviceLocator->get('Application\Service\SessionService');
 
-        $session = $this->serviceLocator->get('Application\Service\SessionService');
-
-        $lang = $this->params()->fromRoute('lang');
-
-        if (in_array($lang, array_values($config['languages_by_host']))) {
-            $session->lang = $lang;
-        }
-
-        $this->redirect()->toRoute('home');
+        return parent::onDispatch($e);
     }
+
 }

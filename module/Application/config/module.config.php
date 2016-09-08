@@ -12,44 +12,24 @@ namespace Application;
 use Application\Router\Http\LocaleTreeRouteStack;
 
 return array(
-    'default_language' => 'es_ES',
     'languages_by_host' => array(
-        'absconsultor.local'    => 'es_ES',
-        'absconsultor.es'       => 'es_ES',
-        'absconsultor.com'      => 'en_EN'
+        'abs.local'          => ['es_ES','en_EN'],
+        'absconsultor.local' => ['es_ES','en_EN'],
+        'absconsultor.es'    => ['es_ES','en_EN'],
+        'absconsultor.com'   => ['en_EN','es_ES']
     ),
     'router' => array(
         'router_class' => LocaleTreeRouteStack::class,
         'frontend_routes_locale' => array(
-            'change_language' => array(
-                'type'    => 'Literal',
-                'options' => array(
-                    'route'    => '/change-lang',
-                ),
-                'may_terminate' => false,
-                'child_routes' => array(
-                    'detail' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:lang]',
-                            'constraints' => array(
-                                'lang'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                                '__NAMESPACE__' => 'Application\Controller',
-                                'controller'    => 'Application',
-                                'action'        => 'changeLanguage',
-                            ),
-                        ),
-                    ),
-                )
-            ),
-            'home' => array(
-                'type'    => 'Literal',
+            'lang' => array(
+                'type'    => 'Segment',
                 'options' => array(
                     'route'    => array(
-                        'es_ES' => '/',
-                        'en_EN' => '/',
+                        'es_ES' => '/[:lang]',
+                        'en_EN' => '/[:lang]',
+                    ),
+                    'constraints' => array(
+                        'lang' => "es_es|en_en"
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'Application\Controller',
@@ -58,172 +38,174 @@ return array(
                     ),
                 ),
                 'may_terminate' => true,
-            ),
-            'jobs' => array(
-                'type'    => 'Literal',
-                'options' => array(
-                    'route'    => array(
-                        'es_ES' => '/trabajos',
-                        'en_EN' => '/works',
-                    ),
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Job',
-                        'action'        => 'index',
-                    ),
-                ),
-                'may_terminate' => true,
                 'child_routes' => array(
-                    'category' => array(
-                        'type'    => 'Segment',
-                        'may_terminate' => true,
-                        'options' => array(
-                            'route' => '/[:slug-category]',
-                            'constraints' => array(
-                                'slug-category' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                                '__NAMESPACE__' => 'Application\Controller',
-                                'controller'    => 'Job',
-                                'action'        => 'category',
-                            ),
-                        ),
-                        'child_routes' => array(
-                            'detail' => array(
-                                'type'    => 'Segment',
-                                'options' => array(
-                                    'route'    => '/[:slug-title]',
-                                    'constraints' => array(
-                                        'slug-title'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                    ),
-                                    'defaults' => array(
-                                        '__NAMESPACE__' => 'Application\Controller',
-                                        'controller'    => 'Job',
-                                        'action'        => 'detail',
-                                    ),
-                                ),
-                            ),
-                        )
-                    ),
-                ),
-            ),
-            'blog' => array(
-                'type'    => 'Literal',
-                'options' => array(
-                    'route'    => '/blog',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Blog',
-                        'action'        => 'index',
-                    ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'category' => array(
-                        'type'    => 'Segment',
-                        'may_terminate' => true,
-                        'options' => array(
-                            'route'    => '/[:slug-category]',
-                            'constraints' => array(
-                                'slug-category' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                                '__NAMESPACE__' => 'Application\Controller',
-                                'controller'    => 'Blog',
-                                'action'        => 'category',
-                            ),
-                        ),
-                        'child_routes' => array(
-                            'detail' => array(
-                                'type'    => 'Segment',
-                                'options' => array(
-                                    'route'    => '/[:slug-title]',
-                                    'constraints' => array(
-                                        'slug-title'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                    ),
-                                    'defaults' => array(
-                                        '__NAMESPACE__' => 'Application\Controller',
-                                        'controller'    => 'Blog',
-                                        'action'        => 'detail',
-                                    ),
-                                ),
-                            ),
-                        )
-                    ),
-                ),
-            ),
-            'company' => array(
-                'type'    => 'Literal',
-                'options' => array(
-                    'route'    => array(
-                        'es_ES' => '/empresa',
-                        'en_EN' => '/company',
-                    ),
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Company',
-                        'action'        => 'index',
-                    ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'collaborators' => array(
+                    'company' => array(
                         'type'    => 'Literal',
                         'options' => array(
                             'route'    => array(
-                                'es_ES' => '/colaboradores',
-                                'en_EN' => '/colaborators',
+                                'es_ES' => '/empresa',
+                                'en_EN' => '/company',
                             ),
                             'defaults' => array(
                                 '__NAMESPACE__' => 'Application\Controller',
                                 'controller'    => 'Company',
-                                'action'        => 'collaborators',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'collaborators' => array(
+                                'type'    => 'Literal',
+                                'options' => array(
+                                    'route'    => array(
+                                        'es_ES' => '/colaboradores',
+                                        'en_EN' => '/colaborators',
+                                    ),
+                                    'defaults' => array(
+                                        '__NAMESPACE__' => 'Application\Controller',
+                                        'controller'    => 'Company',
+                                        'action'        => 'collaborators',
+                                    ),
+                                ),
+                                'may_terminate' => true,
+                            ),
+                        )
+                    ),
+                    'jobs' => array(
+                        'type'    => 'Literal',
+                        'options' => array(
+                            'route'    => array(
+                                'es_ES' => '/trabajos',
+                                'en_EN' => '/works',
+                            ),
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Application\Controller',
+                                'controller'    => 'Job',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'category' => array(
+                                'type'    => 'Segment',
+                                'may_terminate' => true,
+                                'options' => array(
+                                    'route' => '/[:slug-category]',
+                                    'constraints' => array(
+                                        'slug-category' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    ),
+                                    'defaults' => array(
+                                        '__NAMESPACE__' => 'Application\Controller',
+                                        'controller'    => 'Job',
+                                        'action'        => 'category',
+                                    ),
+                                ),
+                                'child_routes' => array(
+                                    'detail' => array(
+                                        'type'    => 'Segment',
+                                        'options' => array(
+                                            'route'    => '/[:slug-title]',
+                                            'constraints' => array(
+                                                'slug-title'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                            ),
+                                            'defaults' => array(
+                                                '__NAMESPACE__' => 'Application\Controller',
+                                                'controller'    => 'Job',
+                                                'action'        => 'detail',
+                                            ),
+                                        ),
+                                    ),
+                                )
+                            ),
+                        ),
+                    ),
+                    'blog' => array(
+                        'type'    => 'Literal',
+                        'options' => array(
+                            'route'    => '/blog',
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Application\Controller',
+                                'controller'    => 'Blog',
+                                'action'        => 'index',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'category' => array(
+                                'type'    => 'Segment',
+                                'may_terminate' => true,
+                                'options' => array(
+                                    'route'    => '/[:slug-category]',
+                                    'constraints' => array(
+                                        'slug-category' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    ),
+                                    'defaults' => array(
+                                        '__NAMESPACE__' => 'Application\Controller',
+                                        'controller'    => 'Blog',
+                                        'action'        => 'category',
+                                    ),
+                                ),
+                                'child_routes' => array(
+                                    'detail' => array(
+                                        'type'    => 'Segment',
+                                        'options' => array(
+                                            'route'    => '/[:slug-title]',
+                                            'constraints' => array(
+                                                'slug-title'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                            ),
+                                            'defaults' => array(
+                                                '__NAMESPACE__' => 'Application\Controller',
+                                                'controller'    => 'Blog',
+                                                'action'        => 'detail',
+                                            ),
+                                        ),
+                                    ),
+                                )
+                            ),
+                        ),
+                    ),
+                    'contact' => array(
+                        'type'    => 'Literal',
+                        'options' => array(
+                            'route'    => array(
+                                'es_ES' => '/contacto',
+                                'en_EN' => '/contact',
+                            ),
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Application\Controller',
+                                'controller'    => 'Contact',
+                                'action'        => 'index',
                             ),
                         ),
                         'may_terminate' => true,
                     ),
-                )
-            ),
-            'contact' => array(
-                'type'    => 'Literal',
-                'options' => array(
-                    'route'    => array(
-                        'es_ES' => '/contacto',
-                        'en_EN' => '/contact',
-                    ),
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Contact',
-                        'action'        => 'index',
-                    ),
-                ),
-                'may_terminate' => true,
-            ),
-            'legal' => array(
-                'type'    => 'Literal',
-                'options' => array(
-                    'route'    => array(
-                        'es_ES' => '/legales',
-                        'en_EN' => '/legal',
-                    ),
-                ),
-                'may_terminate' => false,
-                'child_routes' => array(
-                    'page' => array(
-                        'type'    => 'Segment',
+                    'legal' => array(
+                        'type'    => 'Literal',
                         'options' => array(
-                            'route'    => '/[:legal-page]',
-                            'constraints' => array(
-                                'legal-page'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                                '__NAMESPACE__' => 'Application\Controller',
-                                'controller'    => 'Legal',
-                                'action'        => 'index',
+                            'route'    => array(
+                                'es_ES' => '/legales',
+                                'en_EN' => '/legal',
                             ),
                         ),
+                        'may_terminate' => false,
+                        'child_routes' => array(
+                            'page' => array(
+                                'type'    => 'Segment',
+                                'options' => array(
+                                    'route'    => '/[:legal-page]',
+                                    'constraints' => array(
+                                        'legal-page'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    ),
+                                    'defaults' => array(
+                                        '__NAMESPACE__' => 'Application\Controller',
+                                        'controller'    => 'Legal',
+                                        'action'        => 'index',
+                                    ),
+                                ),
+                            ),
+                        )
                     ),
-                )
+                ),
             ),
         )
     ),
