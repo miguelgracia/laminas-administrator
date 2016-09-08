@@ -20,6 +20,18 @@ return array(
     ),
     'router' => array(
         'router_class' => LocaleTreeRouteStack::class,
+        'home' => array(
+            'type'    => 'Literal',
+            'options' => array(
+                'route'    => '/',
+                'defaults' => array(
+                    '__NAMESPACE__' => 'Application\Controller',
+                    'controller'    => 'Home',
+                    'action'        => 'index',
+                ),
+            ),
+            'may_terminate' => true,
+        ),
         'frontend_routes_locale' => array(
             'lang' => array(
                 'type'    => 'Segment',

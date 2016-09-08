@@ -64,21 +64,7 @@ class LocaleTreeRouteStack extends TranslatorAwareTreeRouteStack
             }
         }
 
-
-        $routerConfig = array(
-            'home' => array(
-                'type'    => 'Literal',
-                'options' => array(
-                    'route'    => '/',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Home',
-                        'action'        => 'index',
-                    ),
-                ),
-                'may_terminate' => true,
-            ),
-        ) + $langChildRoutes;
+        $routerConfig = array('home' => $config['router']['home']) + $langChildRoutes;
 
         $this->addRoutes($routerConfig);
     }
