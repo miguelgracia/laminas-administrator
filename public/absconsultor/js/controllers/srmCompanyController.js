@@ -2,7 +2,7 @@ import simpleJSRoutingManager from './../simple-js-routing-manager';
 
 function srmCompanyController() {
 
-    this.index = function() {
+    this.indexAction = function() {
 
         $("#collaborators_carousel").owlCarousel({
 
@@ -13,6 +13,10 @@ function srmCompanyController() {
             itemsDesktopSmall : [979,3]
 
         });
+    };
+
+    this.collaboratorsAction = function() {
+
     };
 }
 simpleJSRoutingManager.srmController(srmCompanyController);

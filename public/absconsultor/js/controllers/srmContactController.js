@@ -2,9 +2,8 @@ import simpleJSRoutingManager from './../simple-js-routing-manager';
 
 function srmContactController() {
 
-    this.index = function() {
+    this.indexAction = function() {
 
-        console.log('Contact controller');
     };
 }
 simpleJSRoutingManager.srmController(srmContactController);

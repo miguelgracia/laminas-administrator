@@ -2,7 +2,7 @@ import simpleJSRoutingManager from './../simple-js-routing-manager';
 
 function srmHomeController() {
 
-    this.index = function() {
+    this.indexAction = function() {
 
         var $slides = $('.bxslider'), video;
 

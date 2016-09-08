@@ -2,7 +2,9 @@ import simpleJSRoutingManager from './../simple-js-routing-manager';
 
 function srmJobController() {
 
-    this.detail = function() {
+    this.indexAction = function() {};
+
+    this.detailAction = function() {
 
         $("#owl_carousel").owlCarousel({
 

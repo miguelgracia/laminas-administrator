@@ -2,9 +2,9 @@
 
 namespace Application\Router\Http;
 
-use Zend\Mvc\Router\Http\TranslatorAwareTreeRouteStack;
+use Zend\Mvc\Router\Http\TreeRouteStack;
 
-class LocaleTreeRouteStack extends TranslatorAwareTreeRouteStack
+class LocaleTreeRouteStack extends TreeRouteStack
 {
     protected $serviceLocator;
 
@@ -22,12 +22,11 @@ class LocaleTreeRouteStack extends TranslatorAwareTreeRouteStack
                         $constraint = $constraint[$webLanguage];
                     }
                 }
-                //$routeConfig['options']['route'] = $routeConfig['options']['route'][$webLanguage];
             }
         }
     }
 
-    public function init()
+    protected function init()
     {
         parent::init();
 
@@ -44,7 +43,7 @@ class LocaleTreeRouteStack extends TranslatorAwareTreeRouteStack
 
         $hostLanguages = $config['languages_by_host'][$host];
 
-        //comprobamos que en la url tenemos el segmento (y solo ese segmento) de idioma. Ninguno más.
+        //comprobamos que en la url tenemos el segmento (y solo ese segmento) de idioma. Ninguno mÃ¡s.
         preg_match("/^\/((\w{2})_(\w{2}))\/*$/", $uri->getPath(), $langArray);
 
 
