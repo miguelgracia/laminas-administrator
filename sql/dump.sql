@@ -28,11 +28,11 @@ CREATE TABLE `admin_menus` (
   `action` varchar(255) DEFAULT NULL,
   `order` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=230 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=utf8;
 
 /*Data for the table `admin_menus` */
 
-insert  into `admin_menus`(`id`,`admin_module_id`,`parent`,`title`,`action`,`order`) values (2,0,0,'Administrador','',7),(201,2,2,'Valores Generales','index',3),(202,3,2,'Usuarios','index',1),(203,4,2,'Perfil','index',4),(205,6,2,'Menú','index',2),(206,19,2,'Módulos','index',5),(207,0,0,'Blog','',3),(208,20,207,'Listado','index',1),(209,20,207,'Nueva entrada','add',2),(214,1,0,'Home','index',1),(215,24,0,'Media','index',5),(216,26,0,'Megabanners','index',4),(217,23,207,'Categorías','index',3),(218,27,0,'Páginas Legales','index',6),(219,28,0,'Trabajos','index',2),(220,29,219,'Categorías','index',3),(221,28,219,'Listado','index',1),(222,28,219,'Nuevo Trabajo','add',2),(224,0,0,'Web Menú','',0),(225,30,224,'Listado','index',0),(226,30,224,'Nueva sección','add',0),(227,32,2,'Idiomas','index',6),(228,0,0,'Modulos Home','',0),(229,33,228,'Listado','index',0);
+insert  into `admin_menus`(`id`,`admin_module_id`,`parent`,`title`,`action`,`order`) values (2,0,0,'Administrador','',7),(201,2,2,'Valores Generales','index',3),(202,3,2,'Usuarios','index',1),(203,4,2,'Perfil','index',4),(205,6,2,'Menú','index',2),(206,19,2,'Módulos','index',5),(207,0,0,'Blog','',3),(208,20,207,'Listado','index',1),(209,20,207,'Nueva entrada','add',2),(214,1,0,'Home','index',1),(215,24,0,'Media','index',5),(216,26,0,'Megabanners','index',4),(217,23,207,'Categorías','index',3),(218,27,0,'Páginas Legales','index',6),(219,28,0,'Trabajos','index',2),(220,29,219,'Categorías','index',3),(221,28,219,'Listado','index',1),(222,28,219,'Nuevo Trabajo','add',2),(224,0,0,'Web Menú','',0),(225,30,224,'Listado','index',0),(226,30,224,'Nueva sección','add',0),(227,32,2,'Idiomas','index',6),(228,0,0,'Modulos Home','',0),(229,33,228,'Listado','index',0),(230,34,0,'Datos Web','index',0);
 
 /*Table structure for table `admin_modules` */
 
@@ -44,11 +44,11 @@ CREATE TABLE `admin_modules` (
   `public_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombreZend` (`zend_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 
 /*Data for the table `admin_modules` */
 
-insert  into `admin_modules`(`id`,`zend_name`,`public_name`) values (1,'home','home'),(2,'configuration','Valores de configuración'),(3,'user','User'),(4,'profile','Perfiles'),(6,'menu','Entradas de menú'),(19,'module','Module'),(20,'blog','blog'),(23,'blog-category','blog-category'),(24,'media','media'),(26,'megabanner','megabanner'),(27,'static-page','static-page'),(28,'job','job'),(29,'job-category','job-category'),(30,'section','section'),(31,'job-video','job-video'),(32,'language','language'),(33,'home-module','home-module');
+insert  into `admin_modules`(`id`,`zend_name`,`public_name`) values (1,'home','home'),(2,'configuration','Valores de configuración'),(3,'user','User'),(4,'profile','Perfiles'),(6,'menu','Entradas de menú'),(19,'module','Module'),(20,'blog','blog'),(23,'blog-category','blog-category'),(24,'media','media'),(26,'megabanner','megabanner'),(27,'static-page','static-page'),(28,'job','job'),(29,'job-category','job-category'),(30,'section','section'),(31,'job-video','job-video'),(32,'language','language'),(33,'home-module','home-module'),(34,'app-data','app-data');
 
 /*Table structure for table `admin_profiles` */
 
@@ -91,6 +91,45 @@ CREATE TABLE `admin_users` (
 /*Data for the table `admin_users` */
 
 insert  into `admin_users`(`id`,`admin_profile_id`,`username`,`password`,`validado`,`active`,`created_at`,`updated_at`,`deleted_at`,`last_login`) values (1,1,'dreamsite','e10adc3949ba59abbe56e057f20f883e',1,'1','2016-01-13 12:42:11',NULL,NULL,'2016-04-22 09:33:56'),(3,4,'admin','e10adc3949ba59abbe56e057f20f883e',1,'1','2016-03-29 12:05:16',NULL,NULL,'2016-04-18 17:45:34');
+
+/*Table structure for table `app_datas` */
+
+DROP TABLE IF EXISTS `app_datas`;
+
+CREATE TABLE `app_datas` (
+  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `facebook` varchar(100) COLLATE utf8_unicode_ci DEFAULT '',
+  `twitter` varchar(100) COLLATE utf8_unicode_ci DEFAULT '',
+  `google_plus` varchar(100) COLLATE utf8_unicode_ci DEFAULT '',
+  `instagram` varchar(100) COLLATE utf8_unicode_ci DEFAULT '',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `app_datas` */
+
+insert  into `app_datas`(`id`,`key`,`facebook`,`twitter`,`google_plus`,`instagram`,`created_at`,`updated_at`,`deleted_at`) values (1,'Appdata','http://www.facebook.com/absonsultor.es','http://www.twitter.com','http://google.es','http://instagram.com','2016-09-09 11:57:17',NULL,NULL);
+
+/*Table structure for table `app_datas_locales` */
+
+DROP TABLE IF EXISTS `app_datas_locales`;
+
+CREATE TABLE `app_datas_locales` (
+  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `related_table_id` tinyint(3) unsigned NOT NULL,
+  `company_info` text COLLATE utf8_unicode_ci,
+  `email` varchar(100) COLLATE utf8_unicode_ci DEFAULT '',
+  `phone` varchar(50) COLLATE utf8_unicode_ci DEFAULT '',
+  `language_id` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `app_datas_locales` */
+
+insert  into `app_datas_locales`(`id`,`related_table_id`,`company_info`,`email`,`phone`,`language_id`) values (1,1,'<p>asdf</p>\r\n','info@absconsultor.com','dfas',1),(2,1,'<p>asdf</p>\r\n','info@absconsultor.es','asdf',2);
 
 /*Table structure for table `blog_categories` */
 
@@ -196,127 +235,6 @@ CREATE TABLE `estadisticaslogins` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `estadisticaslogins` */
-
-/*Table structure for table `gestor_controlador` */
-
-DROP TABLE IF EXISTS `gestor_controlador`;
-
-CREATE TABLE `gestor_controlador` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre_zend` varchar(255) NOT NULL,
-  `nombre_usable` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `nombreZend` (`nombre_zend`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
-
-/*Data for the table `gestor_controlador` */
-
-insert  into `gestor_controlador`(`id`,`nombre_zend`,`nombre_usable`) values (1,'home','home'),(2,'configuration','Valores de configuración'),(3,'user','Usuarios del gestor'),(4,'profile','Perfiles'),(6,'menu','Entradas de menú'),(19,'controller','Controladores');
-
-/*Table structure for table `gestor_menu` */
-
-DROP TABLE IF EXISTS `gestor_menu`;
-
-CREATE TABLE `gestor_menu` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `gestor_module_id` int(11) unsigned DEFAULT NULL,
-  `padre` int(11) DEFAULT NULL,
-  `texto` varchar(255) DEFAULT NULL,
-  `accion` varchar(255) DEFAULT NULL,
-  `orden` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=221 DEFAULT CHARSET=utf8;
-
-/*Data for the table `gestor_menu` */
-
-insert  into `gestor_menu`(`id`,`gestor_module_id`,`padre`,`texto`,`accion`,`orden`) values (2,0,0,'Configuración','',90),(201,2,2,'Valores Generales','index',3),(202,3,2,'Usuarios','index',2),(203,4,2,'Perfil','index',4),(205,6,2,'Menú','index',1),(206,19,2,'Módulos','index',5),(207,0,0,'Blog','',1),(208,20,207,'Listado','index',1),(209,20,207,'Nueva entrada','add',1),(210,0,0,'Categorías de Blog','',1),(211,23,210,'Listado','index',1),(214,1,0,'Home','index',0),(215,24,0,'Media','index',0),(216,26,0,'Megabanners','index',0),(217,23,207,'Categorías','index',0),(218,27,0,'Páginas Estáticas','index',0),(219,0,0,'Trabajos','',0),(220,28,219,'Listado','index',0);
-
-/*Table structure for table `gestor_modules` */
-
-DROP TABLE IF EXISTS `gestor_modules`;
-
-CREATE TABLE `gestor_modules` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre_zend` varchar(255) NOT NULL,
-  `nombre_usable` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `nombreZend` (`nombre_zend`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
-
-/*Data for the table `gestor_modules` */
-
-insert  into `gestor_modules`(`id`,`nombre_zend`,`nombre_usable`) values (1,'home','home'),(2,'configuration','Valores de configuración'),(3,'user','User'),(4,'profile','Perfiles'),(6,'menu','Entradas de menú'),(19,'module','Module'),(20,'blog','blog'),(23,'blog-category','blog-category'),(24,'media','media'),(26,'megabanner','megabanner'),(27,'static-page','static-page'),(28,'job','job');
-
-/*Table structure for table `gestor_modules_locale` */
-
-DROP TABLE IF EXISTS `gestor_modules_locale`;
-
-CREATE TABLE `gestor_modules_locale` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `gestor_modules_id` int(10) unsigned NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `locale` varchar(5) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `nombreZend` (`gestor_modules_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*Data for the table `gestor_modules_locale` */
-
-/*Table structure for table `gestor_perfiles` */
-
-DROP TABLE IF EXISTS `gestor_perfiles`;
-
-CREATE TABLE `gestor_perfiles` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `key` varchar(50) NOT NULL,
-  `nombre` varchar(255) NOT NULL,
-  `descripcion` text NOT NULL,
-  `es_admin` tinyint(4) DEFAULT '0',
-  `permisos` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
-/*Data for the table `gestor_perfiles` */
-
-insert  into `gestor_perfiles`(`id`,`key`,`nombre`,`descripcion`,`es_admin`,`permisos`) values (1,'','Superadmin','Administrador de la plataforma',1,'[]'),(2,'','Coordinador','Usuario normal de la plataforma',0,'[\"home.index\",\"configuration.index\",\"user.index\",\"profile.add\",\"profile.delete\",\"menu.index\"]'),(3,'','Director de Relacion','descripcion',0,'[\"user.edit\",\"menu.index\",\"menu.edit\"]'),(4,'','Administrador','Administrador',1,'[\"user.index\",\"profile.add\",\"menu.add\",\"menu.saveOrder\",\"menu.delete\"]');
-
-/*Table structure for table `gestor_permisos` */
-
-DROP TABLE IF EXISTS `gestor_permisos`;
-
-CREATE TABLE `gestor_permisos` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `gestor_perfil_id` int(11) unsigned NOT NULL,
-  `gestor_controlador_id` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=154 DEFAULT CHARSET=utf8;
-
-/*Data for the table `gestor_permisos` */
-
-insert  into `gestor_permisos`(`id`,`gestor_perfil_id`,`gestor_controlador_id`) values (152,4,1),(153,2,1);
-
-/*Table structure for table `gestor_usuarios` */
-
-DROP TABLE IF EXISTS `gestor_usuarios`;
-
-CREATE TABLE `gestor_usuarios` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `gestor_perfil_id` int(11) unsigned NOT NULL,
-  `login` varchar(255) NOT NULL,
-  `password` varchar(32) NOT NULL,
-  `validado` tinyint(4) DEFAULT '0',
-  `active` enum('0','1') DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `last_login` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `login` (`login`)
-) ENGINE=InnoDB AUTO_INCREMENT=3809 DEFAULT CHARSET=utf8;
-
-/*Data for the table `gestor_usuarios` */
-
-insert  into `gestor_usuarios`(`id`,`gestor_perfil_id`,`login`,`password`,`validado`,`active`,`created_at`,`updated_at`,`deleted_at`,`last_login`) values (1,1,'dreamsite','e10adc3949ba59abbe56e057f20f883e',1,'1','2016-01-13 12:42:11',NULL,NULL,'2016-04-22 09:33:56'),(3,4,'entropy','698d51a19d8a121ce581499d7b701668',1,'1','2016-03-29 12:05:16',NULL,NULL,'2016-04-18 17:45:34'),(4,4,'bbvaaaar','8f14e45fceea167a5a36dedd4bea2543',1,'1','2016-03-30 18:13:54',NULL,NULL,'2016-04-13 17:18:48'),(3797,3,'U502562','e10adc3949ba59abbe56e057f20f883e',1,'1','2016-03-29 12:29:19',NULL,NULL,'2016-04-19 14:34:46'),(3799,2,'usercitot','310dcbbf4cce62f762a2aaa148d556bd',1,'1','2016-04-21 11:54:07',NULL,NULL,'2016-04-21 16:55:16'),(3806,1,'tuuuu','e10adc3949ba59abbe56e057f20f883e',0,'1','2016-05-28 18:33:38',NULL,NULL,NULL),(3807,1,'megauser4444','00b7691d86d96aebd21dd9e138f90840',0,'1','0000-00-00 00:00:00',NULL,NULL,'0000-00-00 00:00:00'),(3808,10,'caca','0aeb773c5cebbcb9c04213b978490cdf',0,'0','2016-06-01 11:18:02',NULL,NULL,NULL);
 
 /*Table structure for table `historico_login` */
 
@@ -470,15 +388,15 @@ DROP TABLE IF EXISTS `languages`;
 
 CREATE TABLE `languages` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` char(49) CHARACTER SET utf8 DEFAULT NULL,
-  `code` char(2) CHARACTER SET utf8 DEFAULT NULL,
-  `active` enum('0','1') COLLATE utf8_bin DEFAULT '0',
+  `name` char(49) CHARACTER SET utf8 NOT NULL,
+  `code` char(5) CHARACTER SET utf8 NOT NULL,
+  `active` enum('0','1') COLLATE utf8_bin NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `languages` */
 
-insert  into `languages`(`id`,`name`,`code`,`active`) values (1,'English','en','1'),(2,'Spanish','es','1');
+insert  into `languages`(`id`,`name`,`code`,`active`) values (1,'English','en_EN','1'),(2,'Spanish','es_ES','1');
 
 /*Table structure for table `media` */
 
@@ -556,7 +474,7 @@ CREATE TABLE `sections` (
 
 /*Data for the table `sections` */
 
-insert  into `sections`(`id`,`key`,`position`,`active`,`created_at`,`updated_at`,`deleted_at`) values (1,'Empresa','header','1','2016-07-12 23:40:57','0000-00-00 00:00:00','0000-00-00 00:00:00'),(2,'Trabajos','header','1','2016-09-05 23:54:24','0000-00-00 00:00:00','0000-00-00 00:00:00'),(3,'Blog','header','0','2016-09-05 23:55:24','0000-00-00 00:00:00','0000-00-00 00:00:00'),(4,'Contacto','header','1','2016-09-05 23:56:19','0000-00-00 00:00:00','0000-00-00 00:00:00');
+insert  into `sections`(`id`,`key`,`position`,`active`,`created_at`,`updated_at`,`deleted_at`) values (1,'company','header','1','2016-07-12 23:40:57','0000-00-00 00:00:00','0000-00-00 00:00:00'),(2,'jobs','header','1','2016-09-05 23:54:24','0000-00-00 00:00:00','0000-00-00 00:00:00'),(3,'blog','header','0','2016-09-05 23:55:24','0000-00-00 00:00:00','0000-00-00 00:00:00'),(4,'Contacto','header','1','2016-09-05 23:56:19','0000-00-00 00:00:00','0000-00-00 00:00:00');
 
 /*Table structure for table `sections_locales` */
 
