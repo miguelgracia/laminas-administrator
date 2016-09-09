@@ -38,11 +38,11 @@ class AdministratorResultSet extends HydratingResultSet
 
     private function removeHiddenProperties(&$row)
     {
-        if ($row) {
-            foreach ($this->hiddenProperties as $hiddenProperty) {
-                if (array_key_exists($hiddenProperty, $row)) {
-                    unset($row[$hiddenProperty]);
-                }
+        foreach ($this->hiddenProperties as $hiddenProperty) {
+            if (is_array($row) and array_key_exists($hiddenProperty, $row)) {
+                unset($row[$hiddenProperty]);
+            } elseif(is_object($row) and property_exists($row, $hiddenProperty)) {
+                unset($row->{$hiddenProperty});
             }
         }
     }
@@ -51,6 +51,8 @@ class AdministratorResultSet extends HydratingResultSet
     {
         $this->fieldFetchPrimaryColumn = $primaryColumn;
         $this->fieldFetchSecondaryColumn = $secondaryColumn;
+
+        return $this;
     }
 
     /**
@@ -77,6 +79,8 @@ class AdministratorResultSet extends HydratingResultSet
 
                     if (!is_null($this->fieldFetchSecondaryColumn) and isset($currentRow[$this->fieldFetchSecondaryColumn])) {
                         $return[$currentIndex][$currentRow[$this->fieldFetchSecondaryColumn]] = $currentRow;
+                    } else {
+                        $return[$currentIndex] = $currentRow;
                     }
                 } else {
                     $return[$currentIndex] = $currentRow;
@@ -90,13 +94,50 @@ class AdministratorResultSet extends HydratingResultSet
      * Devuelve los resultados en un array de objetos.
      * @return array
      */
-    public function toObjectArray()
+    public function toObjectArray(&$return = [])
     {
-        $result = array();
-        foreach ($this as $row) {
-            $result[] = $row;
+        $setRow = function ($row, $primaryIndex, $secondaryIndex = null) use(&$return) {
+
+            if ($secondaryIndex !== null) {
+                if (is_object($return)) {
+                    if (!property_exists($return, $primaryIndex)) {
+                        $return->{$primaryIndex} = new \stdClass();
+                    }
+                    $return->{$primaryIndex}->{$secondaryIndex} = $row;
+                } else {
+                    $return[$primaryIndex][$secondaryIndex] = $row;
+                }
+            } else {
+                if (is_object($return)) {
+                    $return->{$primaryIndex} = $row;
+                } else {
+                    $return[$primaryIndex] = $row;
+                }
+            }
+        };
+
+        foreach ($this as $currentIndex => $row) {
+
+            $currentRow = $this->setCurrentRowObject($row);
+
+            $this->removeHiddenProperties($currentRow);
+
+            if (!is_null($currentRow)) {
+
+                $funcParams = array($currentRow, $currentIndex);
+
+                if (!is_null($this->fieldFetchPrimaryColumn) and isset($currentRow->{$this->fieldFetchPrimaryColumn})) {
+                    $funcParams[1] = $currentRow->{$this->fieldFetchPrimaryColumn};
+
+                    if (!is_null($this->fieldFetchSecondaryColumn) and isset($currentRow->{$this->fieldFetchSecondaryColumn})) {
+                        $funcParams[] = $currentRow->{$this->fieldFetchSecondaryColumn};
+                    }
+                }
+
+                call_user_func_array($setRow,$funcParams);
+            }
         }
-        return $result;
+        return $return;
     }
 
     public function toKeyValueArray($key, $value = array())
@@ -132,6 +173,19 @@ class AdministratorResultSet extends HydratingResultSet
         } else {
             throw new Exception\RuntimeException(
                 'Rows as part of this DataSource, with type ' . gettype($row) . ' cannot be cast to an array'
+            );
+        }
+
+        return $currentRow;
+    }
+
+    private function setCurrentRowObject($row)
+    {
+        if (method_exists($row, 'getObjectCopy')) {
+            $currentRow = $row->getObjectCopy();
+        } else {
+            throw new Exception\RuntimeException(
+                'Rows as part of this DataSource, with type ' . gettype($row) . ' cannot be cast to an object'
             );
         }
 

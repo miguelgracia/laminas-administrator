@@ -40,14 +40,14 @@ class AppDataFieldset extends AdministratorFieldset
         $social = array(
             'facebook',
             'twitter',
-            'google_plus',
+            'googlePlus',
             'instagram'
         );
 
         array_walk($social, function ($value) use(&$inputFilter,$urlValidator) {
             $inputFilter[$value]['validators'][] = $urlValidator;
         });
-        
+
         return  $inputFilter;
     }
 }

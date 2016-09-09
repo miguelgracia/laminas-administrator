@@ -48,10 +48,12 @@ class LocaleTreeRouteStack extends TreeRouteStack
 
 
         if (count($langArray) > 0 and preg_grep("/".$langArray[1]."/i",$hostLanguages)) {
-            $session->lang = $langArray[2] . '_' . strtoupper($langArray[2]);
+            $currentLang = $langArray[2] . '_' . strtoupper($langArray[2]);
         } else {
-            $session->lang = $hostLanguages[0];
+            $currentLang = $hostLanguages[0];
         }
+
+        $session->lang = $currentLang;
 
         $langChildRoutes = array();
 
@@ -63,7 +65,9 @@ class LocaleTreeRouteStack extends TreeRouteStack
             }
         }
 
-        $routerConfig = array('home' => $config['router']['home']) + $langChildRoutes;
+        $config['router']['home']['options']['defaults']['lang'] = $currentLang;
+
+        $routerConfig = $langChildRoutes + array('home' => $config['router']['home']);
 
         $this->addRoutes($routerConfig);
     }
