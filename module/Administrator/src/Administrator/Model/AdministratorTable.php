@@ -101,21 +101,26 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
         return $rowset;
     }
 
-    public function findLocales($id)
+    public function findLocales($id = false, $addLanguageCode = true)
     {
         $tableLocale = $this->table;
 
         $key = $this->relatedKey;
 
-        $resultSet = $this->select(function (Select $select) use($id, $key, $tableLocale){
+        $languageFields = array(
+            "language_id" => "id"
+        );
+
+        if ($addLanguageCode) {
+            $languageFields["language_code"] = 'code';
+        }
+
+        $resultSet = $this->select(function (Select $select) use($id, $key, $tableLocale,$languageFields){
             $select
                 ->join(
                 'languages',
-                new Expression("languages.id = $tableLocale.language_id AND $key = $id"),
-                array(
-                    "language_id" => "id",
-                    "language_code" => 'code'
-                ),
+                new Expression("languages.id = $tableLocale.language_id " . ($id ? "AND $key = $id" : '')),
+                $languageFields,
                 Select::JOIN_RIGHT
             )->where(array(
                 'languages.active' => '1'

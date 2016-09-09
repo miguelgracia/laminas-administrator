@@ -170,10 +170,10 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
                     'name' => SlugFilter::class,
                     'options' => array()
                 );
-                $filters[] = array(
+                /*$filters[] = array(
                     'name' => DashToCamelCase::class,
                     'options' => array()
-                );
+                );*/
                 break;
         }
 

@@ -187,7 +187,7 @@ class AdministratorFormService implements EventManagerAwareInterface
 
         $localeTableGateway = $this->serviceLocator->get($localeTableGatewayName);
 
-        $localeModels = $localeTableGateway->findLocales($primaryId);
+        $localeModels = $localeTableGateway->findLocales($primaryId,false);
 
         foreach ($localeModels as $localModel) {
             $localModel->relatedTableId = $primaryId;

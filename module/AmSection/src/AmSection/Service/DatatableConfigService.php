@@ -73,7 +73,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             //En fields solo tenemos que añadir los campos de la tabla indicada en 'from'
             'fields' => array(
                 'id',
-                'route_key',
+                'key',
             ),
             'from' => 'app_routes',
             'join' => array(

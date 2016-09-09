@@ -1,4 +1,6 @@
 <?php
+$menuHelper = $this->applicationMenuHelper();
+
 $this->headLink()->appendStylesheet($this->basePath('absconsultor/css/home.css'))
 ?>
 <div class="container-fluid home">
@@ -25,10 +27,7 @@ $this->headLink()->appendStylesheet($this->basePath('absconsultor/css/home.css')
 
         <img id="home_brand_logo" src="<?php echo $this->basePath('img/white-logo.png') ?>" alt="Logo ABS Consultor" class="transition brand-logo"/>
         <ul class="nav home-navbar navbar-nav transition">
-            <li><a href="/empresa">Empresa</a></li>
-            <li><a href="/trabajos">Trabajos</a></li>
-            <li><a href="/blog">Blog</a></li>
-            <li><a href="/contacto">Contacto</a></li>
+            <?=$menuHelper->render($menu,$lang);?>
         </ul>
 
         <div class="col-xs-12 hidden-sm hidden-xs">

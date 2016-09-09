@@ -15,6 +15,9 @@ class HomeController extends ApplicationController
 {
     public function indexAction()
     {
-        return new ViewModel();
+        return new ViewModel(array(
+            'lang' => $this->session->lang,
+            'menu' => $this->menu
+        ));
     }
 }

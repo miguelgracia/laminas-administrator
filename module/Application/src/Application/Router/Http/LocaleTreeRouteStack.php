@@ -43,12 +43,11 @@ class LocaleTreeRouteStack extends TreeRouteStack
 
         $hostLanguages = $config['languages_by_host'][$host];
 
-        //comprobamos que en la url tenemos el segmento (y solo ese segmento) de idioma. Ninguno más.
-        preg_match("/^\/((\w{2})_(\w{2}))\/*$/", $uri->getPath(), $langArray);
-
+        //comprobamos que en la url tenemos el segmento de idioma.
+        preg_match("/^\/((\w{2})_(\w{2}))\/*/", $uri->getPath(), $langArray);
 
         if (count($langArray) > 0 and preg_grep("/".$langArray[1]."/i",$hostLanguages)) {
-            $currentLang = $langArray[2] . '_' . strtoupper($langArray[2]);
+            $currentLang = $langArray[2] . '_' . $langArray[2];
         } else {
             $currentLang = $hostLanguages[0];
         }

@@ -13,10 +13,10 @@ use Application\Router\Http\LocaleTreeRouteStack;
 
 return array(
     'languages_by_host' => array(
-        'abs.local'          => ['es_ES','en_EN'],
-        'absconsultor.local' => ['es_ES','en_EN'],
-        'absconsultor.es'    => ['es_ES','en_EN'],
-        'absconsultor.com'   => ['en_EN','es_ES']
+        'abs.local'          => ['es_es','en_en'],
+        'absconsultor.local' => ['es_es','en_en'],
+        'absconsultor.es'    => ['es_es','en_en'],
+        'absconsultor.com'   => ['en_en','es_es']
     ),
     'router' => array(
         'router_class' => LocaleTreeRouteStack::class,
@@ -39,8 +39,8 @@ return array(
                     'route'    => '/[:lang]',
                     'constraints' => array(
                         'lang' => array(
-                            'es_ES' => 'es_es',
-                            'en_EN' => 'en_en',
+                            'es_es' => 'es_es',
+                            'en_en' => 'en_en',
                         )
                     ),
                     'defaults' => array(
@@ -57,8 +57,8 @@ return array(
                             'route'    => '/[:section]',
                             'constraints' => array(
                                 'section' => array(
-                                    'es_ES' => 'empresa',
-                                    'en_EN' => 'company',
+                                    'es_es' => 'empresa',
+                                    'en_en' => 'company',
                                 )
                             ),
                             'defaults' => array(
@@ -69,14 +69,14 @@ return array(
                         ),
                         'may_terminate' => true,
                         'child_routes' => array(
-                            'collaborators' => array(
+                            'colaborators' => array(
                                 'type'    => 'Segment',
                                 'options' => array(
                                     'route'    => '/[:colaborators]',
                                     'constraints' => array(
                                         'colaborators' => array(
-                                            'es_ES' => 'colaboradores',
-                                            'en_EN' => 'colaborators',
+                                            'es_es' => 'colaboradores',
+                                            'en_en' => 'colaborators',
                                         )
                                     ),
                                     'defaults' => array(
@@ -95,8 +95,8 @@ return array(
                             'route'    => '/[:section]',
                             'constraints' => array(
                                 'section' => array(
-                                    'es_ES' => 'trabajos',
-                                    'en_EN' => 'works',
+                                    'es_es' => 'trabajos',
+                                    'en_en' => 'works',
                                 )
                             ),
                             'defaults' => array(
@@ -191,8 +191,8 @@ return array(
                             'route'    => '/[:section]',
                             'constraints' => array(
                                 'section' => array(
-                                    'es_ES' => 'contacto',
-                                    'en_EN' => 'contact',
+                                    'es_es' => 'contacto',
+                                    'en_en' => 'contact',
                                 ),
                             ),
                             'defaults' => array(
@@ -209,8 +209,8 @@ return array(
                             'route'    => '/[:section]',
                             'constraints' => array(
                                 'section' => array(
-                                    'es_ES' => 'legales',
-                                    'en_EN' => 'legal',
+                                    'es_es' => 'legales',
+                                    'en_en' => 'legal',
                                 )
                             )
                         ),
@@ -247,7 +247,7 @@ return array(
         ),
     ),
     'translator' => array(
-        'locale' => 'es_ES',
+        'locale' => 'es_es',
         'translation_file_patterns' => array(
             array(
                 'type'     => 'gettext',

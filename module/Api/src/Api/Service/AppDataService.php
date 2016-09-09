@@ -20,8 +20,6 @@ class AppDataService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $this->serviceLocator = $serviceLocator;
-
         $this->table       = $serviceLocator->get('AmAppData\Model\AppDataTable');
         $this->tableLocale = $serviceLocator->get('AmAppData\Model\AppDataLocaleTable');
 
