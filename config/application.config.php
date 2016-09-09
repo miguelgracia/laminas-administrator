@@ -23,6 +23,7 @@ return array(
         'AmLanguage',
         'AmHomeModule',
         'AmAppData',
+        'Api',
     ),
     'hidden_modules' => array(
         'AmLogin',
