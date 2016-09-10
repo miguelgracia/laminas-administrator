@@ -2,20 +2,26 @@ TASKS
 
 - (HECHO) Implementar Links de páginas legales
 - (HECHO) Mensaje Cookies
-- Implementar Megabanner Services
-- Implementar Home Module Services
-- Implementar Sección Empresa
-- Implementar Sección colaboradores
+- (HECHO) Implementar Megabanner Services
+- (HECHO) Corregir bug en la carga de los videos del megabanner
+- (HECHO) Corregir carga de video en la primera slide
+- (HECHO) Implementar Home Module Services
+- (HECHO) Implementar Sección Empresa
+- Implementar Sección colaboradores (junto con los vínculos de la sección empresa)
 - Implementar Sección blog
 - Implementar Sección trabajos
 - Implementar Sección contacto
     - Programar envío de formulario
 - Breadcrumbs
+- Revisar cómo se genera la url del contenido que se inserta desde el plugin ckeditor
+- Probar la web sin contenido (hacer backup previo de la base de datos!!)
 - Cambiar title en función de la sección
 - Revisar responsive
+- Revisar caducidad de cookies (mensaje alerta de cookies)
 - Meta tags sociales
 - Selector de idiomas
 - Página 404
+- Minimizar el riesgo de errores en la asignación de url a los enlaces de los botones de los módulos de la home
 - Cadenas de texto administrador
 - Asignar usuarios al administrador
 - Añadir logo al módulo home del administrador

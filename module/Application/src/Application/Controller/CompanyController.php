@@ -7,10 +7,16 @@ class CompanyController extends ApplicationController
 {
     public function indexAction()
     {
-        return new ViewModel(array(
-            'menu' => $this->menu,
-            'lang' => $this->lang
-        ));
+        $menu = $this->menu;
+
+        if ($menu->rows->company->active == 1) {
+            return new ViewModel(array(
+                'menu' => $menu,
+                'lang' => $this->lang
+            ));
+        }
+
+        $this->getResponse()->setStatusCode(404);
     }
 
     public function collaboratorsAction()
