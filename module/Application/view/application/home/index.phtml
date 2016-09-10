@@ -1,6 +1,7 @@
 <?php
 $menuHelper = $this->applicationMenuHelper();
 $megabannerHelper = $this->megabannerHelper();
+$homeModuleHelper = $this->homeModuleHelper();
 
 $this->headLink()->appendStylesheet($this->basePath('absconsultor/css/home.css'))
 ?>
@@ -24,72 +25,5 @@ $this->headLink()->appendStylesheet($this->basePath('absconsultor/css/home.css')
 <hr>
 
 <div class="container">
-    <div class="row home-module">
-        <div class="col-md-6 col-xs-12">
-            <div class="owl-carousel-home">
-                <div class="item">
-                    <img class="img-responsive" src="media/maqueta/home1.png" />
-                </div>
-                <div class="item">
-                    <img class="img-responsive" src="media/maqueta/home1.png" />
-                </div>
-                <div class="item">
-                    <img class="img-responsive" src="media/maqueta/home1.png" />
-                </div>
-                <div class="item">
-                    <img class="img-responsive" src="media/maqueta/home1.png" />
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-xs-12">
-            <h2>Empresa</h2>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id nunc convallis, accumsan enim ac, convallis risus.
-                Aliquam facilisis mi lectus, nec vestibulum ipsum vestibulum nec. Curabitur tincidunt ultricies nisi eu mattis.
-                Donec blandit vitae mi vitae commodo. Ut tortor dui, vulputate et nunc et, suscipit vestibulum ipsum.
-            </p>
-            <a class="btn btn-default">+ Información</a>
-        </div>
-    </div>
-    <div class="row home-module">
-        <div class="col-md-6 col-md-push-6 col-xs-12">
-            <div class="owl-carousel-home">
-                <div class="item">
-                    <img class="img-responsive" src="media/maqueta/home2.png" />
-                </div>
-                <div class="item">
-                    <img class="img-responsive" src="media/maqueta/home2.png" />
-                </div>
-                <div class="item">
-                    <img class="img-responsive" src="media/maqueta/home2.png" />
-                </div>
-                <div class="item">
-                    <img class="img-responsive" src="media/maqueta/home2.png" />
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-md-pull-6 col-xs-12">
-            <h2>Trabajos</h2>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id nunc convallis, accumsan enim ac, convallis risus.
-                Aliquam facilisis mi lectus, nec vestibulum ipsum vestibulum nec. Curabitur tincidunt ultricies nisi eu mattis.
-                Donec blandit vitae mi vitae commodo. Ut tortor dui, vulputate et nunc et, suscipit vestibulum ipsum.
-            </p>
-            <a class="btn btn-default">+ Información</a>
-        </div>
-    </div>
-    <div class="row home-module">
-        <div class="col-md-6 col-xs-12">
-            <img class="img-responsive" src="media/maqueta/home3.png" />
-        </div>
-        <div class="col-md-6 col-xs-12">
-            <h2>Blog</h2>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id nunc convallis, accumsan enim ac, convallis risus.
-                Aliquam facilisis mi lectus, nec vestibulum ipsum vestibulum nec. Curabitur tincidunt ultricies nisi eu mattis.
-                Donec blandit vitae mi vitae commodo. Ut tortor dui, vulputate et nunc et, suscipit vestibulum ipsum.
-            </p>
-            <a class="btn btn-default">+ Información</a>
-        </div>
-    </div>
+    <?=$homeModuleHelper->render($homeModules);?>
 </div>

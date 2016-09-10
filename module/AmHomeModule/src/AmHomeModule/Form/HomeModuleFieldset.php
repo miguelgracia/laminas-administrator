@@ -15,6 +15,10 @@ class HomeModuleFieldset extends AdministratorFieldset
     {
         return array(
             'fieldValueOptions' => array(
+                'targetLink' => array(
+                    '_self' => '_self',
+                    '_blank' => '_blank'
+                ),
                 'active' => array(
                     '0' => 'NO',
                     '1' => 'SI'

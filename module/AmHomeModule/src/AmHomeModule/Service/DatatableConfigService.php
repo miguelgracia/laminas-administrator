@@ -74,6 +74,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             'fields' => array(
                 'id',
                 'key',
+                'active',
             ),
             'from' => 'home_modules',
             'join' => array(
