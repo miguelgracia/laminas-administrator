@@ -8,6 +8,9 @@ class ContactController extends ApplicationController
 {
     public function indexAction()
     {
-        return new ViewModel();
+        return new ViewModel(array(
+            'lang' => $this->lang,
+            'appData' => $this->appData
+        ));
     }
 }

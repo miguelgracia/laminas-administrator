@@ -1,3 +1,13 @@
+<?php
+$colaborators = $menu->rows['company/colaborators']['id'];
+$company = $menu->rows['company']['id'];
+
+$colaboratorUrl = $this->url($lang.'/company/colaborators',array(
+    'lang' => $lang,
+    'section' => $menu->locale->{$lang}[$company]['urlKey'],
+    'colaborators' => $menu->locale->{$lang}[$colaborators]['urlKey']
+));
+?>
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
         <ol class="breadcrumb">
@@ -57,7 +67,7 @@
         </p>
     </article>
 
-    <h3>Nuestros Colaboradores</h3>
+    <h3><a href="<?=$colaboratorUrl;?>"><?=$this->translate('Our Partners','frontend');?></a></h3>
 
     <div id="collaborators_carousel">
 

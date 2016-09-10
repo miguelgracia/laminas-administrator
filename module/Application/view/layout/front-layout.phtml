@@ -1,10 +1,11 @@
 <?php
 
 $menuHelper = $this->applicationMenuHelper();
+$socialIconHelper = $this->socialIconHelper();
 
 echo $this->doctype(); ?>
 
-<html lang="es">
+<html lang="<?=$lang?>">
     <head>
         <meta charset="utf-8">
         <?php echo $this->headTitle('ABS Consultor')->setSeparator(' - ')->setAutoEscape(false) ?>
@@ -71,19 +72,18 @@ echo $this->doctype(); ?>
                     <div class="col-md-4 text-right contact-info">
                         <div class="row">
                             <div class="col-md-12">
-                                <p>Síguenos en</p>
+                                <p><?=$this->translate('Follow us','frontend');?></p>
                                 <div class="contact-icons">
-                                    <a href="http://www.twitter.com" target="_blank"><i class="fa fa-twitter"></i></a>
-                                    <a href="http://www.facebook.com" target="_blank"><i class="fa fa-facebook-official"></i></a>
+                                    <?=$socialIconHelper->render($appData->row);?>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <p>Contáctanos</p>
+                                <p><?=$this->translate('Contact us','frontend');?></p>
                                 <div class="contact-icons">
-                                    <a class="phone" href="tel:949335808">659 666 888 <i class="social-icon fa fa-phone"></i></a>
-                                    <a class="mail" href="mailto:info@absconsultor.es">info@absconsultor.es <i class="social-icon fa fa-envelope"></i></a>
+                                    <a class="phone" href="tel:<?=$appData->locale->{$lang}->phone?>"><?=$appData->locale->{$lang}->phone?> <i class="social-icon fa fa-phone"></i></a>
+                                    <a class="mail" href="mailto:<?=$appData->locale->{$lang}->email?>"><?=$appData->locale->{$lang}->email?> <i class="social-icon fa fa-envelope"></i></a>
                                 </div>
                             </div>
                         </div>

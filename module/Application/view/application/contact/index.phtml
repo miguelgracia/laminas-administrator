@@ -17,33 +17,33 @@
                     <div class="col-md-6">
                         <form role="form">
                             <div class="form-group">
-                                <label for="name">Nombre</label>
+                                <label for="name"><?=$this->translate('Form Name','frontend');?></label>
                                 <input type="name" class="form-control" id="name">
                             </div>
 
                             <div class="form-group">
-                                <label for="email">Email</label>
+                                <label for="email"><?=$this->translate('Form Email','frontend');?></label>
                                 <input type="email" class="form-control" id="email">
                             </div>
 
                             <div class="form-group">
-                                <label for="phone">Teléfono</label>
+                                <label for="phone"><?=$this->translate('Form Phone','frontend');?></label>
                                 <input type="phone" class="form-control" id="phone">
                             </div>
 
                             <div class="form-group">
-                                <label for="text">Consulta</label>
+                                <label for="text"><?=$this->translate('Form Message','frontend');?></label>
                                 <textarea class="form-control" id="text" rows="10"></textarea>
                             </div>
 
-                            <button type="submit" class="btn btn-default">Enviar</button>
+                            <button type="submit" class="btn btn-default"><?=$this->translate('Form Send','frontend');?></button>
                         </form>
                     </div>
                     <div class="col-md-6 contact-info">
                         <div class="row">
                             <div class="col-md-12">
 
-                                <h4>REDES SOCIALES</h4>
+                                <h4><?=$this->translate('Social Networks','frontend');?></h4>
                                 <div class="contact-icons">
                                     <a href="http://www.twitter.com" target="_blank"><i class="fa fa-twitter"></i></a>
                                     <a href="http://www.facebook.com" target="_blank"><i class="fa fa-facebook-official"></i></a>
@@ -53,8 +53,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="contact-icons">
-                                    <h4>Telefono</h4><a class="phone" href="tel:949335808">659 666 888</a>
-                                    <h4>Email</h4><a class="mail" href="mailto:info@absconsultor.es">info@absconsultor.es</a>
+                                    <h4><?=$this->translate('Form Phone','frontend');?></h4><a class="phone" href="tel:<?=$appData->locale->{$lang}->phone?>"><?=$appData->locale->{$lang}->phone?></a>
+                                    <h4>Email</h4><a class="mail" href="mailto:<?=$appData->locale->{$lang}->email?>"><?=$appData->locale->{$lang}->email?></a>
                                 </div>
                             </div>
                         </div>

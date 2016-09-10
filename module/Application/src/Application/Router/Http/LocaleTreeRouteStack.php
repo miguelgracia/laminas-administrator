@@ -54,6 +54,8 @@ class LocaleTreeRouteStack extends TreeRouteStack
 
         $session->lang = $currentLang;
 
+        $this->serviceLocator->get('translator')->setLocale($currentLang);
+
         $langChildRoutes = array();
 
         foreach ($hostLanguages as $lang) {

@@ -247,7 +247,7 @@ return array(
         ),
     ),
     'translator' => array(
-        'locale' => 'es_es',
+        'locale' => 'es_ES',
         'translation_file_patterns' => array(
             array(
                 'type'     => 'gettext',
