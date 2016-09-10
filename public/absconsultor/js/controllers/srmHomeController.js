@@ -6,13 +6,18 @@ function srmHomeController() {
 
         var $slides = $('.bxslider'), video;
 
-        var bxSlider = $slides.bxSlider({
-            mode: 'fade',
-            adaptiveHeight: true,
-            pager: false,
-            preloadImages: 'all',
-            onSlideAfter: function ($slideElement, oldIndex, newIndex) {
-                var $videoWrapper = $slideElement.find('.video-wrapper'), $play, $pause;
+        var sliderEventCallbacks = function(eventType) {
+
+            return function ($slideElement, oldIndex) {
+
+                var $videoWrapper, $play, $pause;
+
+                if(eventType == 'onSliderLoad') {
+                    //la variable $slideElement, en este caso es igual al indice de la primera slide que carga
+                    $videoWrapper = $slides.eq($slideElement).find('.video-wrapper');
+                } else {
+                    $videoWrapper = $slideElement.find('.video-wrapper');
+                }
 
                 if($videoWrapper) {
 
@@ -49,7 +54,16 @@ function srmHomeController() {
                     $play.click(videoControlEvents('play'));
                     $pause.click(videoControlEvents('pause'));
                 }
-            }
+            };
+        };
+
+        var bxSlider = $slides.bxSlider({
+            mode: 'fade',
+            adaptiveHeight: true,
+            pager: false,
+            preloadImages: 'all',
+            onSliderLoad: sliderEventCallbacks('onSliderLoad'),
+            onSlideAfter: sliderEventCallbacks('onSlideAfter')
         });
 
         var $nav = $('nav');
@@ -88,6 +102,12 @@ function srmHomeController() {
             itemsDesktop : [1199,1],
             itemsDesktopSmall : [979,1],
             itemsTablet: [768, 1]
+        });
+
+        $('video').each(function(x,elem) {
+            elem.onloadeddata = function() {
+                bxSlider.reloadSlider();
+            };
         });
 
         centerLogo();
