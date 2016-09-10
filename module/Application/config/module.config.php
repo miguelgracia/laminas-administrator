@@ -219,7 +219,7 @@ return array(
                             'page' => array(
                                 'type'    => 'Segment',
                                 'options' => array(
-                                    'route'    => '/[:legal-page]',
+                                    'route'    => '/[:page]',
                                     'constraints' => array(
                                         'legal-page'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                                     ),

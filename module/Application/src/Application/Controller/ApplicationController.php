@@ -35,6 +35,7 @@ abstract class ApplicationController extends AbstractActionController
             'lang'             => $this->lang,
             'menu'             => $this->menu,
             'appData'          => $this->appData,
+            'legal'            => $this->api->staticPage->getData(),
             'srmController'    => 'srm'.$routeParams['__CONTROLLER__'].'Controller',
             'controllerAction' => $routeParams['action'].'Action',
         ]);

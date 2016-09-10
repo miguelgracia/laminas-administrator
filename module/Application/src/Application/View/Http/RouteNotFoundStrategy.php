@@ -28,6 +28,7 @@ class RouteNotFoundStrategy  extends AbstractListenerAggregate
             'lang'             => $session->lang,
             'menu'             => $api->section->getMenu(),
             'appData'          => $api->appData->getData(),
+            'legal'            => $api->staticPage->getData(),
             'srmController'    => 'srmErrorController',
             'controllerAction' => 'indexAction',
         ]);

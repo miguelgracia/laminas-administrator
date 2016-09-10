@@ -258,6 +258,10 @@ footer .contact-icons a.mail i {
     font-size: 19px;
 }
 
+footer a.legal-link {
+    margin-right: 10px;
+}
+
 .transition {
     -webkit-transition: opacity .6s ease, top .6s ease;
     -moz-transition: opacity .6s ease, top .6s ease;

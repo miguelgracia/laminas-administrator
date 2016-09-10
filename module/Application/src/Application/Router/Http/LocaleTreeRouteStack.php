@@ -8,6 +8,8 @@ class LocaleTreeRouteStack extends TreeRouteStack
 {
     protected $serviceLocator;
 
+    protected $routeConfig = array();
+
     private function setLocaleRoutes (&$route, $webLanguage) {
 
         foreach ($route as &$routeConfig) {
@@ -70,6 +72,13 @@ class LocaleTreeRouteStack extends TreeRouteStack
 
         $routerConfig = $langChildRoutes + array('home' => $config['router']['home']);
 
-        $this->addRoutes($routerConfig);
+        $this->routeConfig = $routerConfig;
+
+        $this->addRoutes($this->routeConfig);
+    }
+
+    public function getRouteConfig()
+    {
+        return $this->routeConfig;
     }
 }

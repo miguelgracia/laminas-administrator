@@ -17,6 +17,7 @@ return array(
             'Application\Api\Language'     => 'Api\Service\LanguageService',
             'Application\Api\Megabanner'   => 'Api\Service\MegabannerService',
             'Application\Api\Section'      => 'Api\Service\SectionService',
+            'Application\Api\StaticPage'   => 'Api\Service\StaticPageService',
         )
     ),
 );

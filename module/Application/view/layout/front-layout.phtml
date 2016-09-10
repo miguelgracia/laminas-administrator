@@ -1,7 +1,8 @@
 <?php
 
-$menuHelper = $this->applicationMenuHelper();
+$menuHelper       = $this->applicationMenuHelper();
 $socialIconHelper = $this->socialIconHelper();
+$legalLinkHelper  = $this->legalLinkHelper();
 
 echo $this->doctype(); ?>
 
@@ -92,7 +93,7 @@ echo $this->doctype(); ?>
 
                 <div class="row">
                     <div class="col-md-8">
-                        <a href="">Aviso Legal</a>&nbsp;&nbsp;&nbsp;<a href="">Política de privacidad</a>
+                        <?php $legalLinkHelper->render($legal,$lang);?>
                     </div>
                 </div>
             </div>

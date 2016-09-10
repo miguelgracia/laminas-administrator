@@ -46,7 +46,8 @@ class Module
         return array(
             'factories' => array(
                 'applicationMenuHelper' => 'Application\View\Helper\Menu',
-                'socialIconHelper'      => 'Application\View\Helper\SocialIcon'
+                'socialIconHelper'      => 'Application\View\Helper\SocialIcon',
+                'legalLinkHelper'       => 'Application\View\Helper\LegalLink',
             ),
         );
     }
