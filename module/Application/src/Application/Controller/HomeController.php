@@ -16,8 +16,9 @@ class HomeController extends ApplicationController
     public function indexAction()
     {
         return new ViewModel(array(
-            'lang' => $this->session->lang,
-            'menu' => $this->menu
+            'megabanners'   => $this->api->megabanner->getData($this->lang),
+            'lang'          => $this->lang,
+            'menu'          => $this->menu
         ));
     }
 }

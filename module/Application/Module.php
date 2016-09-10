@@ -48,6 +48,7 @@ class Module
                 'applicationMenuHelper' => 'Application\View\Helper\Menu',
                 'socialIconHelper'      => 'Application\View\Helper\SocialIcon',
                 'legalLinkHelper'       => 'Application\View\Helper\LegalLink',
+                'megabannerHelper'      => 'Application\View\Helper\Megabanner',
             ),
         );
     }

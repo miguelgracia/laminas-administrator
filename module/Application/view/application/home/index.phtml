@@ -1,28 +1,13 @@
 <?php
 $menuHelper = $this->applicationMenuHelper();
+$megabannerHelper = $this->megabannerHelper();
 
 $this->headLink()->appendStylesheet($this->basePath('absconsultor/css/home.css'))
 ?>
 <div class="container-fluid home">
     <div class="row">
         <ul class="bxslider">
-            <li>
-                <img src="/media/maqueta/company1.png" />
-                <div class="video-filter"></div>
-            </li>
-            <li>
-                <div class="video-wrapper">
-                    <video class="video" width="100%">
-                        <source src="/media/video/grua.mp4" type="video/mp4"/>
-                    </video>
-                    <div class="video-filter">
-                        <div class="video-controls">
-                            <i class="fa fa-play"></i>
-                            <i class="fa fa-pause hide"></i>
-                        </div>
-                    </div>
-                </div>
-            </li>
+            <?php $megabannerHelper->render($megabanners);?>
         </ul>
 
         <img id="home_brand_logo" src="<?php echo $this->basePath('img/white-logo.png') ?>" alt="Logo ABS Consultor" class="transition brand-logo"/>
