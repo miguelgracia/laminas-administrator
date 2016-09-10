@@ -33,11 +33,11 @@ class Menu extends AbstractHelper implements FactoryInterface
 
         foreach ($menu->rows as $routeKey => $m) {
 
-            if ((bool) $m['active'] and (bool)$m['visible']) {
+            if ((bool) $m->active and (bool)$m->visible) {
 
                 $route = array($lang, $routeKey);
 
-                $urlKey = $menu->locale->{$lang}[$m['id']]['urlKey'];
+                $urlKey = $menu->locale->{$lang}[$m->id]->urlKey;
 
                 $link = $url(implode('/', $route), array(
                     'lang' => strtolower($lang),
@@ -56,7 +56,7 @@ class Menu extends AbstractHelper implements FactoryInterface
                     $this->getHtmlRow(),
                     $attributes,
                     $link,
-                    $menu->locale->{$lang}[$m['id']]['name']
+                    $menu->locale->{$lang}[$m->id]->name
                 );
             }
         }

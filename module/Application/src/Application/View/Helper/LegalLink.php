@@ -20,8 +20,6 @@ class LegalLink extends AbstractHelper
             echo sprintf(
                 '<a class="legal-link" href="%s">%s</a>',
                 $url($lang.'/legal/page',array(
-                    'lang' => $lang,
-                    'section' => 'legales',
                     'page' => $locale->urlKey
                 )),
                 $locale->title

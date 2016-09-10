@@ -18,12 +18,8 @@ class LocaleTreeRouteStack extends TreeRouteStack
                 call_user_func_array([$this,'setLocaleRoutes'],array(&$routeConfig['child_routes'],$webLanguage));
             }
 
-            if (isset($routeConfig['options']['constraints'])) {
-                foreach ($routeConfig['options']['constraints'] as &$constraint) {
-                    if (is_array($constraint)) {
-                        $constraint = $constraint[$webLanguage];
-                    }
-                }
+            if (isset($routeConfig['options']['route']) and is_array($routeConfig['options']['route'])) {
+                $routeConfig['options']['route'] = $routeConfig['options']['route'][$webLanguage];
             }
         }
     }

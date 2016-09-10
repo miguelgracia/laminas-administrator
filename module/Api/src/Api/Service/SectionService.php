@@ -29,12 +29,12 @@ class SectionService implements FactoryInterface
     public function getMenu()
     {
         $rows = new ArrayObject (
-            $this->table->all(array('deleted_at' => null))->setFetchGroupResultSet('key')->toArray(),
+            $this->table->all(array('deleted_at' => null))->setFetchGroupResultSet('key')->toObjectArray(),
             ArrayObject::ARRAY_AS_PROPS
         );
 
         $locales = new ArrayObject (
-            $this->tableLocale->findLocales()->setFetchGroupResultSet('languageCode','relatedTableId')->toArray(),
+            $this->tableLocale->findLocales()->setFetchGroupResultSet('languageCode','relatedTableId')->toObjectArray(),
             ArrayObject::ARRAY_AS_PROPS
         );
 
