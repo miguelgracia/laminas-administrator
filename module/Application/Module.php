@@ -50,6 +50,7 @@ class Module
                 'legalLinkHelper'       => 'Application\View\Helper\LegalLink',
                 'megabannerHelper'      => 'Application\View\Helper\Megabanner',
                 'homeModuleHelper'      => 'Application\View\Helper\HomeModule',
+                'partnerHelper'         => 'Application\View\Helper\Partner',
             ),
         );
     }

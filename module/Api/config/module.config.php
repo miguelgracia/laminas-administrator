@@ -18,6 +18,7 @@ return array(
             'Application\Api\Megabanner'   => 'Api\Service\MegabannerService',
             'Application\Api\Section'      => 'Api\Service\SectionService',
             'Application\Api\StaticPage'   => 'Api\Service\StaticPageService',
+            'Application\Api\Partner'      => 'Api\Service\PartnerService',
         )
     ),
 );

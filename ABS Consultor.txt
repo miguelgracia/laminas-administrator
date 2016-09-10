@@ -7,13 +7,14 @@ TASKS
 - (HECHO) Corregir carga de video en la primera slide
 - (HECHO) Implementar Home Module Services
 - (HECHO) Implementar Sección Empresa
-- Implementar Sección colaboradores (junto con los vínculos de la sección empresa)
-- Implementar Sección blog
+- (HECHO) Crear Módulo de administrador para los colaboradores
+- (HECHO) Implementar Sección colaboradores (junto con los vínculos de la sección empresa)
 - Implementar Sección trabajos
+- Implementar Sección blog
 - Implementar Sección contacto
     - Programar envío de formulario
 - Breadcrumbs
-- Revisar cómo se genera la url del contenido que se inserta desde el plugin ckeditor
+- Revisar cómo se genera la url del contenido que se inserta desde el plugin ckeditor (BARAJAR LA OPCIÓN DE UNA URL APUNTANDO A CARPETA "MEDIA")
 - Probar la web sin contenido (hacer backup previo de la base de datos!!)
 - Cambiar title en función de la sección
 - Revisar responsive

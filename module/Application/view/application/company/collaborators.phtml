@@ -1,9 +1,16 @@
+<?php
+$partnerMenuId = $menu->rows['company/colaborators']->id;
+
+$partnerHelper = $this->partnerHelper($lang);
+
+?>
+
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="/empresa">Empresa</a></li>
-            <li class="breadcrumb-item active">Colaboradores</li>
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang)?>">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang.'/company');?>">Empresa</a></li>
+            <li class="breadcrumb-item active"><?=$menu->locale->{$lang}[$partnerMenuId]->name?></li>
         </ol>
     </div>
 </div>
@@ -11,80 +18,15 @@
 <div class="container collaborators">
     <article class="row">
         <div class="col-md-12">
-            <h1>colaboradores</h1>
 
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc pulvinar dui elementum euismod quis ut elit.
-                Sed cursus et arcu at malesuada. Integer rhoncus congue cursus. Sed dictum viverra egestas. Nulla facilisi.
-                Nam volutpat rhoncus magna non porttitor. Donec euismod vitae velit in sollicitudin. Nam vitae dui pulvinar, lobortis mi a,
-                ultricies ante. Morbi ligula mi, dapibus ac nisi sagittis, placerat mollis erat. Vivamus cursus augue et ex aliquam sollicitudin.
-            </p>
+            <h1><?=$menu->locale->{$lang}[$partnerMenuId]->name?></h1>
+
+            <?=$menu->locale->{$lang}[$partnerMenuId]->content?>
+
         </div>
         <div class="col-md-12">
 
-            <div class="row list-item collaborator">
-                <div class="col-md-3">
-                    <img class="img-responsive" src="/media/maqueta/collab1.png" alt="Collab">
-                </div>
-                <div class="col-md-9">
-                    <h3>GRUAS BONET</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc pulvinar dui elementum euismod quis ut elit.
-                        Sed cursus et arcu at malesuada. Integer rhoncus congue cursus. Sed dictum viverra egestas. Nulla facilisi.
-                        Nam volutpat rhoncus magna non porttitor. Donec euismod vitae velit in sollicitudin. Nam vitae dui pulvinar, lobortis mi a,
-                        ultricies ante. Morbi ligula mi, dapibus ac nisi sagittis, placerat mollis erat. Vivamus cursus augue et ex aliquam sollicitudin.
-                    </p>
-                    <a href="/" class="btn btn-default "><?=$this->translate('More info','frontend');?></a>
-                </div>
-            </div>
-
-            <div class="row list-item collaborator">
-                <div class="col-md-3">
-                    <img class="img-responsive" src="/media/maqueta/collab2.png" alt="Collab">
-                </div>
-                <div class="col-md-9">
-                    <h3>Hnos. Jiménez Gómez</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc pulvinar dui elementum euismod quis ut elit.
-                        Sed cursus et arcu at malesuada. Integer rhoncus congue cursus. Sed dictum viverra egestas. Nulla facilisi.
-                        Nam volutpat rhoncus magna non porttitor. Donec euismod vitae velit in sollicitudin. Nam vitae dui pulvinar, lobortis mi a,
-                        ultricies ante. Morbi ligula mi, dapibus ac nisi sagittis, placerat mollis erat. Vivamus cursus augue et ex aliquam sollicitudin.
-                    </p>
-                    <a href="/" class="btn btn-default "><?=$this->translate('More info','frontend');?></a>
-                </div>
-            </div>
-
-            <div class="row list-item collaborator">
-                <div class="col-md-3">
-                    <img class="img-responsive" src="/media/maqueta/collab3.png" alt="Collab">
-                </div>
-                <div class="col-md-9">
-                    <h3>León Tubos</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc pulvinar dui elementum euismod quis ut elit.
-                        Sed cursus et arcu at malesuada. Integer rhoncus congue cursus. Sed dictum viverra egestas. Nulla facilisi.
-                        Nam volutpat rhoncus magna non porttitor. Donec euismod vitae velit in sollicitudin. Nam vitae dui pulvinar, lobortis mi a,
-                        ultricies ante. Morbi ligula mi, dapibus ac nisi sagittis, placerat mollis erat. Vivamus cursus augue et ex aliquam sollicitudin.
-                    </p>
-                    <a href="/" class="btn btn-default "><?=$this->translate('More info','frontend');?></a>
-                </div>
-            </div>
-
-            <div class="row list-item collaborator">
-                <div class="col-md-3">
-                    <img class="img-responsive" src="/media/maqueta/collab4.png" alt="Collab">
-                </div>
-                <div class="col-md-9">
-                    <h3>Silmeca</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc pulvinar dui elementum euismod quis ut elit.
-                        Sed cursus et arcu at malesuada. Integer rhoncus congue cursus. Sed dictum viverra egestas. Nulla facilisi.
-                        Nam volutpat rhoncus magna non porttitor. Donec euismod vitae velit in sollicitudin. Nam vitae dui pulvinar, lobortis mi a,
-                        ultricies ante. Morbi ligula mi, dapibus ac nisi sagittis, placerat mollis erat. Vivamus cursus augue et ex aliquam sollicitudin.
-                    </p>
-                    <a href="/" class="btn btn-default "><?=$this->translate('More info','frontend');?></a>
-                </div>
-            </div>
+            <?php $partnerHelper->render($partners,false);?>
 
         </div>
     </article>

@@ -1,12 +1,15 @@
 <?php
-$colaborators = $menu->rows['company/colaborators']->id;
+$partnerMenuId = $menu->rows['company/colaborators']->id;
 $company = $menu->rows['company']->id;
 
-$colaboratorUrl = $this->url($lang.'/company/colaborators',array(
+$partnerUrl = $this->url($lang.'/company/colaborators',array(
     'lang' => $lang,
     'section' => $menu->locale->{$lang}[$company]->urlKey,
-    'colaborators' => $menu->locale->{$lang}[$colaborators]->urlKey
+    'colaborators' => $menu->locale->{$lang}[$partnerMenuId]->urlKey
 ));
+
+$partnerHelper = $this->partnerHelper($lang);
+
 ?>
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
@@ -29,22 +32,14 @@ $colaboratorUrl = $this->url($lang.'/company/colaborators',array(
 
     </article>
 
-    <h3><a href="<?=$colaboratorUrl;?>"><?=$this->translate('Our Partners','frontend');?></a></h3>
+    <?php if(isset($partners)):?>
+
+    <h3><a href="<?=$partnerUrl;?>"><?=$this->translate('Our Partners','frontend');?></a></h3>
 
     <div id="collaborators_carousel">
 
-        <div class="item">
-            <a href="/empresa/colaboradores#collab1"><img src="/media/maqueta/collab1.png" alt="Collab"></a>
-        </div>
-        <div class="item">
-            <a href="/empresa/colaboradores#collab2"><img src="/media/maqueta/collab2.png" alt="Collab"></a>
-        </div>
-        <div class="item">
-            <a href="/empresa/colaboradores#collab3"><img src="/media/maqueta/collab3.png" alt="Collab"></a>
-        </div>
-        <div class="item">
-            <a href="/empresa/colaboradores#collab4"><img src="/media/maqueta/collab4.png" alt="Collab"></a>
-        </div>
+        <?php $partnerHelper->render($partners); ?>
 
     </div>
+    <?php endif; ?>
 </div>

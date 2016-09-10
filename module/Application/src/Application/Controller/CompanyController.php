@@ -10,10 +10,17 @@ class CompanyController extends ApplicationController
         $menu = $this->menu;
 
         if ($menu->rows->company->active == 1) {
-            return new ViewModel(array(
+
+            $viewParams = array(
                 'menu' => $menu,
                 'lang' => $this->lang
-            ));
+            );
+
+            if ($menu->rows->{"company/colaborators"}->active == 1) {
+                $viewParams['partners'] = $this->api->partner->getData($this->lang);
+            }
+
+            return new ViewModel($viewParams);
         }
 
         $this->getResponse()->setStatusCode(404);
@@ -21,8 +28,16 @@ class CompanyController extends ApplicationController
 
     public function collaboratorsAction()
     {
-        return new ViewModel(array(
-            'lang' => $this->lang
-        ));
+        $menu = $this->menu;
+
+        if ($menu->rows->{"company/colaborators"}->active == 1) {
+            return new ViewModel(array(
+                'menu'     => $menu,
+                'lang'     => $this->lang,
+                'partners' => $this->api->partner->getData($this->lang)
+            ));
+        }
+
+        $this->getResponse()->setStatusCode(404);
     }
 }

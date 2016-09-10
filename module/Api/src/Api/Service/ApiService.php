@@ -19,6 +19,7 @@ class ApiService implements FactoryInterface
         'JobCategory',
         'Language',
         'Megabanner',
+        'Partner',
         'Section',
         'StaticPage',
     ];
