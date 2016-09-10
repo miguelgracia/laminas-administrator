@@ -24,7 +24,12 @@ class RouteNotFoundStrategy  extends AbstractListenerAggregate
 
         $viewModel = $event->getViewModel();
 
+        $cookie = $event->getRequest()->getHeaders()->get('Cookie');
+
+        $showCookieAlert = !isset($cookie->cookie_alert);
+
         $viewModel ->setVariables([
+            'showCookieAlert'  => $showCookieAlert,
             'lang'             => $session->lang,
             'menu'             => $api->section->getMenu(),
             'appData'          => $api->appData->getData(),

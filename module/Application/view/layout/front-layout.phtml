@@ -99,10 +99,21 @@ echo $this->doctype(); ?>
             </div>
 
         </footer>
+        <?php if ($showCookieAlert) :?>
+            <div id="cookie_alert" class="hide container-fluid">
+                <div class="col-md-12">
+                    <?=$this->translate('Cookie message','frontend');?>
+                    <a href="<?=$this->url($lang.'/legal/page',array('page' => 'cookies'));?>"><?=$this->translate('More info','frontend');?></a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="#" id="close_cookie_alert"><?=$this->translate('Cookies agree','frontend');?></a>
+                </div>
+            </div>
+        <?php endif; ?>
         <input type="hidden" id="simple-routing-manager" name="<?=$srmController;?>" value="<?=$controllerAction;?>" />
         <!-- Scripts -->
         <?php echo $this->headScript()
             ->appendFile($this->basePath('absconsultor/vendor/jquery/jquery.min.js'))
+            ->appendFile($this->basePath('absconsultor/vendor/js-cookie/js-cookie.js'))
             ->appendFile($this->basePath('absconsultor/vendor/bootstrap/js/bootstrap.min.js'))
             ->appendFile($this->basePath('absconsultor/vendor/owl-carousel/owl.carousel.min.js'))
             ->appendFile($this->basePath('absconsultor/vendor/bxslider/plugins/jquery.fitvids.js'))

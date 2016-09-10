@@ -9,6 +9,7 @@ body {
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;         /* Opera/IE 8+ */
+    padding-bottom: 50px;
 }
 
 a:hover,a:focus {
@@ -261,6 +262,14 @@ footer .contact-icons a.mail i {
 footer a.legal-link {
     margin-right: 10px;
 }
+
+#cookie_alert {
+    position: fixed;
+    font-size: 13px;
+    bottom: 0;
+    background-color: white;
+}
+
 
 .transition {
     -webkit-transition: opacity .6s ease, top .6s ease;

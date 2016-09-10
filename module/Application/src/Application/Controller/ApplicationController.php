@@ -20,6 +20,10 @@ abstract class ApplicationController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
+        $cookie = $this->getRequest()->getHeaders()->get('Cookie');
+
+        $showCookieAlert = !isset($cookie->cookie_alert);
+
         $this->session = $this->serviceLocator->get('Application\Service\SessionService');
 
         $this->api = $this->serviceLocator->get('Application\Api');
@@ -32,6 +36,7 @@ abstract class ApplicationController extends AbstractActionController
         $this->appData = $this->api->appData->getData();
 
         $this->layout()->setVariables([
+            'showCookieAlert'  => $showCookieAlert,
             'lang'             => $this->lang,
             'menu'             => $this->menu,
             'appData'          => $this->appData,
