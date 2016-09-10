@@ -119,7 +119,7 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
             $select
                 ->join(
                 'languages',
-                new Expression("languages.id = $tableLocale.language_id " . ($id ? "AND $key = $id" : '')),
+                new Expression("languages.id = $tableLocale.language_id " . (is_numeric($id) ? "AND $key = $id" : '')),
                 $languageFields,
                 Select::JOIN_RIGHT
             )->where(array(
