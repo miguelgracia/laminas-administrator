@@ -1,8 +1,11 @@
+<?php
+$contact = $menu->rows['contact']->id;
+?>
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item active">Contacto</li>
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang)?>">Home</a></li>
+            <li class="breadcrumb-item active"><?=$menu->locale->{$lang}[$contact]->name?></li>
         </ol>
     </div>
 </div>
@@ -11,7 +14,7 @@
     <article>
         <div class="row">
             <div class="col-md-12">
-                <h1>Contáctanos</h1>
+                <h1><?=$menu->locale->{$lang}[$contact]->name?></h1>
 
                 <div class="row">
                     <div class="col-md-6">
