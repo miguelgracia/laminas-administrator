@@ -1,3 +1,28 @@
+TASKS
+
+- (HECHO) Implementar Links de páginas legales
+- (HECHO) Mensaje Cookies
+- Implementar Megabanner Services
+- Implementar Home Module Services
+- Implementar Sección Empresa
+- Implementar Sección colaboradores
+- Implementar Sección blog
+- Implementar Sección trabajos
+- Implementar Sección contacto
+    - Programar envío de formulario
+- Breadcrumbs
+- Cambiar title en función de la sección
+- Revisar responsive
+- Meta tags sociales
+- Selector de idiomas
+- Página 404
+- Cadenas de texto administrador
+- Asignar usuarios al administrador
+- Añadir logo al módulo home del administrador
+
+
+
+
 TElefono Orange para que no nos cobre nada telefónica 1052
 Y si cobran algo, al 1470
 

@@ -53,6 +53,13 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
                 //$row contiene los datos de cada una de las filas que ha generado la consulta.
                 //Desde aquí podemos parsear los datos antes de visualizarlos por pantalla
 
+                if ($row['is_video']) {
+                    $row['element_url'] = sprintf("<a href='/Media/%s' target='_blank'>Ver video</a>", $row['element_url']);
+                } else {
+                    $row['element_url'] = sprintf("<img src='/Media/%s' width='100'/>", $row['element_url']);
+                }
+
+
                 $link = "<a href='%s'><i class='col-xs-12 text-center fa %s'></i></a>";
 
                 $controller = $controllerPlugin->getController();
@@ -74,12 +81,25 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             //En fields solo tenemos que añadir los campos de la tabla indicada en 'from'
             'fields' => array(
                 'id',
-                'key',
                 'created_at',
-                'active'
+                'active',
+                'is_video'
             ),
             'from' => 'megabanners',
-            'join' => array(),
+            'join' => array(
+                array(
+                    //Tabla con la que hacemos join
+                    'megabanners_locales',
+                    //ON tal = tal
+                    'related_table_id = megabanners.id',
+                    array(
+                        //Campos del join. La key es el alias del campo y el valor es el nombre del campo en sí
+                        'element_url' => 'element_url'
+                    ),
+                    //Tipo de join
+                    'left'
+                ),
+            ),
             //Los campos que están dentro del 'having_fields' no se veran afectados por la clausula where al
             //filtar, sino por la clausula having. Esto es necesario para aquellos campos cuyo valor dependen
             //de una agrupación y deseamos filtrar por ellos.
@@ -90,7 +110,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
 
             ),*/
             'group' => array(
-
+                'megabanners.id',
             )
         );
     }
