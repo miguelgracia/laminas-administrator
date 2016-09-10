@@ -24,6 +24,7 @@ return array(
         'AmHomeModule',
         'AmAppData',
         'Api',
+        'AmPartner',
     ),
     'hidden_modules' => array(
         'AmLogin',

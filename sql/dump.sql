@@ -111,7 +111,7 @@ CREATE TABLE `app_datas` (
 
 /*Data for the table `app_datas` */
 
-insert  into `app_datas`(`id`,`key`,`facebook`,`twitter`,`google_plus`,`instagram`,`created_at`,`updated_at`,`deleted_at`) values (1,'Appdata','http://www.facebook.com/absonsultor.es','http://www.twitter.com','http://google.es','http://instagram.com','2016-09-09 11:57:17',NULL,NULL);
+insert  into `app_datas`(`id`,`key`,`facebook`,`twitter`,`google_plus`,`instagram`,`created_at`,`updated_at`,`deleted_at`) values (1,'Appdata','http://www.facebook.com/absonsultor.es','http://www.twitter.com','','','2016-09-09 11:57:17',NULL,NULL);
 
 /*Table structure for table `app_datas_locales` */
 
@@ -120,7 +120,6 @@ DROP TABLE IF EXISTS `app_datas_locales`;
 CREATE TABLE `app_datas_locales` (
   `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `related_table_id` tinyint(3) unsigned NOT NULL,
-  `company_info` text COLLATE utf8_unicode_ci,
   `email` varchar(100) COLLATE utf8_unicode_ci DEFAULT '',
   `phone` varchar(50) COLLATE utf8_unicode_ci DEFAULT '',
   `language_id` tinyint(3) unsigned NOT NULL,
@@ -129,7 +128,49 @@ CREATE TABLE `app_datas_locales` (
 
 /*Data for the table `app_datas_locales` */
 
-insert  into `app_datas_locales`(`id`,`related_table_id`,`company_info`,`email`,`phone`,`language_id`) values (1,1,'<p>asdf</p>\r\n','info@absconsultor.com','dfas',1),(2,1,'<p>asdf</p>\r\n','info@absconsultor.es','asdf',2);
+insert  into `app_datas_locales`(`id`,`related_table_id`,`email`,`phone`,`language_id`) values (1,1,'info@absconsultor.com','658 888 222',1),(2,1,'info@absconsultor.es','658 777 888',2);
+
+/*Table structure for table `app_routes` */
+
+DROP TABLE IF EXISTS `app_routes`;
+
+CREATE TABLE `app_routes` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `visible` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
+  `active` enum('0','1') COLLATE utf8_unicode_ci NOT NULL,
+  `order` tinyint(4) NOT NULL DEFAULT '1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `app_routes` */
+
+insert  into `app_routes`(`id`,`key`,`visible`,`active`,`order`,`created_at`,`updated_at`,`deleted_at`) values (1,'company','1','1',1,'2016-07-12 23:40:57',NULL,NULL),(2,'jobs','1','1',2,'2016-09-05 23:54:24',NULL,NULL),(3,'blog','1','1',3,'2016-09-05 23:55:24',NULL,NULL),(4,'contact','1','1',4,'2016-09-05 23:56:19',NULL,NULL),(5,'company/colaborators','0','1',5,'2016-09-08 22:16:43',NULL,NULL);
+
+/*Table structure for table `app_routes_locales` */
+
+DROP TABLE IF EXISTS `app_routes_locales`;
+
+CREATE TABLE `app_routes_locales` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `related_table_id` int(10) unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `header_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `content` text COLLATE utf8_unicode_ci,
+  `url_key` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `meta_description` text COLLATE utf8_unicode_ci,
+  `language_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `related_table_id` (`related_table_id`),
+  CONSTRAINT `app_routes_locales_ibfk_1` FOREIGN KEY (`related_table_id`) REFERENCES `app_routes` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `app_routes_locales` */
+
+insert  into `app_routes_locales`(`id`,`related_table_id`,`name`,`header_name`,`content`,`url_key`,`meta_description`,`language_id`) values (1,1,'Empresa','Empresa','<p><img alt=\"\" src=\"/maqueta/company1.png\" /></p>\r\n\r\n<p>Ingles Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc pulvinar dui elementum euismod quis ut elit.&nbsp;Sed cursus et arcu at malesuada. Integer rhoncus congue cursus. Sed dictum viverra egestas. Nulla facilisi.Nam volutpat rhoncus magna non porttitor. Donec euismod vitae velit in sollicitudin. Nam vitae dui pulvinar, lobortis mi a,&nbsp;ultricies ante. Morbi ligula mi, dapibus ac nisi sagittis, placerat mollis erat. Vivamus cursus augue et ex aliquam sollicitudin.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc pulvinar dui elementum euismod quis ut elit.&nbsp;Sed cursus et arcu at malesuada. Integer rhoncus congue cursus. Sed dictum viverra egestas. Nulla facilisi.&nbsp;Nam volutpat rhoncus magna non porttitor. Donec euismod vitae velit in sollicitudin. Nam vitae dui pulvinar, lobortis mi a,&nbsp;ultricies ante. Morbi ligula mi, dapibus ac nisi sagittis, placerat mollis erat. Vivamus cursus augue et ex aliquam sollicitudin.</p>\r\n','empresa','descripción empresa',2),(2,1,'Company','Company','<p><img alt=\"\" src=\"/media/maqueta/company1.png\" style=\"width:100%\" /></p>\r\n\r\n<p>\r\n<video controls=\"controls\" height=\"auto\" id=\"video2016810222521\" poster=\"\" width=\"100%\"><source src=\"/media/video/grua.mp4\" type=\"video/mp4\" />Su navegador no soporta VIDEO.<br />\r\nPor favor, descargue el fichero: <a href=\"/media/video/grua.mp4\">video/mp4</a></video>\r\n</p>\r\n\r\n<p>Ingles Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc pulvinar dui elementum euismod quis ut elit.&nbsp;Sed cursus et arcu at malesuada. Integer rhoncus congue cursus. Sed dictum viverra egestas. Nulla facilisi.Nam volutpat rhoncus magna non porttitor. Donec euismod vitae velit in sollicitudin. Nam vitae dui pulvinar, lobortis mi a,&nbsp;ultricies ante. Morbi ligula mi, dapibus ac nisi sagittis, placerat mollis erat. Vivamus cursus augue et ex aliquam sollicitudin.</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc pulvinar dui elementum euismod quis ut elit.&nbsp;Sed cursus et arcu at malesuada. Integer rhoncus congue cursus. Sed dictum viverra egestas. Nulla facilisi.&nbsp;Nam volutpat rhoncus magna non porttitor. Donec euismod vitae velit in sollicitudin. Nam vitae dui pulvinar, lobortis mi a,&nbsp;ultricies ante. Morbi ligula mi, dapibus ac nisi sagittis, placerat mollis erat. Vivamus cursus augue et ex aliquam sollicitudin.</p>\r\n','company','Company description',1),(3,2,'Work','Work',NULL,'work','work description',1),(4,2,'Trabajos','Trabajos',NULL,'trabajos','descripción trabajos',2),(5,3,'Blog','Blog',NULL,'blog','Blog description',1),(6,3,'Blog','Blog',NULL,'blog','Descripción blog',2),(7,4,'Contact us','Contact Us',NULL,'contact-us','contact us description',1),(8,4,'Contacto','Contáctanos',NULL,'contacto','Descripción contacto',2),(9,5,'Colaborators','Colaborators','','colaborators','',1),(10,5,'Colaboradores','Colaboradores','','colaboradores','',2);
 
 /*Table structure for table `blog_categories` */
 
@@ -260,14 +301,14 @@ CREATE TABLE `home_modules` (
   `key` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `active` enum('0','1') COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `deleted_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `home_modules` */
 
-insert  into `home_modules`(`id`,`key`,`active`,`created_at`,`updated_at`,`deleted_at`) values (1,'Modulohome','1','2016-09-05 23:41:10','0000-00-00 00:00:00','0000-00-00 00:00:00');
+insert  into `home_modules`(`id`,`key`,`active`,`created_at`,`updated_at`,`deleted_at`) values (1,'modulohome','1','2016-09-05 23:41:10',NULL,NULL),(2,'modulo2','1','2016-09-10 20:29:56',NULL,NULL),(3,'modulo-3','1','2016-09-10 20:31:58',NULL,NULL);
 
 /*Table structure for table `home_modules_locales` */
 
@@ -276,6 +317,7 @@ DROP TABLE IF EXISTS `home_modules_locales`;
 CREATE TABLE `home_modules_locales` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `related_table_id` int(10) unsigned NOT NULL,
+  `title` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `image_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `content` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `link_text` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -283,11 +325,11 @@ CREATE TABLE `home_modules_locales` (
   `language_id` int(10) NOT NULL,
   `target_link` enum('_self','_blank') COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `home_modules_locales` */
 
-insert  into `home_modules_locales`(`id`,`related_table_id`,`image_url`,`content`,`link_text`,`link_url`,`language_id`,`target_link`) values (1,1,'','<p>Contenido m&oacute;dulo</p>\r\n','','',2,NULL),(2,1,'','<p>My content home module</p>\r\n','','',1,NULL);
+insert  into `home_modules_locales`(`id`,`related_table_id`,`title`,`image_url`,`content`,`link_text`,`link_url`,`language_id`,`target_link`) values (1,1,'Empresa','/maqueta/home1.png','<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id nunc convallis, accumsan enim ac, convallis risus. Aliquam facilisis mi lectus, nec vestibulum ipsum vestibulum nec. Curabitur tincidunt ultricies nisi eu mattis. Donec blandit vitae mi vitae commodo. Ut tortor dui, vulputate et nunc et, suscipit vestibulum ipsum.</p>\r\n','+ Información','/empresa',2,'_self'),(2,1,'Company','/maqueta/home1.png','<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id nunc convallis, accumsan enim ac, convallis risus. Aliquam facilisis mi lectus, nec vestibulum ipsum vestibulum nec. Curabitur tincidunt ultricies nisi eu mattis. Donec blandit vitae mi vitae commodo. Ut tortor dui, vulputate et nunc et, suscipit vestibulum ipsum.</p>\r\n','+ Info','/company',1,'_self'),(3,2,'Works','/maqueta/home2.png','<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id nunc convallis, accumsan enim ac, convallis risus. Aliquam facilisis mi lectus, nec vestibulum ipsum vestibulum nec. Curabitur tincidunt ultricies nisi eu mattis. Donec blandit vitae mi vitae commodo. Ut tortor dui, vulputate et nunc et, suscipit vestibulum ipsum.</p>\r\n','View more','/works',1,'_self'),(4,2,'Trabajos','/maqueta/home2.png','<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id nunc convallis, accumsan enim ac, convallis risus. Aliquam facilisis mi lectus, nec vestibulum ipsum vestibulum nec. Curabitur tincidunt ultricies nisi eu mattis. Donec blandit vitae mi vitae commodo. Ut tortor dui, vulputate et nunc et, suscipit vestibulum ipsum.</p>\r\n','Ver más','/trabajos',2,'_self'),(5,3,'Blog','/maqueta/home3.png','<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id nunc convallis, accumsan enim ac, convallis risus. Aliquam facilisis mi lectus, nec vestibulum ipsum vestibulum nec. Curabitur tincidunt ultricies nisi eu mattis. Donec blandit vitae mi vitae commodo. Ut tortor dui, vulputate et nunc et, suscipit vestibulum ipsum.</p>\r\n','View more','/blog',1,'_self'),(6,3,'Blog','/maqueta/home3.png','<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id nunc convallis, accumsan enim ac, convallis risus. Aliquam facilisis mi lectus, nec vestibulum ipsum vestibulum nec. Curabitur tincidunt ultricies nisi eu mattis. Donec blandit vitae mi vitae commodo. Ut tortor dui, vulputate et nunc et, suscipit vestibulum ipsum.</p>\r\n','Ver más','/blog',2,'_self');
 
 /*Table structure for table `job_categories` */
 
@@ -396,7 +438,7 @@ CREATE TABLE `languages` (
 
 /*Data for the table `languages` */
 
-insert  into `languages`(`id`,`name`,`code`,`active`) values (1,'English','en_EN','1'),(2,'Spanish','es_ES','1');
+insert  into `languages`(`id`,`name`,`code`,`active`) values (1,'English','en_en','1'),(2,'Spanish','es_es','1');
 
 /*Table structure for table `media` */
 
@@ -423,18 +465,17 @@ DROP TABLE IF EXISTS `megabanners`;
 
 CREATE TABLE `megabanners` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `key` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `is_video` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-  `active` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `active` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `deleted_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `megabanners` */
 
-insert  into `megabanners`(`id`,`key`,`is_video`,`active`,`created_at`,`updated_at`,`deleted_at`) values (1,'Mega1','0','0','2016-07-31 14:34:25','0000-00-00 00:00:00','0000-00-00 00:00:00');
+insert  into `megabanners`(`id`,`is_video`,`active`,`created_at`,`updated_at`,`deleted_at`) values (3,'0','1','2016-09-10 16:29:34',NULL,'2016-09-14 18:58:04'),(4,'1','1','2016-09-10 16:52:33',NULL,NULL);
 
 /*Table structure for table `megabanners_locales` */
 
@@ -445,17 +486,15 @@ CREATE TABLE `megabanners_locales` (
   `related_table_id` int(10) unsigned NOT NULL,
   `element_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `element_title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `link` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `target_link` enum('_self','_blank') COLLATE utf8_unicode_ci NOT NULL DEFAULT '_blank',
   `language_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `related_table_id` (`related_table_id`),
   CONSTRAINT `megabanners_locales_ibfk_1` FOREIGN KEY (`related_table_id`) REFERENCES `megabanners` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `megabanners_locales` */
 
-insert  into `megabanners_locales`(`id`,`related_table_id`,`element_url`,`element_title`,`link`,`target_link`,`language_id`) values (1,1,'/abs/IMAGEN_1_HOME_TRABAJOS_CARRUSEL.png','imagen grua','http://www.google.es','_self',2);
+insert  into `megabanners_locales`(`id`,`related_table_id`,`element_url`,`element_title`,`language_id`) values (1,3,'/maqueta/company1.png','Grua',1),(2,3,'/maqueta/company1.png','Grua',2),(3,4,'/video/grua.mp4','Video grua',1),(4,4,'/video/grua.mp4','Video grua',2);
 
 /*Table structure for table `sections` */
 
@@ -507,14 +546,14 @@ CREATE TABLE `static_pages` (
   `key` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `active` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `deleted_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `static_pages` */
 
-insert  into `static_pages`(`id`,`key`,`active`,`created_at`,`updated_at`,`deleted_at`) values (1,'Privacidad','0','2016-07-04 09:18:01','0000-00-00 00:00:00','0000-00-00 00:00:00'),(2,'Cookies','0','2016-07-07 16:30:23','0000-00-00 00:00:00','0000-00-00 00:00:00'),(3,'AvisoLegal','0','2016-07-07 16:31:17','0000-00-00 00:00:00','0000-00-00 00:00:00');
+insert  into `static_pages`(`id`,`key`,`active`,`created_at`,`updated_at`,`deleted_at`) values (1,'privacidad','1','2016-07-04 09:18:01',NULL,NULL),(2,'cookies','1','2016-07-07 16:30:23',NULL,NULL),(3,'avisolegal','1','2016-07-07 16:31:17',NULL,NULL);
 
 /*Table structure for table `static_pages_locales` */
 
@@ -531,11 +570,11 @@ CREATE TABLE `static_pages_locales` (
   PRIMARY KEY (`id`),
   KEY `related_table_id` (`related_table_id`),
   CONSTRAINT `static_pages_locales_ibfk_1` FOREIGN KEY (`related_table_id`) REFERENCES `static_pages` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `static_pages_locales` */
 
-insert  into `static_pages_locales`(`id`,`related_table_id`,`title`,`url_key`,`content`,`meta_description`,`language_id`) values (1,1,'política de privacidad','politica-de-privacidad','','',2),(2,2,'Política de tratamiento de cookies','politica-de-tratamiento-de-cookies','','',2),(3,3,'Aviso Legal','aviso-legal','','',2);
+insert  into `static_pages_locales`(`id`,`related_table_id`,`title`,`url_key`,`content`,`meta_description`,`language_id`) values (1,1,'Política de privacidad','politica-de-privacidad','','',2),(2,2,'Cookies','cookies','','',2),(3,3,'Aviso Legal','aviso-legal','','',2),(4,1,'Privacy policy','privacy-policy','','',1),(5,2,'Cookies','cookies','','',1),(6,3,'Legal Notice','legal-notice','','',1);
 
 /*Table structure for table `valores_configuracion` */
 

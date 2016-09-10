@@ -20,6 +20,7 @@ $(document).ready(function () {
         '/admin/section':                ['section','index'],
         '/admin/language':               ['language','index'],
         '/admin/home-module':            ['home_module','index'],
-        '/admin/app-data':               ['app_data','index']
+        '/admin/app-data':               ['app_data','index'],
+        '/admin/partner':                ['partner','index']
     }).run();
 });
