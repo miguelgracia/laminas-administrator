@@ -8,21 +8,22 @@ class LegalController extends ApplicationController
 {
     public function indexAction()
     {
-        return new ViewModel();
-    }
+        $pageData = $this->api->staticPage->getData();
 
-    public function legalAction()
-    {
-        return new ViewModel();
-    }
+        $page = $this->getEvent()->getRouteMatch()->getParam('page');
 
-    public function cookiesAction()
-    {
-        return new ViewModel();
-    }
+        if (isset($pageData->locale->{$this->session->lang}[$page]) and $pageData) {
 
-    public function privacyPolicyAction()
-    {
-        return new ViewModel();
+            $content = $pageData->locale->{$this->session->lang}[$page];
+
+            if ((bool)$pageData->rows[$content->relatedTableId]->active) {
+                return new ViewModel(array(
+                    'lang' => $this->session->lang,
+                    'content' => $content
+                ));
+            }
+        }
+
+        $this->getResponse()->setStatusCode(404);
     }
 }

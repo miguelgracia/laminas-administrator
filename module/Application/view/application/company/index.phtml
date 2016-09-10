@@ -1,18 +1,18 @@
 <?php
-$colaborators = $menu->rows['company/colaborators']['id'];
-$company = $menu->rows['company']['id'];
+$colaborators = $menu->rows['company/colaborators']->id;
+$company = $menu->rows['company']->id;
 
 $colaboratorUrl = $this->url($lang.'/company/colaborators',array(
     'lang' => $lang,
-    'section' => $menu->locale->{$lang}[$company]['urlKey'],
-    'colaborators' => $menu->locale->{$lang}[$colaborators]['urlKey']
+    'section' => $menu->locale->{$lang}[$company]->urlKey,
+    'colaborators' => $menu->locale->{$lang}[$colaborators]->urlKey
 ));
 ?>
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item active">Empresa</li>
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang)?>">Home</a></li>
+            <li class="breadcrumb-item active"><?=$menu->locale->{$lang}[$company]->name?></li>
         </ol>
     </div>
 </div>
@@ -21,7 +21,7 @@ $colaboratorUrl = $this->url($lang.'/company/colaborators',array(
 
     <article>
 
-        <h1>EMPRESA</h1>
+        <h1><?=$menu->locale->{$lang}[$company]->name?></h1>
 
         <img class="img-responsive" src="/media/maqueta/company1.png" />
 

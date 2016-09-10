@@ -12,6 +12,8 @@ class StaticPageService implements FactoryInterface
     protected $table;
     protected $tableLocale;
 
+    protected $cacheData = array();
+
     /**
      * Create service
      *
@@ -28,6 +30,10 @@ class StaticPageService implements FactoryInterface
 
     public function getData()
     {
+        if (array_key_exists(__FUNCTION__, $this->cacheData)) {
+            return $this->cacheData[__FUNCTION__];
+        }
+
         $rows = new ArrayObject(
             $this->table->all(array(
                 'active' => '1',
@@ -41,9 +47,13 @@ class StaticPageService implements FactoryInterface
             ArrayObject::ARRAY_AS_PROPS
         );
 
-        return new ArrayObject(array(
+        $result = new ArrayObject(array(
             'rows' => $rows,
             'locale' => $locales
         ),ArrayObject::ARRAY_AS_PROPS);
+
+        $this->cacheData[__FUNCTION__] = $result;
+
+        return $result;
     }
 }
