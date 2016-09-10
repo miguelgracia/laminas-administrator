@@ -28,11 +28,11 @@ CREATE TABLE `admin_menus` (
   `action` varchar(255) DEFAULT NULL,
   `order` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=232 DEFAULT CHARSET=utf8;
 
 /*Data for the table `admin_menus` */
 
-insert  into `admin_menus`(`id`,`admin_module_id`,`parent`,`title`,`action`,`order`) values (2,0,0,'Administrador','',7),(201,2,2,'Valores Generales','index',3),(202,3,2,'Usuarios','index',1),(203,4,2,'Perfil','index',4),(205,6,2,'Menú','index',2),(206,19,2,'Módulos','index',5),(207,0,0,'Blog','',3),(208,20,207,'Listado','index',1),(209,20,207,'Nueva entrada','add',2),(214,1,0,'Home','index',1),(215,24,0,'Media','index',5),(216,26,0,'Megabanners','index',4),(217,23,207,'Categorías','index',3),(218,27,0,'Páginas Legales','index',6),(219,28,0,'Trabajos','index',2),(220,29,219,'Categorías','index',3),(221,28,219,'Listado','index',1),(222,28,219,'Nuevo Trabajo','add',2),(224,0,0,'Web Menú','',0),(225,30,224,'Listado','index',0),(226,30,224,'Nueva sección','add',0),(227,32,2,'Idiomas','index',6),(228,0,0,'Modulos Home','',0),(229,33,228,'Listado','index',0),(230,34,0,'Datos Web','index',0);
+insert  into `admin_menus`(`id`,`admin_module_id`,`parent`,`title`,`action`,`order`) values (2,0,0,'Administrador','',7),(201,2,2,'Valores Generales','index',3),(202,3,2,'Usuarios','index',1),(203,4,2,'Perfil','index',4),(205,6,2,'Menú','index',2),(206,19,2,'Módulos','index',5),(207,0,0,'Blog','',3),(208,20,207,'Listado','index',1),(209,20,207,'Nueva entrada','add',2),(214,1,0,'Home','index',1),(215,24,0,'Media','index',5),(216,26,0,'Megabanners','index',4),(217,23,207,'Categorías','index',3),(218,27,0,'Páginas Legales','index',6),(219,28,0,'Trabajos','index',2),(220,29,219,'Categorías','index',3),(221,28,219,'Listado','index',1),(222,28,219,'Nuevo Trabajo','add',2),(224,0,0,'Web Menú','',0),(225,30,224,'Listado','index',0),(226,30,224,'Nueva sección','add',0),(227,32,2,'Idiomas','index',6),(228,0,0,'Modulos Home','',0),(229,33,228,'Listado','index',0),(230,34,0,'Datos Web','index',0),(231,35,0,'Colaboradores','index',0);
 
 /*Table structure for table `admin_modules` */
 
@@ -44,11 +44,11 @@ CREATE TABLE `admin_modules` (
   `public_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombreZend` (`zend_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 /*Data for the table `admin_modules` */
 
-insert  into `admin_modules`(`id`,`zend_name`,`public_name`) values (1,'home','home'),(2,'configuration','Valores de configuración'),(3,'user','User'),(4,'profile','Perfiles'),(6,'menu','Entradas de menú'),(19,'module','Module'),(20,'blog','blog'),(23,'blog-category','blog-category'),(24,'media','media'),(26,'megabanner','megabanner'),(27,'static-page','static-page'),(28,'job','job'),(29,'job-category','job-category'),(30,'section','section'),(31,'job-video','job-video'),(32,'language','language'),(33,'home-module','home-module'),(34,'app-data','app-data');
+insert  into `admin_modules`(`id`,`zend_name`,`public_name`) values (1,'home','home'),(2,'configuration','Valores de configuración'),(3,'user','User'),(4,'profile','Perfiles'),(6,'menu','Entradas de menú'),(19,'module','Module'),(20,'blog','blog'),(23,'blog-category','blog-category'),(24,'media','media'),(26,'megabanner','megabanner'),(27,'static-page','static-page'),(28,'job','job'),(29,'job-category','job-category'),(30,'section','section'),(31,'job-video','job-video'),(32,'language','language'),(33,'home-module','home-module'),(34,'app-data','app-data'),(35,'partner','partner');
 
 /*Table structure for table `admin_profiles` */
 
@@ -67,7 +67,7 @@ CREATE TABLE `admin_profiles` (
 
 /*Data for the table `admin_profiles` */
 
-insert  into `admin_profiles`(`id`,`key`,`name`,`description`,`is_admin`,`permissions`) values (1,'Superadmin','Superadmin','<p>Administrador de la plataforma</p>\r\n',1,''),(4,'Administrator','Administrador','Administrador\r\n',0,'[\"home.index\",\"blog.add\",\"blog.delete\",\"blog.edit\",\"blog.index\",\"blog-category.add\",\"blog-category.delete\",\"blog-category.edit\",\"blog-category.index\",\"media.connector\",\"media.index\",\"media.remove\",\"media.upload\",\"megabanner.add\",\"megabanner.delete\",\"megabanner.edit\",\"megabanner.index\",\"static-page.add\",\"static-page.delete\",\"static-page.edit\",\"static-page.index\",\"job.add\",\"job.delete\",\"job.edit\",\"job.index\",\"job-category.add\",\"job-category.delete\",\"job-category.edit\",\"job-category.index\",\"section.edit\",\"section.index\",\"job-video.add\",\"job-video.edit\",\"job-video.index\",\"home-module.add\",\"home-module.delete\",\"home-module.edit\",\"home-module.index\"]');
+insert  into `admin_profiles`(`id`,`key`,`name`,`description`,`is_admin`,`permissions`) values (1,'Superadmin','Superadmin','<p>Administrador de la plataforma</p>\r\n',1,''),(4,'administrator','Administrador','Administrador\r\n',0,'[\"home.index\",\"blog.add\",\"blog.delete\",\"blog.edit\",\"blog.index\",\"blog-category.add\",\"blog-category.delete\",\"blog-category.edit\",\"blog-category.index\",\"media.connector\",\"media.index\",\"media.remove\",\"media.upload\",\"megabanner.add\",\"megabanner.delete\",\"megabanner.edit\",\"megabanner.index\",\"static-page.add\",\"static-page.delete\",\"static-page.edit\",\"static-page.index\",\"job.add\",\"job.delete\",\"job.edit\",\"job.index\",\"job-category.add\",\"job-category.delete\",\"job-category.edit\",\"job-category.index\",\"section.edit\",\"section.index\",\"job-video.add\",\"job-video.edit\",\"job-video.index\",\"home-module.add\",\"home-module.delete\",\"home-module.edit\",\"home-module.index\",\"partner.add\",\"partner.delete\",\"partner.edit\",\"partner.index\"]');
 
 /*Table structure for table `admin_users` */
 
@@ -495,6 +495,44 @@ CREATE TABLE `megabanners_locales` (
 /*Data for the table `megabanners_locales` */
 
 insert  into `megabanners_locales`(`id`,`related_table_id`,`element_url`,`element_title`,`language_id`) values (1,3,'/maqueta/company1.png','Grua',1),(2,3,'/maqueta/company1.png','Grua',2),(3,4,'/video/grua.mp4','Video grua',1),(4,4,'/video/grua.mp4','Video grua',2);
+
+/*Table structure for table `partners` */
+
+DROP TABLE IF EXISTS `partners`;
+
+CREATE TABLE `partners` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `logo` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `website` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `active` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `partners` */
+
+insert  into `partners`(`id`,`name`,`logo`,`website`,`active`,`created_at`,`updated_at`,`deleted_at`) values (1,'Gruas Bonet','/maqueta/collab1.png','http://www.gruasbonet.es','1','2016-09-10 23:33:36',NULL,NULL),(2,'Hnos. Jiménez Gómez','/maqueta/collab2.png','http://www.hjimenez.com','1','2016-09-10 23:50:04',NULL,NULL),(3,'León Tubos','/maqueta/collab3.png','http://www.leontubos.com','1','2016-09-10 23:57:03',NULL,NULL),(4,'Silmeca','/maqueta/collab4.png','http://www.silmecasl.com','1','2016-09-10 23:59:17',NULL,NULL);
+
+/*Table structure for table `partners_locales` */
+
+DROP TABLE IF EXISTS `partners_locales`;
+
+CREATE TABLE `partners_locales` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `related_table_id` int(10) unsigned NOT NULL,
+  `content` mediumtext COLLATE utf8_unicode_ci,
+  `language_id` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `related_table_id` (`related_table_id`),
+  CONSTRAINT `partners_locales_ibfk_1` FOREIGN KEY (`related_table_id`) REFERENCES `partners` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+/*Data for the table `partners_locales` */
+
+insert  into `partners_locales`(`id`,`related_table_id`,`content`,`language_id`) values (1,1,'<p>Gruas Bonet Information</p>\r\n',1),(2,1,'<p>Informaci&oacute;n Gruas Bonet</p>\r\n',2),(3,2,'<p>Ingles Info colaborador</p>\r\n',1),(4,2,'<p>Espa&ntilde;ol Info colaborador</p>\r\n',2),(5,3,'',1),(6,3,'',2),(7,4,'',1),(8,4,'',2);
 
 /*Table structure for table `sections` */
 
