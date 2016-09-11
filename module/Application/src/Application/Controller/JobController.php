@@ -10,7 +10,7 @@ class JobController extends ApplicationController
     {
         $menu = $this->menu;
 
-        if ($menu->rows->jobs->active == 1) {
+        if (isset($menu->rows->jobs) and $menu->rows->jobs->active == 1) {
 
             $page = $this->params()->fromQuery('page');
 

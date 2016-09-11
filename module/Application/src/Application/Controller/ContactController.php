@@ -8,10 +8,16 @@ class ContactController extends ApplicationController
 {
     public function indexAction()
     {
-        return new ViewModel(array(
-            'menu' => $this->menu,
-            'lang' => $this->lang,
-            'appData' => $this->appData
-        ));
+        $menu = $this->menu;
+
+        if (isset($menu->rows->contact) and $menu->rows->contact->active == 1) {
+            return new ViewModel(array(
+                'menu' => $this->menu,
+                'lang' => $this->lang,
+                'appData' => $this->appData
+            ));
+        }
+
+        $this->getResponse()->setStatusCode(404);
     }
 }

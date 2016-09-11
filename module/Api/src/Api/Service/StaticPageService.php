@@ -22,23 +22,13 @@ class StaticPageService implements FactoryInterface
             return $this->cacheData[__FUNCTION__];
         }
 
-        $rows = new ArrayObject(
-            $this->table->all(array(
+        $result = array(
+            'rows' => $this->table->all(array(
                 'active' => '1',
                 'deleted_at' => null
-            ))->setFetchGroupResultSet('id')->toObjectArray(),
-            ArrayObject::ARRAY_AS_PROPS
+            ))->setFetchGroupResultSet('id')->toArray(),
+            'locale' => $this->tableLocale->findLocales()->setFetchGroupResultSet('languageCode','urlKey')->toArray()
         );
-
-        $locales = new ArrayObject(
-            $this->tableLocale->findLocales()->setFetchGroupResultSet('languageCode','urlKey')->toObjectArray(),
-            ArrayObject::ARRAY_AS_PROPS
-        );
-
-        $result = new ArrayObject(array(
-            'rows' => $rows,
-            'locale' => $locales
-        ),ArrayObject::ARRAY_AS_PROPS);
 
         $this->cacheData[__FUNCTION__] = $result;
 

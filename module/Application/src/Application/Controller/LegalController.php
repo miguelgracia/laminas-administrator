@@ -12,11 +12,11 @@ class LegalController extends ApplicationController
 
         $page = $this->getEvent()->getRouteMatch()->getParam('page');
 
-        if (isset($pageData->locale->{$this->session->lang}[$page]) and $pageData) {
+        if (isset($pageData['locale'][$this->session->lang][$page]) and $pageData) {
 
-            $content = $pageData->locale->{$this->session->lang}[$page];
+            $content = $pageData['locale'][$this->session->lang][$page];
 
-            if ((bool)$pageData->rows[$content->relatedTableId]->active) {
+            if (isset($pageData['rows'][$content['relatedTableId']]) and ((bool)$pageData['rows'][$content['relatedTableId']]['active'])) {
                 return new ViewModel(array(
                     'lang' => $this->session->lang,
                     'content' => $content

@@ -10,7 +10,7 @@ class BlogController extends ApplicationController
     {
         $menu = $this->menu;
 
-        if ($menu->rows->blog->active == 1) {
+        if (isset($menu->rows->blog) and $menu->rows->blog->active == 1) {
 
             $page = $this->params()->fromQuery('page');
 

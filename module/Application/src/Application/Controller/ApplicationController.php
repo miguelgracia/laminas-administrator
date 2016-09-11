@@ -33,6 +33,7 @@ abstract class ApplicationController extends AbstractActionController
         $this->lang = $this->session->lang;
 
         $this->menu = $this->api->section->getMenu();
+
         $this->appData = $this->api->appData->getData();
 
         $this->layout()->setVariables([

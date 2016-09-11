@@ -9,7 +9,7 @@ class CompanyController extends ApplicationController
     {
         $menu = $this->menu;
 
-        if ($menu->rows->company->active == 1) {
+        if (isset($menu->rows->company) and $menu->rows->company->active == 1) {
 
             $viewParams = array(
                 'menu' => $menu,
@@ -30,7 +30,7 @@ class CompanyController extends ApplicationController
     {
         $menu = $this->menu;
 
-        if ($menu->rows->{"company/colaborators"}->active == 1) {
+        if (isset($menu->rows->{"company/colaborators"}) and $menu->rows->{"company/colaborators"}->active == 1) {
             return new ViewModel(array(
                 'menu'     => $menu,
                 'lang'     => $this->lang,

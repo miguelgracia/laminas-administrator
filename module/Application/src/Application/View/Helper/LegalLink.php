@@ -12,18 +12,21 @@ class LegalLink extends AbstractHelper
         return $this;
     }
 
-    public function render(ArrayObject $data, $lang)
+    public function render($data, $lang)
     {
         $url = $this->view->plugin('Url');
 
-        foreach ($data->locale->{$lang} as $uriSegment => $locale) {
-            echo sprintf(
-                '<a class="legal-link" href="%s">%s</a>',
-                $url($lang.'/legal/page',array(
-                    'page' => $locale->urlKey
-                )),
-                $locale->title
-            );
+        foreach ($data['locale'][$lang] as $uriSegment => $locale) {
+
+            if (is_object($locale)) {
+                echo sprintf(
+                    '<a class="legal-link" href="%s">%s</a>',
+                    $url($lang.'/legal/page',array(
+                        'page' => $locale['urlKey']
+                    )),
+                    $locale['title']
+                );
+            }
         }
     }
 }
