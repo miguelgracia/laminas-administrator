@@ -2,29 +2,17 @@
 
 namespace Api\Service;
 
-
+use Api\Model\MegabannerLocaleTable;
+use Api\Model\MegabannerTable;
 use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\ArrayObject;
 
 class MegabannerService implements FactoryInterface
 {
-    protected $table;
-    protected $tableLocale;
+    use ApiServiceTrait;
 
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->table       = $serviceLocator->get('AmMegabanner\Model\MegabannerTable');
-        $this->tableLocale = $serviceLocator->get('AmMegabanner\Model\MegabannerLocaleTable');
-
-        return $this;
-    }
+    protected $table = MegabannerTable::class;
+    protected $tableLocale = MegabannerLocaleTable::class;
 
     public function getData($lang)
     {

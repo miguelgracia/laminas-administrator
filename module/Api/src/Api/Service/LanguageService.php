@@ -2,24 +2,12 @@
 
 namespace Api\Service;
 
-
+use Api\Model\LanguageTable;
 use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class LanguageService implements FactoryInterface
 {
-    private $serviceLocator;
+    use ApiServiceTrait;
 
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-
-        return $this;
-    }
+    protected $table = LanguageTable::class;
 }

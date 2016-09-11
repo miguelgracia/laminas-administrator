@@ -7,7 +7,7 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'Application\Api'              => 'Api\Service\ApiService',
+            'Application\Api'              => 'Api\Service\ApiServiceFactory',
             'Application\Api\AppData'      => 'Api\Service\AppDataService',
             'Application\Api\Blog'         => 'Api\Service\BlogService',
             'Application\Api\BlogCategory' => 'Api\Service\BlogCategoryService',

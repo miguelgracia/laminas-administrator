@@ -2,23 +2,20 @@
 
 namespace Api\Service;
 
+use Api\Model\JobLocaleTable;
+use Api\Model\JobTable;
 use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class JobService implements FactoryInterface
 {
-    private $serviceLocator;
+    use ApiServiceTrait;
 
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    protected $table = JobTable::class;
+    protected $tableLocale = JobLocaleTable::class;
+
+
+    public function getData($lang, $page, $limit = 10)
     {
-        $this->serviceLocator = $serviceLocator;
 
-        return $this;
     }
 }

@@ -2,29 +2,17 @@
 
 namespace Api\Service;
 
-
+use Api\Model\SectionLocaleTable;
+use Api\Model\SectionTable;
 use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\ArrayObject;
 
 class SectionService implements FactoryInterface
 {
-    protected $table;
-    protected $tableLocale;
+    use ApiServiceTrait;
 
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->table       = $serviceLocator->get('AmSection\Model\SectionTable');
-        $this->tableLocale = $serviceLocator->get('AmSection\Model\SectionLocaleTable');
-
-        return $this;
-    }
+    protected $table = SectionTable::class;
+    protected $tableLocale = SectionLocaleTable::class;
 
     public function getMenu()
     {

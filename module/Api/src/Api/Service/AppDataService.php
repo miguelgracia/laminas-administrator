@@ -2,29 +2,17 @@
 
 namespace Api\Service;
 
-
+use Api\Model\AppDataLocaleTable;
+use Api\Model\AppDataTable;
 use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\ArrayObject;
 
 class AppDataService implements FactoryInterface
 {
-    protected $table;
-    protected $tableLocale;
+    use ApiServiceTrait;
 
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->table       = $serviceLocator->get('AmAppData\Model\AppDataTable');
-        $this->tableLocale = $serviceLocator->get('AmAppData\Model\AppDataLocaleTable');
-
-        return $this;
-    }
+    protected $table       = AppDataTable::class;
+    protected $tableLocale = AppDataLocaleTable::class;
 
     public function getData ()
     {

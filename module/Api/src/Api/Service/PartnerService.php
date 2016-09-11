@@ -2,29 +2,17 @@
 
 namespace Api\Service;
 
-
+use Api\Model\PartnerLocaleTable;
+use Api\Model\PartnerTable;
 use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\ArrayObject;
 
 class PartnerService implements FactoryInterface
 {
-    protected $table;
-    protected $tableLocale;
+    use ApiServiceTrait;
 
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->table       = $serviceLocator->get('AmPartner\Model\PartnerTable');
-        $this->tableLocale = $serviceLocator->get('AmPartner\Model\PartnerLocaleTable');
-
-        return $this;
-    }
+    protected $table = PartnerTable::class;
+    protected $tableLocale = PartnerLocaleTable::class;
 
     public function getData($lang)
     {

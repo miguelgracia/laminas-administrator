@@ -3,22 +3,11 @@
 namespace Api\Service;
 
 use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class BlogCategoryService implements FactoryInterface
 {
-    private $serviceLocator;
+    use ApiServiceTrait;
 
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-
-        return $this;
-    }
+    protected $table = null;
+    protected $tableLocale = null;
 }

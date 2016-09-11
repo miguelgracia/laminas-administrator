@@ -6,7 +6,7 @@ namespace Api\Service;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class ApiService implements FactoryInterface
+class ApiServiceFactory implements FactoryInterface
 {
     private $serviceLocator;
 

@@ -3,23 +3,14 @@
 namespace Api\Service;
 
 
+use Api\Model\BlogLocaleTable;
+use Api\Model\BlogTable;
 use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class BlogService implements FactoryInterface
 {
-    private $serviceLocator;
+    use ApiServiceTrait;
 
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-
-        return $this;
-    }
+    protected $table = BlogTable::class;
+    protected $tableLocale = BlogLocaleTable::class;
 }

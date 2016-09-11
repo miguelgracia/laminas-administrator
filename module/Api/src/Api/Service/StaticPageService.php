@@ -2,31 +2,19 @@
 
 namespace Api\Service;
 
-
+use Api\Model\StaticPageLocaleTable;
+use Api\Model\StaticPageTable;
 use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\ArrayObject;
 
 class StaticPageService implements FactoryInterface
 {
-    protected $table;
-    protected $tableLocale;
+    use ApiServiceTrait;
+
+    protected $table = StaticPageTable::class;
+    protected $tableLocale = StaticPageLocaleTable::class;
 
     protected $cacheData = array();
-
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->table       = $serviceLocator->get('AmStaticPage\Model\StaticPageTable');
-        $this->tableLocale = $serviceLocator->get('AmStaticPage\Model\StaticPageLocaleTable');
-
-        return $this;
-    }
 
     public function getData()
     {

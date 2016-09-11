@@ -2,29 +2,17 @@
 
 namespace Api\Service;
 
-
+use Api\Model\HomeModuleLocaleTable;
+use Api\Model\HomeModuleTable;
 use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\ArrayObject;
 
 class HomeModuleService implements FactoryInterface
 {
-    protected $table;
-    protected $tableLocale;
+    use ApiServiceTrait;
 
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->table       = $serviceLocator->get('AmHomeModule\Model\HomeModuleTable');
-        $this->tableLocale = $serviceLocator->get('AmHomeModule\Model\HomeModuleLocaleTable');
-
-        return $this;
-    }
+    protected $table = HomeModuleTable::class;
+    protected $tableLocale = HomeModuleLocaleTable::class;
 
     public function getData($lang)
     {
