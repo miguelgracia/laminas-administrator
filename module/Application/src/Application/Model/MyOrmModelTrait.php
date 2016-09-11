@@ -88,6 +88,11 @@ trait MyOrmModelTrait
         }
     }
 
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }
+
     public function prepareToSave()
     {
         $toSaveArray = array();

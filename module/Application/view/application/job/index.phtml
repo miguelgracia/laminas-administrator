@@ -1,8 +1,18 @@
+<?php
+$jobMenuId         = $menu->rows['jobs']->id;
+$jobHelper         = $this->jobHelper();
+$jobCategoryHelper = $this->jobCategoryHelper();
+?>
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item active">Trabajos</li>
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang)?>">Home</a></li>
+            <?php if(!isset($currentCategory)):?>
+                <li class="breadcrumb-item active"><?=$menu->locale->{$lang}[$jobMenuId]->name?></li>
+            <?php else :?>
+                <li class="breadcrumb-item"><a href="<?=$this->url($lang.'/jobs')?>"><?=$menu->locale->{$lang}[$jobMenuId]->name?></a></li>
+                <li class="breadcrumb-item active"><?=$currentCategory['title']?></a></li>
+            <?php endif?>
         </ol>
     </div>
 </div>
@@ -14,105 +24,38 @@
         <div class="row">
             <div class="col-md-9">
 
-                <h1>Trabajos</h1>
+                <h1><?=$menu->locale->{$lang}[$jobMenuId]->name?></h1>
 
                 <div class="row">
-                    <div class="col-md-12 list-item job">
-                        <div class="row">
-                            <div class="col-md-5"><img class="img-responsive" src="/media/maqueta/home1.png" /></div>
-                            <div class="col-md-7">
-                                <h2>Trabajo 1</h2>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc pulvinar dui elementum euismod quis ut elit.
-                                    Sed cursus et arcu at malesuada. Integer rhoncus congue cursus. Sed dictum viverra egestas.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-9">
-                                <span>
-                                    <i class="fa fa-tag"></i>
-                                    <a href="/">Implantación ISO</a>
-                                    <a href="/">Reparaciones</a>
-                                </span>
-                            </div>
-                            <div class="col-md-3">
-                                <a href="/trabajos/categorias/trabajo1" class="btn btn-default pull-right">Ver trabajo</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12 list-item job">
-                        <div class="row">
-                            <div class="col-md-5"><img class="img-responsive" src="/media/maqueta/home2.png" /></div>
-                            <div class="col-md-7">
-                                <h2>Trabajo 1</h2>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc pulvinar dui elementum euismod quis ut elit.
-                                    Sed cursus et arcu at malesuada. Integer rhoncus congue cursus. Sed dictum viverra egestas.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-9">
-                                <span>
-                                    <i class="fa fa-tag"></i>
-                                    <a href="/">Implantación ISO</a>
-                                    <a href="/">Reparaciones</a>
-                                </span>
-                            </div>
-                            <div class="col-md-3">
-                                <a href="/trabajos/categorias/trabajo2" class="btn btn-default pull-right">Ver trabajo</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12 list-item job">
-                        <div class="row">
-                            <div class="col-md-5"><img class="img-responsive" src="/media/maqueta/home3.png" /></div>
-                            <div class="col-md-7">
-                                <h2>Trabajo 3</h2>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc pulvinar dui elementum euismod quis ut elit.
-                                    Sed cursus et arcu at malesuada. Integer rhoncus congue cursus. Sed dictum viverra egestas.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-9">
-                                <span>
-                                    <i class="fa fa-tag"></i>
-                                    <a href="/">Implantación ISO</a>
-                                    <a href="/">Reparaciones</a>
-                                </span>
-                            </div>
-                            <div class="col-md-3">
-                                <a href="/trabajos/categorias/trabajo3" class="btn btn-default pull-right">Ver trabajo</a>
-                            </div>
-                        </div>
-                    </div>
-
+                    <?php $jobHelper->render($lang, $jobs);?>
                 </div>
             </div>
             <aside class="col-md-3">
                 <h3>Categorias</h3>
                 <ul>
-                    <li><a href="/trabajos/reparaciones">REPARACIONES</a></li>
-                    <li><a href="/trabajos/montajes">MONTAJES</a></li>
-                    <li><a href="/trabajos/seguimientos-de-fabricacion">SEGUIMIENTOS DE FABRICACION</a></li>
-                    <li><a href="/trabajos/implantacion-iso-9000">IMPLATACION ISO 9000</a></li>
+                    <?php $jobCategoryHelper->render($lang,$jobCategories);?>
                 </ul>
             </aside>
         </div>
 
         <div class="row">
             <div class="col-md-12">
-                <ul class="pagination">
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                </ul>
+                <?php
+                // add at the end of the file after the table
+                echo $this->paginationControl(
+                // the paginator object
+                    $jobs,
+                    // the scrolling style
+                    'sliding',
+                    // the partial to use to render the control
+                    'partial/paginator.phtml',
+                    // the route to link to when a user clicks a control link
+                    array(
+                        'route' => $routePagination,
+                        'routeParams' => $routeParams
+                    )
+                );
+                ?>
             </div>
         </div>
 

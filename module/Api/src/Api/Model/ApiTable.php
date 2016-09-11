@@ -4,15 +4,103 @@ namespace Api\Model;
 
 use Application\Model\MyOrmTableTrait;
 use Zend\Db\Adapter\AdapterAwareInterface;
+use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Predicate\Expression;
 use Zend\Db\Sql\Select;
 use Zend\Db\TableGateway\AbstractTableGateway;
+use Zend\Paginator\Adapter\DbSelect;
+use Zend\Paginator\Paginator;
 
 class ApiTable extends AbstractTableGateway implements AdapterAwareInterface
 {
     use MyOrmTableTrait;
 
     protected $entityModelName = ApiModel::class;
+
+    protected $tableLocaleService = null;
+
+    public function setTableLocaleService($tableLocaleService)
+    {
+        $this->tableLocaleService = $tableLocaleService;
+    }
+
+    public function paginate($languageCode = false, $callback = false)
+    {
+        $tableLocaleService = $this->tableLocaleService;
+
+        $select = new Select($this->table);
+        $where = array();
+
+        $tableColumns = $this->getEntityModel()->getMetadata()->getColumns($this->table);
+
+        $tableFields = array();
+
+        foreach ($tableColumns as $column) {
+            $columnName = $column->getName();
+            if ($columnName == 'deleted_at') {
+                $where[$this->table.'.deleted_at'] = null;
+            } elseif ($columnName == 'active') {
+                $where[$this->table.'.active'] = '1';
+            } else {
+                $tableFields[$columnName] = $columnName;
+            }
+        }
+
+        $select->columns($tableFields);
+
+        if ($languageCode and $tableLocaleService) {
+
+            $where += array(
+                'languages.active' => '1',
+                'languages.code'   => $languageCode,
+            );
+
+            $tableLocale = $tableLocaleService->getTable();
+            $tableLocaleColumns = $tableLocaleService->getEntityModel()->getMetadata()->getColumns($tableLocaleService->getTable());
+
+            $localeFields = array();
+
+            $localeFieldsDisallowed = array(
+                'id','language_id','related_table_id'
+            );
+
+            foreach ($tableLocaleColumns as $column) {
+                $columnName = $column->getName();
+                if (!in_array($columnName,$localeFieldsDisallowed)) {
+                    $localeFields[$columnName] = $columnName;
+                }
+            }
+
+            $select->join(
+                $tableLocale,
+                new Expression($this->table.'.id =' .$tableLocale .'.related_table_id'),
+                $localeFields
+            )->join(
+                'languages',
+                new Expression("languages.id = $tableLocale.language_id"),
+                array(
+                    "language_code" => "code"
+                ),
+                Select::JOIN_RIGHT
+            );
+        }
+
+        if (is_callable($callback)) {
+            call_user_func_array($callback,array(&$select,&$where));
+        }
+
+        $select->where($where);
+
+        $paginatorAdapter = new DbSelect(
+            $select,
+            $this->adapter,
+            $this->resultSetPrototype
+        );
+
+        $paginator = new Paginator($paginatorAdapter);
+
+        return $paginator;
+    }
 
     public function findByLangCode($languageCode)
     {
@@ -37,6 +125,75 @@ class ApiTable extends AbstractTableGateway implements AdapterAwareInterface
         });
 
         return $resultSet;
+    }
+
+    public function findRow($languageCode, $key, $keyValue)
+    {
+        $tableLocaleService = $this->tableLocaleService;
+
+        $select = new Select($this->table);
+
+        $where = array();
+
+        $where[$key] = $keyValue;
+
+        $tableColumns = $this->getEntityModel()->getMetadata()->getColumns($this->table);
+
+        $tableFields = array();
+
+        foreach ($tableColumns as $column) {
+            $columnName = $column->getName();
+            if ($columnName == 'deleted_at') {
+                $where[$this->table.'.deleted_at'] = null;
+            } elseif ($columnName == 'active') {
+                $where[$this->table.'.active'] = '1';
+            } else {
+                $tableFields[$columnName] = $columnName;
+            }
+        }
+
+        $select->columns($tableFields);
+
+        if ($languageCode and $tableLocaleService) {
+
+            $where += array(
+                'languages.active' => '1',
+                'languages.code'   => $languageCode,
+            );
+
+            $tableLocale = $tableLocaleService->getTable();
+            $tableLocaleColumns = $tableLocaleService->getEntityModel()->getMetadata()->getColumns($tableLocaleService->getTable());
+
+            $localeFields = array();
+
+            $localeFieldsDisallowed = array(
+                'id','language_id','related_table_id'
+            );
+
+            foreach ($tableLocaleColumns as $column) {
+                $columnName = $column->getName();
+                if (!in_array($columnName,$localeFieldsDisallowed)) {
+                    $localeFields[$columnName] = $columnName;
+                }
+            }
+
+            $select->join(
+                $tableLocale,
+                new Expression($this->table.'.id =' .$tableLocale .'.related_table_id'),
+                $localeFields
+            )->join(
+                'languages',
+                new Expression("languages.id = $tableLocale.language_id"),
+                array(
+                    "language_code" => "code"
+                ),
+                Select::JOIN_RIGHT
+            );
+        }
+
+        $select->where($where);
+
+        return $this->selectWith($select);
     }
 
     public function findLocales($id = false)

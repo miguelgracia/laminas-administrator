@@ -2,11 +2,7 @@
 $partnerMenuId = $menu->rows['company/colaborators']->id;
 $company = $menu->rows['company']->id;
 
-$partnerUrl = $this->url($lang.'/company/colaborators',array(
-    'lang' => $lang,
-    'section' => $menu->locale->{$lang}[$company]->urlKey,
-    'colaborators' => $menu->locale->{$lang}[$partnerMenuId]->urlKey
-));
+$partnerUrl = $this->url($lang.'/company/colaborators');
 
 $partnerHelper = $this->partnerHelper($lang);
 

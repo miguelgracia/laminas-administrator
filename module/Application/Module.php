@@ -51,6 +51,8 @@ class Module
                 'megabannerHelper'      => 'Application\View\Helper\Megabanner',
                 'homeModuleHelper'      => 'Application\View\Helper\HomeModule',
                 'partnerHelper'         => 'Application\View\Helper\Partner',
+                'jobHelper'             => 'Application\View\Helper\Job',
+                'jobCategoryHelper'     => 'Application\View\Helper\JobCategory',
             ),
         );
     }

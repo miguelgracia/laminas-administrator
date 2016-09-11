@@ -99,9 +99,9 @@ return array(
                                 'type'    => 'Segment',
                                 'may_terminate' => true,
                                 'options' => array(
-                                    'route' => '/[:slug-category]',
+                                    'route' => '/[:category]',
                                     'constraints' => array(
-                                        'slug-category' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                        'category' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                     ),
                                     'defaults' => array(
                                         '__NAMESPACE__' => 'Application\Controller',
@@ -113,9 +113,9 @@ return array(
                                     'detail' => array(
                                         'type'    => 'Segment',
                                         'options' => array(
-                                            'route'    => '/[:slug-title]',
+                                            'route'    => '/[:detail]',
                                             'constraints' => array(
-                                                'slug-title'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                                'detail'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                                             ),
                                             'defaults' => array(
                                                 '__NAMESPACE__' => 'Application\Controller',
