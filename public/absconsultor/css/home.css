@@ -31,6 +31,13 @@
     margin-top: -150px;
 }
 
+@media (max-width: 767px) {
+    .abs .video-wrapper video {
+        margin-top: -0px;
+    }
+}
+
+
 .abs .home .nav.navbar-nav{
     position: absolute;
     top: 70%;
@@ -89,9 +96,23 @@
     cursor: pointer;
 }
 
+@media (max-width: 767px) {
+    .abs .video-filter .video-controls {
+        font-size: 2em;
+    }
+}
+
 .abs .home-module {
     position: relative;
 }
+
+@media (max-width: 991px) {
+    .abs .home-module {
+        border-bottom: 1px solid darkgray;
+        margin-bottom: 25px;
+    }
+}
+
 
 
 /* FLECHA IZQUIERDA */
@@ -147,6 +168,14 @@
     margin-top: -20px;
 }
 
+@media (max-width: 991px) {
+    .home-module:nth-child(even) > div:nth-child(1):after,
+    .home-module:nth-child(even) > div:nth-child(1):before {
+        border-width: 0px;
+        margin-top: 0px;
+    }
+}
+
 .abs .home-module > div {
     padding-left: 0;
     padding-right: 0;
@@ -174,6 +203,14 @@
 .abs .home-module:nth-child(odd) .btn {
     float: right;
 }
+
+@media (max-width: 1199px) {
+    .abs .home-module .btn {
+        position: relative;
+        bottom: 20px;
+    }
+}
+
 
 .home-module .owl-carousel.owl-theme .owl-controls {
     position: absolute;
