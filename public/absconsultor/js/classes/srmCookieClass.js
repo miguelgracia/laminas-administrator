@@ -7,7 +7,7 @@ function srmCookieClass() {
         if(cookieAlert) {
             $('#close_cookie_alert').click(function(e) {
                 e.preventDefault();
-                Cookies.set('cookie_alert',true);
+                Cookies.set('cookie_alert',true, {expires: 365 * 5});
                 cookieAlert.classList.add('hide');
             });
             cookieAlert.classList.remove('hide')
