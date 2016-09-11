@@ -67,7 +67,7 @@ CREATE TABLE `admin_profiles` (
 
 /*Data for the table `admin_profiles` */
 
-insert  into `admin_profiles`(`id`,`key`,`name`,`description`,`is_admin`,`permissions`) values (1,'Superadmin','Superadmin','<p>Administrador de la plataforma</p>\r\n',1,''),(4,'administrator','Administrador','Administrador\r\n',0,'[\"home.index\",\"blog.add\",\"blog.delete\",\"blog.edit\",\"blog.index\",\"blog-category.add\",\"blog-category.delete\",\"blog-category.edit\",\"blog-category.index\",\"media.connector\",\"media.index\",\"media.remove\",\"media.upload\",\"megabanner.add\",\"megabanner.delete\",\"megabanner.edit\",\"megabanner.index\",\"static-page.add\",\"static-page.delete\",\"static-page.edit\",\"static-page.index\",\"job.add\",\"job.delete\",\"job.edit\",\"job.index\",\"job-category.add\",\"job-category.delete\",\"job-category.edit\",\"job-category.index\",\"section.edit\",\"section.index\",\"job-video.add\",\"job-video.edit\",\"job-video.index\",\"home-module.add\",\"home-module.delete\",\"home-module.edit\",\"home-module.index\",\"partner.add\",\"partner.delete\",\"partner.edit\",\"partner.index\"]');
+insert  into `admin_profiles`(`id`,`key`,`name`,`description`,`is_admin`,`permissions`) values (1,'Superadmin','Superadmin','<p>Administrador de la plataforma</p>\r\n',1,''),(4,'administrator','Administrador','Administrador\r\n',0,'[\"home.index\",\"blog.add\",\"blog.delete\",\"blog.edit\",\"blog.index\",\"blog-category.add\",\"blog-category.delete\",\"blog-category.edit\",\"blog-category.index\",\"media.connector\",\"media.index\",\"media.remove\",\"media.upload\",\"megabanner.add\",\"megabanner.delete\",\"megabanner.edit\",\"megabanner.index\",\"static-page.edit\",\"static-page.index\",\"job.add\",\"job.delete\",\"job.edit\",\"job.index\",\"job-category.add\",\"job-category.delete\",\"job-category.edit\",\"job-category.index\",\"section.edit\",\"section.index\",\"home-module.add\",\"home-module.delete\",\"home-module.edit\",\"home-module.index\",\"app-data.edit\",\"app-data.index\",\"partner.add\",\"partner.delete\",\"partner.edit\",\"partner.index\"]');
 
 /*Table structure for table `admin_users` */
 
@@ -90,7 +90,7 @@ CREATE TABLE `admin_users` (
 
 /*Data for the table `admin_users` */
 
-insert  into `admin_users`(`id`,`admin_profile_id`,`username`,`password`,`validado`,`active`,`created_at`,`updated_at`,`deleted_at`,`last_login`) values (1,1,'dreamsite','e10adc3949ba59abbe56e057f20f883e',1,'1','2016-01-13 12:42:11',NULL,NULL,'2016-04-22 09:33:56'),(3,4,'admin','e10adc3949ba59abbe56e057f20f883e',1,'1','2016-03-29 12:05:16',NULL,NULL,'2016-04-18 17:45:34');
+insert  into `admin_users`(`id`,`admin_profile_id`,`username`,`password`,`validado`,`active`,`created_at`,`updated_at`,`deleted_at`,`last_login`) values (1,1,'superabs','e10adc3949ba59abbe56e057f20f883e',1,'1','2016-01-13 12:42:11',NULL,NULL,'2016-04-22 09:33:56'),(3,4,'consultorabs','e10adc3949ba59abbe56e057f20f883e',1,'1','2016-03-29 12:05:16',NULL,NULL,'2016-04-18 17:45:34');
 
 /*Table structure for table `app_datas` */
 
@@ -185,11 +185,11 @@ CREATE TABLE `blog_categories` (
   `active` enum('0','1') COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `key` (`key`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `blog_categories` */
 
-insert  into `blog_categories`(`id`,`key`,`created_at`,`updated_at`,`deleted_at`,`active`) values (1,'Cat','2016-07-12 22:03:04','2016-07-22 16:26:34',NULL,'0');
+insert  into `blog_categories`(`id`,`key`,`created_at`,`updated_at`,`deleted_at`,`active`) values (1,'cat','2016-07-12 22:03:04','2016-09-11 18:42:21',NULL,'1'),(2,'nueva-cat','2016-09-11 12:05:19','2016-09-11 18:42:34',NULL,'1');
 
 /*Table structure for table `blog_categories_locales` */
 
@@ -203,11 +203,11 @@ CREATE TABLE `blog_categories_locales` (
   `meta_description` text COLLATE utf8_unicode_ci,
   `language_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `blog_categories_locales` */
 
-insert  into `blog_categories_locales`(`id`,`related_table_id`,`title`,`url_key`,`meta_description`,`language_id`) values (1,1,'cat','cat','cat',2);
+insert  into `blog_categories_locales`(`id`,`related_table_id`,`title`,`url_key`,`meta_description`,`language_id`) values (1,1,'cat-1','cat-1','cat',2),(2,2,'cat-2','cat-2','asdf',1),(3,2,'cat-2','cat-3','asf',2),(4,1,'cat-1','cat-4','fsfsdfsdf',1);
 
 /*Table structure for table `blog_entries` */
 
@@ -216,6 +216,7 @@ DROP TABLE IF EXISTS `blog_entries`;
 CREATE TABLE `blog_entries` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `blog_categories_id` int(10) unsigned NOT NULL,
+  `image_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `key` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `active` enum('0','1') COLLATE utf8_unicode_ci DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -226,7 +227,7 @@ CREATE TABLE `blog_entries` (
 
 /*Data for the table `blog_entries` */
 
-insert  into `blog_entries`(`id`,`blog_categories_id`,`key`,`active`,`created_at`,`updated_at`,`deleted_at`) values (1,1,'Sdfsdddd','0','2016-07-12 22:03:24',NULL,NULL),(2,1,'NuevaEntradaDeBlog','1','2016-07-19 01:15:23',NULL,NULL),(3,1,'Asdf','0','2016-07-19 01:23:41',NULL,NULL);
+insert  into `blog_entries`(`id`,`blog_categories_id`,`image_url`,`key`,`active`,`created_at`,`updated_at`,`deleted_at`) values (1,1,NULL,'sdfsdddd','1','2016-07-12 22:03:24',NULL,NULL),(2,2,NULL,'nuevaentradadeblog','1','2016-07-19 01:15:23',NULL,NULL),(3,1,NULL,'asdf','1','2016-07-19 01:23:41',NULL,NULL);
 
 /*Table structure for table `blog_entries_locales` */
 
@@ -241,11 +242,11 @@ CREATE TABLE `blog_entries_locales` (
   `meta_description` text COLLATE utf8_unicode_ci,
   `language_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `blog_entries_locales` */
 
-insert  into `blog_entries_locales`(`id`,`related_table_id`,`title`,`url_key`,`content`,`meta_description`,`language_id`) values (1,1,'asdfdf3333','asdf','<p>df</p>\r\n','sfd',2),(2,3,'asdf','asdfwwww','<p>asdf</p>\r\n','asdf',2);
+insert  into `blog_entries_locales`(`id`,`related_table_id`,`title`,`url_key`,`content`,`meta_description`,`language_id`) values (1,1,'blog-1','blog-1','<p>df</p>\r\n','sfd',2),(2,3,'blog-3','blog5','<p>asdf</p>\r\n','asdf',2),(3,1,'blog-1','blog2','<p>asfdasf</p>\r\n','',1),(4,2,'blog-2','blog3','<p>asdfsafd</p>\r\n','',1),(5,2,'blog-2','blog4','<p>asfdsaf</p>\r\n','',2),(6,3,'blog-3','blog6','<p>dfs</p>\r\n','sdfdsf',1);
 
 /*Table structure for table `configuration` */
 
@@ -344,11 +345,11 @@ CREATE TABLE `job_categories` (
   `active` enum('0','1') COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `key` (`key`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `job_categories` */
 
-insert  into `job_categories`(`id`,`key`,`created_at`,`updated_at`,`deleted_at`,`active`) values (1,'NormativaIso','2016-07-08 20:47:06',NULL,NULL,'1');
+insert  into `job_categories`(`id`,`key`,`created_at`,`updated_at`,`deleted_at`,`active`) values (1,'normativaiso','2016-07-08 20:47:06',NULL,NULL,'1'),(2,'reparaciones','2016-09-11 16:16:16',NULL,NULL,'1'),(3,'montajes','2016-09-11 16:16:48',NULL,NULL,'1'),(4,'seguimiento-fabricacion','2016-09-11 16:18:07',NULL,NULL,'1'),(5,'implantacion-iso-9000','2016-09-11 16:18:55',NULL,NULL,'1');
 
 /*Table structure for table `job_categories_locales` */
 
@@ -362,11 +363,11 @@ CREATE TABLE `job_categories_locales` (
   `meta_description` text COLLATE utf8_unicode_ci,
   `language_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `job_categories_locales` */
 
-insert  into `job_categories_locales`(`id`,`related_table_id`,`title`,`url_key`,`meta_description`,`language_id`) values (1,1,'Implantación ISO','implantacion-iso','',2);
+insert  into `job_categories_locales`(`id`,`related_table_id`,`title`,`url_key`,`meta_description`,`language_id`) values (1,1,'Normativa ISO','normativa-iso','',2),(2,1,'ISO En','iso-en','',1),(3,2,'Reparaciones - EN','reparaciones','',1),(4,2,'Reparaciones','reparaciones','',2),(5,3,'montajes - EN','montajes','',1),(6,3,'Montajes','montajes','',2),(7,4,'Segumiento de fabricación - EN','seguimiento-de-fabricacion','',1),(8,4,'Seguimiento de fabricación','seguimiento-de-fabricacion','',2),(9,5,'Implantación ISO 9000 - EN','iso-9000','',1),(10,5,'Implantación ISO 9000 ','iso-9000','',2);
 
 /*Table structure for table `jobs` */
 
@@ -376,6 +377,7 @@ CREATE TABLE `jobs` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `job_categories_id` int(10) unsigned NOT NULL,
   `key` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `image_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `active` enum('0','1') COLLATE utf8_unicode_ci DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -385,7 +387,7 @@ CREATE TABLE `jobs` (
 
 /*Data for the table `jobs` */
 
-insert  into `jobs`(`id`,`job_categories_id`,`key`,`active`,`created_at`,`updated_at`,`deleted_at`) values (2,1,'Mitrabajo','0','2016-07-10 19:42:49',NULL,NULL),(3,1,'4444','0','2016-07-10 19:50:05',NULL,NULL),(4,1,'Qwe','0','2016-07-12 20:07:29',NULL,NULL);
+insert  into `jobs`(`id`,`job_categories_id`,`key`,`image_url`,`active`,`created_at`,`updated_at`,`deleted_at`) values (2,3,'mitrabajo','/maqueta/home1.png','1','2016-07-10 19:42:49',NULL,NULL),(3,1,'4444','','1','2016-07-10 19:50:05',NULL,NULL),(4,1,'Qwe','','1','2016-07-12 20:07:29',NULL,NULL);
 
 /*Table structure for table `jobs_locales` */
 
@@ -404,7 +406,7 @@ CREATE TABLE `jobs_locales` (
 
 /*Data for the table `jobs_locales` */
 
-insert  into `jobs_locales`(`id`,`related_table_id`,`title`,`url_key`,`content`,`meta_description`,`language_id`) values (2,2,'titulo post','titulo-post','<p>hola hoal</p>\r\n','metaasdasdasd',2),(3,2,'eeswwwww','ee','<p>eess</p>\r\n','ee',1),(4,3,'444','444','<p>444</p>\r\n','4444',1),(5,3,'333','33','<p>3333</p>\r\n','333',2),(6,4,'qwe','qwe','<p>qwe</p>\r\n','qwe',2);
+insert  into `jobs_locales`(`id`,`related_table_id`,`title`,`url_key`,`content`,`meta_description`,`language_id`) values (2,2,'trabajito','titulo-post','<p>hola hoal</p>\r\n','metaasdasdasd',2),(3,2,'eeswwwww','ee','<p>eess</p>\r\n','ee',1),(4,3,'444','444','<p>444</p>\r\n','4444',1),(5,3,'333','33','<p>3333</p>\r\n','333',2),(6,4,'qwe','qwe','<p>qwe</p>\r\n','qwe',2);
 
 /*Table structure for table `jobs_videos` */
 
