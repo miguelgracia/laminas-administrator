@@ -5,7 +5,6 @@ namespace Api\Service;
 use Api\Model\JobCategoryLocaleTable;
 use Api\Model\JobCategoryTable;
 use Zend\ServiceManager\FactoryInterface;
-use Zend\Stdlib\ArrayObject;
 
 class JobCategoryService implements FactoryInterface
 {

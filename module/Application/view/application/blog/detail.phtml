@@ -1,52 +1,44 @@
+<?php
+$blogMenuId         = $menu->rows['blog']->id;
+?>
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="">Blog</a></li>
-            <li class="breadcrumb-item"><a href="">Categoría Post</a></li>
-            <li class="breadcrumb-item active"><a href="">Título del post</a></li>
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang)?>">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang.'/blog')?>"><?=$menu->locale->{$lang}[$blogMenuId]->name?></a></li>
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang.'/blog/category',array('category' => $currentCategory['urlKey']))?>"><?=$currentCategory['title']?></a></li>
+            <li class="breadcrumb-item active"><?=$blog->title;?></li>
         </ol>
     </div>
 </div>
 
-<div class="container jobs">
+<div class="container blogs">
 
     <article>
 
         <div class="row">
             <div class="col-md-12">
 
-                <h1>Título del post</h1>
+                <h1><?=$blog->title;?></h1>
 
                 <div id="owl_carousel">
                     <div class="item">
-                        <img class="img-responsive" src="/media/maqueta/job-detail-1.png" alt="Collab">
+                        <img src="/media/<?=$blog->imageUrl;?>" alt="<?=$blog->title;?>">
                     </div>
+                    <!--<div class="item">
+                        <img src="/media/maqueta/blog-detail-1.png" alt="Collab">
+                    </div>
+                    <div class="item">
+                        <img src="/media/maqueta/blog-detail-1.png" alt="Collab">
+                    </div>
+                    <div class="item">
+                        <img src="/media/maqueta/blog-detail-1.png" alt="Collab">
+                    </div>
+                    <div class="item">
+                        <img src="/media/maqueta/blog-detail-1.png" alt="Collab">
+                    </div>-->
                 </div>
-
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque et nunc pulvinar dui elementum euismod quis ut elit.
-                    Sed cursus et arcu at malesuada. Integer rhoncus congue cursus. Sed dictum viverra egestas. Nulla facilisi.
-                    Nam volutpat rhoncus magna non porttitor. Donec euismod vitae velit in sollicitudin. Nam vitae dui pulvinar, lobortis mi a,
-                    ultricies ante. Morbi ligula mi, dapibus ac nisi sagittis, placerat mollis erat. Vivamus cursus augue et ex aliquam sollicitudin.
-                </p>
-
-                <p>
-                    Cras eleifend, risus sed elementum efficitur, ipsum justo elementum turpis, id dapibus nisl massa non neque.
-                    Vivamus et ex sollicitudin, consequat leo vitae, posuere libero. Sed sed sagittis dui, non mollis magna.
-                    Nulla convallis rutrum accumsan. Integer fringilla eleifend sapien, et rhoncus mi tristique eu.
-                    Maecenas elementum iaculis pretium. Aenean eu tempus eros, vitae vulputate elit. Nulla ultricies est et urna posuere viverra.
-                    Suspendisse potenti. Donec non odio massa. Aliquam vitae elementum neque. Integer at neque purus. Mauris venenatis tempor diam,
-                    pellentesque gravida lorem accumsan nec. Aenean a luctus purus, non vestibulum turpis.
-                </p>
-
-                <p>
-                    Fusce eu lectus et nisi sollicitudin maximus. Etiam sollicitudin ornare justo in eleifend. Donec ac velit massa.
-                    Curabitur tincidunt elit velit, vitae hendrerit magna tincidunt eu. Integer nisl tortor,
-                    maximus elementum dignissim dignissim, luctus non leo. Nullam luctus elementum sapien, in tincidunt orci.
-                    Donec elementum erat nec porta congue.
-                </p>
-
+                <?=$blog->content;?>
             </div>
         </div>
     </article>
