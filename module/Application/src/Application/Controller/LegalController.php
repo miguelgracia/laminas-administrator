@@ -16,6 +16,8 @@ class LegalController extends ApplicationController
 
             $content = $pageData['locale'][$this->session->lang][$page];
 
+            $this->headTitleHelper->append($content['title']);
+
             if (isset($pageData['rows'][$content['relatedTableId']]) and ((bool)$pageData['rows'][$content['relatedTableId']]['active'])) {
                 return new ViewModel(array(
                     'lang' => $this->session->lang,

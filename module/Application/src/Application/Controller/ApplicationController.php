@@ -18,8 +18,16 @@ abstract class ApplicationController extends AbstractActionController
 
     protected $appData;
 
+    protected $headTitleHelper;
+
     public function onDispatch(MvcEvent $e)
     {
+        $this->headTitleHelper = $e->getApplication()->getServiceManager()->get('ViewHelperManager')->get('headTitle');
+
+        $this->headTitleHelper->setSeparator(' - ');
+
+        $this->headTitleHelper->append('ABS Consultor');
+
         $cookie = $this->getRequest()->getHeaders()->get('Cookie');
 
         $showCookieAlert = !isset($cookie->cookie_alert);

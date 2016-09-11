@@ -12,6 +12,11 @@ class JobController extends ApplicationController
 
         if (isset($menu->rows->jobs) and $menu->rows->jobs->active == 1) {
 
+            $menuLang = $menu->locale->{$this->lang};
+
+            $this->headTitleHelper->append($menuLang[$menu->rows->jobs->id]->name);
+
+
             $page = $this->params()->fromQuery('page');
 
             $jobs = $this->api->job->getData($this->lang, false, $page);
@@ -32,6 +37,8 @@ class JobController extends ApplicationController
 
     public function categoryAction()
     {
+        $menu = $this->menu;
+
         $page = $this->params()->fromQuery('page');
 
         $category = $this->params()->fromRoute('category');
@@ -42,13 +49,20 @@ class JobController extends ApplicationController
 
         if (isset($uriCategories[$category]) and $jobCategories['rows'][$uriCategories[$category]]['active'] == '1') {
 
+            $menuLang = $menu->locale->{$this->lang};
+
+            $currentCategory = $jobCategories['locale'][$this->lang][$uriCategories[$category]];
+
+            $this->headTitleHelper->append($menuLang[$menu->rows->jobs->id]->name);
+            $this->headTitleHelper->append($currentCategory['title']);
+
             $jobs = $this->api->job->getData($this->lang, $category, $page);
 
             $viewModel = new ViewModel(array(
                 'menu'              => $this->menu,
                 'lang'              => $this->lang,
                 'jobs'              => $jobs,
-                'currentCategory'   => $jobCategories['locale'][$this->lang][$uriCategories[$category]],
+                'currentCategory'   => $currentCategory,
                 'jobCategories'     => $jobCategories,
                 'routePagination'   => $this->lang .'/jobs/category',
                 'routeParams'       => array(
@@ -79,11 +93,21 @@ class JobController extends ApplicationController
 
             if ($job->count()) {
 
+                $job = $job->current();
+
+                $menuLang = $this->menu->locale->{$this->lang};
+
+                $currentCategory = $jobCategories['locale'][$this->lang][$uriCategories[$category]];
+
+                $this->headTitleHelper->append($menuLang[$this->menu->rows->jobs->id]->name);
+                $this->headTitleHelper->append($currentCategory['title']);
+                $this->headTitleHelper->append($job->title);
+
                 $viewModel = new ViewModel(array(
                     'menu'              => $this->menu,
                     'lang'              => $this->lang,
-                    'job'               => $job->current(),
-                    'currentCategory'   => $jobCategories['locale'][$this->lang][$uriCategories[$category]],
+                    'job'               => $job,
+                    'currentCategory'   => $currentCategory,
                     'jobCategories'     => $jobCategories
                 ));
 

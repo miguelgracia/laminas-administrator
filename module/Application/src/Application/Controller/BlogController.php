@@ -12,6 +12,10 @@ class BlogController extends ApplicationController
 
         if (isset($menu->rows->blog) and $menu->rows->blog->active == 1) {
 
+            $menuLang = $menu->locale->{$this->lang};
+
+            $this->headTitleHelper->append($menuLang[$menu->rows->blog->id]->name);
+
             $page = $this->params()->fromQuery('page');
 
             $blogs = $this->api->blog->getData($this->lang, false, $page);
@@ -32,6 +36,8 @@ class BlogController extends ApplicationController
 
     public function categoryAction()
     {
+        $menu = $this->menu;
+
         $page = $this->params()->fromQuery('page');
 
         $category = $this->params()->fromRoute('category');
@@ -42,13 +48,20 @@ class BlogController extends ApplicationController
 
         if (isset($uriCategories[$category]) and $blogCategories['rows'][$uriCategories[$category]]['active'] == '1') {
 
+            $menuLang = $menu->locale->{$this->lang};
+
+            $currentCategory = $blogCategories['locale'][$this->lang][$uriCategories[$category]];
+
+            $this->headTitleHelper->append($menuLang[$menu->rows->blog->id]->name);
+            $this->headTitleHelper->append($currentCategory['title']);
+
             $blogs = $this->api->blog->getData($this->lang, $category, $page);
 
             $viewModel = new ViewModel(array(
                 'menu'              => $this->menu,
                 'lang'              => $this->lang,
                 'blogs'              => $blogs,
-                'currentCategory'   => $blogCategories['locale'][$this->lang][$uriCategories[$category]],
+                'currentCategory'   => $currentCategory,
                 'blogCategories'     => $blogCategories,
                 'routePagination'   => $this->lang .'/blog/category',
                 'routeParams'       => array(
@@ -79,11 +92,21 @@ class BlogController extends ApplicationController
 
             if ($blog->count()) {
 
+                $blog = $blog->current();
+
+                $menuLang = $this->menu->locale->{$this->lang};
+
+                $currentCategory = $blogCategories['locale'][$this->lang][$uriCategories[$category]];
+
+                $this->headTitleHelper->append($menuLang[$this->menu->rows->blog->id]->name);
+                $this->headTitleHelper->append($currentCategory['title']);
+                $this->headTitleHelper->append($blog->title);
+
                 $viewModel = new ViewModel(array(
                     'menu'              => $this->menu,
                     'lang'              => $this->lang,
-                    'blog'               => $blog->current(),
-                    'currentCategory'   => $blogCategories['locale'][$this->lang][$uriCategories[$category]],
+                    'blog'               => $blog,
+                    'currentCategory'   => $currentCategory,
                     'blogCategories'     => $blogCategories
                 ));
 

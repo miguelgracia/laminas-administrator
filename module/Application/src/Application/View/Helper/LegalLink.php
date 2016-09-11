@@ -16,16 +16,19 @@ class LegalLink extends AbstractHelper
     {
         $url = $this->view->plugin('Url');
 
-        foreach ($data['locale'][$lang] as $uriSegment => $locale) {
+        if (count($data['rows']) > 0) {
+            
+            foreach ($data['locale'][$lang] as $uriSegment => $locale) {
 
-            if (is_object($locale)) {
-                echo sprintf(
-                    '<a class="legal-link" href="%s">%s</a>',
-                    $url($lang.'/legal/page',array(
-                        'page' => $locale['urlKey']
-                    )),
-                    $locale['title']
-                );
+                if (is_array($locale) and isset($data['rows'][$locale['relatedTableId']])) {
+                    echo sprintf(
+                        '<a class="legal-link" href="%s">%s</a>',
+                        $url($lang.'/legal/page',array(
+                            'page' => $locale['urlKey']
+                        )),
+                        $locale['title']
+                    );
+                }
             }
         }
     }

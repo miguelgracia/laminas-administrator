@@ -15,6 +15,8 @@ class HomeController extends ApplicationController
 {
     public function indexAction()
     {
+        $this->headTitleHelper->append('Home');
+
         return new ViewModel(array(
             'homeModules'   => $this->api->homeModule->getData($this->lang),
             'megabanners'   => $this->api->megabanner->getData($this->lang),

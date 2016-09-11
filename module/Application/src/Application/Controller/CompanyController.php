@@ -11,6 +11,10 @@ class CompanyController extends ApplicationController
 
         if (isset($menu->rows->company) and $menu->rows->company->active == 1) {
 
+            $menuLang = $menu->locale->{$this->lang};
+
+            $this->headTitleHelper->append($menuLang[$menu->rows->company->id]->name);
+
             $viewParams = array(
                 'menu' => $menu,
                 'lang' => $this->lang
@@ -31,6 +35,12 @@ class CompanyController extends ApplicationController
         $menu = $this->menu;
 
         if (isset($menu->rows->{"company/colaborators"}) and $menu->rows->{"company/colaborators"}->active == 1) {
+
+            $menuLang = $menu->locale->{$this->lang};
+
+            $this->headTitleHelper->append($menuLang[$menu->rows->company->id]->name);
+            $this->headTitleHelper->append($menuLang[$menu->rows->{"company/colaborators"}->id]->name);
+
             return new ViewModel(array(
                 'menu'     => $menu,
                 'lang'     => $this->lang,
