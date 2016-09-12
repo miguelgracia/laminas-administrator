@@ -160,20 +160,11 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
         switch ($columnName) {
             case 'url_key':
-                $filters[] = array(
-                    'name' => SlugFilter::class,
-                    'options' => array()
-                );
-                break;
             case 'key':
                 $filters[] = array(
                     'name' => SlugFilter::class,
                     'options' => array()
                 );
-                /*$filters[] = array(
-                    'name' => DashToCamelCase::class,
-                    'options' => array()
-                );*/
                 break;
         }
 
