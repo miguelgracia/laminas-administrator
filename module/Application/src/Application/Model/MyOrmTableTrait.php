@@ -113,7 +113,7 @@ trait MyOrmTableTrait
                     Select::JOIN_RIGHT
                 )->where(array(
                     'languages.active' => '1'
-                ));
+                ))->order('languages.order ASC');
         });
 
         return $resultSet;

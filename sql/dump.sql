@@ -383,11 +383,11 @@ CREATE TABLE `jobs` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `jobs` */
 
-insert  into `jobs`(`id`,`job_categories_id`,`key`,`image_url`,`active`,`created_at`,`updated_at`,`deleted_at`) values (2,3,'mitrabajo','/maqueta/home1.png','1','2016-07-10 19:42:49',NULL,NULL),(3,1,'4444','','1','2016-07-10 19:50:05',NULL,NULL),(4,1,'Qwe','','1','2016-07-12 20:07:29',NULL,NULL);
+insert  into `jobs`(`id`,`job_categories_id`,`key`,`image_url`,`active`,`created_at`,`updated_at`,`deleted_at`) values (2,3,'mitrabajo','/maqueta/home1.png','1','2016-07-10 19:42:49',NULL,NULL),(3,1,'4444','/maqueta/home1.png','1','2016-07-10 19:50:05',NULL,NULL),(4,1,'qwe','/media/jare.jpg','1','2016-07-12 20:07:29',NULL,NULL),(5,3,'nuevo-trabajo','/maqueta/home1.png','1','2016-09-12 10:46:10',NULL,NULL);
 
 /*Table structure for table `jobs_locales` */
 
@@ -402,11 +402,11 @@ CREATE TABLE `jobs_locales` (
   `meta_description` text COLLATE utf8_unicode_ci,
   `language_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `jobs_locales` */
 
-insert  into `jobs_locales`(`id`,`related_table_id`,`title`,`url_key`,`content`,`meta_description`,`language_id`) values (2,2,'trabajito','titulo-post','<p>hola hoal</p>\r\n','metaasdasdasd',2),(3,2,'eeswwwww','ee','<p>eess</p>\r\n','ee',1),(4,3,'444','444','<p>444</p>\r\n','4444',1),(5,3,'333','33','<p>3333</p>\r\n','333',2),(6,4,'qwe','qwe','<p>qwe</p>\r\n','qwe',2);
+insert  into `jobs_locales`(`id`,`related_table_id`,`title`,`url_key`,`content`,`meta_description`,`language_id`) values (2,2,'trabajito','titulo-post','<p>hola hoal</p>\r\n','metaasdasdasd',2),(3,2,'eeswwwww','ee','<p>eess</p>\r\n','ee',1),(4,3,'444 - EN','444-en','<p>444</p>\r\n','4444',1),(5,3,'333SDFASDF','33','<p>3333</p>\r\n','333',2),(6,4,'trabajo en español','url-key-en-espanol','<p>qwe</p>\r\n','qwe',2),(7,4,'job in engl','job-en','<p>sdf</p>\r\n','',1),(8,5,'NUEVO TRABAJO EN ESPAÑOL','nuevo-trabajo-en-espanol','<p>NUEVO TRABAJO EN ESPA&Ntilde;OL</p>\r\n','NUEVO TRABAJO EN ESPAÑOL',2),(9,5,'nuevo en inglesddd','nuevo-en-ingles','<p>nuevo en ingles</p>\r\n','nuevo en ingles',1);
 
 /*Table structure for table `jobs_videos` */
 
@@ -435,12 +435,13 @@ CREATE TABLE `languages` (
   `name` char(49) CHARACTER SET utf8 NOT NULL,
   `code` char(5) CHARACTER SET utf8 NOT NULL,
   `active` enum('0','1') COLLATE utf8_bin NOT NULL DEFAULT '0',
+  `order` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 /*Data for the table `languages` */
 
-insert  into `languages`(`id`,`name`,`code`,`active`) values (1,'English','en_en','1'),(2,'Spanish','es_es','1');
+insert  into `languages`(`id`,`name`,`code`,`active`,`order`) values (1,'English','en_en','1',2),(2,'Spanish','es_es','1',1);
 
 /*Table structure for table `media` */
 
