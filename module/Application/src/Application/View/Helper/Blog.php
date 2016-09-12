@@ -1,0 +1,69 @@
+<?php
+
+namespace Application\View\Helper;
+
+use Zend\Form\View\Helper\AbstractHelper;
+use Zend\Paginator\Paginator;
+
+class Blog extends AbstractHelper
+{
+    function __invoke()
+    {
+        return $this;
+    }
+
+    public function getContentWrapper()
+    {
+        return "<div class='col-md-12 list-item blog'>
+                        <div class='row'>
+                            <div class='col-md-5'><img class='img-responsive' src='%s' /></div>
+                            <div class='col-md-7'>
+                                <h2>%s</h2>
+                                %s
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col-md-9'>
+                                <span>
+                                    <i class='fa fa-tag'></i>
+                                    <a href='%s'>%s</a>
+                                </span>
+                            </div>
+                            <div class='col-md-3'>
+                                <a href='%s' class='btn btn-default pull-right'>%s</a>
+                            </div>
+                        </div>
+                    </div>";
+    }
+
+    public function render($lang, $blogs)
+    {
+        $url = $this->getView()->getHelperPluginManager()->get('Url');
+
+        $html = '';
+
+        if ($blogs instanceof Paginator) {
+
+            foreach ($blogs as $index => $blog) {
+
+                $html .= sprintf(
+                    $this->getContentWrapper(),
+                    $blog->imageUrl,
+                    $blog->title,
+                    $blog->content,
+                    $url($lang.'/blog/category',array(
+                        'category' => $blog->categoryUrlKey
+                    )),
+                    $blog->categoryTitle,
+                    $url($lang.'/blog/category/detail',array(
+                        'category' => $blog->categoryUrlKey,
+                        'detail' => $blog->urlKey
+                    )),
+                    $this->translator->translate('Read more')
+                );
+            }
+        }
+
+        echo $html;
+    }
+}

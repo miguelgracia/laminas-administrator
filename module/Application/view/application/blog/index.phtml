@@ -1,0 +1,64 @@
+<?php
+$blogMenuId         = $menu->rows['blog']->id;
+$blogHelper         = $this->blogHelper();
+$blogCategoryHelper = $this->blogCategoryHelper();
+?>
+<div class="row nav-breadcrumb hidden-xs">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang)?>">Home</a></li>
+            <?php if(!isset($currentCategory)):?>
+                <li class="breadcrumb-item active"><?=$menu->locale->{$lang}[$blogMenuId]->name?></li>
+            <?php else :?>
+                <li class="breadcrumb-item"><a href="<?=$this->url($lang.'/blog')?>"><?=$menu->locale->{$lang}[$blogMenuId]->name?></a></li>
+                <li class="breadcrumb-item active"><?=$currentCategory['title']?></a></li>
+            <?php endif?>
+        </ol>
+    </div>
+</div>
+
+<div class="container blogs">
+
+    <article>
+
+        <div class="row">
+            <div class="col-md-9">
+
+                <h1><?=$menu->locale->{$lang}[$blogMenuId]->name?></h1>
+
+                <div class="row">
+                    <?php $blogHelper->render($lang, $blogs);?>
+                </div>
+            </div>
+            <aside class="col-md-3">
+                <h3>Categorias</h3>
+                <ul>
+                    <?php $blogCategoryHelper->render($lang,$blogCategories);?>
+                </ul>
+            </aside>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <?php
+                // add at the end of the file after the table
+                echo $this->paginationControl(
+                // the paginator object
+                    $blogs,
+                    // the scrolling style
+                    'sliding',
+                    // the partial to use to render the control
+                    'partial/paginator.phtml',
+                    // the route to link to when a user clicks a control link
+                    array(
+                        'route' => $routePagination,
+                        'routeParams' => $routeParams
+                    )
+                );
+                ?>
+            </div>
+        </div>
+
+    </article>
+
+</div>

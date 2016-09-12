@@ -38,6 +38,7 @@ $(function () {
 
                 if(!textarea[idx].classList.contains('no-editor')) {
                     applyCKEditorEvents = true;
+                    CKEDITOR.config.extraAllowedContent = 'video(*){*}[*];source(*){*}[*]';
                     CKEDITOR.replace(textarea[idx].getAttribute('id'));
                 }
             }

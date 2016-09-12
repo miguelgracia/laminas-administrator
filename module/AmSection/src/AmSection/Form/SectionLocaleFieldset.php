@@ -13,7 +13,8 @@ class SectionLocaleFieldset extends AdministratorFieldset
     {
         return array(
             'fieldModifiers' => array(
-                'metaDescription'   => 'Textarea'
+                'metaDescription'   => 'Textarea',
+                'content'           => 'Textarea'
             )
         );
     }

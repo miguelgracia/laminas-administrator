@@ -18,6 +18,9 @@ $(document).ready(function () {
         '/admin/job':                    ['job','index'],
         '/admin/job-category':           ['job_category','index'],
         '/admin/section':                ['section','index'],
-        '/admin/language':               ['language','index']
+        '/admin/language':               ['language','index'],
+        '/admin/home-module':            ['home_module','index'],
+        '/admin/app-data':               ['app_data','index'],
+        '/admin/partner':                ['partner','index']
     }).run();
 });

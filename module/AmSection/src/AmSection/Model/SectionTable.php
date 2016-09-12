@@ -6,7 +6,7 @@ use Administrator\Model\AdministratorTable;
 
 class SectionTable extends AdministratorTable
 {
-    protected $table = 'sections';
+    protected $table = 'app_routes';
 
     protected $entityModelName =  SectionModel::class;
 }

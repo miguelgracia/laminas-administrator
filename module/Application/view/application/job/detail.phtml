@@ -1,0 +1,46 @@
+<?php
+$jobMenuId         = $menu->rows['jobs']->id;
+?>
+<div class="row nav-breadcrumb hidden-xs">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang)?>">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang.'/jobs')?>"><?=$menu->locale->{$lang}[$jobMenuId]->name?></a></li>
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang.'/jobs/category',array('category' => $currentCategory['urlKey']))?>"><?=$currentCategory['title']?></a></li>
+            <li class="breadcrumb-item active"><?=$job->title;?></li>
+        </ol>
+    </div>
+</div>
+
+<div class="container jobs">
+
+    <article>
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <h1><?=$job->title;?></h1>
+
+                <div id="owl_carousel">
+                    <div class="item">
+                        <img src="/media/<?=$job->imageUrl;?>" alt="<?=$job->title;?>">
+                    </div>
+                    <!--<div class="item">
+                        <img src="/media/maqueta/job-detail-1.png" alt="Collab">
+                    </div>
+                    <div class="item">
+                        <img src="/media/maqueta/job-detail-1.png" alt="Collab">
+                    </div>
+                    <div class="item">
+                        <img src="/media/maqueta/job-detail-1.png" alt="Collab">
+                    </div>
+                    <div class="item">
+                        <img src="/media/maqueta/job-detail-1.png" alt="Collab">
+                    </div>-->
+                </div>
+                <?=$job->content;?>
+            </div>
+        </div>
+    </article>
+
+</div>

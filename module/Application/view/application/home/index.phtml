@@ -1,0 +1,29 @@
+<?php
+$menuHelper = $this->applicationMenuHelper();
+$megabannerHelper = $this->megabannerHelper();
+$homeModuleHelper = $this->homeModuleHelper();
+
+$this->headLink()->appendStylesheet($this->basePath('absconsultor/css/home.css'))
+?>
+<div class="container-fluid home">
+    <div class="row">
+        <ul class="bxslider">
+            <?php $megabannerHelper->render($megabanners);?>
+        </ul>
+
+        <img id="home_brand_logo" src="<?php echo $this->basePath('img/white-logo.png') ?>" alt="Logo ABS Consultor" class="transition brand-logo"/>
+        <ul class="nav home-navbar navbar-nav transition">
+            <?=$menuHelper->render($menu,$lang);?>
+        </ul>
+
+        <div class="col-xs-12 hidden-sm hidden-xs">
+            <i class="fa fa-chevron-down transition"></i>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="container">
+    <?=$homeModuleHelper->render($homeModules);?>
+</div>

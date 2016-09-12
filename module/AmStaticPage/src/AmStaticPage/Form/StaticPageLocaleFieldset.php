@@ -10,7 +10,7 @@ class StaticPageLocaleFieldset extends AdministratorFieldset
 {
     protected $tableGatewayName = StaticPageLocaleTable::class;
 
-    public function initializers(ServiceLocatorInterface $serviceLocator)
+    public function initializers()
     {
         return array(
             'fieldModifiers' => array(

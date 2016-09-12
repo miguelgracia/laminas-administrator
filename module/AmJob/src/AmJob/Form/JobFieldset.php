@@ -29,4 +29,12 @@ class JobFieldset extends AdministratorFieldset
             )
         );
     }
+
+    public function addFields()
+    {
+        $imageUrl = $this->get('imageUrl');
+        $class = $imageUrl->getAttribute('class');
+        $class .= ' browsefile';
+        $imageUrl->setAttribute('class',$class);
+    }
 }

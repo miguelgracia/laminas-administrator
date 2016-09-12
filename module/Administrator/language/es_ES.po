@@ -1,0 +1,456 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ZendSkeletonApplication\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-07 16:05+0200\n"
+"PO-Revision-Date: 2016-09-11 01:32+0200\n"
+"Last-Translator: Adolfo Abegg <adolfoabegg@gmail.com>\n"
+"Language-Team: ZF Contributors <zf-devteam@zend.com>\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 1.8.9\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+# Zend\I18n\Validator\Alnum
+msgid "Invalid type given. String, integer or float expected"
+msgstr "El tipo especificado no es válido. El valor debe ser de tipo punto flotante, cadena de texto o entero"
+
+msgid "The input contains characters which are non alphabetic and no digits"
+msgstr "El valor especificado contiene caracteres que no son alfabéticos ni dígitos"
+
+msgid "The input is an empty string"
+msgstr "El valor especificado es una cadena de texto vacia"
+
+# Zend\I18n\Validator\Alpha
+msgid "Invalid type given. String expected"
+msgstr "El tipo especificado no es válido, el valor debe ser una cadena de texto"
+
+msgid "The input contains non alphabetic characters"
+msgstr "La entrada contiene caracteres no alfabéticos"
+
+# Zend\I18n\Validator\DateTime
+msgid "The input does not appear to be a valid datetime"
+msgstr "El valor especificado no parece ser una fecha válida"
+
+# Zend\I18n\Validator\Float
+msgid "The input does not appear to be a float"
+msgstr "El valor especificado no parece ser un número de punto flotante"
+
+# Zend\I18n\Validator\Int
+msgid "Invalid type given. String or integer expected"
+msgstr "El tipo especificado no es válido. El valor debe ser de tipo cadena de texto o entero"
+
+msgid "The input does not appear to be an integer"
+msgstr "El valor especificado no parece ser un número entero"
+
+# Zend\I18n\Validator\PhoneNumber
+msgid "The input does not match a phone number format"
+msgstr "La entrada no coincide con el formato de un número de teléfono"
+
+msgid "The country provided is currently unsupported"
+msgstr "El país especificado no está soportado actualmente"
+
+# Zend\I18n\Validator\PostCode
+msgid "The input does not appear to be a postal code"
+msgstr "El valor especificado no parece ser un código postal"
+
+msgid "An exception has been raised while validating the input"
+msgstr "Una excepción ha sido alzada al validar la entrada"
+
+# Zend\Validator\Barcode
+msgid "The input failed checksum validation"
+msgstr "Falló la validación de checksum"
+
+msgid "The input contains invalid characters"
+msgstr "El valor especificado contiene caracteres no válidos"
+
+msgid "The input should have a length of %length% characters"
+msgstr "El valor especificado debe tener una longitud de  %length% caracteres"
+
+# Zend\Validator\Between
+msgid "The input is not between '%min%' and '%max%', inclusively"
+msgstr "El valor especificado no está incluido entre '%min%' y '%max%' inclusive"
+
+msgid "The input is not strictly between '%min%' and '%max%'"
+msgstr "El valor especificado no está exactamente entre '%min%' y '%max%'"
+
+# Zend\Validator\Callback
+msgid "The input is not valid"
+msgstr "El valor especificado no es válido"
+
+msgid "An exception has been raised within the callback"
+msgstr "Fallo dentro de la llamada de retorno, ha devuelto una excepción"
+
+# Zend\Validator\CreditCard
+msgid "The input seems to contain an invalid checksum"
+msgstr "El valor especificado parece contener un error en el checksum"
+
+msgid "The input must contain only digits"
+msgstr "El valor especificado debe contener solamente dígitos"
+
+msgid "The input contains an invalid amount of digits"
+msgstr "El valor especificado contiene una cantidad de dígitos no válida"
+
+msgid "The input is not from an allowed institute"
+msgstr "El valor especificado no corresponde con una institución permitida"
+
+msgid "The input seems to be an invalid credit card number"
+msgstr "El valor especificado parece ser un número de tarjeta de crédito no válido"
+
+# Zend\Validator\Csrf
+msgid "The form submitted did not originate from the expected site"
+msgstr "El formulario enviado no se ha originado desde el sitio esperado"
+
+# Zend\Validator\Date
+msgid "Invalid type given. String, integer, array or DateTime expected"
+msgstr "El tipo especificado no es válido. El valor debe ser cadena de texto, número entero, array u objeto DateTime"
+
+msgid "The input does not appear to be a valid date"
+msgstr "El valor especificado no parece ser una fecha válida"
+
+msgid "The input does not fit the date format '%format%'"
+msgstr "El valor especificado no se ajusta al formato de fecha '%format%'"
+
+# Zend\Validator\DateStep
+msgid "The input is not a valid step"
+msgstr "El valor especificado no es un escalón válido"
+
+# Zend\Validator\Db\AbstractDb
+msgid "No record matching the input was found"
+msgstr "No fue encontrado ningun registro que coincida con el valor especificado"
+
+msgid "A record matching the input was found"
+msgstr "Se encontró un registro coincidente con el valor especificado"
+
+# Zend\Validator\EmailAddress
+msgid "The input is not a valid email address. Use the basic format local-part@hostname"
+msgstr "El valor especificado no es una dirección de correo electrónico válido en el formato local-part@hostname"
+
+msgid "'%hostname%' is not a valid hostname for the email address"
+msgstr "'%hostname%' no es un nombre de host válido para la dirección de correo electrónico"
+
+msgid "'%hostname%' does not appear to have any valid MX or A records for the email address"
+msgstr "'%hostname%' no parece tener registros MX o A válidos para la dirección de correo electrónico especificada"
+
+msgid "'%hostname%' is not in a routable network segment. The email address should not be resolved from public network"
+msgstr "'%hostname%' no esta en un segmento de red encaminable. La dirección de correo electrónico especificada no se debería poder resolver desde una red pública"
+
+msgid "'%localPart%' can not be matched against dot-atom format"
+msgstr "'%localPart%' no es igual al formato dot-atom"
+
+msgid "'%localPart%' can not be matched against quoted-string format"
+msgstr "'%localPart%' no es igual al formato quoted-string"
+
+msgid "'%localPart%' is not a valid local part for the email address"
+msgstr "'%localPart%' no es una parte local válida para la dirección de correo electrónico especificado"
+
+msgid "The input exceeds the allowed length"
+msgstr "el valor especificado excede la longitud permitida"
+
+# Zend\Validator\Explode
+msgid "Invalid type given"
+msgstr "El tipo de dato especificado no es válido"
+
+# Zend\Validator\File\Count
+msgid "Too many files, maximum '%max%' are allowed but '%count%' are given"
+msgstr "Demasiados archivos, se permiten un máximo de '%max%' pero se han especificado '%count%'"
+
+msgid "Too few files, minimum '%min%' are expected but '%count%' are given"
+msgstr "Muy pocos archivos, se esperaba un mínimo de '%min%' pero sólo se han especificado '%count%'"
+
+# Zend\Validator\File\Crc32
+msgid "File does not match the given crc32 hashes"
+msgstr "El CRC32 del archivo es incorrectos"
+
+msgid "A crc32 hash could not be evaluated for the given file"
+msgstr "No se ha podido calcular el CRC32 del archivo especificado"
+
+msgid "File is not readable or does not exist"
+msgstr "No se ha podido encontrar el archivo o no se puede leer"
+
+# Zend\Validator\File\ExcludeExtension
+msgid "File has an incorrect extension"
+msgstr "El archivo tiene una extensión incorrecta"
+
+# Zend\Validator\File\Exists
+msgid "File does not exist"
+msgstr "El archivo no existe"
+
+# Zend\Validator\File\FilesSize
+msgid "All files in sum should have a maximum size of '%max%' but '%size%' were detected"
+msgstr "El conjunto de archivos debería tener un tamaño máximo de '%max%' pero tiene un tamaño de '%size%'"
+
+msgid "All files in sum should have a minimum size of '%min%' but '%size%' were detected"
+msgstr "El conjunto de archivos debería tener un tamaño mínimo de '%min%' pero tiene un tamaño de '%size%'"
+
+msgid "One or more files can not be read"
+msgstr "Uno o más archivos no se pueden leer"
+
+# Zend\Validator\File\Hash
+msgid "File does not match the given hashes"
+msgstr "El archivo no se corresponde con los códigos hash especificados"
+
+msgid "A hash could not be evaluated for the given file"
+msgstr "No se ha podido evaluar ningún código hash para el archivo especificado"
+
+# Zend\Validator\File\ImageSize
+msgid "Maximum allowed width for image should be '%maxwidth%' but '%width%' detected"
+msgstr "El ancho máximo para la imagen debería ser '%maxwidth%' pero es '%width%'"
+
+msgid "Minimum expected width for image should be '%minwidth%' but '%width%' detected"
+msgstr "El ancho mínimo para la imagen debería ser '%minwidth%' pero es '%width%'"
+
+msgid "Maximum allowed height for image should be '%maxheight%' but '%height%' detected"
+msgstr "La altura máxima para la imagen debería ser '%maxheight%' pero es '%height%'"
+
+msgid "Minimum expected height for image should be '%minheight%' but '%height%' detected"
+msgstr "La altura mínima para la imagen debería ser '%minheight%' pero es '%height%'"
+
+msgid "The size of image could not be detected"
+msgstr "No se ha podido determinar el tamaño de la imagen"
+
+# Zend\Validator\File\IsCompressed
+msgid "File is not compressed, '%type%' detected"
+msgstr "El archivo no está comprimido, '%type%' detectado"
+
+msgid "The mimetype could not be detected from the file"
+msgstr "No se ha podido determinar el tipo MIME del archivo"
+
+# Zend\Validator\File\IsImage
+msgid "File is no image, '%type%' detected"
+msgstr "El archivo no es una imagen, '%type%' detectado"
+
+# Zend\Validator\File\Md5
+msgid "File does not match the given md5 hashes"
+msgstr "El archivo no se corresponde con el MD5 especificado"
+
+msgid "An md5 hash could not be evaluated for the given file"
+msgstr "No se ha podido calcular el MD5 del archivo especificado"
+
+# Zend\Validator\File\MimeType
+msgid "File has an incorrect mimetype of '%type%'"
+msgstr "El archivo tiene un tipo MIME '%type%' incorrecto"
+
+# Zend\Validator\File\NotExists
+msgid "File exists"
+msgstr "El archivo existe"
+
+# Zend\Validator\File\Sha1
+msgid "File does not match the given sha1 hashes"
+msgstr "El archivo no coincide los hashes sha1 dados"
+
+msgid "A sha1 hash could not be evaluated for the given file"
+msgstr "Un hash sha1 no pudo ser evaluado para el archivo dado"
+
+# Zend\Validator\File\Size
+msgid "Maximum allowed size for file is '%max%' but '%size%' detected"
+msgstr "El tamaño máximo permitido para el archivo es '%max%' pero se ha detectado un tamaño de '%size%'"
+
+msgid "Minimum expected size for file is '%min%' but '%size%' detected"
+msgstr "El tamaño mínimo permitido para el archivo es '%min%' pero se ha detectado un tamaño de '%size%'"
+
+# Zend\Validator\File\Upload
+msgid "File '%value%' exceeds the defined ini size"
+msgstr "El tamaño del archivo '%value%' excede el valor definido en el ini"
+
+msgid "File '%value%' exceeds the defined form size"
+msgstr "El archivo '%value%' excede el tamaño definido en el formulario"
+
+msgid "File '%value%' was only partially uploaded"
+msgstr "El archivo '%value%' ha sido sólo parcialmente subido"
+
+msgid "File '%value%' was not uploaded"
+msgstr "El archivo '%value%' no ha sido subido"
+
+msgid "No temporary directory was found for file '%value%'"
+msgstr "No se ha encontrado el directorio temporal para el archivo '%value%'"
+
+msgid "File '%value%' can't be written"
+msgstr "No se puede escribir en el archivo '%value%'"
+
+msgid "A PHP extension returned an error while uploading the file '%value%'"
+msgstr "Una extensión PHP devolvió un error mientras se subía el archivo '%value%'"
+
+msgid "File '%value%' was illegally uploaded. This could be a possible attack"
+msgstr "El archivo '%value%' ha sido subido ilegalmente. Esto podría indicar un ataque"
+
+msgid "File '%value%' was not found"
+msgstr "Archivo '%value%' no encontrado"
+
+msgid "Unknown error while uploading file '%value%'"
+msgstr "Error desconocido al intentar subir el archivo '%value%'"
+
+# Zend\Validator\File\UploadFile
+msgid "File exceeds the defined ini size"
+msgstr "El tamaño del archivo excede el valor definido en el ini"
+
+msgid "File exceeds the defined form size"
+msgstr "El archivo excede el tamaño definido en el formulario"
+
+msgid "File was only partially uploaded"
+msgstr "El archivo fue sólo parcialmente subido"
+
+msgid "File was not uploaded"
+msgstr "El archivo no ha sido subido"
+
+msgid "No temporary directory was found for file"
+msgstr "No se ha encontrado el directorio temporal para el archivo"
+
+msgid "File can't be written"
+msgstr "No se puede escribir en el archivo"
+
+msgid "A PHP extension returned an error while uploading the file"
+msgstr "Una extensión PHP devolvió un error mientras se subía el archivo"
+
+msgid "File was illegally uploaded. This could be a possible attack"
+msgstr "El archivo ha sido subido ilegalmente. Esto podría indicar un ataque"
+
+msgid "File was not found"
+msgstr "Archivo no encontrado"
+
+msgid "Unknown error while uploading file"
+msgstr "Error desconocido al intentar subir el archivo"
+
+# Zend\Validator\File\WordCount
+msgid "Too many words, maximum '%max%' are allowed but '%count%' were counted"
+msgstr "Demasiadas palabras, sólo se permiten '%max%' pero se han contado '%count%'"
+
+msgid "Too few words, minimum '%min%' are expected but '%count%' were counted"
+msgstr "Muy pocas palabras, se esperaban al menos '%min%' pero se han contado '%count%'"
+
+# Zend\Validator\GreaterThan
+msgid "The input is not greater than '%min%'"
+msgstr "El valor especificado no es más grande que '%min%'"
+
+msgid "The input is not greater or equal than '%min%'"
+msgstr "El valor especificado no es más grande o igual que '%min%'"
+
+# Zend\Validator\Hex
+msgid "The input contains non-hexadecimal characters"
+msgstr "El valor especificado no consta únicamente de dígitos y caracteres hexadecimales"
+
+# Zend\Validator\Hostname
+msgid "The input appears to be a DNS hostname but the given punycode notation cannot be decoded"
+msgstr "La entrada parece ser un nombre de host de DNS pero la notación de punycode no puede ser decodificada"
+
+msgid "The input appears to be a DNS hostname but contains a dash in an invalid position"
+msgstr "El valor especificado parece ser un nombre de dominio DNS pero contiene un guión en una posición inválida"
+
+msgid "The input does not match the expected structure for a DNS hostname"
+msgstr "El valor especificado no se corresponde con la estructura esperada para un nombre de dominio DNS"
+
+msgid "The input appears to be a DNS hostname but cannot match against hostname schema for TLD '%tld%'"
+msgstr "El valor especificado parece ser un nombre de dominio DNS pero no se puede extraer la parte del TLD"
+
+msgid "The input does not appear to be a valid local network name"
+msgstr "El valor especificado no parece ser un nombre de área local válido"
+
+msgid "The input does not appear to be a valid URI hostname"
+msgstr "El valor especificado no parece ser un nombre de host URI válido"
+
+msgid "The input appears to be an IP address, but IP addresses are not allowed"
+msgstr "El valor especificado parece ser una dirección IP, pero direcciones IP no están permitidas"
+
+msgid "The input appears to be a local network name but local network names are not allowed"
+msgstr "El valor especificado parece ser un nombre de red local, pero nombres de red local no están permitidos"
+
+msgid "The input appears to be a DNS hostname but cannot extract TLD part"
+msgstr "El valor especificado parece ser un nombre de dominio DNS pero no se puede extraer la parte del TLD"
+
+msgid "The input appears to be a DNS hostname but cannot match TLD against known list"
+msgstr "El valor especificado parece ser un nombre de dominio válido pero no se puede encontrar el TLD en una lista conocida"
+
+# Zend\Validator\Iban
+msgid "Unknown country within the IBAN"
+msgstr "País desconocido dentro del IBAN'"
+
+msgid "Countries outside the Single Euro Payments Area (SEPA) are not supported"
+msgstr "Los países fuera de la Zona Única de Pagos en Euros (SEPA) no están permitidos"
+
+msgid "The input has a false IBAN format"
+msgstr "El valor especificado tiene un formato falso de IBAN"
+
+msgid "The input has failed the IBAN check"
+msgstr "La prueba de validación de IBAN ha fallado"
+
+# Zend\Validator\Identical
+msgid "The two given tokens do not match"
+msgstr "Los valores no coinciden"
+
+msgid "No token was provided to match against"
+msgstr "No se ha especificado ninguna muestra a comprobar"
+
+# Zend\Validator\InArray
+msgid "The input was not found in the haystack"
+msgstr "El valor no se encuentra dentro de los valores permitidos"
+
+# Zend\Validator\Ip
+msgid "The input does not appear to be a valid IP address"
+msgstr "El valor especificado no parece ser una dirección IP válida"
+
+# Zend\Validator\IsInstanceOf
+msgid "The input is not an instance of '%className%'"
+msgstr "El valor especificado no es una instancia de '%className%'"
+
+# Zend\Validator\Isbn
+msgid "The input is not a valid ISBN number"
+msgstr "El número ISBN especificado no es válido"
+
+# Zend\Validator\LessThan
+msgid "The input is not less than '%max%'"
+msgstr "El valor especificado no es menor que '%max%'"
+
+msgid "The input is not less or equal than '%max%'"
+msgstr "El valor especificado no es menor o igual que '%max%'"
+
+# Zend\Validator\NotEmpty
+msgid "Value is required and can't be empty"
+msgstr "Se requiere un valor y éste no puede estar vacío"
+
+msgid "Invalid type given. String, integer, float, boolean or array expected"
+msgstr "El tipo especificado es inválido, el valor debería ser punto floatante, cadena de texto, array, booleano o entero"
+
+# Zend\Validator\Regex
+msgid "The input does not match against pattern '%pattern%'"
+msgstr "El valor especificado no concuerda con el patrón '%pattern%' especificado"
+
+msgid "There was an internal error while using the pattern '%pattern%'"
+msgstr "Se ha producido un error interno al usar el patrón '%pattern%' especificado"
+
+# Zend\Validator\Sitemap\Changefreq
+msgid "The input is not a valid sitemap changefreq"
+msgstr "El valor especificado no es una especificación válida de frecuencia de cambio"
+
+# Zend\Validator\Sitemap\Lastmod
+msgid "The input is not a valid sitemap lastmod"
+msgstr "El valor especificado no es un lastmod de mapa web válido"
+
+# Zend\Validator\Sitemap\Loc
+msgid "The input is not a valid sitemap location"
+msgstr "El valor especificado no es una ubicación de mapa web válida"
+
+# Zend\Validator\Sitemap\Priority
+msgid "The input is not a valid sitemap priority"
+msgstr "El valor especificado no es una prioridad de mapa web válida"
+
+msgid "Invalid type given. Numeric string, integer or float expected"
+msgstr "El tipo especificado es inválido, el valor debería ser una cadena de texto, un número entero, o un número de punto flotante"
+
+# Zend\Validator\Step
+msgid "Invalid value given. Scalar expected"
+msgstr "El valor especificado no es válido, debería ser escalar"
+
+# Zend\Validator\StringLength
+msgid "The input is less than %min% characters long"
+msgstr "El valor especificado tiene menos de '%min%' caracteres"
+
+msgid "The input is more than %max% characters long"
+msgstr "El valor especificado tiene más de '%max%' caracteres"
+
+# Zend\Validator\Uri
+msgid "The input does not appear to be a valid Uri"
+msgstr "El valor especificado no parece ser un Uri válido"

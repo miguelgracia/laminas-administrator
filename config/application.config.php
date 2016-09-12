@@ -21,6 +21,10 @@ return array(
         'AmSection',
         'AmJobVideo',
         'AmLanguage',
+        'AmHomeModule',
+        'AmAppData',
+        'Api',
+        'AmPartner',
     ),
     'hidden_modules' => array(
         'AmLogin',

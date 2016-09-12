@@ -1,0 +1,33 @@
+<?php
+$partnerMenuId = $menu->rows['company/colaborators']->id;
+
+$partnerHelper = $this->partnerHelper($lang);
+
+?>
+
+<div class="row nav-breadcrumb hidden-xs">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang)?>">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang.'/company');?>">Empresa</a></li>
+            <li class="breadcrumb-item active"><?=$menu->locale->{$lang}[$partnerMenuId]->name?></li>
+        </ol>
+    </div>
+</div>
+
+<div class="container collaborators">
+    <article class="row">
+        <div class="col-md-12">
+
+            <h1><?=$menu->locale->{$lang}[$partnerMenuId]->name?></h1>
+
+            <?=$menu->locale->{$lang}[$partnerMenuId]->content?>
+
+        </div>
+        <div class="col-md-12">
+
+            <?php $partnerHelper->render($partners,false);?>
+
+        </div>
+    </article>
+</div>

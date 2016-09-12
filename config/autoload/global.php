@@ -16,12 +16,12 @@
 return array(
     'db' => array(
         'driver'         => 'Pdo',
-        'dsn'            => 'mysql:dbname=abs_consultor;host=localhost',
+        'dsn'            => 'mysql:dbname=qwi250;host=qwi250.absconsultor.es',
         'driver_options' => array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         ),
-        'username' => 'root',
-        'password' => '',
+        'username' => 'qwi252',
+        'password' => 'U4e54b5',
     ),
     'service_manager' => array(
         'factories' => array(

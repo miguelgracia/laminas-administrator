@@ -1,0 +1,16 @@
+
+<div class="row nav-breadcrumb hidden-xs">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang)?>">Home</a></li>
+            <li class="breadcrumb-item active"><?=$content['title']?></li>
+        </ol>
+    </div>
+</div>
+
+<div class="container legal">
+    <article>
+        <h1><?=$content['title']?></h1>
+        <?=$content['content'];?>
+    </article>
+</div>

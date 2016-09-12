@@ -40,21 +40,4 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
             )
         );
     }
-
-    public function onBootstrap(MvcEvent $e)
-    {
-        $translator = $e->getApplication()->getServiceManager()->get('translator');
-
-        $locale = $translator->getLocale();
-
-        $translateFile = __DIR__."/language/$locale/Zend_Validate.php";
-        $translateFile = str_replace('/',DIRECTORY_SEPARATOR,$translateFile);
-        $translator->getTranslator()->addTranslationFile(
-            'phpArray',
-            $translateFile,
-            'default',
-            $locale);
-
-        AbstractValidator::setDefaultTranslator($translator);
-    }
 }

@@ -1,0 +1,46 @@
+<?php
+$blogMenuId         = $menu->rows['blog']->id;
+?>
+<div class="row nav-breadcrumb hidden-xs">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang)?>">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang.'/blog')?>"><?=$menu->locale->{$lang}[$blogMenuId]->name?></a></li>
+            <li class="breadcrumb-item"><a href="<?=$this->url($lang.'/blog/category',array('category' => $currentCategory['urlKey']))?>"><?=$currentCategory['title']?></a></li>
+            <li class="breadcrumb-item active"><?=$blog->title;?></li>
+        </ol>
+    </div>
+</div>
+
+<div class="container blogs">
+
+    <article>
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <h1><?=$blog->title;?></h1>
+
+                <div id="owl_carousel">
+                    <div class="item">
+                        <img src="/media/<?=$blog->imageUrl;?>" alt="<?=$blog->title;?>">
+                    </div>
+                    <!--<div class="item">
+                        <img src="/media/maqueta/blog-detail-1.png" alt="Collab">
+                    </div>
+                    <div class="item">
+                        <img src="/media/maqueta/blog-detail-1.png" alt="Collab">
+                    </div>
+                    <div class="item">
+                        <img src="/media/maqueta/blog-detail-1.png" alt="Collab">
+                    </div>
+                    <div class="item">
+                        <img src="/media/maqueta/blog-detail-1.png" alt="Collab">
+                    </div>-->
+                </div>
+                <?=$blog->content;?>
+            </div>
+        </div>
+    </article>
+
+</div>

@@ -4,6 +4,7 @@ namespace AmSection\Form;
 
 use Administrator\Form\AdministratorFieldset;
 use AmSection\Model\SectionTable;
+use Zend\Db\Metadata\Object\ColumnObject;
 
 class SectionFieldset extends AdministratorFieldset
 {
@@ -15,9 +16,9 @@ class SectionFieldset extends AdministratorFieldset
     {
         return array(
             'fieldValueOptions' => array(
-                'position' => array(
-                    'header' => 'cabecera',
-                    'footer' => 'Pie de página'
+                'visible' => array(
+                    '0' => 'NO',
+                    '1' => 'SI'
                 ),
                 'active' => array(
                     '0' => 'NO',
@@ -27,8 +28,22 @@ class SectionFieldset extends AdministratorFieldset
         );
     }
 
-    public function addFields()
+    protected function setFilters(ColumnObject $column)
     {
+        $filters = parent::setFilters($column);
 
+        $columnName = $column->getName();
+
+        if ($columnName == 'key') {
+
+            foreach ($filters as &$filter) {
+                if ($filter['name'] == 'Administrator\Filter\SlugFilter') {
+                    $filter['options']['separator'] = '/';
+                    break;
+                }
+            }
+        }
+
+        return $filters;
     }
 }
