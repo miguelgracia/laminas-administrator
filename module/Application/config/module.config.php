@@ -18,6 +18,12 @@ return array(
         'absconsultor.es'    => ['es_es','en_en'],
         'absconsultor.com'   => ['en_en','es_es']
     ),
+    'media_base_url' => array(
+        'abs.local'          => 'http://media.abs.local',
+        'absconsultor.local' => 'http://media.absconsultor.local',
+        'absconsultor.es'    => 'http://media.absconsultor.es',
+        'absconsultor.com'   => 'http://media.absconsultor.com'
+    ),
     'router' => array(
         'router_class' => LocaleTreeRouteStack::class,
         'home' => array(
