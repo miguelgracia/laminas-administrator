@@ -27,6 +27,7 @@ if (count($imagesUrl)) {
 
         $element->setAttribute('id',$id.$index);
         $element->setAttribute('data-id',$id);
+        $element->setAttribute('data-index',$index);
 
         $html .= sprintf($row,$formInput->render($element));
     }

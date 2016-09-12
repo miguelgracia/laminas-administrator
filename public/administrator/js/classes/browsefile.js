@@ -40,16 +40,20 @@ $(function () {
                 oWindow = null;
             };
 
-            inputs = document.getElementsByClassName(config.className);
-
-            for(var idx = 0; idx < inputs.length; idx++) {
-                var $input = $(inputs[idx]);
+            var addInputText = function(input) {
+                var $input = $(input);
 
                 var $inputWrap = $('<div class="input-group"></div>');
 
                 $input.wrap($inputWrap);
 
-                var $buttonWrapper = $('<span class="input-group-btn"><button data-target="'+$input.attr('id')+'" type="button" class="btn btn-info btn-flat">Buscar</button></span>');
+                var buttonWrapperHtml =
+                    '<span class="input-group-btn">' +
+                        (input.dataset.isMultiple == '1' ? '<button data-target="' + $input.attr('id') + '" type="button" class="btn btn-danger btn-flat">Borrar</button>' : '')+
+                        '<button data-target="' + $input.attr('id') + '" type="button" class="btn btn-info btn-flat">Buscar</button>' +
+                    '</span>';
+
+                var $buttonWrapper = $(buttonWrapperHtml);
 
                 $input.parent().append($buttonWrapper);
 
@@ -58,8 +62,50 @@ $(function () {
                     var $this = $(this),
                         target = $this.data('target');
 
-                    browseServer($('#'+target));
+                    if($this.hasClass('btn-danger')) {
+                        if($.AdminLTE.simpleRouting.confirm.show('Está seguro de que quiere desvíncular esta imagen?')) {
+                            $this.parents('.input-group').parent().parent().remove();
+                        }
+                    } else {
+                        browseServer($('#'+target));
+                    }
                 });
+            };
+
+            var addInputEvent = function () {
+                var $this = $(this);
+                var newInput = $this.prev().find('.browsefile').clone();
+                    newInput[0].removeEventListener('click',addInputEvent,false);
+
+                var newIndex = parseInt(newInput.attr('data-index')) + 1;
+                newInput.attr('data-index', newIndex);
+                newInput.attr('id', newInput.attr('data-id') + newIndex);
+                newInput.val('');
+
+                var $newWrapper =
+                    $('<div class="form-group">' +
+                        '<div class="col-xs-12">' +
+                        '<div class="input-group">' +
+                        '<span class="input-group-btn"></span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>');
+
+                $newWrapper.find('.input-group').prepend(newInput);
+                $newWrapper.insertBefore($this);
+
+                addInputText(newInput[0]);
+            };
+
+            inputs = document.getElementsByClassName(config.className);
+
+            for(var idx = 0; idx < inputs.length; idx++) {
+                addInputText(inputs[idx]);
+            }
+
+            var addFileButtons = document.getElementsByClassName('allow_multiple_files');
+            for(var btn = 0; btn < addFileButtons.length; btn++ ) {
+                addFileButtons[btn].addEventListener('click',addInputEvent,false);
             }
         };
 
