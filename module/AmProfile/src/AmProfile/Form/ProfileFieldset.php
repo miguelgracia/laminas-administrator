@@ -49,7 +49,7 @@ class ProfileFieldset extends AdministratorFieldset
             'class' => 'col-sm-3'
         ));
 
-        //A�adimos la clase no-editor para que no cargue el plugin ckeditor en este campo
+        //Añadimos la clase no-editor para que no cargue el plugin ckeditor en este campo
         $description = $this->get('description');
         $classes = $description->getAttribute('class');
         $description->setAttribute('class', $classes . ' no-editor');

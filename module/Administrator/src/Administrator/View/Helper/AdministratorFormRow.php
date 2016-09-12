@@ -153,29 +153,25 @@ class AdministratorFormRow extends AbstractHelper
         $elementError = $this->elementError;
 
         $elementType = $formElement->getAttribute('type');
-        $dataType = $formElement->getOption('data_type');
+        $dataType    = $formElement->getOption('data_type');
+        $partialView = $formElement->getOption('partial_view');
 
-        switch ($elementType) {
-            case 'textarea':
-                $input = $this->view->formTextarea($formElement);
-                break;
-            case 'select':
-                $input = $this->view->formSelect($formElement);
-                break;
-            case 'checkbox':
-                $input = $this->view->formRow($formElement,'append');
-                break;
-            case 'multi_checkbox':
-                $partialView = $formElement->getOption('partial_view');
-                if($partialView) {
-                    $input = $this->view->formRow()->setPartial($partialView)->render($formElement);
-                } else {
-                    $input = $this->view->formRow($formElement,'append');
-                }
-                break;
-            case 'text':
-            default:
-            if ($dataType == 'timestamp') {
+        if ($partialView) {
+            //las vistas parciales solo se pueden setear en elementos de tipo form_row
+            //la lógica de pintado (pasa a formar parte de dicha vista parcial)
+            $input = $this->view->formRow()->setPartial($partialView)->render($formElement);
+        } else {
+
+            $viewHelperForElementType = array(
+                'textarea'       => 'formTextarea',
+                'select'         => 'formSelect',
+                'checkbox'       => 'formRow',
+                'multi_checkbox' => 'formRow'
+            );
+
+            if (array_key_exists($elementType, $viewHelperForElementType)) {
+                $input = $this->view->{$viewHelperForElementType[$elementType]}($formElement);
+            } elseif ($dataType == 'timestamp') {
                 $input = $this->view->formDateSelect($formElement);
             } else {
                 $input = $this->view->formInput($formElement);
