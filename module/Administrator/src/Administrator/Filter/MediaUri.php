@@ -7,7 +7,7 @@ use Zend\Filter\AbstractFilter;
 use Zend\Filter\Exception;
 use Zend\Filter\PregReplace;
 
-class MediaUriFilter extends AbstractFilter
+class MediaUri extends AbstractFilter
 {
     protected $relativePath = '/media/';
 

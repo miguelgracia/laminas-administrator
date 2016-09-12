@@ -17,8 +17,8 @@ TASKS
 - (HECHO) Probar la web sin contenido (hacer backup previo de la base de datos!!)
 - (HECHO) Cambiar title en función de la sección
 - (HECHO - A MEDIAS) Página 404
-- (HECHO - SE PUEDE CREAR UN SUBDOMINIO) Revisar cómo se genera la url del contenido que se inserta desde el plugin ckeditor
-- Añadir el subdominio en los archivos de media
+- (HECHO - SE PUEDE CREAR UN SUBDOMINIO)
+- (HECHO) Revisar cómo se genera la url del contenido que se inserta desde el plugin ckeditor
 - IMPLEMENTAR LA FORMA EN QUE ASOCIAMOS FOTOS A UN TRABAJO DESDE EL ADMINISTRADOR
 - Implementar Sección contacto
     - Programar envío de formulario
@@ -29,6 +29,7 @@ TASKS
 - Minimizar el riesgo de errores en la asignación de url a los enlaces de los botones de los módulos de la home
 - Cadenas de texto administrador
 - Añadir logo al módulo home del administrador
+- (APLAZADO. QUIZÁ NO NECESARIO) Añadir el subdominio en los archivos de media
 
 
 - Cambiar la clase metadata que se usa en el trait MyOrmTableTrait (está marcada como deprecated)

@@ -4,7 +4,7 @@ namespace Administrator\Form;
 
 
 use Administrator\Filter\SlugFilter;
-use Administrator\Filter\MediaUriFilter;
+use Administrator\Filter\MediaUri;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Metadata\Source\Factory;
 use Zend\Filter\Word\UnderscoreToCamelCase;
@@ -168,7 +168,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
                 break;
             case 'content':
                 $filters[] = array(
-                    'name' => MediaUriFilter::class,
+                    'name' => MediaUri::class,
                     'options' => array(
                         'base_url' => 'http://www.google.es'
                     )
