@@ -216,8 +216,8 @@ DROP TABLE IF EXISTS `blog_entries`;
 CREATE TABLE `blog_entries` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `blog_categories_id` int(10) unsigned NOT NULL,
-  `image_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `key` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `image_url` text COLLATE utf8_unicode_ci,
   `active` enum('0','1') COLLATE utf8_unicode_ci DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -227,7 +227,7 @@ CREATE TABLE `blog_entries` (
 
 /*Data for the table `blog_entries` */
 
-insert  into `blog_entries`(`id`,`blog_categories_id`,`image_url`,`key`,`active`,`created_at`,`updated_at`,`deleted_at`) values (1,1,NULL,'sdfsdddd','1','2016-07-12 22:03:24',NULL,NULL),(2,2,NULL,'nuevaentradadeblog','1','2016-07-19 01:15:23',NULL,NULL),(3,1,NULL,'asdf','1','2016-07-19 01:23:41',NULL,NULL);
+insert  into `blog_entries`(`id`,`blog_categories_id`,`key`,`image_url`,`active`,`created_at`,`updated_at`,`deleted_at`) values (1,1,'sdfsdddd','[\"\\/media\\/maqueta\\/job-detail-1.png\",\"\\/media\\/maqueta\\/job1.png\"]','1','2016-07-12 22:03:24',NULL,NULL),(2,2,'nuevaentradadeblog','','1','2016-07-19 01:15:23',NULL,NULL),(3,1,'asdf','','1','2016-07-19 01:23:41',NULL,NULL);
 
 /*Table structure for table `blog_entries_locales` */
 
@@ -246,7 +246,7 @@ CREATE TABLE `blog_entries_locales` (
 
 /*Data for the table `blog_entries_locales` */
 
-insert  into `blog_entries_locales`(`id`,`related_table_id`,`title`,`url_key`,`content`,`meta_description`,`language_id`) values (1,1,'blog-1','blog-1','<p>df</p>\r\n','sfd',2),(2,3,'blog-3','blog5','<p>asdf</p>\r\n','asdf',2),(3,1,'blog-1','blog2','<p>asfdasf</p>\r\n','',1),(4,2,'blog-2','blog3','<p>asdfsafd</p>\r\n','',1),(5,2,'blog-2','blog4','<p>asfdsaf</p>\r\n','',2),(6,3,'blog-3','blog6','<p>dfs</p>\r\n','sdfdsf',1);
+insert  into `blog_entries_locales`(`id`,`related_table_id`,`title`,`url_key`,`content`,`meta_description`,`language_id`) values (1,1,'blog-1','blog-1','<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<html><body><p>df</p></body></html>\n','sfd',2),(2,3,'blog-3','blog5','<p>asdf</p>\r\n','asdf',2),(3,1,'blog-1','blog2','<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<html><body><p>asfdasf</p></body></html>\n','',1),(4,2,'blog-2','blog3','<p>asdfsafd</p>\r\n','',1),(5,2,'blog-2','blog4','<p>asfdsaf</p>\r\n','',2),(6,3,'blog-3','blog6','<p>dfs</p>\r\n','sdfdsf',1);
 
 /*Table structure for table `configuration` */
 
@@ -377,7 +377,7 @@ CREATE TABLE `jobs` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `job_categories_id` int(10) unsigned NOT NULL,
   `key` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `image_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `image_url` text COLLATE utf8_unicode_ci,
   `active` enum('0','1') COLLATE utf8_unicode_ci DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -387,7 +387,7 @@ CREATE TABLE `jobs` (
 
 /*Data for the table `jobs` */
 
-insert  into `jobs`(`id`,`job_categories_id`,`key`,`image_url`,`active`,`created_at`,`updated_at`,`deleted_at`) values (2,3,'mitrabajo','/maqueta/home1.png','1','2016-07-10 19:42:49',NULL,NULL),(3,1,'4444','/maqueta/home1.png','1','2016-07-10 19:50:05',NULL,NULL),(4,1,'qwe','/media/jare.jpg','1','2016-07-12 20:07:29',NULL,NULL),(5,3,'nuevo-trabajo','/maqueta/home1.png','1','2016-09-12 10:46:10',NULL,NULL);
+insert  into `jobs`(`id`,`job_categories_id`,`key`,`image_url`,`active`,`created_at`,`updated_at`,`deleted_at`) values (2,3,'mitrabajo','[\"\\/media\\/maqueta\\/job-detail-1.png\",\"\\/media\\/maqueta\\/job-detail-1.png\",\"\\/media\\/maqueta\\/job-detail-1.png\",\"\\/media\\/maqueta\\/job-detail-1.png\"]','1','2016-07-10 19:42:49',NULL,NULL),(3,1,'4444','[\"s/zf2-logo.png\",\"jor-jor\"]','1','2016-07-10 19:50:05',NULL,NULL),(4,1,'qwe','[\"s/zf2-logo.png\",\"jor-jor\"]','1','2016-07-12 20:07:29',NULL,NULL),(5,3,'nuevo-trabajo','[\"s/zf2-logo.png\",\"jor-jor\"]','1','2016-09-12 10:46:10',NULL,NULL);
 
 /*Table structure for table `jobs_locales` */
 
@@ -406,7 +406,7 @@ CREATE TABLE `jobs_locales` (
 
 /*Data for the table `jobs_locales` */
 
-insert  into `jobs_locales`(`id`,`related_table_id`,`title`,`url_key`,`content`,`meta_description`,`language_id`) values (2,2,'trabajito','titulo-post','<p>hola hoal</p>\r\n','metaasdasdasd',2),(3,2,'eeswwwww','ee','<p>eess</p>\r\n','ee',1),(4,3,'444 - EN','444-en','<p>444</p>\r\n','4444',1),(5,3,'333SDFASDF','33','<p>3333</p>\r\n','333',2),(6,4,'trabajo en español','url-key-en-espanol','<p>qwe</p>\r\n','qwe',2),(7,4,'job in engl','job-en','<p>sdf</p>\r\n','',1),(8,5,'NUEVO TRABAJO EN ESPAÑOL','nuevo-trabajo-en-espanol','<p>NUEVO TRABAJO EN ESPA&Ntilde;OL</p>\r\n','NUEVO TRABAJO EN ESPAÑOL',2),(9,5,'nuevo en inglesddd','nuevo-en-ingles','<p>nuevo en ingles</p>\r\n','nuevo en ingles',1);
+insert  into `jobs_locales`(`id`,`related_table_id`,`title`,`url_key`,`content`,`meta_description`,`language_id`) values (2,2,'trabajito','titulo-post','<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<html><body><p>mi trabajo&nbsp;<img alt=\"\" src=\"/media/zf2-logo.png\"></p></body></html>\n','metaasdasdasd',2),(3,2,'eeswwwww','ee','<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"http://www.w3.org/TR/REC-html40/loose.dtd\">\n<html><body><p>/media/</p>\r\n\r\n<p>/media/</p>\r\n\r\n<p>/media/</p>\r\n\r\n<p>/media/</p>\r\n\r\n<p>/media/</p>\r\n\r\n<p>/media/</p>\r\n\r\n<p>/media/</p>\r\n\r\n<p>/media/</p>\r\n\r\n<p>/media/</p>\r\n\r\n<p>/media/</p>\r\n\r\n<p>eess</p></body></html>\n','ee',1),(4,3,'444 - EN','444-en','<p>444</p>\r\n','4444',1),(5,3,'333SDFASDF','33','<p>3333</p>\r\n','333',2),(6,4,'trabajo en español','url-key-en-espanol','<p>qwe</p>\r\n','qwe',2),(7,4,'job in engl','job-en','<p>sdf</p>\r\n','',1),(8,5,'NUEVO TRABAJO EN ESPAÑOL','nuevo-trabajo-en-espanol','<p>NUEVO TRABAJO EN ESPA&Ntilde;OL</p>\r\n','NUEVO TRABAJO EN ESPAÑOL',2),(9,5,'nuevo en inglesddd','nuevo-en-ingles','<p>nuevo en ingles</p>\r\n','nuevo en ingles',1);
 
 /*Table structure for table `jobs_videos` */
 
