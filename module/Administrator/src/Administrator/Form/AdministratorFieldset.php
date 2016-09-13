@@ -170,7 +170,8 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
                 $filters[] = array(
                     'name' => MediaUri::class,
                     'options' => array(
-                        'base_url' => 'http://www.google.es'
+                        'relative_path' => '/media/',
+                        'html_tags' => array('img','source'),
                     )
                 );
                 break;

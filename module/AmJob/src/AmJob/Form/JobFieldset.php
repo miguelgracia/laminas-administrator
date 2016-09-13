@@ -2,6 +2,7 @@
 
 namespace AmJob\Form;
 
+use Administrator\Filter\MediaUri;
 use Administrator\Form\AdministratorFieldset;
 use AmJob\Model\JobTable;
 
@@ -39,5 +40,16 @@ class JobFieldset extends AdministratorFieldset
 
         $imageUrl->setOption('partial_view','am-job/am-job-module/form-partial/image-url');
         $imageUrl->setOption('allow_add_multiple_files', true);
+    }
+
+    public function getInputFilterSpecification()
+    {
+        $inputFilter = parent::getInputFilterSpecification();
+
+        $inputFilter['imageUrl']['filters'][] = array(
+            'name' => MediaUri::class
+        );
+
+        return $inputFilter;
     }
 }

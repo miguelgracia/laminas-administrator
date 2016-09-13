@@ -40,16 +40,20 @@ $(function () {
                 oWindow = null;
             };
 
-            var addInputText = function(input) {
+            var addInputText = function(input, canDelete) {
+
+                canDelete = canDelete || false;
+
                 var $input = $(input);
 
                 var $inputWrap = $('<div class="input-group"></div>');
 
                 $input.wrap($inputWrap);
 
+
                 var buttonWrapperHtml =
                     '<span class="input-group-btn">' +
-                        (input.dataset.isMultiple == '1' ? '<button data-target="' + $input.attr('id') + '" type="button" class="btn btn-danger btn-flat">Borrar</button>' : '')+
+                        ((input.dataset.isMultiple == '1' && canDelete) ? '<button data-target="' + $input.attr('id') + '" type="button" class="btn btn-danger btn-flat">Descartar</button>' : '')+
                         '<button data-target="' + $input.attr('id') + '" type="button" class="btn btn-info btn-flat">Buscar</button>' +
                     '</span>';
 
@@ -85,22 +89,21 @@ $(function () {
                 var $newWrapper =
                     $('<div class="form-group">' +
                         '<div class="col-xs-12">' +
-                        '<div class="input-group">' +
-                        '<span class="input-group-btn"></span>' +
                         '</div>' +
-                        '</div>' +
-                        '</div>');
+                     '</div>');
 
-                $newWrapper.find('.input-group').prepend(newInput);
+
+                $newWrapper.find('.col-xs-12').prepend(newInput[0]);
+                console.log($newWrapper[0]);
                 $newWrapper.insertBefore($this);
 
-                addInputText(newInput[0]);
+                addInputText(newInput[0],true);
             };
 
             inputs = document.getElementsByClassName(config.className);
 
             for(var idx = 0; idx < inputs.length; idx++) {
-                addInputText(inputs[idx]);
+                addInputText(inputs[idx], idx != 0);
             }
 
             var addFileButtons = document.getElementsByClassName('allow_multiple_files');

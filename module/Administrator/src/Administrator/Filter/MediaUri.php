@@ -7,13 +7,36 @@ use Zend\Filter\AbstractFilter;
 use Zend\Filter\Exception;
 use Zend\Filter\PregReplace;
 
+/**
+ * Class MediaUri
+ * @package Administrator\Filter
+ *
+ * Añade el segmento indicado en $relativePath a la cadena especificada.
+ * Admite búsqueda de elementos dentro de un html, por si queremos añadir
+ * el prefijo al atributo src de los elementos que dispongan de dicho atributo
+ *
+ */
 class MediaUri extends AbstractFilter
 {
     protected $relativePath = '/media/';
 
-    public function setBaseUrl($value)
+    protected $htmlTags = array();
+
+    /**
+     * Sets filter options
+     *
+     * @param array|\Traversable|null $options
+     */
+    public function __construct($options = null)
     {
-        $this->baseUrl = $value;
+        if ($options) {
+            $this->setOptions($options);
+        }
+    }
+
+    public function setHtmlTags($value)
+    {
+        $this->htmlTags = $value;
     }
 
     public function setRelativePath($path)
@@ -21,14 +44,26 @@ class MediaUri extends AbstractFilter
         $this->relativePath = $path;
     }
 
-    private function setSrc(&$attr)
+    private function setSrc($value)
     {
         $pregReplaceFilter = new PregReplace(array(
             'pattern' => '/^(\/*media|\/)*/',
             'replacement' => $this->relativePath.'$2'
         ));
 
-        $attr->value = $pregReplaceFilter->filter($attr->value);
+        if (is_array($value)) {
+            foreach ($value as $i => &$val) {
+                if (trim($val) == '') {
+                    unset($value[$i]);
+                    continue;
+                }
+                $val = $this->setSrc($val);
+            }
+        } elseif($value != '') {
+            $value = $pregReplaceFilter->filter($value);
+        }
+
+        return $value;
     }
 
 
@@ -41,30 +76,43 @@ class MediaUri extends AbstractFilter
      */
     public function filter($value)
     {
-        $document = new Document($value);
+        if (is_array($this->htmlTags) and count($this->htmlTags) > 0) {
 
-        $dom = $document->getDomDocument();
+            $currentValue = $value;
 
-        $mediaElements = array(
-            'images' => $dom->getElementsByTagName('img'),
-            'video_source' => $dom->getElementsByTagName('source'),
-        );
+            try {
+                $document = new Document($value);
 
-        foreach ($mediaElements as $elementType => $elems) {
-            $nodeList = new Document\NodeList($elems);
+                $dom = $document->getDomDocument();
 
-            foreach ($nodeList as $node) {
-                foreach ($node->attributes as $attr) {
-                    if ($attr->name == 'src') {
-                        $this->setSrc($attr);
+                foreach ($this->htmlTags as $tag) {
+                    $elems = $dom->getElementsByTagName($tag);
+
+                    $nodeList = new Document\NodeList($elems);
+
+                    foreach ($nodeList as $node) {
+                        foreach ($node->attributes as $attr) {
+                            if ($attr->name == 'src') {
+                                $attr->value = $this->setSrc($attr->value);
+                            }
+                        }
                     }
                 }
-            }
-        }
 
-        $value = $dom->saveHTML();
+                $value = $dom->saveHTML();
+            } catch (\Exception $ex) {
+
+                /*
+                 * El parse del html ha fallado, bien por que $value es
+                 * una cadena vacía o por cualquier otro motivo
+                 */
+
+                $value = $currentValue;
+            }
+        } else {
+            $value = $this->setSrc($value);
+        }
 
         return $value;
     }
-
 }
