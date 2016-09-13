@@ -1,5 +1,6 @@
 <?php
 $blogMenuId         = $menu->rows['blog']->id;
+$images = json_decode($blog->imageUrl);
 ?>
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
@@ -12,7 +13,7 @@ $blogMenuId         = $menu->rows['blog']->id;
     </div>
 </div>
 
-<div class="container blogs">
+<div class="container blogs detail">
 
     <article>
 
@@ -22,21 +23,11 @@ $blogMenuId         = $menu->rows['blog']->id;
                 <h1><?=$blog->title;?></h1>
 
                 <div id="owl_carousel">
-                    <div class="item">
-                        <img src="/media/<?=$blog->imageUrl;?>" alt="<?=$blog->title;?>">
-                    </div>
-                    <!--<div class="item">
-                        <img src="/media/maqueta/blog-detail-1.png" alt="Collab">
-                    </div>
-                    <div class="item">
-                        <img src="/media/maqueta/blog-detail-1.png" alt="Collab">
-                    </div>
-                    <div class="item">
-                        <img src="/media/maqueta/blog-detail-1.png" alt="Collab">
-                    </div>
-                    <div class="item">
-                        <img src="/media/maqueta/blog-detail-1.png" alt="Collab">
-                    </div>-->
+                    <?php foreach($images as $image):?>
+                        <div class="item">
+                            <img class="img-responsive" src="<?=$image;?>" alt="<?=$blog->title;?>">
+                        </div>
+                    <?php endforeach;?>
                 </div>
                 <?=$blog->content;?>
             </div>

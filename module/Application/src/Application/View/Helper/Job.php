@@ -46,9 +46,11 @@ class Job extends AbstractHelper
 
             foreach ($jobs as $index => $job) {
 
+                $job->imageUrl = json_decode($job->imageUrl);
+
                 $html .= sprintf(
                     $this->getContentWrapper(),
-                    $job->imageUrl,
+                    (is_array($job->imageUrl) ? $job->imageUrl[0] : $job->imageUrl),
                     $job->title,
                     $job->content,
                     $url($lang.'/jobs/category',array(

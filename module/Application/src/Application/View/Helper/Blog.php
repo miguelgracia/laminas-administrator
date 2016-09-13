@@ -46,9 +46,11 @@ class Blog extends AbstractHelper
 
             foreach ($blogs as $index => $blog) {
 
+                $blog->imageUrl = json_decode($blog->imageUrl);
+
                 $html .= sprintf(
                     $this->getContentWrapper(),
-                    $blog->imageUrl,
+                    (is_array($blog->imageUrl) ? $blog->imageUrl[0] : $blog->imageUrl),
                     $blog->title,
                     $blog->content,
                     $url($lang.'/blog/category',array(

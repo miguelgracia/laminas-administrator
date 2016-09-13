@@ -1,5 +1,6 @@
 <?php
 $jobMenuId         = $menu->rows['jobs']->id;
+$images = json_decode($job->imageUrl);
 ?>
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
@@ -12,7 +13,7 @@ $jobMenuId         = $menu->rows['jobs']->id;
     </div>
 </div>
 
-<div class="container jobs">
+<div class="container jobs detail">
 
     <article>
 
@@ -22,21 +23,11 @@ $jobMenuId         = $menu->rows['jobs']->id;
                 <h1><?=$job->title;?></h1>
 
                 <div id="owl_carousel">
-                    <div class="item">
-                        <img src="/media/<?=$job->imageUrl;?>" alt="<?=$job->title;?>">
-                    </div>
-                    <!--<div class="item">
-                        <img src="/media/maqueta/job-detail-1.png" alt="Collab">
-                    </div>
-                    <div class="item">
-                        <img src="/media/maqueta/job-detail-1.png" alt="Collab">
-                    </div>
-                    <div class="item">
-                        <img src="/media/maqueta/job-detail-1.png" alt="Collab">
-                    </div>
-                    <div class="item">
-                        <img src="/media/maqueta/job-detail-1.png" alt="Collab">
-                    </div>-->
+                    <?php foreach($images as $image):?>
+                        <div class="item">
+                            <img class="img-responsive" src="<?=$image;?>" alt="<?=$job->title;?>">
+                        </div>
+                    <?php endforeach;?>
                 </div>
                 <?=$job->content;?>
             </div>

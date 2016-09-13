@@ -9,13 +9,10 @@ function srmBlogController() {
     this.detailAction = function() {
 
         $("#owl_carousel").owlCarousel({
-
             autoPlay: 5000, //Set AutoPlay to 3 seconds
-
-            items : 1,
-            itemsDesktop : [1199,1],
-            itemsDesktopSmall : [979,1]
-
+            autoHeight:true,
+            singleItem: true,
+            items : 1
         });
     };
 }
