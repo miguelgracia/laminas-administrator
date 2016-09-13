@@ -102,7 +102,7 @@ trait MyOrmModelTrait
         $toSeparatorFilter = new CamelCaseToUnderscore();
 
         foreach ($props as $propName => $propValue) {
-            $toSaveArray[$toSeparatorFilter->filter($propName)] = $propValue;
+            $toSaveArray[strtolower($toSeparatorFilter->filter($propName))] = $propValue;
         }
 
         return $toSaveArray;
