@@ -1,12 +1,17 @@
+/html/administrator/node_modules
 /data/vendor
 /public/media
+/html/media
 /public/administrator/node_modules
 /config/application.config.old
 /module/Gestor
 /module/Gestor_old
+/html/absconsultor/dist
 # Created by .ignore support plugin (hsz.mobi)
 /public/absconsultor/node_modules
+/html/absconsultor/node_modules
 /public/absconsultor/screens
+/data/config/autoload/local.php
 ### ZendFramework template
 # Composer files
 composer.phar

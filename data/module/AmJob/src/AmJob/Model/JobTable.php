@@ -2,7 +2,6 @@
 
 namespace AmJob\Model;
 
-use Administrator\Model\AdministratorModel;
 use Administrator\Model\AdministratorTable;
 
 class JobTable extends AdministratorTable
@@ -18,12 +17,12 @@ class JobTable extends AdministratorTable
         return $row;
     }
 
-    public function save(AdministratorModel $model)
+    public function save($model, $id = 0, $fieldKey = 'id')
     {
         if (is_array($model->imageUrl)) {
             $model->imageUrl = json_encode($model->imageUrl);
         }
 
-        return parent::save($model);
+        return parent::save($model, $id, $fieldKey);
     }
 }

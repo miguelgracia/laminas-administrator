@@ -9,6 +9,7 @@
 namespace AmMenu\Navigation;
 
 
+use Interop\Container\ContainerInterface;
 use Zend\Navigation\Service\DefaultNavigationFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -16,11 +17,11 @@ class MenuNavigation extends DefaultNavigationFactory
 {
     protected $entradaMenuTable;
 
-    protected function getPages(ServiceLocatorInterface $serviceLocator)
+    protected function getPages(ContainerInterface $container)
     {
         if (null === $this->pages) {
 
-            $application = $serviceLocator->get('Application');
+            $application = $container->get('Application');
 
             $mvcEvent =  $application->getMvcEvent();
 
@@ -30,7 +31,7 @@ class MenuNavigation extends DefaultNavigationFactory
             $rutaController = $routeMatch->getParam('module');
             $actionController = $routeMatch->getParam('action');
 
-            $this->entradaMenuTable = $serviceLocator->get('AmMenu\Model\MenuTable');
+            $this->entradaMenuTable = $container->get('AmMenu\Model\MenuTable');
 
             $dataMenu = $this->entradaMenuTable->fetchAllOrdenados();
 
@@ -38,7 +39,7 @@ class MenuNavigation extends DefaultNavigationFactory
             // antes de pintarlos vamos a ir viendo a cuáles de ellos
             // hay acceso, y por tanto, qué opciones pintar
 
-            $misPermisos = $serviceLocator->get('AmProfile\Service\ProfilePermissionService');
+            $misPermisos = $container->get('AmProfile\Service\ProfilePermissionService');
 
             // Ahora, vamos a recorrer el menú y a ver lo que es imprimible y lo que no.
 

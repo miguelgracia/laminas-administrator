@@ -19,7 +19,7 @@ TASKS
 - (HECHO - A MEDIAS) Página 404
 - (HECHO - SE PUEDE CREAR UN SUBDOMINIO)
 - (HECHO) Revisar cómo se genera la url del contenido que se inserta desde el plugin ckeditor
-- IMPLEMENTAR LA FORMA EN QUE ASOCIAMOS FOTOS A UN TRABAJO DESDE EL ADMINISTRADOR
+- (HECHO) IMPLEMENTAR LA FORMA EN QUE ASOCIAMOS FOTOS A UN TRABAJO DESDE EL ADMINISTRADOR
 - Implementar Sección contacto
     - Programar envío de formulario
 
@@ -52,6 +52,11 @@ arsys Sefd0lj8
 
 usuario db root 4B5c0n5ult0r
 usuario db webb U4e54b5
+
+htpasswd -> user: absconsultor.es
+            pass: consultorABS
+
+log acceso web consultorAB5
 
 
 ABS CONSULTOR

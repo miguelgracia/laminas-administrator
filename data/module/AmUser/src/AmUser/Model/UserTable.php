@@ -2,10 +2,8 @@
 
 namespace AmUser\Model;
 
-use Administrator\Model\AdministratorModel;
 use Administrator\Model\AdministratorTable;
 use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Select;
 
 class UserTable extends AdministratorTable
 {
@@ -13,7 +11,7 @@ class UserTable extends AdministratorTable
 
     protected $entityModelName =  UserModel::class;
 
-    public function save(AdministratorModel $model)
+    public function save($model, $id = 0, $fieldKey = 'id')
     {
         $checkPassword =  (bool) $model->getCheckPassword();
 
@@ -23,7 +21,7 @@ class UserTable extends AdministratorTable
             unset($model->password);
         }
 
-        return parent::save($model);
+        return parent::save($model, $id, $fieldKey);
     }
 
     public function updateActivo($id,$active)
