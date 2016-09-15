@@ -1,3 +1,4 @@
+/data/vendor
 /public/media
 /public/administrator/node_modules
 /config/application.config.old
