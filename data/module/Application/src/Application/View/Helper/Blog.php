@@ -16,8 +16,8 @@ class Blog extends AbstractHelper
     {
         return "<div class='col-md-12 list-item blog'>
                         <div class='row'>
-                            <div class='col-md-5'><img class='img-responsive' src='%s' /></div>
-                            <div class='col-md-7'>
+                            <div class='col-md-7'><img class='img-responsive' src='%s' /></div>
+                            <div class='col-md-5'>
                                 <h2>%s</h2>
                                 %s
                             </div>

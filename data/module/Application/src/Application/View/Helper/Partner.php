@@ -30,10 +30,10 @@ class Partner extends AbstractHelper
     public function getContentWrapper()
     {
         return "<div class='row list-item collaborator'>
-                <div class='col-md-3'>
+                <div class='col-md-4 col-sm-4 col-xs-4'>
                     <img class='img-responsive' src='%s' alt='%s'>
                 </div>
-                <div class='col-md-9'>
+                <div class='col-md-8 col-sm-8 col-xs-8'>
                     <h3>%s</h3>
                     %s
                     %s

@@ -104,7 +104,24 @@
 
 .abs .home-module {
     position: relative;
+    margin-bottom: 25px;
+    padding-bottom:25px;
+    border-bottom: 1px solid #eee;
 }
+
+.abs .home-module:last-of-type {
+    border-bottom:0;
+}
+        .abs .home-module h2 {
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        @media (max-width: 767px) {
+            .abs .home-module h2 {
+                margin-top: 10px;
+            }
+        }
 
 @media (max-width: 991px) {
     .abs .home-module {
@@ -119,7 +136,7 @@
 .home-module:nth-child(odd) > div:nth-child(2):after,
 .home-module:nth-child(odd) > div:nth-child(2):before {
     right: 100%;
-    top: 30%;
+    top: 50px;
     border: solid transparent;
     content: " ";
     height: 0;
@@ -168,7 +185,7 @@
     margin-top: -20px;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 768px) {
     .home-module:nth-child(even) > div:nth-child(1):after,
     .home-module:nth-child(even) > div:nth-child(1):before {
         border-width: 0px;
@@ -182,8 +199,32 @@
     height: 100%;
 }
 
+@media (max-width: 480px) {
+    .abs .home-module > div {
+        width: 100%;
+    }
+}
+
 .abs .home-module:nth-child(odd) > div:nth-child(2) {
     padding-left: 25px;
+    padding-right: 15px;
+}
+
+.abs .home-module:nth-child(even) > div:nth-child(1) {
+    /*padding-right: 15px;*/
+}
+
+@media (max-width: 480px) {
+
+    .abs .home-module:nth-child(odd) > div:nth-child(2) {
+        padding-left: 25px;
+        padding-left: 0px;
+        padding-right: 0;
+    }
+
+    .abs .home-module:nth-child(even) > div:nth-child(1) {
+        padding-right: 0px;
+    }
 }
 
 .abs .home-module h2 {
@@ -193,23 +234,29 @@
 }
 
 .abs .home-module p {
-    height: 210px;
+    /*height: 210px;*/
 }
 
 .abs .home-module:nth-child(even) p {
     padding-right: 25px;
 }
 
+@media (max-width: 480px) {
+    .abs .home-module:nth-child(even) p {
+        padding-right: 0px;
+    }
+}
+
 .abs .home-module:nth-child(odd) .btn {
     float: right;
 }
 
-@media (max-width: 1199px) {
+/*@media (max-width: 1199px) {
     .abs .home-module .btn {
         position: relative;
         bottom: 20px;
     }
-}
+}*/
 
 
 .home-module .owl-carousel.owl-theme .owl-controls {

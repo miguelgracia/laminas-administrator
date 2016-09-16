@@ -39,7 +39,8 @@ echo $this->doctype(); ?>
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="<?php echo $this->url($lang,array('lang' => $lang)) ?>">
-                        <img width="120" src="<?php echo $this->basePath('img/white-logo.png') ?>" alt="Logo ABS Consultor"/>
+                        <img class="hidden-xs" width="120" src="<?php echo $this->basePath('img/white-logo.png') ?>" alt="Logo ABS Consultor"/>
+                        <img class="visible-xs" width="169" src="<?php echo $this->basePath('img/white-logo-horizontal.png') ?>" alt="Logo ABS Consultor"/>
                     </a>
                 </div>
                 <div class="collapse navbar-collapse">
@@ -58,19 +59,7 @@ echo $this->doctype(); ?>
         <footer>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4">
-                        <a href="<?php echo $this->url('home') ?>" class="brand-logo">
-                            <img width="150" src="<?php echo $this->basePath('img/white-logo.png') ?>" alt="Logo ABS Consultor" />
-                        </a>
-                    </div>
-
-                    <div class="col-md-4">
-                        <ul class="nav navbar-nav footer-nav">
-                            <?=$menuHelper->render($menu,$lang);?>
-                        </ul>
-                    </div>
-
-                    <div class="col-md-4 text-right contact-info">
+                    <div class="col-md-12 text-right contact-info">
                         <div class="row">
                             <div class="col-md-12">
                                 <p><?=$this->translate('Follow us','frontend');?></p>
@@ -92,7 +81,7 @@ echo $this->doctype(); ?>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <?php $legalLinkHelper->render($legal,$lang);?>
                     </div>
                 </div>
