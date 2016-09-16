@@ -23,12 +23,12 @@ class ProfileTable extends AdministratorTable
         return $row;
     }
 
-    public function save(AdministratorModel $model)
+    public function save($data, $id = 0, $fieldKey = 'id')
     {
-        if (is_array($model->permissions)) {
-            $model->permissions = json_encode($model->permissions);
+        if (is_array($data->permissions)) {
+            $data->permissions = json_encode($data->permissions);
         }
 
-        return parent::save($model);
+        return parent::save($data, $id, $fieldKey);
     }
 }

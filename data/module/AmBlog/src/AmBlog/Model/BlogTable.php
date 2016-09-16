@@ -18,12 +18,12 @@ class BlogTable extends AdministratorTable
         return $row;
     }
 
-    public function save(AdministratorModel $model)
+    public function save($data, $id = 0, $fieldKey = 'id')
     {
-        if (is_array($model->imageUrl)) {
-            $model->imageUrl = json_encode($model->imageUrl);
+        if (is_array($data->imageUrl)) {
+            $data->imageUrl = json_encode($data->imageUrl);
         }
 
-        return parent::save($model);
+        return parent::save($data, $id, $fieldKey);
     }
 }
