@@ -39,17 +39,17 @@ class Menu extends AbstractHelper implements FactoryInterface
 
                 $urlKey = $menu->locale->{$lang}[$m->id]->urlKey;
 
-                $link = $url(implode('/', $route), array(
+                $routeName = implode('/', $route);
+
+                $link = $url($routeName, array(
                     'lang' => strtolower($lang),
                     'section' => $urlKey
                 ));
 
                 $attributes = '';
 
-                if ($routeMatch instanceof RouteMatch) {
-                    if (strcasecmp($routeMatch->getParam('section'),$urlKey) === 0) {
-                        $attributes .= 'class = "active" ';
-                    }
+                if ($routeMatch instanceof RouteMatch and $routeMatch->getMatchedRouteName() == $routeName) {
+                    $attributes .= 'class = "active" ';
                 }
 
                 echo sprintf(
