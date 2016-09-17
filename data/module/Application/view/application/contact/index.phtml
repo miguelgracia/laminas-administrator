@@ -1,5 +1,8 @@
 <?php
 $contact = $menu->rows['contact']->id;
+
+$contactFormHelper = $this->contactFormHelper($formObject);
+
 ?>
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
@@ -18,32 +21,10 @@ $contact = $menu->rows['contact']->id;
 
                 <div class="row">
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <form role="form">
-                            <div class="form-group">
-                                <label for="name"><?=$this->translate('Form Name','frontend');?></label>
-                                <input type="name" class="form-control" id="name">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="email"><?=$this->translate('Form Email','frontend');?></label>
-                                <input type="email" class="form-control" id="email">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="phone"><?=$this->translate('Form Phone','frontend');?></label>
-                                <input type="phone" class="form-control" id="phone">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="text"><?=$this->translate('Form Message','frontend');?></label>
-                                <textarea class="form-control" id="text" rows="10"></textarea>
-                            </div>
-
-                            <button type="submit" class="btn btn-default"><?=$this->translate('Form Send','frontend');?></button>
-                        </form>
+                        <?php $contactFormHelper->render($lang);?>
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-12 contact-info">
-                        <div class="row">
+                       <div class="row">
                             <div class="col-md-12">
 
                                 <h4><?=$this->translate('Social Networks','frontend');?></h4>

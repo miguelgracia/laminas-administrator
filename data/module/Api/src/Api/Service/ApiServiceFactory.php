@@ -14,6 +14,7 @@ class ApiServiceFactory implements FactoryInterface
         'AppData',
         'Blog',
         'BlogCategory',
+        'Contact',
         'HomeModule',
         'Job',
         'JobCategory',

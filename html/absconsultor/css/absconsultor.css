@@ -366,6 +366,20 @@ footer a.legal-link:first-child:after {
     margin-bottom: 20px;
 }
 
+.contact form input[type="checkbox"]{
+    width: 17px;
+    height: 17px;
+    margin-right: 5px;
+}
+
+.contact form ul.error {
+    font-size: 20px;
+    color: red;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
 .contact .contact-info i {
     font-size: 40px;
     margin-right: 10px;

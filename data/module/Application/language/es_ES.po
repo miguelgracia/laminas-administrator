@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: AbsConsultor\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-07-06 19:07+0100\n"
-"PO-Revision-Date: 2016-09-10 15:04+0200\n"
+"PO-Revision-Date: 2016-09-17 11:53+0200\n"
 "Last-Translator: Adolfo Abegg <adolfoabegg@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -101,6 +101,38 @@ msgstr "El ruteador no ha encontrado la ruta para la URL solicitada."
 
 msgid "We cannot determine at this time why a 404 was generated."
 msgstr "No pudimos determinar por qué un error 404 ha sido generado."
+
+# Zend\Validator\NotEmpty
+msgid "Value is required and can't be empty"
+msgstr "Este campo no puede estar vacío"
+
+# Zend\Validator\EmailAddress
+msgid "Invalid email format"
+msgstr "Formato de email incorrecto"
+
+msgid "The input is not a valid email address. Use the basic format local-part@hostname"
+msgstr "El valor especificado no es una dirección de correo electrónico válido en el formato local-part@hostname"
+
+msgid "'%hostname%' is not a valid hostname for the email address"
+msgstr "'%hostname%' no es un nombre de host válido para la dirección de correo electrónico"
+
+msgid "'%hostname%' does not appear to have any valid MX or A records for the email address"
+msgstr "'%hostname%' no parece tener registros MX o A válidos para la dirección de correo electrónico especificada"
+
+msgid "'%hostname%' is not in a routable network segment. The email address should not be resolved from public network"
+msgstr "'%hostname%' no esta en un segmento de red encaminable. La dirección de correo electrónico especificada no se debería poder resolver desde una red pública"
+
+msgid "'%localPart%' can not be matched against dot-atom format"
+msgstr "'%localPart%' no es igual al formato dot-atom"
+
+msgid "'%localPart%' can not be matched against quoted-string format"
+msgstr "'%localPart%' no es igual al formato quoted-string"
+
+msgid "'%localPart%' is not a valid local part for the email address"
+msgstr "'%localPart%' no es una parte local válida para la dirección de correo electrónico especificado"
+
+msgid "The input exceeds the allowed length"
+msgstr "el valor especificado excede la longitud permitida"
 
 msgid "Controller"
 msgstr "Controller"

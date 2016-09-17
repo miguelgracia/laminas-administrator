@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ZendSkeletonApplication\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-10 01:25+0200\n"
-"PO-Revision-Date: 2016-09-10 15:04+0200\n"
+"POT-Creation-Date: 2016-09-17 02:11+0200\n"
+"PO-Revision-Date: 2016-09-17 11:53+0200\n"
 "Last-Translator: Evan Coury <me@evancoury.com>\n"
 "Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
 "Language: en_GB\n"
@@ -15,113 +15,153 @@ msgstr ""
 "X-Generator: Poedit 1.8.9\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-msgid "Form Name"
-msgstr "Name"
-
-msgid "Form Email"
-msgstr "Email"
-
-msgid "Form Phone"
-msgstr "Phone"
-
-msgid "Form Message"
-msgstr "Message"
-
-msgid "Form Send"
-msgstr "Send"
-
-#: ../view/layout/front-layout.phtml:75
-msgid "Follow us"
-msgstr ""
-
-#: ../view/layout/front-layout.phtml:83
-msgid "Contact us"
-msgstr ""
-
-msgid "Social Networks"
-msgstr ""
-
-msgid "Categories"
-msgstr ""
-
-msgid "Show work"
-msgstr ""
-
-msgid "Our Partners"
-msgstr ""
-
+#: ../src/Application/View/Helper/Blog.php:64 ../src/Application/View/Helper/Job.php:64
 msgid "Read more"
 msgstr ""
 
+#: ../src/Application/View/Helper/Partner.php:27 ../view/layout/front-layout.phtml:95
 msgid "More info"
 msgstr "+ Info"
 
-msgid "Cookies agree"
-msgstr "I agree"
+#: ../view/application/company/index.phtml:33
+msgid "Our Partners"
+msgstr ""
 
-msgid "Cookie message"
-msgstr "Esta Web utiliza cookies analíticas de terceros para facilitar la navegación y obtener información de uso de sus visitantes. Si continúa navegando, consideraremos que acepta su uso. Puede obtener más información en nuestra política de cookies."
+#: ../view/application/contact/index.phtml:28
+msgid "Form Name"
+msgstr "Name"
 
-#: ../view/error/404.phtml:2
+#: ../view/application/contact/index.phtml:34
+msgid "Form Email"
+msgstr "Email"
+
+#: ../view/application/contact/index.phtml:40 ../view/application/contact/index.phtml:76
+msgid "Form Phone"
+msgstr "Phone"
+
+#: ../view/application/contact/index.phtml:46
+msgid "Form Message"
+msgstr "Message"
+
+#: ../view/application/contact/index.phtml:59
+msgid "Form Send"
+msgstr "Send"
+
+#: ../view/application/contact/index.phtml:66
+msgid "Social Networks"
+msgstr ""
+
+# Zend\Validator\NotEmpty
+msgid "Value is required and can't be empty"
+msgstr ""
+
+# Zend\Validator\EmailAddress
+msgid "Invalid email format"
+msgstr ""
+
+msgid "The input is not a valid email address. Use the basic format local-part@hostname"
+msgstr ""
+
+msgid "'%hostname%' is not a valid hostname for the email address"
+msgstr ""
+
+msgid "'%hostname%' does not appear to have any valid MX or A records for the email address"
+msgstr ""
+
+msgid "'%hostname%' is not in a routable network segment. The email address should not be resolved from public network"
+msgstr ""
+
+msgid "'%localPart%' can not be matched against dot-atom format"
+msgstr ""
+
+msgid "'%localPart%' can not be matched against quoted-string format"
+msgstr ""
+
+msgid "'%localPart%' is not a valid local part for the email address"
+msgstr ""
+
+msgid "The input exceeds the allowed length"
+msgstr ""
+
+#: ../view/error/404-old.phtml:2 ../view/error/404.phtml:2
 msgid "A 404 error occurred"
 msgstr ""
 
-#: ../view/error/404.phtml:11
+#: ../view/error/404-old.phtml:11
 msgid "The requested controller was unable to dispatch the request."
 msgstr ""
 
-#: ../view/error/404.phtml:14
+#: ../view/error/404-old.phtml:14
 msgid "The requested controller could not be mapped to an existing controller class."
 msgstr ""
 
-#: ../view/error/404.phtml:17
+#: ../view/error/404-old.phtml:17
 msgid "The requested controller was not dispatchable."
 msgstr ""
 
-#: ../view/error/404.phtml:20
+#: ../view/error/404-old.phtml:20
 msgid "The requested URL could not be matched by routing."
 msgstr ""
 
-#: ../view/error/404.phtml:23
+#: ../view/error/404-old.phtml:23
 msgid "We cannot determine at this time why a 404 was generated."
 msgstr ""
 
-#: ../view/error/404.phtml:35
+#: ../view/error/404-old.phtml:35
 msgid "Controller"
 msgstr ""
 
-#: ../view/error/404.phtml:42
+#: ../view/error/404-old.phtml:42
 #, php-format
 msgid "resolves to %s"
 msgstr ""
 
-#: ../view/error/404.phtml:54 ../view/error/index.phtml:8
+#: ../view/error/404-old.phtml:54 ../view/error/index.phtml:8
 msgid "Additional information"
 msgstr ""
 
-#: ../view/error/404.phtml:57 ../view/error/404.phtml:82
-#: ../view/error/index.phtml:11 ../view/error/index.phtml:36
+#: ../view/error/404-old.phtml:57 ../view/error/404-old.phtml:82 ../view/error/index.phtml:11
+#: ../view/error/index.phtml:36
 msgid "File"
 msgstr ""
 
-#: ../view/error/404.phtml:61 ../view/error/404.phtml:86
-#: ../view/error/index.phtml:15 ../view/error/index.phtml:40
+#: ../view/error/404-old.phtml:61 ../view/error/404-old.phtml:86 ../view/error/index.phtml:15
+#: ../view/error/index.phtml:40
 msgid "Message"
 msgstr ""
 
-#: ../view/error/404.phtml:65 ../view/error/404.phtml:90
-#: ../view/error/index.phtml:19 ../view/error/index.phtml:44
+#: ../view/error/404-old.phtml:65 ../view/error/404-old.phtml:90 ../view/error/index.phtml:19
+#: ../view/error/index.phtml:44
 msgid "Stack trace"
 msgstr ""
 
-#: ../view/error/404.phtml:76 ../view/error/index.phtml:30
+#: ../view/error/404-old.phtml:76 ../view/error/index.phtml:30
 msgid "Previous exceptions"
 msgstr ""
 
-#: ../view/error/404.phtml:110 ../view/error/index.phtml:64
+#: ../view/error/404-old.phtml:110 ../view/error/index.phtml:64
 msgid "No Exception available"
 msgstr ""
 
 #: ../view/error/index.phtml:1
 msgid "An error occurred"
 msgstr ""
+
+#: ../view/layout/front-layout.phtml:65
+msgid "Follow us"
+msgstr ""
+
+#: ../view/layout/front-layout.phtml:73
+msgid "Contact us"
+msgstr ""
+
+#: ../view/layout/front-layout.phtml:94
+msgid "Cookie message"
+msgstr ""
+"Esta Web utiliza cookies analíticas de terceros para facilitar la navegación y obtener información de uso de sus "
+"visitantes. Si continúa navegando, consideraremos que acepta su uso. Puede obtener más información en nuestra "
+"política de cookies."
+
+#: ../view/layout/front-layout.phtml:97
+msgid "Cookies agree"
+msgstr "I agree"

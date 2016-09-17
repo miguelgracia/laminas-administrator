@@ -53,8 +53,9 @@ class Module
                 'partnerHelper'         => 'Application\View\Helper\Partner',
                 'jobHelper'             => 'Application\View\Helper\Job',
                 'jobCategoryHelper'     => 'Application\View\Helper\JobCategory',
-                'blogHelper'             => 'Application\View\Helper\Blog',
-                'blogCategoryHelper'     => 'Application\View\Helper\BlogCategory',
+                'blogHelper'            => 'Application\View\Helper\Blog',
+                'blogCategoryHelper'    => 'Application\View\Helper\BlogCategory',
+                'contactFormHelper'     => 'Application\View\Helper\ContactForm',
             ),
         );
     }
