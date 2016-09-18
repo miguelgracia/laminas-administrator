@@ -87,7 +87,8 @@ form label {
     font-size: 20px;
 }
 
-form input.form-control {
+form input.form-control,
+form textarea.form-control {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
@@ -182,22 +183,17 @@ footer .nav.navbar-nav {
     border: 1px solid white;
 }
 
-.nav.navbar-nav a,
-footer .footer-nav a{
+.nav.navbar-nav a {
     color: white;
     font-family: 'Open Sans Condensed', sans-serif;
     font-size: 20px;
     font-weight: bold;
 }
 
-footer .footer-nav a:first-of-type {
-    padding-left:0;
-}
-
-.nav > li > a:focus, footer .footer-nav li > a:focus,
-.nav > li > a:hover, footer .footer-nav li > a:hover,
-.nav > li.active > a, footer .footer-nav li.active > a,
-.nav > li.active > a, footer .footer-nav li.active > a {
+.nav > li > a:focus,
+.nav > li > a:hover,
+.nav > li.active > a,
+.nav > li.active > a {
     background-color: transparent;
     border-top: 2px solid white;
     border-bottom: 2px solid white;
@@ -205,11 +201,22 @@ footer .footer-nav a:first-of-type {
     padding-bottom: 13px;
 }
 
-.nav > li.active > a:focus, footer .footer-nav li.active > a:focus,
-.nav > li.active > a:hover, footer .footer-nav li.active > a:hover {
+.nav > li.active > a:focus,
+.nav > li.active > a:hover {
     border-top: 2px solid #23527c;
     border-bottom: 2px solid #23527c;
     color: #23527c;
+}
+
+@media (min-width: 768px) {
+    .nav > li > a:focus {
+        background-color: transparent;
+        border: 0px;
+    }
+
+    .nav > li.active > a:focus {
+        border: 0px;
+    }
 }
 
 
@@ -378,6 +385,17 @@ footer a.legal-link:first-child:after {
     list-style-type: none;
     margin: 0;
     padding: 0;
+}
+
+.contact .form-success {
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 30px;
+}
+
+.contact .form-error {
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 20px;
+    color: red;
 }
 
 .contact .contact-info i {

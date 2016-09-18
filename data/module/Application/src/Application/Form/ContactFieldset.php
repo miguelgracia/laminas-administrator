@@ -65,9 +65,6 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
                 'filters' => array(
                     array(
                         'name' => StringTrim::class
-                    ),
-                    array(
-                        'name' => HtmlEntities::class
                     )
                 ),
                 'validators' => array(
@@ -82,9 +79,6 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
                     array(
                         'name' => StringTrim::class
                     ),
-                    array(
-                        'name' => HtmlEntities::class
-                    )
                 )
             ),
             'legal' => array(

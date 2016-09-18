@@ -209,7 +209,7 @@ return array(
                                 'options' => array(
                                     'route'    => '/[:page]',
                                     'constraints' => array(
-                                        'legal-page'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                        'page'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                                     ),
                                     'defaults' => array(
                                         '__NAMESPACE__' => 'Application\Controller',

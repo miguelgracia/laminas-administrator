@@ -3,6 +3,8 @@ $contact = $menu->rows['contact']->id;
 
 $contactFormHelper = $this->contactFormHelper($formObject);
 
+$flashMessenger = $this->flashMessenger();
+
 ?>
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
@@ -21,7 +23,27 @@ $contactFormHelper = $this->contactFormHelper($formObject);
 
                 <div class="row">
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <?php $contactFormHelper->render($lang);?>
+                        <?php
+
+                        if(is_bool($mailSended) and $mailSended === true) {
+                            echo sprintf(
+                                "<div class='form-success'>%s</div>",
+                                $this->translate('Thank you for contacting us','frontend')
+                            );
+                        } else {
+                            $contactFormHelper->render($lang,$legal);
+                            if ($mailSended === false) {
+                                echo sprintf(
+                                    "<div class='form-error'>%s</div>",
+                                    sprintf(
+                                        $this->translate("An error occured when submitting the form. Try again later or contact us at <a href='mailto:%s'>%s</a>",'frontend'),
+                                        $appData->locale->{$lang}->email,
+                                        $appData->locale->{$lang}->email
+                                    )
+                                );
+                            }
+                        }
+                        ?>
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-12 contact-info">
                        <div class="row">

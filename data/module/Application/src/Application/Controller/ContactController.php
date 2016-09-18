@@ -8,32 +8,47 @@ class ContactController extends ApplicationController
 {
     public function indexAction()
     {
-        $menu = $this->menu;
+        $prg = $this->prg($this->url()->fromRoute($this->lang.'/contact'),true);
+
+        if ($prg instanceof \Zend\Http\PhpEnvironment\Response) {
+            // Returned a response to redirect us.
+            return $prg;
+        }
 
         $form = $this->api->contact->createForm();
 
-        if (isset($menu->rows->contact) and $menu->rows->contact->active == 1) {
+        $menu = $this->menu;
 
-            $menuLang = $this->menu->locale->{$this->lang};
+        $menuLang = $this->menu->locale->{$this->lang};
 
-            $this->headTitleHelper->append($menuLang[$this->menu->rows->contact->id]->name);
+        $this->headTitleHelper->append($menuLang[$this->menu->rows->contact->id]->name);
 
-            if ($this->getRequest()->isPost()) {
-                $formData = $this->params()->fromPost();
+        $mailSended = null;
 
-                $this->api->contact->bind($formData);
+        if ($prg === false) {
 
-                $this->api->contact->validate();
+            if (!isset($menu->rows->contact) or $menu->rows->contact->active == 0) {
+                $this->getResponse()->setStatusCode(404);
             }
+        } else {
 
-            return new ViewModel(array(
-                'formObject'    => $form,
-                'menu'          => $this->menu,
-                'lang'          => $this->lang,
-                'appData'       => $this->appData
-            ));
+            $this->api->contact->bindForm($prg);
+
+            $isValid = $this->api->contact->validateForm();
+
+            if ($isValid) {
+                $mailTo = $this->appData->row->mailInbox;
+                $mailSended = $this->api->contact->sendFormMail($mailTo);
+            }
         }
 
-        $this->getResponse()->setStatusCode(404);
+        return new ViewModel(array(
+            'formObject'     => $form,
+            'legal'          => $this->api->staticPage->getData(),
+            'menu'           => $this->menu,
+            'lang'           => $this->lang,
+            'appData'        => $this->appData,
+            'mailSended'     => $mailSended,
+        ));
     }
 }

@@ -8,8 +8,6 @@ class ContactForm extends AbstractHelper
 {
     protected $form;
 
-    protected $helperManager;
-
     function __invoke($form)
     {
         $this->form = $form;
@@ -34,9 +32,9 @@ class ContactForm extends AbstractHelper
                 </div>";
     }
 
-    public function getLabelWrapper()
+    public function getLabelWrapper($isRequired = false)
     {
-        return "<label for='%s'>%s</label>";
+        return "<label for='%s'>%s".($isRequired ? ' *':'')."</label>";
     }
 
     public function renderError($field)
@@ -85,15 +83,30 @@ class ContactForm extends AbstractHelper
         return $ul;
     }
 
-    public function render($lang)
+    private function setLegalLink($lang, $legal)
+    {
+        $legalUris = array_combine(
+            array_column($legal['rows'],'key','id'),
+            array_column($legal['locale'][$lang],'urlKey','relatedTableId')
+        );
+
+        $helperManager = $this->getView()->getHelperPluginManager();
+
+        $url = $helperManager->get('Url');
+
+        return sprintf(
+            $this->translator->translate("I agree with the terms and conditions of use",'frontend'),
+            $url($lang.'/legal/page',array('page' => $legalUris['privacidad']))
+        );
+    }
+
+    public function render($lang, $legal)
     {
         $helperManager = $this->getView()->getHelperPluginManager();
         $formInput = $helperManager->get('formInput');
         $formTextarea = $helperManager->get('formTextarea');
         $formCheckbox = $helperManager->get('formCheckbox');
         $url = $helperManager->get('Url');
-
-        //echo $this->translate($elementError($fieldset->get('name')),'frontend');
 
         $this->form->prepare();
         $this->form->setAttribute('action',$url($lang.'/contact'));
@@ -107,7 +120,7 @@ class ContactForm extends AbstractHelper
         $input = $formInput($fieldset->get('name'));
         $groupTags .= sprintf($this->getFormGroupWrapper(), $label, $input, '' );
 
-        $label = sprintf($this->getLabelWrapper(),'email', $this->translator->translate('Form Email','frontend'));
+        $label = sprintf($this->getLabelWrapper(true),'email', $this->translator->translate('Form Email','frontend'));
         $field = $fieldset->get('email');
         $input = $formInput($field);
         $groupTags .= sprintf($this->getFormGroupWrapper(), $label, $input, $this->renderError($field));
@@ -116,7 +129,7 @@ class ContactForm extends AbstractHelper
         $input = $formInput($fieldset->get('phone'));
         $groupTags .= sprintf($this->getFormGroupWrapper(), $label, $input, '' );
 
-        $label = sprintf($this->getLabelWrapper(),'message', $this->translator->translate('Form Message','frontend'));
+        $label = sprintf($this->getLabelWrapper(true),'message', $this->translator->translate('Form Message','frontend'));
         $field = $fieldset->get('message');
         $input = $formTextarea($field);
         $groupTags .= sprintf($this->getFormGroupWrapper(), $label, $input, $this->renderError($field) );
@@ -124,9 +137,11 @@ class ContactForm extends AbstractHelper
         $field = $fieldset->get('legal');
 
         $input = $formCheckbox($field);
+
+        $termAndConditionsStr =  $this->setLegalLink($lang,$legal);
+
         $label = sprintf($this->getLabelWrapper(),'legal',
-            ($input . "He leído y acepto los <a href='".$url($lang)."'>términos y condiciones de uso<a>")
-            );
+            ($input . $termAndConditionsStr));
         $groupTags .= sprintf($this->getFormGroupWrapper(), $label, '', $this->renderError($field) );
 
         $groupTags .= "<button type='submit' class='btn btn-default'>".$this->translator->translate('Form Send','frontend')."</button>";

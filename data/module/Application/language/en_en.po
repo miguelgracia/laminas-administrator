@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ZendSkeletonApplication\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-09-17 02:11+0200\n"
-"PO-Revision-Date: 2016-09-17 11:53+0200\n"
+"PO-Revision-Date: 2016-09-18 13:57+0200\n"
 "Last-Translator: Evan Coury <me@evancoury.com>\n"
 "Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
 "Language: en_GB\n"
@@ -43,9 +43,18 @@ msgstr "Phone"
 msgid "Form Message"
 msgstr "Message"
 
+msgid "I agree with the terms and conditions of use"
+msgstr "I agree with the <a href='%s' target='_blank'>terms and conditions of use</a>"
+
 #: ../view/application/contact/index.phtml:59
 msgid "Form Send"
 msgstr "Send"
+
+msgid "Thank you for contacting us"
+msgstr ""
+
+msgid "An error occured when submitting the form. Try again later or contact us at <a href='mailto:%s'>%s</a>"
+msgstr ""
 
 #: ../view/application/contact/index.phtml:66
 msgid "Social Networks"

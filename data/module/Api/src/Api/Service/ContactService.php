@@ -4,7 +4,10 @@ namespace Api\Service;
 
 use Application\Form\ContactFieldset;
 use Zend\Form\Form;
+use Zend\Mail\Message;
+use Zend\Mail\Transport\Sendmail;
 use Zend\ServiceManager\FactoryInterface;
+use Zend\Validator\EmailAddress;
 
 class ContactService implements FactoryInterface
 {
@@ -24,15 +27,42 @@ class ContactService implements FactoryInterface
         return $this->form;
     }
 
-    public function bind($postData)
+    public function bindForm($postData)
     {
         $this->form->setData($postData);
     }
 
-    public function validate()
+    public function validateForm()
     {
-        $this->form->isValid();
+        return $this->form->isValid();
+    }
 
-        return $this->form->getMessages();
+    public function sendFormMail($mailTo)
+    {
+        $mailValidator = new EmailAddress();
+
+        if ($mailValidator->isValid($mailTo)) {
+            $formData = $this->form->getData();
+
+            $formData = $formData['contact'];
+
+            $mail = new Message();
+            $mail->setFrom('absconsultor@absconsultor.es', "ABS Consultor - Contacto Web");
+            $mail->addTo($mailTo, 'ABS Consultor');
+            $mail->setSubject('Información de contacto desde la web');
+
+            $body  = 'Nombre   : ' . $formData['name'] . "\n";
+            $body .= 'Email    : ' . $formData['email'] . "\n";
+            $body .= 'Teléfono : ' . $formData['phone'] . "\n";
+            $body .= 'Mensaje  : ' . $formData['message'] . "\n";
+
+            $mail->setBody($body);
+
+            $transport = new Sendmail();
+            $transport->send($mail);
+
+            return true;
+        }
+        return false;
     }
 }
