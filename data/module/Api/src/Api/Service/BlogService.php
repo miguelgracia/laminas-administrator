@@ -25,7 +25,7 @@ class BlogService implements FactoryInterface
     {
         $this->table->setTableLocaleService($this->tableLocale);
 
-        $blogsPaginator = $this->table->paginate($lang, function (&$select, &$where) use($lang, $categoryFilter) {
+        $paginateCallback = function (&$select, &$where) use($lang, $categoryFilter) {
             $select->join(
                 'blog_categories',
                 new Expression('blog_categories.id =' . 'blog_entries.blog_categories_id'),
@@ -46,7 +46,26 @@ class BlogService implements FactoryInterface
             if ($categoryFilter) {
                 $where['blog_categories_locales.url_key'] = $categoryFilter;
             }
-        });
+        };
+
+        $tableFields = array(
+            'id'                 => 'id',
+            'blog_categories_id' => 'blog_categories_id',
+            'key'                => 'key',
+            'image_url'          => 'image_url',
+            'created_at'         => 'created_at',
+            'updated_at'         => 'updated_at',
+            'active'             => 'active',
+            'deleted_at'         => 'deleted_at'
+        );
+        $localeTableFields = array (
+            'title'            => 'title',
+            'url_key'          => 'url_key',
+            'content'          => 'content',
+            'meta_description' => 'meta_description',
+        );
+
+        $blogsPaginator = $this->table->paginate($lang, $tableFields, $localeTableFields, $paginateCallback);
 
         $blogsPaginator->setCurrentPageNumber($page);
 

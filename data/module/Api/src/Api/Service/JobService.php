@@ -25,7 +25,7 @@ class JobService implements FactoryInterface
     {
         $this->table->setTableLocaleService($this->tableLocale);
 
-        $jobsPaginator = $this->table->paginate($lang, function (&$select, &$where) use($lang, $categoryFilter) {
+        $paginateCallback = function (&$select, &$where) use($lang, $categoryFilter) {
             $select->join(
                 'job_categories',
                 new Expression('job_categories.id =' . 'jobs.job_categories_id'),
@@ -46,7 +46,26 @@ class JobService implements FactoryInterface
             if ($categoryFilter) {
                 $where['job_categories_locales.url_key'] = $categoryFilter;
             }
-        });
+        };
+
+        $tableFields = array(
+            'id'                => 'id',
+            'job_categories_id' => 'job_categories_id',
+            'key'               => 'key',
+            'image_url'         => 'image_url',
+            'created_at'        => 'created_at',
+            'updated_at'        => 'updated_at',
+            'active'            => 'active',
+            'deleted_at'        => 'deleted_at'
+        );
+        $localeTableFields = array (
+            'title'            => 'title',
+            'url_key'          => 'url_key',
+            'content'          => 'content',
+            'meta_description' => 'meta_description',
+        );
+
+        $jobsPaginator = $this->table->paginate($lang, $tableFields, $localeTableFields, $paginateCallback);
 
         $jobsPaginator->setCurrentPageNumber($page);
 
