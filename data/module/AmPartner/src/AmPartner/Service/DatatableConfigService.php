@@ -76,7 +76,6 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
                 'id',
                 'name',
                 'website',
-                'created_at',
                 'active',
             ),
             'from' => 'partners',

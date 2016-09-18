@@ -40,7 +40,7 @@ class JobService implements FactoryInterface
                     'category_url_key'          => 'url_key',
                     'category_meta_description' => 'meta_description'
                 )
-            );
+            )->order('jobs.created_at DESC');
             $where['job_categories.active'] = '1';
 
             if ($categoryFilter) {
