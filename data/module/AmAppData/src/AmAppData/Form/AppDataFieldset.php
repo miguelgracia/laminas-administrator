@@ -4,21 +4,13 @@ namespace AmAppData\Form;
 
 use Administrator\Form\AdministratorFieldset;
 use AmAppData\Model\AppDataTable;
+use Zend\Validator\EmailAddress;
 
 class AppDataFieldset extends AdministratorFieldset
 {
     protected $isPrimaryFieldset = true;
 
     protected $tableGatewayName = AppDataTable::class;
-
-    public function initializers()
-    {
-        return array(
-            'fieldModifiers' => array(
-                'companyInfo' => 'Textarea'
-            ),
-        );
-    }
 
     public function addFields()
     {
@@ -47,6 +39,10 @@ class AppDataFieldset extends AdministratorFieldset
         array_walk($social, function ($value) use(&$inputFilter,$urlValidator) {
             $inputFilter[$value]['validators'][] = $urlValidator;
         });
+
+        $inputFilter['mailInbox']['validators'][] = array(
+            'name' => EmailAddress::class
+        );
 
         return  $inputFilter;
     }
