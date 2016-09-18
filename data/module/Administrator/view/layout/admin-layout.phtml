@@ -40,7 +40,7 @@ $basePath = $this->basePath() . '/administrator';
         <!-- Logo -->
         <a href="<?php echo $this->url('administrator',array('module' => 'home')) ?>" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <!-- <img src="<?php echo $basePath."/img/gestor/logo_empresa.jpg";?>"/> -->
+             <img height="35" src="/img/white-logo-horizontal.png"/>
             <!--<span class="logo-mini"><?php /*echo $settings->nameClient;*/?></span>-->
             <span class="logo-mini"><!--ABS Consultor--></span>
             <!-- logo for regular state and mobile devices -->
@@ -104,30 +104,17 @@ $basePath = $this->basePath() . '/administrator';
 
         <section class="sidebar">
 
-            <div class="user-panel">
-                <div class="pull-left image">
-                    <?php
-                    echo "<img src='$imgPath' class='user-image' alt='User Image'>";
-                    //echo "<img src='' class='user-image' alt='User Image'>";
-                    ?>
-                </div>
-                <div class="pull-left info">
-                    <p><?php echo $userData->username; ?></p>
-                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-                </div>
-            </div>
-
             <!-- Sidebar Menu -->
             <?php
             $containter = $this->navigation('Navigation')->getContainer();
             echo $this->AdministratorMenu($containter)
                 /*
                  * Escapamos las etiquetas.
-                 * De esta forma, podemos a�adir html a las mismas(para poder a�adir los iconos de
+                 * De esta forma, podemos añadir html a las mismas(para poder añadir los iconos de
                  */
                 ->escapeLabels(false)
                 /**
-                 * Seteamos la clase que van a llevar los ul de aquellos submen�s que aparezcan abiertos.
+                 * Seteamos la clase que van a llevar los ul de aquellos submenús que aparezcan abiertos.
                  */
                 ->setUlClassMenuOpen('menu-open')
                 ->setUlClass('sidebar-menu');

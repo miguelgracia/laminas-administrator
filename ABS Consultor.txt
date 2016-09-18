@@ -20,17 +20,21 @@ TASKS
 - (HECHO - SE PUEDE CREAR UN SUBDOMINIO)
 - (HECHO) Revisar cómo se genera la url del contenido que se inserta desde el plugin ckeditor
 - (HECHO) IMPLEMENTAR LA FORMA EN QUE ASOCIAMOS FOTOS A UN TRABAJO DESDE EL ADMINISTRADOR
-- Implementar Sección contacto
-    - Programar envío de formulario
+- (HECHO) Revisar responsive
+- (HECHO) Implementar Sección contacto
+- (HECHO) Validar formulario de envío
+- (HECHO) Programar envío de formulario
+- (HECHO) Paginar correctamente los contenidos de trabajos y blog
+- (HECHO) INDIZAR las tablas de base de datos.
+- (HECHO) Selector de idiomas
+- (HECHO) Corregir error de borrado total al eleiminar un regsitro
 
-- Revisar responsive
 - Meta tags sociales
-- Selector de idiomas
+- Selector de idiomas por url
 - Minimizar el riesgo de errores en la asignación de url a los enlaces de los botones de los módulos de la home
 - Cadenas de texto administrador
 - Añadir logo al módulo home del administrador
-- (APLAZADO. QUIZÁ NO NECESARIO) Añadir el subdominio en los archivos de media
-
+- Implementar un CAPTCHA para el formulario de contacto
 
 - Cambiar la clase metadata que se usa en el trait MyOrmTableTrait (está marcada como deprecated)
 
@@ -54,7 +58,7 @@ usuario db root 4B5c0n5ult0r
 usuario db webb U4e54b5
 
 htpasswd -> user: absconsultor.es
-            pass: consultorABS
+            pass: %consultorABS%
 
 log acceso web consultorAB5
 
