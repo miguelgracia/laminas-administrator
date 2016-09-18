@@ -14,7 +14,7 @@ trait DeleteAction
 
         if ($request->isPost()) {
 
-            $this->tableGateway->delete($this->params()->fromRoute('id'));
+            $this->tableGateway->delete(array('id' => $this->params()->fromRoute('id')));
 
             $response = $this->getResponse();
             $response->setContent(json_encode(array(
