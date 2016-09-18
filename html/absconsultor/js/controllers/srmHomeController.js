@@ -73,6 +73,7 @@ function srmHomeController() {
             $chevronDown = $(".fa.fa-chevron-down");
 
         var centerLogo = function() {
+            return;
             var mLeft = (-($homeBrandLogo.width() / 2).toString() + 'px');
             var mTop = (-(($homeBrandLogo.height() / 2) + 50).toString() + 'px');
             $homeBrandLogo.css('margin-left',mLeft);

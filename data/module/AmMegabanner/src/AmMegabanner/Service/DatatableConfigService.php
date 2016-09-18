@@ -54,9 +54,9 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
                 //Desde aquí podemos parsear los datos antes de visualizarlos por pantalla
 
                 if ($row['is_video']) {
-                    $row['element_url'] = sprintf("<a href='/Media/%s' target='_blank'>Ver video</a>", $row['element_url']);
+                    $row['element_url'] = sprintf("<a href='%s' target='_blank'>Ver video</a>", $row['element_url']);
                 } else {
-                    $row['element_url'] = sprintf("<img src='/Media/%s' width='100'/>", $row['element_url']);
+                    $row['element_url'] = sprintf("<img src='%s' width='100'/>", $row['element_url']);
                 }
 
 
@@ -81,7 +81,6 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             //En fields solo tenemos que añadir los campos de la tabla indicada en 'from'
             'fields' => array(
                 'id',
-                'created_at',
                 'active',
                 'is_video'
             ),

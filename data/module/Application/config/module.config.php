@@ -91,7 +91,7 @@ return array(
                         'options' => array(
                             'route'    => array(
                                 'es_es' => '/trabajos',
-                                'en_en' => '/works',
+                                'en_en' => '/jobs',
                             ),
                             'defaults' => array(
                                 '__NAMESPACE__' => 'Application\Controller',

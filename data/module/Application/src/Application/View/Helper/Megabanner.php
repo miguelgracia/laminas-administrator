@@ -48,7 +48,7 @@ class Megabanner extends AbstractHelper
                 ? $this->getVideoTemplate()
                 : $this->getImageTemplate();
 
-            $elementHtml = sprintf($element,'/media/'.$megabanner->locale->elementUrl);
+            $elementHtml = sprintf($element,$megabanner->locale->elementUrl);
 
             $html .= sprintf($this->getListTemplate(),$elementHtml);
         }
