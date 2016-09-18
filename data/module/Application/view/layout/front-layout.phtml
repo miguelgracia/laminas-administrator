@@ -25,6 +25,7 @@ echo $this->doctype(); ?>
                         ->prependStylesheet($this->basePath('absconsultor/vendor/bootstrap/css/bootstrap-theme.min.css'))
                         ->prependStylesheet($this->basePath('absconsultor/vendor/bootstrap/css/bootstrap.min.css'))
                         ->prependStylesheet($this->basePath('absconsultor/vendor/font-awesome/css/font-awesome.min.css'))
+                        ->prependStylesheet($this->basePath('absconsultor/css/flags/css/flag-icon.min.css'))
                         ->prependStylesheet('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans')
         ?>
 
@@ -46,8 +47,10 @@ echo $this->doctype(); ?>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <?=$menuHelper->render($menu,$lang);?>
+                        <li class="lang"><a href="/es_es"><span class="flag-icon flag-icon-es"></span> </a></li>
+                        <li class="lang"><a href="/en_en"><span class="flag-icon flag-icon-gb"></span> </a></li>
                     </ul>
-                </div><!--/.nav-collapse -->
+                </div>
             </div>
         </nav>
         <div class="container-fluid abs">
