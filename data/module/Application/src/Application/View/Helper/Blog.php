@@ -61,7 +61,7 @@ class Blog extends AbstractHelper
                         'category' => $blog->categoryUrlKey,
                         'detail' => $blog->urlKey
                     )),
-                    $this->translator->translate('Read more')
+                    $this->translator->translate('Read more','frontend')
                 );
             }
         }

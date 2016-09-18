@@ -21,7 +21,7 @@ class JobService implements FactoryInterface
         return $this->table->findRow($lang,'jobs_locales.url_key',$jobUri);
     }
 
-    public function getData($lang, $categoryFilter = false, $page = 1,  $limit = 1)
+    public function getData($lang, $categoryFilter = false, $page = 1,  $limit = 10)
     {
         $this->table->setTableLocaleService($this->tableLocale);
 

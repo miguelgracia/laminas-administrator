@@ -61,7 +61,7 @@ class Job extends AbstractHelper
                         'category' => $job->categoryUrlKey,
                         'detail' => $job->urlKey
                     )),
-                    $this->translator->translate('Read more')
+                    $this->translator->translate('Read more','frontend')
                 );
             }
         }
