@@ -1,6 +1,7 @@
 <?php
 $jobMenuId         = $menu->rows['jobs']->id;
 $images = json_decode($job->imageUrl);
+$carouselHelper = $this->carouselItemHelper();
 ?>
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
@@ -14,22 +15,14 @@ $images = json_decode($job->imageUrl);
 </div>
 
 <div class="container jobs detail">
-
     <article>
-
         <div class="row">
             <div class="col-md-12">
-
                 <h1><?=$job->title;?></h1>
-
-                <div id="owl_carousel">
-                    <?php foreach($images as $image):?>
-                        <div class="item">
-                            <img class="img-responsive" src="<?=$image;?>" alt="<?=$job->title;?>">
-                        </div>
-                    <?php endforeach;?>
-                </div>
                 <?=$job->content;?>
+                <div id="owl_carousel">
+                    <?php echo $carouselHelper->render($images)?>
+                </div>
             </div>
         </div>
     </article>

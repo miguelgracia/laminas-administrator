@@ -12,6 +12,7 @@ function srmBlogController() {
             autoPlay: 5000, //Set AutoPlay to 3 seconds
             autoHeight:true,
             singleItem: true,
+            stopOnHover: true,
             items : 1
         });
     };

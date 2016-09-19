@@ -1,6 +1,7 @@
 <?php
 $blogMenuId         = $menu->rows['blog']->id;
 $images = json_decode($blog->imageUrl);
+$carouselHelper = $this->carouselItemHelper();
 ?>
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
@@ -23,11 +24,7 @@ $images = json_decode($blog->imageUrl);
                 <h1><?=$blog->title;?></h1>
 
                 <div id="owl_carousel">
-                    <?php foreach($images as $image):?>
-                        <div class="item">
-                            <img class="img-responsive" src="<?=$image;?>" alt="<?=$blog->title;?>">
-                        </div>
-                    <?php endforeach;?>
+                    <?php echo $carouselHelper->render($images)?>
                 </div>
                 <?=$blog->content;?>
             </div>

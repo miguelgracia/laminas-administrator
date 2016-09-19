@@ -1,0 +1,59 @@
+<?php
+
+namespace Application\View\Helper;
+
+
+use Zend\Code\Scanner\FileScanner;
+use Zend\Validator\File\IsImage;
+use Zend\Validator\File\MimeType;
+use Zend\View\Helper\AbstractHelper;
+
+class CarouselItem extends AbstractHelper
+{
+    protected $headTitle;
+
+    public function __invoke()
+    {
+        return $this;
+    }
+
+    protected function getItemWrapper()
+    {
+        return "<div class='item'>%s</div>";
+    }
+
+    protected function getHtmlElementByPath($path)
+    {
+        $helperPluginManager = $this->getView()->getHelperPluginManager();
+
+        $title = $helperPluginManager->get('headTitle');
+
+        $elementPath = $_SERVER['DOCUMENT_ROOT'] . $path;
+
+        $isImage = new IsImage();
+
+        $mimeVideo = new MimeType(array('video','application'));
+
+        if ($isImage->isValid($elementPath)) {
+            return "<img class='img-responsive' src='$path' alt='".$title->renderTitle()."'>";
+        } elseif($mimeVideo->isValid($elementPath)) {
+            return "<video width='100%' controls src='$path'></video>";
+        }
+
+        return false;
+    }
+
+    public function render($elementsPath = array())
+    {
+        $html = array();
+
+        foreach ($elementsPath as $elementPath) {
+            $element = $this->getHtmlElementByPath($elementPath);
+            if ($element) {
+                $html[] = sprintf($this->getItemWrapper(), $element);
+            }
+        }
+
+        return implode("\n",$html);
+    }
+}
