@@ -15,32 +15,28 @@ return array(
                 ),
                 'may_terminate' => false,
                 'child_routes' => array(
-                    'media_type' => array(
+                    'random' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => '/[:media-type]',
+                            'route' => '/[:rnd]',
+                            'constraints' => array(
+                                'rnd' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'MediaDispatcher\Controller',
+                                'controller'    => 'Dispatcher',
+                                'action'        => 'dispatch',
+                            ),
                         ),
-                        'may_terminate' => false,
-                        'child_routes' => array(
-                            'path' => array(
-                                'type' => 'Segment',
-                                'options' => array(
-                                    'route' => '/[:path]',
-                                    'defaults' => array(
-                                        '__NAMESPACE__' => 'MediaDispatcher\Controller',
-                                        'controller'    => 'Dispatcher',
-                                        'action'        => 'dispatch',
-                                    ),
-                                )
-                            )
-                        )
                     )
                 )
             ),
         )
     ),
     'service_manager' => array(
-
+        'factories' => array(
+            'OgImage' => 'MediaDispatcher\Service\ImageService'
+        )
     ),
     'controllers' => array(
         'invokables' => array(
