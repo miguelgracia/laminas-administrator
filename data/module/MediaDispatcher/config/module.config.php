@@ -35,7 +35,7 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'OgImage' => 'MediaDispatcher\Service\ImageService'
+            'dinamicImage' => 'MediaDispatcher\Service\ImageService'
         )
     ),
     'controllers' => array(

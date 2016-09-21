@@ -2,6 +2,8 @@
 
 namespace MediaDispatcher;
 
+use MediaDispatcher\View\Helper\DinamicUrlImage;
+
 class Module
 {
     public function getConfig()
@@ -17,6 +19,15 @@ class Module
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
             ),
+        );
+    }
+
+    public function getViewHelperConfig()
+    {
+        return array(
+            'factories' => array(
+                'dinamicImageHelper' => DinamicUrlImage::class
+            )
         );
     }
 }

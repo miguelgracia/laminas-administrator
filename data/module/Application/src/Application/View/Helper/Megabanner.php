@@ -15,7 +15,7 @@ class Megabanner extends AbstractHelper
     private function getVideoTemplate()
     {
         return "<div class='video-wrapper'>
-                        <video class='video' width='100%%'>
+                        <video class='video' width='71%%'>
                             <source src='%s' type='video/mp4'/>
                         </video>
                         <div class='video-filter'>
@@ -42,13 +42,20 @@ class Megabanner extends AbstractHelper
     {
         $html = '';
 
+        $dinamicImage = $this->getView()->getHelperPluginManager()->get('dinamicImageHelper');
+
         foreach ($megabanners as $megabanner) {
 
-            $element = $megabanner->isVideo
-                ? $this->getVideoTemplate()
-                : $this->getImageTemplate();
+            if ($megabanner->isVideo) {
+                $element = $this->getVideoTemplate();
+                $elementUrl = $megabanner->locale->elementUrl;
+            } else {
+                $element =  $this->getImageTemplate();
+                $elementUrl = $dinamicImage($megabanner->locale->elementUrl)->makeUrl(null,550,'megabanner');
+            }
 
-            $elementHtml = sprintf($element,$megabanner->locale->elementUrl);
+
+            $elementHtml = sprintf($element, $elementUrl);
 
             $html .= sprintf($this->getListTemplate(),$elementHtml);
         }

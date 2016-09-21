@@ -39,7 +39,7 @@ class ImageService implements FactoryInterface
 
         $this->viewHelperManager = $serviceLocator->get('ViewHelperManager');
 
-        $this->imageManager = new ImageManager(array('driver' => 'GD'));
+        $this->imageManager = new ImageManager(array('driver' => 'gd'));
         return $this;
     }
 
@@ -63,14 +63,14 @@ class ImageService implements FactoryInterface
                 return $this;
             }
 
-            throw new \Exception("Imagen no válida");
+            throw new \Exception("Imagen no vÃ¡lida");
 
         } else {
-            throw new \Exception("Ruta de Imagen no válida");
+            throw new \Exception("Ruta de Imagen no vÃ¡lida");
         }
     }
 
-    public function createImage($width, $height)
+    public function createImage($width = null, $height = null)
     {
         $preventUpsize = function ($constraint) {
             $constraint->upsize();
@@ -78,25 +78,19 @@ class ImageService implements FactoryInterface
 
         $image = $this->imageManager->make($this->imagePath);
 
-        $image->widen($width,$preventUpsize);
-        $image->heighten($height,$preventUpsize);
+        if (!is_numeric($width)) {
+            $width = $image->width();
+        }
+        if (!is_numeric($height)) {
+            $height = $image->height();
+        }
+
+        $image->fit($width,$height,$preventUpsize);
+        /*$image->widen($width,$preventUpsize);
+        $image->heighten($height,$preventUpsize);*/
 
         $image->resizeCanvas($width,$height);
 
         return $image;
-    }
-
-    public function makeUrl($imagePath)
-    {
-        $url = $this->viewHelperManager->get('Url');
-
-        return $url('dispatch/random',array(
-            'rnd' => microtime(true) * 10000
-        ),array(
-            'query' => array(
-                'path' => $imagePath
-            ),
-            'force_canonical' => true
-        ));
     }
 }

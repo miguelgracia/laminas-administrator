@@ -9,7 +9,6 @@ function srmBlogController() {
     this.detailAction = function() {
 
         $("#owl_carousel").owlCarousel({
-            autoPlay: 5000, //Set AutoPlay to 3 seconds
             autoHeight:true,
             singleItem: true,
             stopOnHover: true,
