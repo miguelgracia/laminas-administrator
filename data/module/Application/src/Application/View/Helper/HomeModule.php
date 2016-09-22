@@ -16,13 +16,18 @@ class HomeModule extends AbstractHelper
         return "<div class='row home-module'>%s%s</div>";
     }
 
+    public function getImageItem()
+    {
+        return "<div class='item'>
+                    <img class='img-responsive' src='%s' />
+                </div>";
+    }
+
     public function getImageWrapper()
     {
         return "<div class='col-md-6 col-sm-6 col-xs-6 %s'>
                     <div class='owl-carousel-home'>
-                        <div class='item'>
-                            <img class='img-responsive' src='%s' />
-                        </div>
+                        %s
                     </div>
                 </div>";
     }
@@ -44,10 +49,17 @@ class HomeModule extends AbstractHelper
 
             $isEven = $index % 2 == 0;
 
+            $urlImages = json_decode($homeModule->locale->imageUrl);
+            $images = array();
+
+            foreach ($urlImages as $urlImage) {
+                $images[] = sprintf($this->getImageItem(),'/media/'.$urlImage);
+            }
+
             $imageWrapper = sprintf(
                 $this->getImageWrapper(),
                 ($isEven ? "col-md-push-6 col-sm-push-6" : ""),
-                '/media/'.$homeModule->locale->imageUrl
+                implode("\n",$images)
             );
 
             $contentWrapper = sprintf(
