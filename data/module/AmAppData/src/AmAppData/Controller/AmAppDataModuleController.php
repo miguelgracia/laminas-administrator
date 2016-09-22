@@ -13,4 +13,13 @@ class AmAppDataModuleController extends AuthController
 
     protected $form = 'AmAppData\\Form\\AppDataForm';
 
+    public function indexAction()
+    {
+        $this->redirect()->toRoute('administrator',array(
+            'module' => 'app-data',
+            'action' => 'edit',
+            'id' => 1
+        ));
+    }
+
 }

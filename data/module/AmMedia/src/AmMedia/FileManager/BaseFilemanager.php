@@ -63,7 +63,16 @@ abstract class BaseFilemanager
         $config_default = json_decode($content, true);
 
         // getting user config file
-        $content = file_get_contents($this->fm_path . "/filemanager.config.json");
+        if(isset($_REQUEST['config'])) {
+            $this->getvar('config');
+            if (file_exists($this->fm_path . "/" . $_REQUEST['config'])) {
+                $content = file_get_contents($this->fm_path . "/" . basename($_REQUEST['config']));
+            } else {
+                $this->error("Given config file (".basename($this->getvar('config')).") does not exist !");
+            }
+        } else {
+            $content = file_get_contents($this->fm_path . "/filemanager.config.json");
+        }
 
         $config = json_decode($content, true);
 
