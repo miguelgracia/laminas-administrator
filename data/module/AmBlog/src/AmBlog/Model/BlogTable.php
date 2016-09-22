@@ -11,12 +11,12 @@ class BlogTable extends AdministratorTable
 
     protected $entityModelName = BlogModel::class;
 
-    public function save($data, $id = 0, $fieldKey = 'id')
+    public function save($model, $id = 0, $fieldKey = 'id')
     {
-        if (is_array($data->imageUrl)) {
-            $data->imageUrl = json_encode($data->imageUrl);
+        if (is_array($model->imageUrl)) {
+            $model->imageUrl = $model->getImageUrl();
         }
 
-        return parent::save($data, $id, $fieldKey);
+        return parent::save($model, $id, $fieldKey);
     }
 }

@@ -10,4 +10,9 @@ class BlogModel extends AdministratorModel
     {
         $this->imageUrl = json_decode($value);
     }
+
+    public function getImageUrl()
+    {
+        return json_encode($this->imageUrl);
+    }
 }
