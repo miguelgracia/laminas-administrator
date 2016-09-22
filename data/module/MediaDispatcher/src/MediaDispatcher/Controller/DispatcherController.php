@@ -22,15 +22,13 @@ class DispatcherController extends AbstractActionController
             $image = $imageService->createImage($width,$height);
         }
 
-
         $response = $this->getResponse();
 
         $headers = $response->getHeaders();
 
         $headers->addHeaderLine('Content-Type',$image->mime());
-        $response->setContent($image->encode());
-
         //$headers->addHeaderLine('Content-Length',$image->filesize());
+        $response->setContent($image->encode());
 
         return $response;
     }

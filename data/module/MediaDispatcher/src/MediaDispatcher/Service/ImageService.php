@@ -25,7 +25,35 @@ class ImageService implements FactoryInterface
     /**
      * @var string
      */
+    protected $documentRoot;
+
+    /**
+     * @var string
+     */
     protected $imagePath;
+
+    /**
+     * @var string
+     */
+    protected $cacheImagePath = null;
+
+    /**
+     * @var \Zend\Validator\File\IsImage
+     */
+    protected $isImageValidator;
+
+
+    /**
+     * @var \Zend\Filter\Dir
+     */
+    private $dirFilter;
+
+    /**
+     * @var \Zend\Filter\RealPath
+     */
+    private $realPathFilter;
+
+
 
     /**
      * Create service
@@ -37,28 +65,55 @@ class ImageService implements FactoryInterface
     {
         $this->serviceLocator = $serviceLocator;
 
+        $this->isImageValidator = new IsImage();
+        $this->dirFilter = new Dir();
+        $this->realPathFilter = new RealPath(false);
+
         $this->viewHelperManager = $serviceLocator->get('ViewHelperManager');
 
         $this->imageManager = new ImageManager(array('driver' => 'gd'));
+
+        $this->documentRoot = $this->realPathFilter->filter($_SERVER['DOCUMENT_ROOT']);
+
+
         return $this;
     }
 
+    /**
+     * Valida que el path de la imagen que vamos a setear está dentro del path
+     * permitido. Si encuentra la imagen, la ruta de dicha imagen se establece.
+     * Si la imagen no la encuentra o se intenta acceder a una carpeta distinta,
+     * da error.
+     *
+     * @param $imagePath
+     * @param string $pathScope
+     * @return $this
+     * @throws \Exception
+     */
     public function setImagePath($imagePath, $pathScope = DIRECTORY_SEPARATOR.'media')
     {
         $realPathFilter = new RealPath(false);
 
-        $rootDir = $realPathFilter->filter($_SERVER['DOCUMENT_ROOT']);
-        $realImagePath = $realPathFilter->filter($rootDir.$imagePath);
+        $realImagePath = $realPathFilter->filter($this->documentRoot.$imagePath);
 
-        $dir = new Dir();
-        $imageDir = $dir->filter($realImagePath);
+        $cachePath = str_replace(
+            $this->documentRoot.DIRECTORY_SEPARATOR.'cache_media'.DIRECTORY_SEPARATOR,
+            '',
+            $realPathFilter->filter($this->documentRoot.'/cache_media'.$imagePath)
+        );
+
+        $imageDir = $this->dirFilter->filter($realImagePath);
 
         $intl = new Intl();
 
-        if ($intl->strpos($imageDir, $rootDir.$pathScope) === 0 ) {
-            $isImage = new IsImage();
+        if ($intl->strpos($imageDir, $this->documentRoot.$pathScope) === 0 ) {
 
-            if ($isImage->isValid($realImagePath)) {
+            $docRootCacheImagePath = $this->realPathFilter->filter($this->documentRoot.'/cache_media/');
+
+            $cacheImagePath = $docRootCacheImagePath.DIRECTORY_SEPARATOR.$cachePath;
+
+            if ($this->isImageValidator->isValid($cacheImagePath) or $this->isImageValidator->isValid($realImagePath)) {
+                $this->cacheImagePath = $cachePath;
                 $this->imagePath = $realImagePath;
                 return $this;
             }
@@ -72,25 +127,52 @@ class ImageService implements FactoryInterface
 
     public function createImage($width = null, $height = null)
     {
-        $preventUpsize = function ($constraint) {
-            $constraint->upsize();
-        };
+        $docRootCacheImagePath = $this->realPathFilter->filter($this->documentRoot.'/cache_media/');
 
-        $image = $this->imageManager->make($this->imagePath);
+        $cacheImagePath = $docRootCacheImagePath.DIRECTORY_SEPARATOR.$this->cacheImagePath;
 
-        if (!is_numeric($width)) {
-            $width = $image->width();
+        if (!$this->isImageValidator->isValid($cacheImagePath)) {
+            $preventUpsize = function ($constraint) {
+                $constraint->upsize();
+            };
+
+            $image = $this->imageManager->make($this->imagePath);
+
+            if (!is_numeric($width)) {
+                $width = $image->width();
+            }
+            if (!is_numeric($height)) {
+                $height = $image->height();
+            }
+
+            $image->fit($width,$height,$preventUpsize);
+            $image->resizeCanvas($width,$height);
+
+            $arrayDirs = explode(DIRECTORY_SEPARATOR, $this->dirFilter->filter($this->cacheImagePath));
+
+            if (!is_dir($this->documentRoot . DIRECTORY_SEPARATOR . 'cache_media')) {
+                mkdir($this->documentRoot . DIRECTORY_SEPARATOR . 'cache_media');
+            }
+
+            $this->createDirs($docRootCacheImagePath, $arrayDirs);
+
+            $image->save($cacheImagePath,80);
         }
-        if (!is_numeric($height)) {
-            $height = $image->height();
+
+        return $this->imageManager->make($cacheImagePath);
+    }
+
+    private function createDirs($path, &$newPath)
+    {
+        if (count($newPath) > 0) {
+            if (!is_dir($path . DIRECTORY_SEPARATOR . $newPath[0])) {
+                mkdir($path . DIRECTORY_SEPARATOR . $newPath[0]);
+            }
+            $path .= DIRECTORY_SEPARATOR.$newPath[0];
+            unset($newPath[0]);
+            $newPath = array_values($newPath);
+
+            $this->createDirs($path,$newPath);
         }
-
-        $image->fit($width,$height,$preventUpsize);
-        /*$image->widen($width,$preventUpsize);
-        $image->heighten($height,$preventUpsize);*/
-
-        $image->resizeCanvas($width,$height);
-
-        return $image;
     }
 }
