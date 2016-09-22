@@ -6,8 +6,8 @@ use Administrator\Model\AdministratorModel;
 
 class JobModel extends AdministratorModel
 {
-    public function getImageUrl()
+    public function setImageUrl($value)
     {
-        return json_decode($this->imageUrl);
+        $this->imageUrl = json_decode($value);
     }
 }

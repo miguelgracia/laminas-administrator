@@ -10,13 +10,6 @@ class JobTable extends AdministratorTable
 
     protected $entityModelName =  JobModel::class;
 
-    public function find($id, $key = 'id')
-    {
-        $row = parent::find($id, $key);
-        $row->imageUrl = $row->getImageUrl();
-        return $row;
-    }
-
     public function save($model, $id = 0, $fieldKey = 'id')
     {
         if (is_array($model->imageUrl)) {
