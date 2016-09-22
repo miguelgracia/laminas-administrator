@@ -18,7 +18,23 @@ class BlogService implements FactoryInterface
     public function getDetail($lang, $blogUri)
     {
         $this->table->setTableLocaleService($this->tableLocale);
-        return $this->table->findRow($lang,'blog_entries_locales.url_key',$blogUri);
+        $tableFields = array (
+            'id'                => 'id',
+            'blog_categories_id' => 'blog_categories_id',
+            'key'               => 'key',
+            'image_url'         => 'image_url',
+            'created_at'        => 'created_at',
+            'updated_at'        => 'updated_at',
+            'deteled_at'        => 'deleted_at',
+            'active'            => 'active'
+        );
+        $localeFields = array(
+            'title'            => 'title',
+            'url_key'          => 'url_key',
+            'content'          => 'content',
+            'meta_description' => 'meta_description',
+        );
+        return $this->table->findRow($lang,'blog_entries_locales.url_key',$blogUri,$tableFields,$localeFields);
     }
 
     public function getData($lang, $categoryFilter = false, $page = 1,  $limit = 10)

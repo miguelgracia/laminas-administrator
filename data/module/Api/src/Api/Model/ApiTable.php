@@ -98,7 +98,7 @@ class ApiTable extends AbstractTableGateway implements AdapterAwareInterface
         return $resultSet;
     }
 
-    public function findRow($languageCode, $key, $keyValue)
+    public function findRow($languageCode, $key, $keyValue, $tableFields = array(), $localeFields = array())
     {
         $tableLocaleService = $this->tableLocaleService;
 
@@ -107,21 +107,6 @@ class ApiTable extends AbstractTableGateway implements AdapterAwareInterface
         $where = array();
 
         $where[$key] = $keyValue;
-
-        $tableColumns = $this->getEntityModel()->getMetadata()->getColumns($this->table);
-
-        $tableFields = array();
-
-        foreach ($tableColumns as $column) {
-            $columnName = $column->getName();
-            if ($columnName == 'deleted_at') {
-                $where[$this->table.'.deleted_at'] = null;
-            } elseif ($columnName == 'active') {
-                $where[$this->table.'.active'] = '1';
-            } else {
-                $tableFields[$columnName] = $columnName;
-            }
-        }
 
         $select->columns($tableFields);
 
@@ -133,20 +118,7 @@ class ApiTable extends AbstractTableGateway implements AdapterAwareInterface
             );
 
             $tableLocale = $tableLocaleService->getTable();
-            $tableLocaleColumns = $tableLocaleService->getEntityModel()->getMetadata()->getColumns($tableLocaleService->getTable());
 
-            $localeFields = array();
-
-            $localeFieldsDisallowed = array(
-                'id','language_id','related_table_id'
-            );
-
-            foreach ($tableLocaleColumns as $column) {
-                $columnName = $column->getName();
-                if (!in_array($columnName,$localeFieldsDisallowed)) {
-                    $localeFields[$columnName] = $columnName;
-                }
-            }
 
             $select->join(
                 $tableLocale,
