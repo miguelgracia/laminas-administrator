@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: AbsConsultor\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-07-06 19:07+0100\n"
-"PO-Revision-Date: 2016-09-18 13:57+0200\n"
+"PO-Revision-Date: 2016-09-23 14:20+0200\n"
 "Last-Translator: Adolfo Abegg <adolfoabegg@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -26,6 +26,18 @@ msgstr "Teléfono"
 
 msgid "Form Message"
 msgstr "Mensaje"
+
+msgid "Form Captcha"
+msgstr "Introduzca los caracteres que aparecen a continuación"
+
+msgid "Captcha value is wrong"
+msgstr "El valor introducido es incorrecto"
+
+msgid "Empty captcha value"
+msgstr "El campo está vacío"
+
+msgid "Captcha ID field is missing"
+msgstr "No se encuentra el ID del campo"
 
 msgid "I agree with the terms and conditions of use"
 msgstr "He leído y acepto los <a href='%s' target='_blank'>términos y condiciones de uso</a>"

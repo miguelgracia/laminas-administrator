@@ -52,6 +52,11 @@ class ContactForm extends AbstractHelper
             ),
             'legal' => array(
                 'isEmpty' => 'Value is required and can\'t be empty',
+            ),
+            'captcha' => array(
+                'badCaptcha'    => 'Captcha value is wrong',
+                'missingValue'  => 'Empty captcha value',
+                'missingID'     => 'Captcha ID field is missing',
             )
         );
 
@@ -106,6 +111,8 @@ class ContactForm extends AbstractHelper
         $formInput = $helperManager->get('formInput');
         $formTextarea = $helperManager->get('formTextarea');
         $formCheckbox = $helperManager->get('formCheckbox');
+        $formCaptcha = $helperManager->get('formCaptcha');
+
         $url = $helperManager->get('Url');
 
         $this->form->prepare();
@@ -143,6 +150,11 @@ class ContactForm extends AbstractHelper
         $label = sprintf($this->getLabelWrapper(),'legal',
             ($input . $termAndConditionsStr));
         $groupTags .= sprintf($this->getFormGroupWrapper(), $label, '', $this->renderError($field) );
+
+        $label = sprintf($this->getLabelWrapper(true),'captcha', $this->translator->translate('Form Captcha','frontend'));
+        $field = $this->form->get('captcha');
+        $input = $formCaptcha($field);
+        $groupTags .= sprintf($this->getFormGroupWrapper(), $label, $input, $this->renderError($field));
 
         $groupTags .= "<button type='submit' class='btn btn-default'>".$this->translator->translate('Form Send','frontend')."</button>";
 

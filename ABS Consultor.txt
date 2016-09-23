@@ -28,13 +28,13 @@ TASKS
 - (HECHO) INDIZAR las tablas de base de datos.
 - (HECHO) Selector de idiomas
 - (HECHO) Corregir error de borrado total al eleiminar un regsitro
+- (HECHO) Cadenas de texto administrador
+- (HECHO) Implementar un CAPTCHA para el formulario de contacto
 
 - Meta tags sociales
 - Selector de idiomas por url
 - Minimizar el riesgo de errores en la asignación de url a los enlaces de los botones de los módulos de la home
-- Cadenas de texto administrador
 - Añadir logo al módulo home del administrador
-- Implementar un CAPTCHA para el formulario de contacto
 
 - Cambiar la clase metadata que se usa en el trait MyOrmTableTrait (está marcada como deprecated)
 

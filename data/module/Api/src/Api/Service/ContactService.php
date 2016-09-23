@@ -3,7 +3,12 @@
 namespace Api\Service;
 
 use Application\Form\ContactFieldset;
+use Zend\Captcha\Dumb;
+use Zend\Captcha\Image;
+use Zend\Filter\RealPath;
+use Zend\Form\Element\Captcha;
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail;
 use Zend\ServiceManager\FactoryInterface;
@@ -23,7 +28,31 @@ class ContactService implements FactoryInterface
         $fieldset = new ContactFieldset('contact', array());
         $this->form = new Form();
         $this->form->add($fieldset);
+
+        $captcha = new Captcha('captcha');
+
+        $realPathFilter = new RealPath(false);
+
+        $fontPath = $realPathFilter->filter($_SERVER['DOCUMENT_ROOT'] . '/font/arial.ttf');
+
+        $imageCaptcha = new Image(array(
+            'font' => $fontPath
+        ));
+
+        $imageCaptcha->setImgDir($_SERVER['DOCUMENT_ROOT'].'/captcha');
+        $imageCaptcha->setImgUrl("/captcha");
+
+        $captcha->setCaptcha($imageCaptcha);
+
+        $captcha->setAttribute('id','captcha');
+        $captcha->setAttribute('class','form-control');
+        $this->form->add($captcha);
         $this->form->setAttribute('method', 'post');
+        $inputFilter = new InputFilter();
+
+        $inputFilter->add($captcha->getInputSpecification(), 'captcha');
+
+        $this->form->setInputFilter($inputFilter);
         return $this->form;
     }
 

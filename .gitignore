@@ -4,6 +4,7 @@
 /data/vendor
 /public/media
 /html/media
+/html/captcha/*.png
 /public/administrator/node_modules
 /config/application.config.old
 /module/Gestor
