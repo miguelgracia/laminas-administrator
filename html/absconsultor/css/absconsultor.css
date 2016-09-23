@@ -235,6 +235,25 @@ footer .nav.navbar-nav {
     }
 }
 
+.flag-icon {
+    position: relative;
+    display: inline-block;
+    width: 1.33333333em;
+    line-height: 1em;
+    background-image: url('../../img/flags/flags-sprite.png');
+    background-repeat: no-repeat;
+    width: 27px;
+    height: 20px;
+}
+
+.flag-icon.flag-icon-es {
+    background-position: 0 0;
+}
+
+.flag-icon.flag-icon-gb {
+    background-position: 0 -20px ;
+}
+
 
 .btn.btn-default {
     font-family: 'Open Sans Condensed',sans-serif;
