@@ -166,7 +166,8 @@ class AdministratorFormRow extends AbstractHelper
                 'textarea'       => 'formTextarea',
                 'select'         => 'formSelect',
                 'checkbox'       => 'formRow',
-                'multi_checkbox' => 'formRow'
+                'multi_checkbox' => 'formRow',
+                'submit'         => 'formSubmit'
             );
 
             if (array_key_exists($elementType, $viewHelperForElementType)) {

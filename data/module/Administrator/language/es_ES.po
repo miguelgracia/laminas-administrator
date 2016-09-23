@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ZendSkeletonApplication\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-09-07 16:05+0200\n"
-"PO-Revision-Date: 2016-09-23 12:25+0200\n"
+"PO-Revision-Date: 2016-09-23 12:57+0200\n"
 "Last-Translator: Adolfo Abegg <adolfoabegg@gmail.com>\n"
 "Language-Team: ZF Contributors <zf-devteam@zend.com>\n"
 "Language: es_ES\n"
@@ -456,7 +456,6 @@ msgid "The input does not appear to be a valid Uri"
 msgstr "El valor especificado no parece ser un Uri válido"
 
 # Campos de listado
-
 msgid "List of %s module"
 msgstr "Listado del módulo %s"
 
@@ -464,7 +463,10 @@ msgid "key"
 msgstr "Clave"
 
 msgid "Edit"
-msgstr "Editar"
+msgstr "Actualizar"
+
+msgid "Add"
+msgstr "Guardar"
 
 msgid "Delete"
 msgstr "Borrar"
@@ -501,3 +503,96 @@ msgstr "Nombre público"
 
 msgid "code"
 msgstr "Código"
+
+msgid "visible"
+msgstr "Visible"
+
+msgid "order"
+msgstr "Posición"
+
+msgid "headerName"
+msgstr "Nombre cabecera"
+
+msgid "content"
+msgstr "Contenido"
+
+msgid "urlKey"
+msgstr "Segmento url"
+
+msgid "metaDescription"
+msgstr "Descripción interna (SEO)"
+
+msgid "title"
+msgstr "Título"
+
+msgid "imageUrl"
+msgstr "Url imagen"
+
+msgid "linkText"
+msgstr "Texto enlace"
+
+msgid "linkUrl"
+msgstr "Url enlace"
+
+msgid "targetLink"
+msgstr "Ventana de apertura"
+
+msgid "mailInbox"
+msgstr "Email Inbox"
+
+msgid "facebook"
+msgstr "Página de Facebook"
+
+msgid "twitter"
+msgstr "Página de Twitter"
+
+msgid "googlePlus"
+msgstr "Página de Google +"
+
+msgid "instagram"
+msgstr "Página de Instagram"
+
+msgid "email"
+msgstr "Email"
+
+msgid "phone"
+msgstr "Teléfono"
+
+msgid "logo"
+msgstr "Logotipo"
+
+msgid "jobCategoriesId"
+msgstr "Categoría"
+
+msgid "blogCategoriesId"
+msgstr "Categoría"
+
+msgid "isVideo"
+msgstr "¿Es un video?"
+
+msgid "elementUrl"
+msgstr "Url del archivo"
+
+msgid "elementTitle"
+msgstr "Título del archivo"
+
+msgid "adminProfileId"
+msgstr "Perfil"
+
+msgid "adminModuleId"
+msgstr "Módulo"
+
+msgid "action"
+msgstr "Acción"
+
+msgid "description"
+msgstr "Descripción"
+
+msgid "isAdmin"
+msgstr "¿Es super administrador?"
+
+msgid "zendName"
+msgstr "Nombre Interno"
+
+msgid "publicName"
+msgstr "Nombre público"
