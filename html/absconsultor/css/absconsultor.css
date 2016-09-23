@@ -208,7 +208,23 @@ footer .nav.navbar-nav {
     color: #23527c;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
+    .nav > li > a:focus,
+    .nav > li > a:hover,
+    .nav > li.active > a,
+    .nav > li.active > a {
+        background-color: transparent;
+        border-top: 0px;
+        border-bottom: 0px;
+        padding: 10px 15px;
+    }
+
+    .nav > li.active > a:focus,
+    .nav > li.active > a:hover {
+        border-top: 0px solid #23527c;
+        border-bottom: 0px solid #23527c;
+    }
+
     .nav > li > a:focus {
         background-color: transparent;
         border: 0px;

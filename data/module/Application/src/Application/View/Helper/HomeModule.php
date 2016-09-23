@@ -58,13 +58,13 @@ class HomeModule extends AbstractHelper
 
             $imageWrapper = sprintf(
                 $this->getImageWrapper(),
-                ($isEven ? "col-md-push-6 col-sm-push-6" : ""),
+                ($isEven ? "col-md-push-6 col-sm-push-6 col-xs-push-6" : ""),
                 implode("\n",$images)
             );
 
             $contentWrapper = sprintf(
                 $this->getContentWrapper(),
-                ($isEven ? "col-md-pull-6 col-sm-pull-6" : ""),
+                ($isEven ? "col-md-pull-6 col-sm-pull-6 col-xs-pull-6" : ""),
                 $homeModule->locale->title,
                 $homeModule->locale->content,
                 $homeModule->locale->languageCode.$homeModule->locale->linkUrl,
@@ -72,11 +72,13 @@ class HomeModule extends AbstractHelper
                 $homeModule->locale->linkText
             );
 
-            $html .= sprintf(
+            $sprintfParams = array(
                 $this->getListElement(),
                 $imageWrapper,
                 $contentWrapper
             );
+
+            $html .= call_user_func_array('sprintf',$sprintfParams);
         }
 
         echo $html;

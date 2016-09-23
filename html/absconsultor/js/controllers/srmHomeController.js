@@ -72,21 +72,11 @@ function srmHomeController() {
             $homeNav = $(".home-navbar.nav"),
             $chevronDown = $(".fa.fa-chevron-down");
 
-        var centerLogo = function() {
-            return;
-            var mLeft = (-($homeBrandLogo.width() / 2).toString() + 'px');
-            var mTop = (-(($homeBrandLogo.height() / 2) + 50).toString() + 'px');
-            $homeBrandLogo.css('margin-left',mLeft);
-            $homeBrandLogo.css('margin-top',mTop);
-        };
-
         $(window).scroll(function (e) {
             if($(this).scrollTop() < 50) {
                 $homeBrandLogo.removeClass('header');
                 $homeNav.removeClass('header');
                 $chevronDown.removeClass('header');
-
-
                 $nav.addClass('not-visible').removeClass('visible');
             } else {
                 $homeBrandLogo.addClass('header');
@@ -94,8 +84,6 @@ function srmHomeController() {
                 $chevronDown.addClass('header');
                 $nav.removeClass('not-visible').addClass('visible');
             }
-        }).resize(function() {
-            centerLogo();
         });
 
         $(".owl-carousel-home").owlCarousel({
@@ -104,14 +92,6 @@ function srmHomeController() {
             itemsDesktopSmall : [979,1],
             itemsTablet: [768, 1]
         });
-
-        $('video').each(function(x,elem) {
-            elem.onloadeddata = function() {
-                bxSlider.reloadSlider();
-            };
-        });
-
-        centerLogo();
     };
 }
 simpleJSRoutingManager.srmController(srmHomeController);
