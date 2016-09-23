@@ -46,6 +46,21 @@ trait EditAction
 
         $blocks = $this->parseTriggers();
 
-        return $this->getEditView(compact( 'form', 'title', 'blocks' ));
+        $viewParams = compact( 'form', 'title', 'blocks');
+
+        $addAction = 'add';
+
+        $module = $this->getEvent()->getRouteMatch()->getParam('module');
+
+        $permissions = $this->serviceLocator->get('AmProfile\Service\ProfilePermissionService');
+        if ($permissions->hasModuleAccess($module, $addAction)) {
+            $controller = $this->getPluginManager()->getController();
+
+            if (method_exists($controller, $addAction .'Action')) {
+                $viewParams['add_action'] = $controller->goToSection($module, array('action' => $addAction), true);
+            }
+        }
+
+        return $this->getEditView($viewParams);
     }
 }

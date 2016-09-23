@@ -9,58 +9,28 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
 {
     public function getDatatableConfig()
     {
-        $controllerPlugin = $this->controllerPluginManager;
-
         $disallowSearchTo = array (
             'admin_modules.id' => false,
         );
 
         $disallowOrderTo = $disallowSearchTo;
 
-        $canEdit    = $this->permissions->hasModuleAccess('module', 'edit');
-        $canDelete  = $this->permissions->hasModuleAccess('module', 'delete');
+        $thisClass = $this;
 
         return array(
             'searchable' => $disallowSearchTo,
             'orderable' => $disallowOrderTo,
-            'columns' => function ($header) use ($canDelete, $canEdit) {
+            'columns' => function ($header) use ($thisClass) {
                 //ocultamos la columna ID
                 $header['admin_modules.id']['options']['visible'] = false;
 
-                $header['edit'] = array(
-                    'value' => 'Modificar',
-                    'options' => array(
-                        'orderable' => false,
-                        'searchable' => false,
-                        'visible' => $canEdit
-                    )
-                );
-
-                $header['delete'] = array(
-                    'value' => 'Eliminar',
-                    'options' => array(
-                        'orderable' => false,
-                        'searchable' => false,
-                        'visible' => $canDelete
-                    )
-                );
-
+                $thisClass->setEditAndDeleteColumnsOptions($header);
                 return $header;
             },
-            'parse_row_data'=> function ($row) use($controllerPlugin, $canDelete, $canEdit) {
+            'parse_row_data'=> function ($row) use($thisClass) {
 
                 //$row contiene los datos de cada una de las filas que ha generado la consulta.
-
-                $link = "<a href='%s'><i class='col-xs-12 text-center fa %s'></i></a>";
-
-                $controller = $controllerPlugin->getController();
-
-                $editUrl = $controller->goToSection('module',array('action' => 'edit', 'id' => $row['id']),true);
-                $deleteUrl = $controller->goToSection('module',array('action' => 'delete','id' => $row['id']),true);
-
-                $row['edit'] = $canEdit ? sprintf($link,$editUrl, 'fa-edit') : '';
-                $row['delete'] = $canDelete ? sprintf($link, $deleteUrl, 'fa-remove js-eliminar') : '';
-
+                $thisClass->setEditAndDeleteColumnsValues($row);
                 return $row;
             }
         );

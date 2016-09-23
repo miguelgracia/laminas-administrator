@@ -10,10 +10,6 @@ trait IndexAction
      */
     public function indexAction()
     {
-        $datatable = $this->serviceLocator->get('Administrator\Service\DatatableService');
-
-        $datatable->init();
-
-        return $datatable->run();
+        return $this->serviceLocator->get('Administrator\Service\DatatableService')->init()->run();
     }
 }

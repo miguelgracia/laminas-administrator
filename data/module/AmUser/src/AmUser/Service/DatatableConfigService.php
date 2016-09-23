@@ -9,73 +9,31 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
 {
     public function getDatatableConfig()
     {
-        $controllerPlugin = $this->controllerPluginManager;
-
         $disallowSearchTo = array (
             'admin_users.id' => false,
         );
 
         $disallowOrderTo = $disallowSearchTo;
 
-        $canEdit    = $this->permissions->hasModuleAccess('user', 'edit');
-        $canDelete  = $this->permissions->hasModuleAccess('user', 'delete');
+        $thisClass = $this;
 
         return array(
             'searchable' => $disallowSearchTo,
             'orderable' => $disallowOrderTo,
-            'columns' => function ($header) use ($canDelete, $canEdit) {
+            'columns' => function ($header) use ($thisClass) {
                 //ocultamos la columna ID
                 $header['admin_users.id']['options']['visible'] = false;
-
-                //Renombramos las columnas para darles un nombre más descriptivo en el header de la tabla
-                $header['admin_users.username']['value'] = 'Usuario';
-
-                //Añadimos las columnas que contendrán los iconos de edición y activar/desactivar
-                $header['edit'] = array(
-                    'value' => 'Modificar',
-                    'options' => array(
-                        'orderable' => false,
-                        'searchable' => false,
-                        'visible' => $canEdit
-                    )
-                );
-
-                $header['delete'] = array(
-                    'value' => 'Eliminar',
-                    'options' => array(
-                        'orderable' => false,
-                        'searchable' => false,
-                        'visible' => $canDelete
-                    )
-                );
-
+                $thisClass->setEditAndDeleteColumnsOptions($header);
                 return $header;
             },
-            'parse_row_data'=> function ($row) use($controllerPlugin, $canDelete, $canEdit) {
+            'parse_row_data'=> function ($row) use($thisClass) {
 
                 //$row contiene los datos de cada una de las filas que ha generado la consulta.
                 //Desde aquí podemos parsear los datos antes de visualizarlos por pantalla
 
-                $link = "<a href='%s'><i class='col-xs-12 text-center fa %s'></i></a>";
+                $thisClass->setEditAndDeleteColumnsValues($row);
 
-                $controller = $controllerPlugin->getController();
-
-                $editUrl = $controller->goToSection('user',array('action' => 'edit', 'id' => $row['id']),true);
-                $deleteUrl = $controller->goToSection('user',array('action' => 'delete','id' => $row['id']),true);
-
-                if ($canEdit) {
-                    $row['edit'] = sprintf($link,$editUrl, 'fa-edit');
-                } else {
-                    $row['edit'] = '';
-                }
-
-                if ($canDelete) {
-                    $row['delete'] = $row['id'] != "1"
-                        ? sprintf($link,$deleteUrl, 'fa-remove js-eliminar-usuario')
-                        : sprintf($link,"#_","fa-ban");
-                } else {
-                    $row['delete'] = '';
-                }
+                $row['active'] = $row['active'] == '1' ? 'SI' : 'NO';
 
                 return $row;
             }
@@ -90,6 +48,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
                 'id',
                 'username',
                 'last_login',
+                'active'
             ),
             'from' => 'admin_users',
             'join' => array(

@@ -436,6 +436,8 @@ class DatatableService implements FactoryInterface
         $config += $this->configService->getDatatableConfig();
 
         $this->setConfig($config);
+
+        return $this;
     }
 
     public function run()
