@@ -141,6 +141,8 @@ class DatatableService implements FactoryInterface
 
     public function setColumnHeaders($fields)
     {
+        $translator = $this->serviceLocator->get('Translator');
+
         $spaceSeparator  = $this->spaceSeparator;
         $dollarSeparator = $this->dollarSeparator;
 
@@ -148,19 +150,19 @@ class DatatableService implements FactoryInterface
         $config = $this->config;
         $fields = $currentFields + $fields;
 
-        array_walk($fields, function (&$elem, $index) use($spaceSeparator, $dollarSeparator, $config) {
+        array_walk($fields, function (&$elem, $index) use($translator,$spaceSeparator, $dollarSeparator, $config) {
             $searchable = isset($config['searchable'][$index]) ? $config['searchable'][$index] : true;
             $orderable = isset($config['orderable'][$index]) ? $config['orderable'][$index] : true;
 
             $elem = array(
-                'value' => $spaceSeparator->filter($elem),
+                'value' => $translator->translate($spaceSeparator->filter($elem)),
                 'json_key' => $dollarSeparator->filter($index),
                 'options' => array(
                     'searchable' => $searchable,
                     'orderable' => $orderable
                 ),
                 /**
-                 * attributes contendrá aquellos atributos que se añadiran
+                 * attributes contendrÃ¡ aquellos atributos que se aÃ±adiran
                  * a la etiqueta th de cada columna
                  */
                 'attributes' => array()
@@ -224,10 +226,10 @@ class DatatableService implements FactoryInterface
                 $columnName = $column['name'];
                 $columnValue = $column['search']['value'];
 
-                //Coge la parte del string que se encuentra después del último punto
+                //Coge la parte del string que se encuentra despuÃ©s del Ãºltimo punto
                 $fieldName = preg_replace("/(.+)\.(.+)$/", "$2", $columnName);
 
-                //TODO: Implementar un sistema para hacer más flexible el tipo de having (having like, having >, having <...)
+                //TODO: Implementar un sistema para hacer mÃ¡s flexible el tipo de having (having like, having >, having <...)
 
                 if (isset($this->config['having_fields']) and in_array($fieldName,$this->config['having_fields'])) {
                     $this->select->having(function (Having $having) use ($fieldName, $columnValue) {
@@ -258,11 +260,11 @@ class DatatableService implements FactoryInterface
 
             $field = $this->dotSeparator->filter($this->columns[$fieldOrder['column']]['name']);
 
-            //Coge la parte del string que se encuentra después del último punto
+            //Coge la parte del string que se encuentra despuÃ©s del Ãºltimo punto
             $auxField = preg_replace("/(.+)\.(.+)$/", "$2", $field);
 
-            //Si la siguiente condición se cumple es porque el campo por el que vamos a ordenar
-            //se forma a través de una expresión, por lo que debemos eliminar el nombre de la tabla
+            //Si la siguiente condiciÃ³n se cumple es porque el campo por el que vamos a ordenar
+            //se forma a travÃ©s de una expresiÃ³n, por lo que debemos eliminar el nombre de la tabla
             //para capturar el campo de base de datos.
 
             if (in_array($auxField, $this->parseFieldToOrder)) {
@@ -328,7 +330,7 @@ class DatatableService implements FactoryInterface
 
     public function runLastQuery($removeLimit = false)
     {
-        //TODO: Usar clases de sesión de Zend en cuanto sea posible
+        //TODO: Usar clases de sesiÃ³n de Zend en cuanto sea posible
         $query = '';
         if (isset($_SESSION['datatable_query'])) {
             $query = $_SESSION['datatable_query'];
@@ -355,7 +357,7 @@ class DatatableService implements FactoryInterface
 
         $rows = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE)->toArray();
 
-        //Guardamos la consulta en sesión para futuros usos de exportación de datos
+        //Guardamos la consulta en sesiÃ³n para futuros usos de exportaciÃ³n de datos
         $this->saveQuery($selectString);
         $this->parseRows($rows);
 
@@ -426,7 +428,7 @@ class DatatableService implements FactoryInterface
 
         $currentController = get_class($this->controller);
 
-        //sacamos el namespace de la clase DatatableConfigService ayudándonos del namespace del controlador
+        //sacamos el namespace de la clase DatatableConfigService ayudÃ¡ndonos del namespace del controlador
         $configClass = strstr($currentController, '\\', true) . "\\Service\\DatatableConfigService";
 
         $this->configService = $this->serviceLocator->get($configClass);

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ZendSkeletonApplication\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-09-07 16:05+0200\n"
-"PO-Revision-Date: 2016-09-11 01:32+0200\n"
+"PO-Revision-Date: 2016-09-23 12:25+0200\n"
 "Last-Translator: Adolfo Abegg <adolfoabegg@gmail.com>\n"
 "Language-Team: ZF Contributors <zf-devteam@zend.com>\n"
 "Language: es_ES\n"
@@ -454,3 +454,50 @@ msgstr "El valor especificado tiene más de '%max%' caracteres"
 # Zend\Validator\Uri
 msgid "The input does not appear to be a valid Uri"
 msgstr "El valor especificado no parece ser un Uri válido"
+
+# Campos de listado
+
+msgid "List of %s module"
+msgstr "Listado del módulo %s"
+
+msgid "key"
+msgstr "Clave"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Delete"
+msgstr "Borrar"
+
+msgid "active"
+msgstr "Activo"
+
+msgid "name"
+msgstr "Nombre"
+
+msgid "website"
+msgstr "Sitio web"
+
+msgid "created at"
+msgstr "Creado el"
+
+msgid "is video"
+msgstr "¿Es video?"
+
+msgid "element url"
+msgstr "imagen / video"
+
+msgid "username"
+msgstr "Usuario"
+
+msgid "last login"
+msgstr "Último login"
+
+msgid "zend name"
+msgstr "Nombre interno"
+
+msgid "public name"
+msgstr "Nombre público"
+
+msgid "code"
+msgstr "Código"

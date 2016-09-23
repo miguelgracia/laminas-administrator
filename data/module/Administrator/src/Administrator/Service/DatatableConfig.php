@@ -55,15 +55,17 @@ abstract class DatatableConfig
 
     protected function setEditAndDeleteColumnsOptions(&$header)
     {
+        $translator = $this->serviceLocator->get('Translator');
+
         $module = $this->params->fromRoute('module');
 
         $canEdit = $this->permissions->hasModuleAccess($module, 'edit');
         $canDelete = $this->permissions->hasModuleAccess($module, 'delete');
 
         if($canEdit) {
-            //Añadimos las columnas que contendrán los iconos de edición y activar/desactivar
+            //AÃ±adimos las columnas que contendrÃ¡n los iconos de ediciÃ³n y activar/desactivar
             $header['edit'] = array(
-                'value' => 'Modificar',
+                'value' => $translator->translate('Edit'),
                 'options' => array(
                     'orderable' => false,
                     'searchable' => false,
@@ -74,7 +76,7 @@ abstract class DatatableConfig
 
         if ($canDelete) {
             $header['delete'] = array(
-                'value' => 'Eliminar',
+                'value' => $translator->translate('Delete'),
                 'options' => array(
                     'orderable' => false,
                     'searchable' => false,
