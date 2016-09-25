@@ -40,19 +40,27 @@ function srmHomeController() {
                                 case 'play':
                                     $play.addClass('hide');
                                     $pause.removeClass('hide');
+                                    if(video.paused) {
+                                        video.play();
+                                    }
                                     break;
                                 case 'pause':
                                     $play.removeClass('hide');
                                     $pause.addClass('hide');
+                                    if(video.played) {
+                                        video.pause();
+                                    }
                                     break;
                             }
-
-                            video[controlType]();
                         };
                     };
 
                     $play.click(videoControlEvents('play'));
                     $pause.click(videoControlEvents('pause'));
+
+                    if(video) {
+                        //$play.trigger('click');
+                    }
                 }
             };
         };

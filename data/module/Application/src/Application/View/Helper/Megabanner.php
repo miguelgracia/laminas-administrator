@@ -18,13 +18,12 @@ class Megabanner extends AbstractHelper
     {
         return "<div class='video-wrapper'>
                         <video class='video' width='71%%' poster='%s'>
-                            <source src='%s' type='video/mp4'/>
+                                <source src='%s' type='video/mp4'/>
                         </video>
-                        <div class='video-filter'>
-                            <div class='video-controls'>
-                                <i class='fa fa-play'></i>
-                                <i class='fa fa-pause hide'></i>
-                            </div>
+                        <div class='video-filter'></div>
+                        <div class='video-controls'>
+                            <i class='fa fa-play'></i>
+                            <i class='fa fa-pause hide'></i>
                         </div>
                     </div>";
     }
