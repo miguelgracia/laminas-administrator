@@ -4,6 +4,7 @@ var gulp = require('gulp'),
 
 gulp.task('build', function () {
     gulp.src([
+        'node_modules/capture-video-frame/capture-video-frame.js',
         'js/app.js',
         'js/routing.js',
         'js/classes/*.js',

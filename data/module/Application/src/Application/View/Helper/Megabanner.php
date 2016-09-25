@@ -3,6 +3,8 @@
 namespace Application\View\Helper;
 
 
+use Zend\Filter\BaseName;
+use Zend\Filter\Dir;
 use Zend\Form\View\Helper\AbstractHelper;
 
 class Megabanner extends AbstractHelper
@@ -15,7 +17,7 @@ class Megabanner extends AbstractHelper
     private function getVideoTemplate()
     {
         return "<div class='video-wrapper'>
-                        <video class='video' width='71%%'>
+                        <video class='video' width='71%%' poster='%s'>
                             <source src='%s' type='video/mp4'/>
                         </video>
                         <div class='video-filter'>
@@ -40,6 +42,8 @@ class Megabanner extends AbstractHelper
 
     function render($megabanners)
     {
+        $baseNameFilter = new BaseName();
+        $dirFilter = new Dir();
         $html = '';
 
         $dinamicImage = $this->getView()->getHelperPluginManager()->get('dinamicImageHelper');
@@ -49,13 +53,24 @@ class Megabanner extends AbstractHelper
             if ($megabanner->isVideo) {
                 $element = $this->getVideoTemplate();
                 $elementUrl = $megabanner->locale->elementUrl;
+                $dirName = $dirFilter->filter($elementUrl);
+                $baseName = $baseNameFilter->filter($elementUrl);
+                $videoPoster = $dirName .'/video-poster-'.md5($baseName).'.jpg';
+                $sprintfParams = array(
+                    $element,
+                    $videoPoster,
+                    $elementUrl
+                );
             } else {
                 $element =  $this->getImageTemplate();
                 $elementUrl = $dinamicImage($megabanner->locale->elementUrl)->makeUrl(null,550,'megabanner');
+                $sprintfParams = array(
+                    $element,
+                    $elementUrl
+                );
             }
 
-
-            $elementHtml = sprintf($element, $elementUrl);
+            $elementHtml = call_user_func_array('sprintf',$sprintfParams);
 
             $html .= sprintf($this->getListTemplate(),$elementHtml);
         }

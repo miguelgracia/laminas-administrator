@@ -19,6 +19,6 @@ class InterventionImageService implements FactoryInterface
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new ImageManager(array('driver' => 'GD'));
+        return new ImageManager(array('driver' => 'gd'));
     }
 }

@@ -2,7 +2,10 @@
 namespace AmMedia\Controller;
 
 use Administrator\Controller\AuthController;
-use Zend\Http\Headers;
+use AmMedia\Filter\VideoValidator;
+use Zend\Filter\BaseName;
+use Zend\Filter\Dir;
+use Zend\Filter\RealPath;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
@@ -20,6 +23,45 @@ class AmMediaModuleController extends AuthController
         if ($queryParams->modal == 'on') {
             $this->layout()->setTemplate('layout/filemanager-layout');
         }
+    }
+
+    public function videoPosterAction()
+    {
+        $scanDirService = $this->serviceLocator->get('AmMedia\Service\ScanDirService');
+
+        $scanDirService->scan(array(
+            $_SERVER['DOCUMENT_ROOT'].'/media',
+        ));
+
+        $videos = $scanDirService->getFiles(array(
+            'video/mp4',
+            'application/octet-stream'
+        ));
+
+        return compact('videos');
+    }
+
+    public function savePosterAction()
+    {
+        $imageManager = $this->serviceLocator->get('AmMedia\Service\InterventionImageService');
+        $dirFilter = new Dir();
+        $baseNameFilter = new BaseName();
+
+        $video = $this->params()->fromPost('video');
+        $videoPath = $this->params()->fromPost('path');
+
+        $basePath = $dirFilter->filter($videoPath);
+        $baseName = $baseNameFilter->filter($videoPath);
+
+        $image = $imageManager->make($video);
+
+        $imageToSave = $_SERVER['DOCUMENT_ROOT'].$basePath.'/'.'video-poster-'.md5($baseName).'.jpg';
+
+        $image->save($imageToSave,80);
+
+        return new JsonModel(array(
+            'result' => true
+        ));
     }
 
     public function connectorAction()

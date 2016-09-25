@@ -303,12 +303,12 @@ nav.navbar-fixed-top.not-visible {
 
 nav.navbar-fixed-top.visible {
     top: 0;
+    z-index: 10000;
 }
 
 @media (max-width: 767px) {
     nav.navbar-fixed-top.not-visible {
         top: 0;
-        z-index: 10000;
     }
 
     #home_brand_logo, ul.home-navbar {

@@ -1,0 +1,39 @@
+<?php
+$videosHtml = '';
+$videoTpl = "
+<div class='box box-default'>
+    <div class='box-header'>
+    %s
+    </div>
+    <div class='box-body'>
+        <div class='col-xs-12'>
+            <video width='100%%' id='video%s' class='video' src='%s' controls></video>
+        </div>
+    </div>
+    <div class='box-footer'>
+        <div class='col-xs-12'>
+            <button data-video='%s' data-video-path='%s' class='btn btn-info capture'>Capturar imagen</button>
+        </div>
+    </div>
+</div>
+";
+foreach ($videos as $index => $video) {
+    $video = str_replace($_SERVER['DOCUMENT_ROOT'],'',$video);
+
+    $videosHtml .= sprintf($videoTpl,$video, $index, $video,$index, $video);
+
+}
+?>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title"><?php echo "Capturar imágenes de video"?></h3>
+            </div>
+            <div class="box-body">
+                <?=$videosHtml?>
+            </div>
+        </div>
+    </div>
+</div>

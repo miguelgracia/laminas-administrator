@@ -22,60 +22,9 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                 'AmMedia\Model\MediaModel'   => 'AmMedia\Model\MediaModel',
             ),
             'factories' => array(
-                'plupload_service'  => 'AmMedia\Service\PluploadService',
-                'intervention_image' => 'AmMedia\Service\InterventionImageService',
-                'plupload_options' => function ($sm) {
-                    $config = $sm->get('Config');
-                    return new Options\PluploadOptions(
-                        isset($config['AmMedia']) ? $config['AmMedia'] : array()
-                    );
-                },
-                'plupload_model' => function ($sm) {
-                    $options = $sm->get('plupload_options');
-                    $PluploadModel = new Model\PluploadModel();
-                    $PluploadModel->setUploadDir($options->getDirUploadAbsolute());
-                    return $PluploadModel;
-                },
-                'resize_model' => function ($sm) {
 
-                    $options = $sm->get('plupload_options');
-                    $ThumbModel = new Model\ResizeModel();
-                    $ThumbModel->setUploadDir($options->getDirUploadAbsolute());
-                    $ThumbModel->setResize($options->getResize());
-                    $ThumbModel->setResizeService($sm->get('intervention_image'));
-                    return $ThumbModel;
-                },
-                'remove_model' => function ($sm) {
-                    $options = $sm->get('plupload_options');
-                    $RemoveModel = new Model\RemoveModel();
-                    $RemoveModel->setUploadDir($options->getDirUploadAbsolute());
-                    $RemoveModel->setResize($options->getResize());
-                    return $RemoveModel;
-                },
-            ),
-        );
-    }
-    /**
-     * @return array
-     */
-    public function getViewHelperConfig()
-    {
-        return array(
-            'factories' => array(
-                'PluploadHelp' => function ($sm) {
-                    $config = $sm->getServiceLocator()->get('config');
-                    return new PluploadHelp(
-                        isset($config['AmMedia']) ? $config['AmMedia'] : array()
-                    );
-                },
-                'PluploadHelpLoad' => function ($sm) {
-                    $sm = $sm->getServiceLocator();
-                    $plupload_service = $sm->get('plupload_service');
-                    $config = $sm->get('config');
-                    return new PluploadHelpLoad($plupload_service,
-                        isset($config['AmMedia']) ? $config['AmMedia'] : array()
-                    );
-                },
+                'AmMedia\Service\InterventionImageService' => 'AmMedia\Service\InterventionImageService',
+
             ),
         );
     }

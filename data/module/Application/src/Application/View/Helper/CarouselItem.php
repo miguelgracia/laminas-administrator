@@ -4,6 +4,8 @@ namespace Application\View\Helper;
 
 
 use Zend\Code\Scanner\FileScanner;
+use Zend\Filter\BaseName;
+use Zend\Filter\Dir;
 use Zend\Validator\File\IsImage;
 use Zend\Validator\File\MimeType;
 use Zend\View\Helper\AbstractHelper;
@@ -24,6 +26,9 @@ class CarouselItem extends AbstractHelper
 
     protected function getHtmlElementByPath($path)
     {
+        $baseNameFilter = new BaseName();
+        $dirFilter = new Dir();
+
         $helperPluginManager = $this->getView()->getHelperPluginManager();
 
         $title = $helperPluginManager->get('headTitle');
@@ -37,7 +42,10 @@ class CarouselItem extends AbstractHelper
         if ($isImage->isValid($elementPath)) {
             return "<img class='img-responsive' src='$path' alt='".$title->renderTitle()."'>";
         } elseif($mimeVideo->isValid($elementPath)) {
-            return "<video width='100%' controls src='$path'></video>";
+            $dirName = $dirFilter->filter($path);
+            $baseName = $baseNameFilter->filter($path);
+            $videoPoster = $dirName .'/video-poster-'.md5($baseName).'.jpg';
+            return "<video poster='$videoPoster' width='100%' controls src='$path'></video>";
         }
 
         return false;

@@ -240,7 +240,7 @@ footer .nav.navbar-nav {
     display: inline-block;
     width: 1.33333333em;
     line-height: 1em;
-    background-image: url('../../img/flags/flags-sprite.png');
+    background-image: url('../img/flags-sprite.png');
     background-repeat: no-repeat;
     width: 27px;
     height: 20px;
@@ -314,7 +314,7 @@ footer {
     font-weight: bold;
     position: relative;
     overflow: hidden;
-    background-image: url('../../img/footer-background-logo.png');
+    background-image: url('../img/footer-background-logo.png');
     background-repeat: no-repeat;
     background-position: -180px -290px;
 }

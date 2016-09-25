@@ -21,6 +21,7 @@ $(document).ready(function () {
         '/admin/language':               ['language','index'],
         '/admin/home-module':            ['home_module','index'],
         '/admin/app-data':               ['app_data','index'],
-        '/admin/partner':                ['partner','index']
+        '/admin/partner':                ['partner','index'],
+        '/admin/media/videoPoster':      ['video_poster','index']
     }).run();
 });

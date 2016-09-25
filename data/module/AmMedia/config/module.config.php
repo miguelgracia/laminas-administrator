@@ -18,6 +18,9 @@ return array(
         'factories' => array(
             'AmMedia\FileManager\FileManagerService' => 'AmMedia\FileManager\FileManagerService'
         ),
+        'invokables' => array(
+            'AmMedia\Service\ScanDirService' => 'AmMedia\Service\ScanDirService'
+        )
     ),
 
     'router' => array(

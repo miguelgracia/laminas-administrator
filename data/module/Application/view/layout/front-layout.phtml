@@ -18,16 +18,10 @@ echo $this->doctype(); ?>
 
         <!-- Le styles -->
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.jpg'))
-                        ->prependStylesheet($this->basePath('absconsultor/css/absconsultor.css'))
-                        ->prependStylesheet($this->basePath('absconsultor/vendor/bxslider/jquery.bxslider.css'))
-                        ->prependStylesheet($this->basePath('absconsultor/vendor/owl-carousel/owl.theme.css'))
-                        ->prependStylesheet($this->basePath('absconsultor/vendor/owl-carousel/owl.carousel.css'))
-                        ->prependStylesheet($this->basePath('absconsultor/vendor/bootstrap/css/bootstrap-theme.min.css'))
-                        ->prependStylesheet($this->basePath('absconsultor/vendor/bootstrap/css/bootstrap.min.css'))
-                        ->prependStylesheet($this->basePath('absconsultor/vendor/font-awesome/css/font-awesome.min.css'))
+                        ->prependStylesheet($this->basePath('absconsultor/dist/css/css-dist.css'))
                         ->prependStylesheet('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans')
         ?>
-
+        <meta name="theme-color" content="#00344F">
     </head>
     <body>
         <nav class="navbar navbar-fixed-top transition not-visible" role="navigation">
@@ -103,13 +97,7 @@ echo $this->doctype(); ?>
         <input type="hidden" id="simple-routing-manager" name="<?=$srmController;?>" value="<?=$controllerAction;?>" />
         <!-- Scripts -->
         <?php echo $this->headScript()
-            ->appendFile($this->basePath('absconsultor/vendor/jquery/jquery.min.js'))
-            ->appendFile($this->basePath('absconsultor/vendor/js-cookie/js-cookie.js'))
-            ->appendFile($this->basePath('absconsultor/vendor/bootstrap/js/bootstrap.min.js'))
-            ->appendFile($this->basePath('absconsultor/vendor/owl-carousel/owl.carousel.min.js'))
-            ->appendFile($this->basePath('absconsultor/vendor/bxslider/plugins/jquery.fitvids.js'))
-            ->appendFile($this->basePath('absconsultor/vendor/bxslider/plugins/jquery.easing.1.3.js'))
-            ->appendFile($this->basePath('absconsultor/vendor/bxslider/jquery.bxslider.min.js'))
+            ->appendFile($this->basePath('absconsultor/dist/vendor-dist.js'))
             ->appendFile($this->basePath('absconsultor/dist/dist.js'))
 
         ; ?>
