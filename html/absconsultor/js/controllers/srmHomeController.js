@@ -61,6 +61,7 @@ function srmHomeController() {
             mode: 'fade',
             adaptiveHeight: true,
             pager: false,
+            video: true,
             preloadImages: 'all',
             onSliderLoad: sliderEventCallbacks('onSliderLoad'),
             onSlideAfter: sliderEventCallbacks('onSlideAfter')

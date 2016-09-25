@@ -53,7 +53,7 @@ class HomeModule extends AbstractHelper
             $images = array();
 
             foreach ($urlImages as $urlImage) {
-                $images[] = sprintf($this->getImageItem(),'/media/'.$urlImage);
+                $images[] = sprintf($this->getImageItem(),$urlImage);
             }
 
             $imageWrapper = sprintf(

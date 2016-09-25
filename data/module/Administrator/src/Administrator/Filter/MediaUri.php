@@ -99,7 +99,7 @@ class MediaUri extends AbstractFilter
                     }
                 }
 
-                $value = $dom->saveHTML();
+                $value = preg_replace('/^<!DOCTYPE.+?>/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $dom->saveHTML()));
             } catch (\Exception $ex) {
 
                 /*
