@@ -7,7 +7,9 @@ use Administrator\Filter\SlugFilter;
 use Administrator\Filter\MediaUri;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Metadata\Source\Factory;
+use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Where;
 use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\Form\Fieldset;
 use Zend\Hydrator\ArraySerializable;
@@ -225,20 +227,34 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
          * Los campos que se llamen key o url_key serán tratados como campos únicos.
          */
         if (in_array($columnName, array('key','url_key'))) {
-            /*$select = new Select();
-            $select->from($this->tableGateway->getTable())
-                ->where->equalTo('id',$this->get('id')->getValue());
 
             $isLocale = $this->tableGateway->isLocaleTable();
+
             if ($isLocale) {
-                $langIdField = $this->get('languageId');
-                $select->where->notEqualTo('language_id',$langIdField->getValue());
+                //buscamos que no exista un segmento igual pero dentro del mismo idioma y que
+                // tampoco sea el id que estamos editando (si no, daría error siempre)
+                //Dos segmentos pueden ser iguales siempre que su idioma sea distinto.
+
+                $toCamel = new UnderscoreToCamelCase();
+                $where = new Where();
+                $field = lcfirst($toCamel->filter($columnName));
+
+                $where
+                    ->equalTo($columnName, $this->get($field)->getValue())
+                    ->and
+                    ->equalTo('language_id',$this->get('languageId')->getValue())
+                    ->and
+                    ->notEqualTo('id',$this->get('id')->getValue());
+
+                $exclude = $where;
+
+            } else {
+                $exclude = array(
+                    'field' => 'id',
+                    'value' => $this->get('id')->getValue()
+                );
             }
 
-            $noRecordExist = new \Zend\Validator\Db\NoRecordExists($select);
-            $noRecordExist->setAdapter($this->tableGateway->getAdapter());
-
-            $validators[] = $noRecordExist;*/
 
             $validators[] = array(
                 'name' => 'Zend\Validator\Db\NoRecordExists',
@@ -246,10 +262,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
                     'table' => $this->tableGateway->getTable(),
                     'field' => $columnName,
                     'adapter' => $this->tableGateway->getAdapter(),
-                    'exclude' => array(
-                        'field' => 'id',
-                        'value' => $this->get('id')->getValue()
-                    )
+                    'exclude' => $exclude
                 )
             );
         }
