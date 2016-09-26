@@ -28,14 +28,4 @@ class JobLocaleFieldset extends AdministratorFieldset
         $classes = $metaDescription->getAttribute('class');
         $metaDescription->setAttribute('class', $classes . ' no-editor');
     }
-
-    public function getHiddenFields()
-    {
-        return array(
-            'locale',
-            'languageId'
-        );
-    }
-
 }
-

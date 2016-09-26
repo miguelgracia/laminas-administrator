@@ -7,6 +7,7 @@ use Administrator\Filter\SlugFilter;
 use Administrator\Filter\MediaUri;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Metadata\Source\Factory;
+use Zend\Db\Sql\Select;
 use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\Form\Fieldset;
 use Zend\Hydrator\ArraySerializable;
@@ -224,6 +225,21 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
          * Los campos que se llamen key o url_key serán tratados como campos únicos.
          */
         if (in_array($columnName, array('key','url_key'))) {
+            /*$select = new Select();
+            $select->from($this->tableGateway->getTable())
+                ->where->equalTo('id',$this->get('id')->getValue());
+
+            $isLocale = $this->tableGateway->isLocaleTable();
+            if ($isLocale) {
+                $langIdField = $this->get('languageId');
+                $select->where->notEqualTo('language_id',$langIdField->getValue());
+            }
+
+            $noRecordExist = new \Zend\Validator\Db\NoRecordExists($select);
+            $noRecordExist->setAdapter($this->tableGateway->getAdapter());
+
+            $validators[] = $noRecordExist;*/
+
             $validators[] = array(
                 'name' => 'Zend\Validator\Db\NoRecordExists',
                 'options' => array(

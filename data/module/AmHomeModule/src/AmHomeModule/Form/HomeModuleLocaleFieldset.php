@@ -40,13 +40,4 @@ class HomeModuleLocaleFieldset extends AdministratorFieldset
 
         return $inputFilter;
     }
-
-    public function getHiddenFields()
-    {
-        return array(
-            'languageId'
-        );
-    }
-
 }
-

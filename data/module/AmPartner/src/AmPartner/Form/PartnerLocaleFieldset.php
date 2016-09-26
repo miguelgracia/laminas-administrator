@@ -17,13 +17,4 @@ class PartnerLocaleFieldset extends AdministratorFieldset
             )
         );
     }
-
-    public function getHiddenFields()
-    {
-        return array(
-            'locale',
-            'languageId'
-        );
-    }
 }
-

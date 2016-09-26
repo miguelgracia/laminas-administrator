@@ -65,6 +65,12 @@ trait MyOrmTableTrait
         return $this->relatedKey;
     }
 
+    public function isLocaleTable()
+    {
+        preg_match("/_locales$/", $this->table, $result);
+        return count($result) > 0;
+    }
+
     public function isTableRow($id, $fieldKey = 'id')
     {
         $id  = (int) $id;

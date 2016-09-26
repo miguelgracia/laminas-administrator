@@ -314,7 +314,11 @@ class AdministratorFormService implements EventManagerAwareInterface
 
                 $fieldParams = $this->setFieldParams($column);
 
-                if (in_array($column->getName(), array($this->hiddenPrimaryKey, $this->hiddenRelatedKey))) {
+                if (in_array($column->getName(), array(
+                    $this->hiddenPrimaryKey,
+                    $this->hiddenRelatedKey,
+                    'language_id'
+                ))) {
                     $fieldParams['type'] = 'Hidden';
                     $fieldset->add($fieldParams, $flags);
                     continue;

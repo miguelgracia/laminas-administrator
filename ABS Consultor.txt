@@ -32,16 +32,13 @@ TASKS
 - (HECHO) Implementar un CAPTCHA para el formulario de contacto
 - (HECHO) El contenido de "content" mete una template html. Ver de dónde sale y quitarla.
 
+
 - Revisar la asignación de url keys en las pestañas locale
 - Revisar la carga del video en Microsoft Edge
 - Meta tags sociales
 - Selector de idiomas por url
 - Minimizar el riesgo de errores en la asignación de url a los enlaces de los botones de los módulos de la home
 - Añadir logo al módulo home del administrador
-
-
-
-
 
 
 - Cambiar la clase metadata que se usa en el trait MyOrmTableTrait (está marcada como deprecated)

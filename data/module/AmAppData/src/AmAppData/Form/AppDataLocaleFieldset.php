@@ -19,12 +19,4 @@ class AppDataLocaleFieldset extends AdministratorFieldset
 
         return  $inputFilter;
     }
-
-    public function getHiddenFields()
-    {
-        return array(
-            'locale',
-            'languageId'
-        );
-    }
 }

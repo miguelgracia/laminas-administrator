@@ -16,12 +16,4 @@ class MegabannerLocaleFieldset extends AdministratorFieldset
         $class .= ' browsefile';
         $elementUrl->setAttribute('class',$class);
     }
-
-    public function getHiddenFields()
-    {
-        return array(
-            'locale',
-            'languageId'
-        );
-    }
 }
