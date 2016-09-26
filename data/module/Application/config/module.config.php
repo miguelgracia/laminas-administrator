@@ -12,11 +12,13 @@ namespace Application;
 use Application\Router\Http\LocaleTreeRouteStack;
 
 return array(
-    'languages_by_host' => array(
+'languages_by_host' => array(
         'abs.local'          => ['es_es','en_en'],
         'absconsultor.local' => ['es_es','en_en'],
         'absconsultor.es'    => ['es_es','en_en'],
-        'absconsultor.com'   => ['en_en','es_es']
+        'absconsultor.com'   => ['en_en','es_es'],
+        'www.absconsultor.es'    => ['es_es','en_en'],
+        'www.absconsultor.com'   => ['en_en','es_es'],
     ),
     'media_base_url' => array(
         'abs.local'          => 'http://media.abs.local',
