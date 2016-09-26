@@ -383,11 +383,11 @@ footer a.legal-link:first-child:after {
 
 
 .transition {
-    -webkit-transition: opacity .6s ease, top .6s ease;
-    -moz-transition: opacity .6s ease, top .6s ease;
-    -ms-transition: opacity .6s ease, top .6s ease;
-    -o-transition: opacity .6s ease, top .6s ease;
-    transition: opacity .6s ease, top .6s ease;
+    -webkit-transition: all .6s ease, top .6s ease;
+    -moz-transition: all .6s ease, top .6s ease;
+    -ms-transition: all .6s ease, top .6s ease;
+    -o-transition: all .6s ease, top .6s ease;
+    transition: all .6s ease, top .6s ease;
 }
 
 /** EMPRESA **/

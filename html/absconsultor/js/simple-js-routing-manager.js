@@ -95,19 +95,23 @@ var simpleJSRoutingManager = simpleJSRoutingManager || {};
     _instantiateSrmClasses = function() {
         var srmClassName, srmClassInstance;
         for(srmClassName in _toInstance.srmClass) {
-            var oClass = _toInstance.srmClass[srmClassName],
-                defaultMethod = _settings.classMethodBeforeController;
+            var defaultMethod = _settings.classMethodBeforeController;
 
-            _contructor.srmClass.prototype = new oClass();
-            _this[srmClassName] = _oInstances.srmClass[srmClassName] = srmClassInstance = new _contructor.srmClass;
+            _this[srmClassName] = _oInstances.srmClass[srmClassName] = srmClassInstance = _this.setClass(srmClassName);
 
             if(typeof srmClassInstance[defaultMethod] !== 'undefined' && typeof srmClassInstance[defaultMethod] === 'function') {
                 srmClassInstance[defaultMethod]();
             }
         }
-    },
+    };
 
-    _instantiateController = function(nameController, method) {
+    _this.setClass = function(srmClassName) {
+        var oClass = _toInstance.srmClass[srmClassName];
+        _contructor.srmClass.prototype = new oClass();
+        return new _contructor.srmClass;
+    };
+
+    var _instantiateController = function(nameController, method) {
         var oController;
         if(typeof _toInstance.srmController[nameController] !== 'undefined') {
             oController = _toInstance.srmController[nameController];

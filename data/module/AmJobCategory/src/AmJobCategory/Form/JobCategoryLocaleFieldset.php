@@ -14,7 +14,8 @@ class JobCategoryLocaleFieldset extends AdministratorFieldset
         return array(
             'fieldModifiers' => array(
                 'jobCategoriesId' => 'Hidden',
-                'metaDescription'   => 'Textarea'
+                'metaDescription'   => 'Textarea',
+                'content'           => 'Textarea',
             ),
             'fieldValueOptions' => array(
 

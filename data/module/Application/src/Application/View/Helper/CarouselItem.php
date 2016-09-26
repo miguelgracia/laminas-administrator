@@ -45,7 +45,7 @@ class CarouselItem extends AbstractHelper
             $dirName = $dirFilter->filter($path);
             $baseName = $baseNameFilter->filter($path);
             $videoPoster = $dirName .'/video-poster-'.md5($baseName).'.jpg';
-            return "<video poster='$videoPoster' width='100%' controls src='$path'></video>";
+            return "<video poster='$videoPoster' width='100%' src='$path'></video>";
         }
 
         return false;
