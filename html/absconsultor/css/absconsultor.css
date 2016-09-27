@@ -160,7 +160,7 @@ nav.navbar-fixed-top.visible {
 
 @media (min-width: 768px) {
     .nav.navbar-nav {
-        padding-top: 30px;
+        padding-top: 20px;
         float: right;
     }
 }
