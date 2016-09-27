@@ -570,6 +570,7 @@ class LocalFilemanager extends BaseFilemanager
 	{
 		$current_path = $this->getFullPath($this->get['path'], true);
 
+
 		$this->__log('loading image "' . $current_path . '"');
 
 		// if $thumbnail is set to true we return the thumbnail

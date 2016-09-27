@@ -18,7 +18,7 @@ class Job extends AbstractHelper
                         <div class='row'>
                             <div class='col-md-7'><img class='img-responsive' src='%s' /></div>
                             <div class='col-md-5'>
-                                <h2>%s</h2>
+                                <h3>%s</h3>
                                 %s
                             </div>
                         </div>

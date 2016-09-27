@@ -27,11 +27,15 @@ article {
     margin-bottom: 50px;
 }
 
+article header {
+    margin-bottom: 45px;
+    border-bottom: 1px solid #00344f;
+    width: 100%;
+}
+
 article h1 {
     font-size: 40px;
-    border-bottom: 1px solid #00344f;
     padding-bottom: 5px;
-    margin-bottom: 45px;
 }
 
 @media (max-width: 767px) {
@@ -41,16 +45,24 @@ article h1 {
 }
 
 
-article h2 {
+article h2, article h3 {
     margin-top: 0;
+}
+
+article header h2 {
+    color: #337ab7;
 }
 
 article img {
     margin-bottom: 30px;
 }
 
+article img.inline-element {
+    float: left;
+}
+
 aside h3 {
-    margin-top: 38px;
+    margin-top: 48px;
     border-bottom: 1px solid #00344f;
     padding-bottom: 5px;
 }
@@ -303,6 +315,7 @@ footer .nav.navbar-nav {
 
 .abs .container.detail .item img {
     margin: 0 auto;
+    max-height: 70vh;
 }
 
 footer {

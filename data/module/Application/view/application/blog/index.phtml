@@ -24,7 +24,20 @@ $blogCategoryHelper = $this->blogCategoryHelper();
         <div class="row">
             <div class="col-md-9">
 
-                <h1><?=$menu->locale->{$lang}[$blogMenuId]->name?></h1>
+                <header>
+                    <h1><?=$menu->locale->{$lang}[$blogMenuId]->name?></h1>
+                    <?php if(isset($currentCategory)):?>
+                        <h2><?=$currentCategory['title']?></h2>
+                    <?php endif?>
+                </header>
+
+                <?php if(isset($currentCategory)):?>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <?=$currentCategory['content'];?>
+                        </div>
+                    </div>
+                <?php endif?>
 
                 <div class="row">
                     <?php $blogHelper->render($lang, $blogs);?>

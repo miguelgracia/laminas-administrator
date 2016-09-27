@@ -77,9 +77,12 @@ trait MyOrmTableTrait
         return $this->select(array($fieldKey => $id))->count() > 0;
     }
 
-    public function all($where = array())
+    public function all($where = array(),$orderBy = array())
     {
-        return $this->select($where);
+        return $this->select(function (Select $select) use($where, $orderBy) {
+            $select->where($where);
+            $select->order($orderBy);
+        });
     }
 
     public function find($id, $key = 'id')

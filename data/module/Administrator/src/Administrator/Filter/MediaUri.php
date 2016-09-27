@@ -91,10 +91,17 @@ class MediaUri extends AbstractFilter
                     $nodeList = new Document\NodeList($elems);
 
                     foreach ($nodeList as $node) {
+                        $hasClassAttribute = false;
                         foreach ($node->attributes as $attr) {
                             if ($attr->name == 'src') {
                                 $attr->value = $this->setSrc($attr->value);
+                            } elseif ($attr->name == 'class') {
+                                $hasClassAttribute = true;
+                                $attr->value = $attr->value . ' inline-element';
                             }
+                        }
+                        if (!$hasClassAttribute) {
+                            $node->setAttribute('class','inline-element');
                         }
                     }
                 }

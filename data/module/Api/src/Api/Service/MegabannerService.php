@@ -21,7 +21,7 @@ class MegabannerService implements FactoryInterface
             $this->table->all(array(
                 'active' => '1',
                 'deleted_at' => null
-            ))->setFetchGroupResultSet('id')->toObjectArray(),
+            ), array('order ASC'))->setFetchGroupResultSet('id')->toObjectArray(),
 
             ArrayObject::ARRAY_AS_PROPS
         );

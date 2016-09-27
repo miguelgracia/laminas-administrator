@@ -54,7 +54,8 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             'fields' => array(
                 'id',
                 'active',
-                'is_video'
+                'is_video',
+                'order'
             ),
             'from' => 'megabanners',
             'join' => array(
