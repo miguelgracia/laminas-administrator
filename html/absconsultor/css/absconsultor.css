@@ -312,6 +312,22 @@ footer .nav.navbar-nav {
     }
 }
 
+/*#owl_carousel {
+    display: -ms-flexbox;
+    -ms-flex-direction: column;
+    -ms-flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-size: 0;
+    overflow: hidden;
+}
+
+.item {
+    width: 50%;
+    flex-grow: 1;
+    padding: 5px;
+}*/
 
 .abs .container.detail .item img {
     margin: 0 auto;
