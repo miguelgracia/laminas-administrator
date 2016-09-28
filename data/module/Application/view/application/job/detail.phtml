@@ -21,7 +21,7 @@ $carouselHelper = $this->carouselItemHelper();
                 <h1><?=$job->title;?></h1>
                 <?=$job->content;?>
                 <div class="wrapper">
-                    <div class="masonry bordered">
+                    <div class="masonry bordered" id="gallery">
                         <?php echo $carouselHelper->render($images)?>
                     </div>
                 </div>
