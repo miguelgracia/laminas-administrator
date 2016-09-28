@@ -47,7 +47,8 @@ gulp.task('default', function() {
         'vendor/owl-carousel/owl.carousel.css',
         'vendor/owl-carousel/owl.theme.css',
         'vendor/bxslider/jquery.bxslider.css',
-        'css/absconsultor.css'
+        'css/absconsultor.css',
+        'css/masonry.css'
         //'css/home.css'
     ];
 

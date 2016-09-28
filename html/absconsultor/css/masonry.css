@@ -1,0 +1,56 @@
+.wrapper {
+    margin-top: 30px;
+}
+
+.wrapper img, .wrapper video {
+    vertical-align: bottom;
+    margin: 0 auto;
+}
+
+.masonry {
+    -moz-transition: all .5s ease-in-out;
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    -moz-column-gap: 15px;
+    -webkit-column-gap: 15px;
+    column-gap: 15px;
+    -moz-column-fill: initial;
+    -webkit-column-fill: initial;
+    column-fill: initial;
+}
+.masonry .brick {
+    margin-bottom: 17px;
+}
+.masonry .brick img, .masonry .brick video {
+    -moz-transition: all .5s ease-in-out;
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+}
+.masonry .brick:hover img {
+    /*opacity: .75;*/
+}
+.masonry.bordered {
+    -moz-column-rule: 1px solid #337ab7;
+    -webkit-column-rule: 1px solid #337ab7;
+    column-rule: 1px solid #337ab7;
+    -moz-column-gap: 50px;
+    -webkit-column-gap: 50px;
+    column-gap: 50px;
+}
+.masonry.bordered .brick {
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #337ab7;
+}
+.masonry.gutterless .brick {
+    margin-bottom: 0;
+}
+
+@media only screen and (min-width: 1024px) {
+
+    .masonry {
+        -moz-column-count: 2;
+        -webkit-column-count: 2;
+        column-count: 2;
+    }
+}
