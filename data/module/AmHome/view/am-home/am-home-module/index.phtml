@@ -1,1 +1,291 @@
-estamos en el modulo amhome
+<div class="row home-background" style="height: 100vh;">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Manual de usuario</h3>
+            </div>
+            <div class="box-body">
+                <div class="box-group" id="menu_accordion">
+                    <div class="panel box box-success collapsed-box" data-id="224">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#menu_accordion" href="#collapse0">
+                                    Web Menú
+                                </a>
+                            </h4>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <p>Desde aquí podemos editar ciertos aspectos de las secciones principales de la web</p>
+                            <p>Dichas secciones son: </p>
+                            <ul>
+                                <li>Blog</li>
+                                <li>Empresa</li>
+                                <li>Colaboradores (que está dentro de empresa)</li>
+                                <li>Contacto</li>
+                                <li>Trabajos</li>
+                            </ul>
+                            <p>Los campos que podemos editar son los siguientes:</p>
+                            <ul>
+                                <li><strong>Clave</strong> Clave única que identifica nuestro registro de sección.
+                                    Debe ser descriptiva y nombre debe estar relacionado con los datos que vamos
+                                a guardar en el registro</li>
+                                <li>
+                                    <strong>Visible</strong>: Si está marcado como "Sí", el enlace a la sección
+                                    se mostrará en la cabecera de la web.
+                                </li>
+                                <li>
+                                    <strong>Active</strong>. Indica si el enlace está disponible o no. La diferencia
+                                    entre "visible" y "activo" es que, si marcamos el enlace como "no visible", el
+                                    acceso a la sección sigue estando disponible, aunque en principio no haya ningún
+                                    enlace apuntando hacia ella. En cambio, si está desactivada e intentamos acceder
+                                    a ella, la web nos dará un error 404 (página no encontrada), porque se entiende
+                                    que la página en cuestión no existe.
+                                </li>
+                                <li>
+                                    <strong>Posición</strong>: Orden que llevarán los enlaces del menú. Se pinta de
+                                    izquierda a derecha.
+                                </li>
+                                <li>
+                                    <strong>Nombre</strong>: Nombre que se mostrará como cabecera cuando accedemos a la sección
+                                </li>
+                                <li><strong>Nombre cabecera</strong>: Nombre que se mostrará en el menú de la cabecera</li>
+                                <li>
+                                    <strong>Contenido</strong>: Lo que escribamos aquí se reflejará en su sección correspondiente
+                                    En nuestro caso, por ejemplo, si accedemos a la edición del texto de "company", podremos
+                                    modificar el texto que se muestra en la sección "empresa" de la web
+                                </li>
+                                <li>
+                                    <strong>Segmento url</strong>: Este campo es muy importante, tanto para las secciones
+                                    principales como el resto de subsecciones. Su designación debe ser pensaba a conciencia,
+                                    ya que es el texto que se usará para formas las direcciones web únicas.
+                                    <p>
+                                        Por ejemplo: Si el segmento url que designamos a la sección "empresa" se llama
+                                        consultor-abs-empresa, el enlace que se forma para acceder a dicha sección tendrá
+                                        la siguiente forma: <strong>http://absconsultor.es/es_es/consultor-abs-empresa</strong>
+                                        Esta es la forma por la que el sistema sabe a qué sección queremos ir.
+                                    </p>
+                                </li>
+                                <li>
+                                    <strong>Descripción interna (SEO)</strong>: El contenido que introduzcamos aquí no se verá
+                                    directamente en la web pero es igual de importante que si lo vieramos. Su redacción debe
+                                    cuidarse al máximo ya que ayuda al correcto posicionamiento de la web. Además, será
+                                    el texto que se muestre como descripción cuando compartamos la url por Facebook.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="panel box box-success collapsed-box" data-id="228">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#menu_accordion" href="#collapse1">
+                                    Modulos Home                                </a>
+                            </h4>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <p>Desde aquí podremos modificar los módulos de "imagen-texto" que
+                            se muestran en la home</p>
+                            <p>Los campos que podremos modificar son los siguientes:</p>
+                            <ul>
+                                <li>
+                                    <strong>Clave</strong>
+                                    Clave única que identifica nuestro módulo entre el resto de módulos
+                                </li>
+                                <li>
+                                    <strong>Activo</strong>
+                                    Si desactivamos, el módulo no se mostrará en la home
+                                </li>
+                                <li>
+                                    <strong>Título</strong>
+                                    Texto de cabecera que tendrá el módulo
+                                </li>
+                                <li>
+                                    <strong>Url Imagen</strong>
+                                    En este campo, si pulsamos sobre el botón "buscar", tendremos
+                                    la opción de seleccionar la imagen que queremos asociar a
+                                    nuestro módulo. Si no hay ninguna subida, tendremos la opción
+                                    de subirla por nosotros mismos.
+                                    Podemos añadir tantas imágenes como queramos pulsando sobre el
+                                    botón "Nueva imagen", aún así, debemos ser moderados para no
+                                    sobrecargar en exceso la carga de la web
+                                </li>
+                                <li>
+                                    <strong>Contenido</strong>
+                                    Texto descriptivo que contendrá nuestro módulo. No debe ser
+                                    muy largo, cuatro o cinco líneas puede estar bien.
+                                </li>
+                                <li>
+                                    <strong>Texto enlace</strong>
+                                    Nombre que tendrá el enlace del módulo.
+                                    Ej: "Ver más", "Más info", "Acceder", "Quiero verlo"
+                                </li>
+                                <li>
+                                    <strong>Url enlace</strong>
+                                    Dirección a la que iremos cuando pulsemos en el botón del módulo.
+                                    El incorrecto uso de este campo puede suponer que no dirija correctamente
+                                    a su destino. Para no fallar, hay que tener en cuenta los siguientes puntos.
+                                    <ul>
+                                        <li>
+                                            Si vamos a redirigir a una web externa, <strong>siempre</strong>
+                                            debemos indicar el protocolo "http", quedando la url de la
+                                            siguiente manera: "http://www.google.es" o "http://teyme.com", por ejemplo.
+                                            Si no lo indicamos, el navegador cree que el enlace pertenece a nuestra propia
+                                            web y él solo lo añadirá nuestro dominio.
+                                        </li>
+                                        <li>
+                                            Si lo que queremos es redirigir a una parte de nuestra web, tenemos dos opciones:
+                                            <ol>
+                                                <li>Poner la url como el anterior punto: http://...</li>
+                                                <li>
+                                                    <p>Escribir la url absoluta sin dominio. Dicha url no incluye ni protocolo (http) ni
+                                                        dominio. Por ejemplo: Supongamos que hemos creado un trabajo que tiene la siguiente url:</p>
+                                                    <p>"http://absconsultor.es/es_es/trabajos/montajes/obra-valencia-con-grua"</p>
+                                                    A continuación, nos disponemos a crear un módulo con una pequeña introducción a
+                                                    dicho trabajo y queremos que el enlace del módulo redirija a él;
+                                                    la url que deberemos poner será así
+                                                    <p>/es_es/trabajos/montajes/obra-valencia-con-grua</p>
+                                                    De esta forma, el navegador ya sabe que tiene que añadir el dominio.
+                                                    <strong>Importante fijarse en la barra del principio. Siempre hay que ponerla</strong>
+                                                </li>
+                                            </ol>
+
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>Ventana de apertura</strong>
+                                    <p>¿Dónde queremos que se abra la nueva página?</p>
+                                    <ul>
+                                        <li><strong>_self</strong> Lá página se abrira en la
+                                        misma ventana en la que nos encontramos. Esta opción
+                                        suele ser la ideal cuando el enlace pertenece a nuestra
+                                        propia web</li>
+                                        <li><strong>_blank</strong>Esta opción es la mejor
+                                        para abrir páginas de terceros (la web de un proveedor, por ejemplo)
+                                            ya que el usuario no deja de estar en nuestra página
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="panel box box-success collapsed-box" data-id="230">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#menu_accordion" href="#collapse2">
+                                    Datos Web                                </a>
+                                <a class="btn btn-remove" href="/admin/menu/delete/230"><i class="fa fa-remove"></i></a>
+                            </h4>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            Datos genéricos de nuestra web. Desde aquí podremos editar:
+                            <ul>
+                                <li><strong>Email inbox</strong> Dirección de correo a la que
+                                llegaran los mensajes de la gente que contacte por mail</li>
+                                <li><strong>Página de Facebook</strong> Página oficial de la empresa en Facebook (si tuviese)</li>
+                                <li><strong>Página de Twitter</strong> Página oficial de la empresa en Twitter (si tuviese)</li>
+                                <li><strong>Página de Google+ </strong> Página oficial de la empresa en Google+(si tuviese)</li>
+                                <li><strong>Página de Instagram</strong> Página oficial de la empresa en Instagram (si tuviese)</li>
+                                <li><strong>Email</strong> Correo que se muestra en el footer de la web y en la sección de contacto</li>
+                                <li><strong>Teléfono</strong> Teléfono que se muestra en el footer de la web y en la sección de contacto</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="panel box box-success collapsed-box" data-id="231">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#menu_accordion" href="#collapse3">
+                                    Colaboradores                                </a>
+                                <a class="btn btn-remove" href="/admin/menu/delete/231"><i class="fa fa-remove"></i></a>
+                            </h4>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body"></div>
+                    </div>
+                    <div class="panel box box-success collapsed-box" data-id="219">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#menu_accordion" href="#collapse5">
+                                    Trabajos                                </a>
+                            </h4>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body"></div>
+                    </div>
+                    <div class="panel box box-success collapsed-box" data-id="207">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#menu_accordion" href="#collapse6">
+                                    Blog                                </a>
+                            </h4>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body"></div>
+                    </div>
+                    <div class="panel box box-success collapsed-box" data-id="216">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#menu_accordion" href="#collapse7">
+                                    Megabanners                                </a>
+                                <a class="btn btn-remove" href="/admin/menu/delete/216"><i class="fa fa-remove"></i></a>
+                            </h4>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body"></div>
+                    </div>
+                    <div class="panel box box-success collapsed-box" data-id="215">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#menu_accordion" href="#collapse8">
+                                    Media                                </a>
+                            </h4>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body"></div>
+                    </div>
+                    <div class="panel box box-success collapsed-box" data-id="218">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                <a data-toggle="collapse" data-parent="#menu_accordion" href="#collapse9">
+                                    Páginas Legales                                </a>
+                                <a class="btn btn-remove" href="/admin/menu/delete/218"><i class="fa fa-remove"></i></a>
+                            </h4>
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

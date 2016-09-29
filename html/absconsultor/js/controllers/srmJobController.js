@@ -8,13 +8,19 @@ function srmJobController() {
     this.categoryAction = function() {};
 
     this.detailAction = function() {
-        var viewer = new Viewer(document.getElementById('gallery'),{
+        var viewerOpts = {
             'rotatable': false,
             'fullscreen': false,
             'scalable': false,
             'toolbar': false,
             'title': false
-        });
+        };
+        var gallery = document.getElementById('gallery');
+        var items = gallery.querySelectorAll('.img-responsive');
+
+        for(var item = 0; item < items.length; item++) {
+            new Viewer(items[item],viewerOpts);
+        }
     };
 }
 simpleJSRoutingManager.srmController(srmJobController);

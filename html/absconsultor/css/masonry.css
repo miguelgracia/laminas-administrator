@@ -27,7 +27,7 @@
     transition: all .5s ease-in-out;
 }
 .masonry .brick:hover img {
-    /*opacity: .75;*/
+    cursor: pointer;
 }
 .masonry.bordered {
     -moz-column-rule: 1px solid #337ab7;
