@@ -31,13 +31,15 @@ $blogCategoryHelper = $this->blogCategoryHelper();
                     <?php endif?>
                 </header>
 
-                <?php if(isset($currentCategory)):?>
-                    <div class="row">
-                        <div class="col-xs-12">
+                <div class="row intro-section">
+                    <div class="col-xs-12">
+                        <?php if(isset($currentCategory)):?>
                             <?=$currentCategory['content'];?>
-                        </div>
+                        <?php else :?>
+                            <?=$menu->locale->{$lang}[$blogMenuId]->content;?>
+                        <?php endif?>
                     </div>
-                <?php endif?>
+                </div>
 
                 <div class="row">
                     <?php $blogHelper->render($lang, $blogs);?>

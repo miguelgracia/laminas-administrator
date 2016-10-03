@@ -12,7 +12,6 @@ class PartnerService implements FactoryInterface
     use ApiServiceTrait;
 
     protected $table = PartnerTable::class;
-    protected $tableLocale = PartnerLocaleTable::class;
 
     public function getData($lang)
     {
@@ -25,12 +24,6 @@ class PartnerService implements FactoryInterface
 
             ArrayObject::ARRAY_AS_PROPS
         );
-
-        $locales = $this->tableLocale->findByLangCode($lang)->setFetchGroupResultSet('relatedTableId')->toObjectArray();
-
-        foreach ($rows as &$row) {
-            $row->locale = $locales[$row->id];
-        }
 
         return $rows;
     }

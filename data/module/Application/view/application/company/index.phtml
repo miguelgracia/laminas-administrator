@@ -2,8 +2,6 @@
 $partnerMenuId = $menu->rows['company/colaborators']->id;
 $company = $menu->rows['company']->id;
 
-$partnerUrl = $this->url($lang.'/company/colaborators');
-
 $partnerHelper = $this->partnerHelper($lang);
 
 ?>
@@ -30,7 +28,7 @@ $partnerHelper = $this->partnerHelper($lang);
 
     <?php if(isset($partners)):?>
 
-    <h3><a href="<?=$partnerUrl;?>"><?=$this->translate('Our Partners','frontend');?></a></h3>
+    <h3><?=$this->translate('Our Partners','frontend');?></h3>
 
     <div id="collaborators_carousel">
 
