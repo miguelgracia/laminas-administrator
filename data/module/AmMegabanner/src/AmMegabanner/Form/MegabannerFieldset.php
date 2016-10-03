@@ -26,4 +26,12 @@ class MegabannerFieldset extends AdministratorFieldset
             )
         );
     }
+
+    public function addFields()
+    {
+        $elementUrl = $this->get('elementUrl');
+        $class = $elementUrl->getAttribute('class');
+        $class .= ' browsefile';
+        $elementUrl->setAttribute('class',$class);
+    }
 }

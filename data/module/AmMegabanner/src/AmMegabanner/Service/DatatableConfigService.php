@@ -55,22 +55,12 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
                 'id',
                 'active',
                 'is_video',
+                'element_url',
                 'order'
             ),
             'from' => 'megabanners',
             'join' => array(
-                array(
-                    //Tabla con la que hacemos join
-                    'megabanners_locales',
-                    //ON tal = tal
-                    'related_table_id = megabanners.id',
-                    array(
-                        //Campos del join. La key es el alias del campo y el valor es el nombre del campo en sí
-                        'element_url' => 'element_url'
-                    ),
-                    //Tipo de join
-                    'left'
-                ),
+
             ),
             //Los campos que están dentro del 'having_fields' no se veran afectados por la clausula where al
             //filtar, sino por la clausula having. Esto es necesario para aquellos campos cuyo valor dependen

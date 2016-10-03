@@ -51,7 +51,7 @@ class Megabanner extends AbstractHelper
 
             if ($megabanner->isVideo) {
                 $element = $this->getVideoTemplate();
-                $elementUrl = $megabanner->locale->elementUrl;
+                $elementUrl = $megabanner->elementUrl;
                 $dirName = $dirFilter->filter($elementUrl);
                 $baseName = $baseNameFilter->filter($elementUrl);
                 $videoPoster = $dirName .'/video-poster-'.md5($baseName).'.jpg';
@@ -62,7 +62,7 @@ class Megabanner extends AbstractHelper
                 );
             } else {
                 $element =  $this->getImageTemplate();
-                $elementUrl = $dinamicImage($megabanner->locale->elementUrl)->makeUrl(null,550,'megabanner');
+                $elementUrl = $dinamicImage($megabanner->elementUrl)->makeUrl(null,550,'megabanner');
                 $sprintfParams = array(
                     $element,
                     $elementUrl

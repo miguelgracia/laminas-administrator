@@ -32,7 +32,14 @@ TASKS
 - (HECHO) Implementar un CAPTCHA para el formulario de contacto
 - (HECHO) El contenido de "content" mete una template html. Ver de dónde sale y quitarla.
 
-
+- (HECHO) Simplificar la gestión de colaboradores
+- (HECHO) Replicar cambios trabajo en blog
+- (HECHO) Foreign Keys tabla Blog ( y quizá trabajos). Revisar
+- (HECHO) Unificar imagen por idioma en megabanner
+- (HECHO) Implementar contenido de secciones principales.
+- (HECHO) Eliminar sección colaboradores. Enlazar directamente desde el carrusel.
+- Revisar url de los megabanners (no añade el segmento media)
+- Revisar pestaña con validación en inglés.
 - Revisar la asignación de url keys en las pestañas locale
 - Revisar la carga del video en Microsoft Edge
 - Meta tags sociales
