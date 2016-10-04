@@ -2,6 +2,7 @@
 
 namespace AmMegabanner\Form;
 
+use Administrator\Filter\MediaUri;
 use Administrator\Form\AdministratorFieldset;
 use AmMegabanner\Model\MegabannerTable;
 
@@ -33,5 +34,16 @@ class MegabannerFieldset extends AdministratorFieldset
         $class = $elementUrl->getAttribute('class');
         $class .= ' browsefile';
         $elementUrl->setAttribute('class',$class);
+    }
+
+    public function getInputFilterSpecification()
+    {
+        $inputFilter = parent::getInputFilterSpecification();
+
+        $inputFilter['elementUrl']['filters'][] = array(
+            'name' => MediaUri::class
+        );
+
+        return $inputFilter;
     }
 }
