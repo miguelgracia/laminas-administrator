@@ -42,7 +42,7 @@ class AdministratorFormRow extends AbstractHelper
             default:
                 $template = "
                     <div class='nav-tabs-custom'>
-                        <ul class='nav nav-tabs'>
+                        <ul class='nav nav-tabs languages'>
                             %s
                         </ul>
                         <div class='tab-content languages'>
@@ -158,7 +158,7 @@ class AdministratorFormRow extends AbstractHelper
 
         if ($partialView) {
             //las vistas parciales solo se pueden setear en elementos de tipo form_row
-            //la lógica de pintado (pasa a formar parte de dicha vista parcial)
+            //la lï¿½gica de pintado (pasa a formar parte de dicha vista parcial)
             $input = $this->view->formRow()->setPartial($partialView)->render($formElement);
         } else {
 
@@ -196,7 +196,7 @@ class AdministratorFormRow extends AbstractHelper
 
         $this->elementError
             ->setAttributes(array(
-                'class' => 'control-label'
+                'class' => 'control-label error'
             ))
             //Cambiamos el envoltorio de los mensajes de error
             ->setMessageOpenFormat('<label%s>')

@@ -38,10 +38,10 @@ TASKS
 - (HECHO) Unificar imagen por idioma en megabanner
 - (HECHO) Implementar contenido de secciones principales.
 - (HECHO) Eliminar sección colaboradores. Enlazar directamente desde el carrusel.
-- Revisar url de los megabanners (no añade el segmento media)
-- Revisar pestaña con validación en inglés.
-- Revisar la asignación de url keys en las pestañas locale
-- Revisar la carga del video en Microsoft Edge
+- (HECHO) Revisar url de los megabanners (no añade el segmento media)
+- (HECHO) Revisar pestaña con validación en inglés.
+- (HECHO) Revisar la asignación de url keys en las pestañas locale
+- (HECHO) Revisar la carga del video en Microsoft Edge
 - Meta tags sociales
 - Selector de idiomas por url
 - Minimizar el riesgo de errores en la asignación de url a los enlaces de los botones de los módulos de la home
