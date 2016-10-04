@@ -30,7 +30,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
 
                 //$row contiene los datos de cada una de las filas que ha generado la consulta.
                 $thisClass->setEditAndDeleteColumnsValues($row);
-                $row['active'] = $row['active'] == '1' ? 'SI' : 'NO';
+
                 return $row;
             }
         );
@@ -44,7 +44,6 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
                 'id',
                 'name',
                 'code',
-                'active',
             ),
             'from' => 'languages',
             'join' => array(

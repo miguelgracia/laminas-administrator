@@ -10,4 +10,15 @@ class LanguageService implements FactoryInterface
     use ApiServiceTrait;
 
     protected $table = LanguageTable::class;
+
+
+    public function getLanguagesAvailable()
+    {
+        return $this->table->all(array(
+            'active' => '1',
+            'visible' => '1',
+        ),array(
+            'order ASC'
+        ));
+    }
 }

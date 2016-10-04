@@ -44,8 +44,14 @@ abstract class ApplicationController extends AbstractActionController
 
         $this->appData = $this->api->appData->getData();
 
+        $languagesForFlags = $this->api->language->getLanguagesAvailable(array(
+            'active' => '1',
+            'visible' => '1',
+        ));
+
         $this->layout()->setVariables([
             'showCookieAlert'  => $showCookieAlert,
+            'languages'        => $languagesForFlags,
             'lang'             => $this->lang,
             'menu'             => $this->menu,
             'appData'          => $this->appData,
