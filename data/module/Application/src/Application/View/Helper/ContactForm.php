@@ -90,10 +90,8 @@ class ContactForm extends AbstractHelper
 
     private function setLegalLink($lang, $legal)
     {
-        $legalUris = array_combine(
-            array_column($legal['rows'],'key','id'),
-            array_column($legal['locale'][$lang],'urlKey','relatedTableId')
-        );
+        $rowPrivacityId = array_search('privacidad',array_column($legal['rows'], 'key', 'id'));
+        $locale = array_column($legal['locale'][$lang],'urlKey','relatedTableId');
 
         $helperManager = $this->getView()->getHelperPluginManager();
 
@@ -101,7 +99,7 @@ class ContactForm extends AbstractHelper
 
         return sprintf(
             $this->translator->translate("I agree with the terms and conditions of use",'frontend'),
-            $url($lang.'/legal/page',array('page' => $legalUris['privacidad']))
+            $url($lang.'/legal/page',array('page' => $locale[$rowPrivacityId]))
         );
     }
 
