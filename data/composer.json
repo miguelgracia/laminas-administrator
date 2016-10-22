@@ -12,6 +12,7 @@
         "zendframework/zendframework": "2.5.*",
         "evandotpro/edp-module-layouts": "1.0",
         "intervention/image": "2.3.*",
-        "cocur/slugify": "^2.1"
+        "cocur/slugify": "^2.1",
+        "google/apiclient": "2.0.*"
     }
 }

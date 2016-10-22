@@ -42,6 +42,14 @@ TASKS
 - (HECHO) Revisar pestaña con validación en inglés.
 - (HECHO) Revisar la asignación de url keys en las pestañas locale
 - (HECHO) Revisar la carga del video en Microsoft Edge
+
+== SECCIÓN VIDEOS YOUTUBE ==
+Listar videos de base de datos
+Sincronizar videos de base de datos con videos de canal
+    - Comprobar que los videos que
+
+== FIN SECCIÓN VIDEOS YOUTUBE ==
+
 - Meta tags sociales
 - Selector de idiomas por url
 - Minimizar el riesgo de errores en la asignación de url a los enlaces de los botones de los módulos de la home
@@ -72,7 +80,16 @@ usuario db webb U4e54b5
 htpasswd -> user: absconsultor.es
             pass: %consultorABS%
 
+//Yn_L4EvdaOk
+//X4BhG_F1mxo
+
+
 log acceso web consultorAB5
+
+Cuenta gmail para api youtube
+absconsultor.web@gmail.com
+Contraseña: %consultorABS%
+Fecha de nacimiento: 2 - mayo - 1982
 
 
 ABS CONSULTOR

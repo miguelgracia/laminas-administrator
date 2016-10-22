@@ -6,15 +6,11 @@
 
             <div class="box-header with-border">
                 <h3 class="box-title"><?php echo $this->escapeHtml($title); ?></h3>
+                <?php if (isset($sync_action)):?>
+                    <a class="pull-right btn btn-app" href="/admin/you-tube/sync"><i class="fa fa-refresh"></i>Nuevo</a>
+                <?php endif;?>
                 <?php if (isset($add_action)):?>
                     <a class="pull-right btn btn-app" href="<?=$add_action?>"><i class="fa fa-plus"></i>Nuevo</a>
-                <?php endif;?>
-                <?php if (isset($sync_action)):?>
-                    <a class="pull-right btn btn-app" href="<?=$sync_action?>"><i class="fa fa-youtube"></i>Sincronizar</a>
-                <?php endif;?>
-
-                <?php if (isset($export_action)):?>
-                    <a class="pull-right btn btn-app" href="<?=$export_action?>"><i class="fa fa-file-excel-o"></i> Exportar listado</a>
                 <?php endif;?>
             </div>
 
@@ -27,15 +23,15 @@
                 ?>
                 <table data-settings='<?=json_encode($settings);?>' class="datatable table table-bordered table-hover" id="<?=$table_id?>">
                     <thead>
-                        <tr></tr>
-                        <tr></tr>
+                    <tr></tr>
+                    <tr></tr>
                     </thead>
 
                     <tbody>
                     </tbody>
 
                     <tfoot>
-                        <tr></tr>
+                    <tr></tr>
                     </tfoot>
                 </table>
             </div>
@@ -59,3 +55,24 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+
+<?php /*foreach ($channelsResponse['items'] as $channel):
+    // Extract the unique playlist ID that identifies the list of videos
+    // uploaded to the channel, and then call the playlistItems.list method
+    // to retrieve that list.
+    $uploadsListId = $channel['contentDetails']['relatedPlaylists']['uploads'];
+
+    $playlistItemsResponse = $youtube->playlistItems->listPlaylistItems('snippet', array(
+        'playlistId' => $uploadsListId,
+        'maxResults' => 50
+    ));
+
+    foreach ($playlistItemsResponse['items'] as $playlistItem) :*/?><!--
+        <tr>
+            <td><?/*=$playlistItem['snippet']['title']*/?></td>
+            <td><?/*=$playlistItem['snippet']['description']*/?></td>
+            <td><?/*=$playlistItem['snippet']['resourceId']['videoId'];*/?></td>
+        </tr>
+    --><?php /*endforeach;*/?>

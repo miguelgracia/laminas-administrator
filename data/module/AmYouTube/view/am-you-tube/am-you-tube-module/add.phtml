@@ -1,0 +1,56 @@
+<?php
+
+$basePath = $this->basePath() . '/administrator/libs/';
+
+$this->headScript()->appendFile($basePath . "ckeditor/ckeditor.js");
+
+$this->headTitle($this->title);
+
+$form = $this->form;
+
+$gestorFormRow = $this->administrator_form_row();
+
+$flash = $this->flashMessenger();
+
+
+if ($form) {
+    $form->prepare();
+}
+
+?>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title"><?php echo $this->escapeHtml($title); ?></h3>
+            </div>
+
+        <?php if($checkAuth) :?>
+            <div class="box-body">
+                <?php if($flash->hasErrorMessages()):
+
+                    $errorMessages = $flash->getErrorMessages();
+                    foreach ($errorMessages as $message) :?>
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <h4><i class="icon fa fa-ban"></i> <?=$this->translate($message);?></h4>
+                            <?=$this->translate($message . ' description');?>
+                        </div>
+                    <?php endforeach;?>
+
+                <?php endif;?>
+                <p>Para poder listar los videos, es necesario conectar con la cuenta del canal de youtube</p>
+                <a class="btn btn-app" href="<?=$authUrl;?>"><i class="fa fa-youtube"></i>Conectar</a>
+            </div>
+        <?php else:
+
+            echo $this->form()->openTag($form);
+            echo $gestorFormRow->render($form);
+            echo $this->form()->closeTag();
+            endif; ?>
+        </div>
+    </div>
+</div>
+
+<?=$blocks?>

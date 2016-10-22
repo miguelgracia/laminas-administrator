@@ -26,6 +26,7 @@ return array(
         'AmAppData',
         'Api',
         'AmPartner',
+        'AmYouTube'
     ),
     'hidden_modules' => array(
         'AmLogin',

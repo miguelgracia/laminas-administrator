@@ -22,6 +22,8 @@ $(document).ready(function () {
         '/admin/home-module':            ['home_module','index'],
         '/admin/app-data':               ['app_data','index'],
         '/admin/partner':                ['partner','index'],
-        '/admin/media/videoPoster':      ['video_poster','index']
+        '/admin/media/videoPoster':      ['video_poster','index'],
+        '/admin/you-tube':               ['youtube','index'],
+        '/admin/add':                    ['youtube','add']
     }).run();
 });

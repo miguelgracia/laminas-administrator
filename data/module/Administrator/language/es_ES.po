@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ZendSkeletonApplication\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-09-07 16:05+0200\n"
-"PO-Revision-Date: 2016-09-27 23:08+0200\n"
+"PO-Revision-Date: 2016-10-21 22:59+0200\n"
 "Last-Translator: Adolfo Abegg <adolfoabegg@gmail.com>\n"
 "Language-Team: ZF Contributors <zf-devteam@zend.com>\n"
 "Language: es_ES\n"
@@ -596,3 +596,21 @@ msgstr "Nombre Interno"
 
 msgid "publicName"
 msgstr "Nombre público"
+
+msgid "youtubeSignupRequired"
+msgstr "No se ha encontrado un canal de You Tube"
+
+msgid "youtubeSignupRequired description"
+msgstr "Este error indica que el usuario tiene cuenta de google pero no un canal de YouTube. <a href='https://www.youtube.com/create_channel' target='_blank'>Crea un canal de YouTube</a> e inténtalo de nuevo."
+
+msgid "authorizationRequired"
+msgstr "Error al autorizar el acceso"
+
+msgid "authorizationRequired description"
+msgstr "Hubo un fallo en la solicitud de acceso. Inténtelo de nuevo. Si, aún así, el error persiste, salga de su cuenta de Google e inténtelo otra vez."
+
+msgid "authError"
+msgstr "Error de acceso"
+
+msgid "authError description"
+msgstr "Vaya! Parece que algo ha fallado al intentar conectar con el servicio de Google. Prueba de nuevo :-)."
