@@ -63,4 +63,16 @@ class YoutubeService implements FactoryInterface
     {
         return new \Google_Service_YouTube($this->client);
     }
+
+    /**
+     * Acceso a los videos de youtube que tenemos registrados en base de datos.
+     * De esta forma ahorramos en llamadas a la api y en problemas surgidos a raiz
+     * de estar o no estar loqueado con los servicios de youtube
+     */
+    public function getVideosInDatabase()
+    {
+        $table = $this->serviceLocator->get('AmYouTube\Model\YouTubeTable');
+
+        return $table->all();
+    }
 }

@@ -49,6 +49,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             'fields' => array(
                 'id',
                 'title',
+                'channel_title',
                 'code',
                 'visibility'
             ),

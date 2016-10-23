@@ -373,7 +373,7 @@ class AmYouTubeModuleController extends AuthController
         $checkAuth = false;
         $authErrors = array();
 
-        $this->sessionService->action = 'add';
+        $this->sessionService->action = 'edit';
 
         $code = $this->params()->fromQuery('code');
 

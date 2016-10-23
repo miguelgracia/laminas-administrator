@@ -83,3 +83,43 @@ LANGUAGE TABS
 .home-background {
     background: url('../../img/footer-background-logo.png') no-repeat;
 }
+
+.btn-youtube {
+    font-size: 20px;
+    padding: 2px 8px;
+}
+
+
+#modal_wrapper {
+    position: fixed;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,.5);
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+#modal_content {
+    background-color: white;
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+#modal_content .box-body{
+    overflow: auto;
+    height: calc(80vh - 45px);
+}
+
+#modal_content table td {
+    vertical-align: middle;
+}

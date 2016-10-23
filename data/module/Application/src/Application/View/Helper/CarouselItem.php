@@ -3,6 +3,7 @@
 namespace Application\View\Helper;
 
 
+use Administrator\Validator\Youtube;
 use Zend\Code\Scanner\FileScanner;
 use Zend\Filter\BaseName;
 use Zend\Filter\Dir;
@@ -14,14 +15,22 @@ class CarouselItem extends AbstractHelper
 {
     protected $headTitle;
 
+    protected $youTubeValidator;
+
     public function __invoke()
     {
+        $this->youTubeValidator = new Youtube();
+
         return $this;
     }
 
-    protected function getItemWrapper()
+    protected function getItemWrapper($elementPath)
     {
-        return "<div class='brick'>%s</div>";
+        $class = 'brick';
+        if ($this->youTubeValidator->isValid($elementPath)) {
+            $class .= ' video iframe';
+        }
+        return "<div class='$class'>%s</div>";
     }
 
     protected function getHtmlElementByPath($path)
@@ -31,24 +40,27 @@ class CarouselItem extends AbstractHelper
 
         $helperPluginManager = $this->getView()->getHelperPluginManager();
 
-        $title = $helperPluginManager->get('headTitle');
+        if (!$this->youTubeValidator->isValid($path)) {
+            $title = $helperPluginManager->get('headTitle');
 
-        $elementPath = $_SERVER['DOCUMENT_ROOT'] . $path;
+            $elementPath = $_SERVER['DOCUMENT_ROOT'] . $path;
 
-        $isImage = new IsImage();
+            $isImage = new IsImage();
+            $mimeVideo = new MimeType(array('video','application'));
 
-        $mimeVideo = new MimeType(array('video','application'));
+            if ($isImage->isValid($elementPath)) {
+                return "<img class='img-responsive' src='$path' alt='".$title->renderTitle()."'>";
+            } elseif($mimeVideo->isValid($elementPath)) {
+                $dirName = $dirFilter->filter($path);
+                $baseName = $baseNameFilter->filter($path);
+                $videoPoster = $dirName .'/video-poster-'.md5($baseName).'.jpg';
+                return "<video poster='$videoPoster' width='100%' controls src='$path'></video>";
+            }
 
-        if ($isImage->isValid($elementPath)) {
-            return "<img class='img-responsive' src='$path' alt='".$title->renderTitle()."'>";
-        } elseif($mimeVideo->isValid($elementPath)) {
-            $dirName = $dirFilter->filter($path);
-            $baseName = $baseNameFilter->filter($path);
-            $videoPoster = $dirName .'/video-poster-'.md5($baseName).'.jpg';
-            return "<video poster='$videoPoster' width='100%' controls src='$path'></video>";
+            return false;
+        } else {
+            return "<iframe src='$path' frameborder='0' allowfullscreen></iframe>";
         }
-
-        return false;
     }
 
     public function render($elementsPath = array())
@@ -58,10 +70,9 @@ class CarouselItem extends AbstractHelper
         foreach ($elementsPath as $elementPath) {
             $element = $this->getHtmlElementByPath($elementPath);
             if ($element) {
-                $html[] = sprintf($this->getItemWrapper(), $element);
+                $html[] = sprintf($this->getItemWrapper($elementPath), $element);
             }
         }
-
         return implode("\n",$html);
     }
 }

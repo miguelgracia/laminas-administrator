@@ -2,10 +2,12 @@
 
 namespace Administrator\Filter;
 
+use Administrator\Validator\Youtube;
 use Zend\Dom\Document;
 use Zend\Filter\AbstractFilter;
 use Zend\Filter\Exception;
 use Zend\Filter\PregReplace;
+use Zend\Validator\Regex;
 
 /**
  * Class MediaUri
@@ -51,6 +53,8 @@ class MediaUri extends AbstractFilter
             'replacement' => $this->relativePath.'$2'
         ));
 
+        $youtubeValidator = new Youtube();
+
         if (is_array($value)) {
             foreach ($value as $i => &$val) {
                 if (trim($val) == '') {
@@ -59,8 +63,11 @@ class MediaUri extends AbstractFilter
                 }
                 $val = $this->setSrc($val);
             }
+
         } elseif($value != '') {
-            $value = $pregReplaceFilter->filter($value);
+            if (!$youtubeValidator->isValid($value)) {
+                $value = $pregReplaceFilter->filter($value);
+            }
         }
 
         return $value;
