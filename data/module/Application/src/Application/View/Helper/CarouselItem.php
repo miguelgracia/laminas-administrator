@@ -59,7 +59,7 @@ class CarouselItem extends AbstractHelper
 
             return false;
         } else {
-            return "<iframe src='$path' frameborder='0' allowfullscreen></iframe>";
+            return "<iframe src='$path?rel=0&amp;controls=1&amp;showinfo=0' frameborder='0' allowfullscreen></iframe>";
         }
     }
 
