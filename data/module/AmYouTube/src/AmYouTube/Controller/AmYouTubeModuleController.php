@@ -374,6 +374,7 @@ class AmYouTubeModuleController extends AuthController
         $authErrors = array();
 
         $this->sessionService->action = 'edit';
+        $this->sessionService->id = $id;
 
         $code = $this->params()->fromQuery('code');
 
@@ -400,7 +401,11 @@ class AmYouTubeModuleController extends AuthController
         );
 
         if ($token and !$client->isAccessTokenExpired()) {
-            $form = $formService->setForm($this->form, $model)->addFields()->getForm();
+
+            $form = $formService
+                ->setForm($this->form, $model)
+                ->addFields()
+                ->getForm();
 
             $request = $this->getRequest();
 
@@ -441,7 +446,7 @@ class AmYouTubeModuleController extends AuthController
                 }
             }
 
-            $title = 'Edición';
+            $viewParams['title'] = 'Edición';
 
             $blocks = $this->parseTriggers();
 
@@ -467,6 +472,7 @@ class AmYouTubeModuleController extends AuthController
             $client->revokeToken();
             $checkAuth = true;
         }
+
 
         $viewParams['authUrl'] = $client->createAuthUrl();
         $viewParams['checkAuth'] = $checkAuth;
@@ -566,18 +572,27 @@ class AmYouTubeModuleController extends AuthController
     public function oauthCallbackAction()
     {
         $action = $this->sessionService->action;
+        $id = $this->sessionService->id;
 
         $redirect = $this->redirect();
         $params = $this->params();
 
-        return $redirect->toRoute('administrator',array(
+        $routeParams = array(
             'module' => 'you-tube',
             'action' => $action
-        ),array(
-            'query' => array(
-                'state' => $params->fromQuery('state'),
-                'code' => $params->fromQuery('code')
-            )
+        );
+
+        if (is_numeric($id)) {
+            $routeParams['id'] = $id;
+        }
+
+        $queryParams = array(
+            'state' => $params->fromQuery('state'),
+            'code' => $params->fromQuery('code')
+        );
+
+        return $redirect->toRoute('administrator',$routeParams,array(
+            'query' => $queryParams
         ));
     }
 }
