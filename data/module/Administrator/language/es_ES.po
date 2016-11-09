@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ZendSkeletonApplication\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-09-07 16:05+0200\n"
-"PO-Revision-Date: 2016-10-21 22:59+0200\n"
+"PO-Revision-Date: 2016-10-30 17:27+0100\n"
 "Last-Translator: Adolfo Abegg <adolfoabegg@gmail.com>\n"
 "Language-Team: ZF Contributors <zf-devteam@zend.com>\n"
 "Language: es_ES\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: translate\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Poedit-SearchPath-0: ..\n"
 
 # Zend\I18n\Validator\Alnum
@@ -487,7 +487,7 @@ msgid "is video"
 msgstr "¿Es video?"
 
 msgid "element url"
-msgstr "imagen / video"
+msgstr "Media"
 
 msgid "username"
 msgstr "Usuario"
@@ -613,4 +613,10 @@ msgid "authError"
 msgstr "Error de acceso"
 
 msgid "authError description"
-msgstr "Vaya! Parece que algo ha fallado al intentar conectar con el servicio de Google. Prueba de nuevo :-)."
+msgstr "Vaya! Parece que algo ha fallado al intentar conectar con el servicio de Google. Sincroniza o prueba de nuevo :-)"
+
+msgid "videoNotFound"
+msgstr "Video no encontrado"
+
+msgid "videoNotFound description"
+msgstr "Vaya!, no hemos encontrado el video. Es posible que ya haya sido borrado o que no pertenezca a tu canal"

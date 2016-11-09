@@ -18,7 +18,7 @@ class Blog extends AbstractHelper
                         <div class='row'>
                             <div class='col-md-7'><img class='img-responsive' src='%s' /></div>
                             <div class='col-md-5'>
-                                <h3>%s</h3>
+                                <h3><a href='%s'>%s</a></h3>
                                 %s
                             </div>
                         </div>
@@ -47,20 +47,22 @@ class Blog extends AbstractHelper
             foreach ($blogs as $index => $blog) {
 
                 $blog->imageUrl = json_decode($blog->imageUrl);
+                $linkUrl = $url($lang.'/blog/category/detail',array(
+                    'category' => $blog->categoryUrlKey,
+                    'detail' => $blog->urlKey
+                ));
 
                 $html .= sprintf(
                     $this->getContentWrapper(),
                     (is_array($blog->imageUrl) ? $blog->imageUrl[0] : $blog->imageUrl),
+                    $linkUrl,
                     $blog->title,
                     $blog->content,
                     $url($lang.'/blog/category',array(
                         'category' => $blog->categoryUrlKey
                     )),
                     $blog->categoryTitle,
-                    $url($lang.'/blog/category/detail',array(
-                        'category' => $blog->categoryUrlKey,
-                        'detail' => $blog->urlKey
-                    )),
+                    $linkUrl,
                     $this->translator->translate('Read more','frontend')
                 );
             }

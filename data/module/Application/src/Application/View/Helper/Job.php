@@ -18,7 +18,7 @@ class Job extends AbstractHelper
                         <div class='row'>
                             <div class='col-md-7'><img class='img-responsive' src='%s' /></div>
                             <div class='col-md-5'>
-                                <h3>%s</h3>
+                                <h3><a href='%s'>%s</a></h3>
                                 %s
                             </div>
                         </div>
@@ -47,20 +47,22 @@ class Job extends AbstractHelper
             foreach ($jobs as $index => $job) {
 
                 $job->imageUrl = json_decode($job->imageUrl);
+                $linkUrl = $url($lang . '/jobs/category/detail', array(
+                    'category' => $job->categoryUrlKey,
+                    'detail' => $job->urlKey
+                ));
 
                 $html .= sprintf(
                     $this->getContentWrapper(),
                     (is_array($job->imageUrl) ? $job->imageUrl[0] : $job->imageUrl),
+                    $linkUrl,
                     $job->title,
                     $job->content,
                     $url($lang.'/jobs/category',array(
                         'category' => $job->categoryUrlKey
                     )),
                     $job->categoryTitle,
-                    $url($lang.'/jobs/category/detail',array(
-                        'category' => $job->categoryUrlKey,
-                        'detail' => $job->urlKey
-                    )),
+                    $linkUrl,
                     $this->translator->translate('Show work','frontend')
                 );
             }

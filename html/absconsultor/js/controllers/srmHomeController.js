@@ -4,75 +4,17 @@ function srmHomeController() {
 
     this.indexAction = function() {
 
-        var $slides = $('.bxslider'), video;
+        var players = {}, youtubePlayerAvailable = false;
 
-        var sliderEventCallbacks = function(eventType) {
-
-            return function ($slideElement, oldIndex) {
-
-                var $videoWrapper, $play, $pause;
-
-                if(eventType == 'onSliderLoad') {
-                    //la variable $slideElement, en este caso es igual al indice de la primera slide que carga
-                    $videoWrapper = $slides.eq($slideElement).find('.video-wrapper');
-                } else {
-                    $videoWrapper = $slideElement.find('.video-wrapper');
-                }
-
-                if($videoWrapper) {
-
-                    $play = $videoWrapper.find('.fa-play');
-                    $pause = $videoWrapper.find('.fa-pause');
-
-                    if(video) {
-                        video.pause();
-                        $slides.children().eq(oldIndex).find('.fa-play').removeClass('hide');
-                        $slides.children().eq(oldIndex).find('.fa-pause').addClass('hide');
-                    }
-
-                    video = $videoWrapper.find('video')[0];
-
-                    var videoControlEvents = function(controlType) {
-
-                        return function(e) {
-
-                            switch (controlType) {
-                                case 'play':
-                                    $play.addClass('hide');
-                                    $pause.removeClass('hide');
-                                    if(video.paused) {
-                                        video.play();
-                                    }
-                                    break;
-                                case 'pause':
-                                    $play.removeClass('hide');
-                                    $pause.addClass('hide');
-                                    if(video.played) {
-                                        video.pause();
-                                    }
-                                    break;
-                            }
-                        };
-                    };
-
-                    $play.click(videoControlEvents('play'));
-                    $pause.click(videoControlEvents('pause'));
-
-                    if(video) {
-                        //$play.trigger('click');
-                    }
-                }
-            };
-        };
+        var $slides = $('.bxslider');
 
         var bxSlider = $slides.bxSlider({
             mode: 'fade',
             adaptiveHeight: true,
             pager: false,
-            video: true,
             preloadImages: 'all',
-            onSliderLoad: sliderEventCallbacks('onSliderLoad'),
-            onSlideAfter: sliderEventCallbacks('onSlideAfter')
+            auto: true,
+            pause: 5000
         });
 
         var $nav = $('nav');
@@ -99,8 +41,83 @@ function srmHomeController() {
             items : 1,
             itemsDesktop : [1199,1],
             itemsDesktopSmall : [979,1],
-            itemsTablet: [768, 1]
+            itemsTablet: [768, 1],
+            autoHeight: true,
+            afterInit: function() {
+
+                var itemsCount = this.$owlItems.length,
+                    currentItem;
+
+                var setPlayVideoEvent = function(playerIndex, item) {
+
+                    return function(e) {
+                        e.preventDefault();
+                        this.style.opacity = '0';
+
+                        if(players[playerIndex].youtubePlayer != false) {
+
+                            if(players[playerIndex].youtubePlayer.getPlayerState() == '1') {
+                                players[playerIndex].youtubePlayer.pauseVideo();
+                            } else {
+                                players[playerIndex].youtubePlayer.playVideo();
+                            }
+                            return;
+                        }
+
+                        var playerData = players[playerIndex].data;
+
+                        var videoId = playerData.item.firstChild.dataset.src;
+
+                        playerData.videoWrapper.insertBefore(playerData.videoContainer, playerData.videoWrapper.firstChild);
+
+                        players[playerIndex].youtubePlayer = new YT.Player(playerData.videoContainer, {
+                            events: {
+                                'onReady': function(e) {
+                                    //e.target.playVideo();
+                                },
+                                'onStateChange': function() {
+
+                                }
+                            }
+                        });
+                    };
+                };
+
+                for (var i = 0; i < itemsCount; i++) {
+                    currentItem = this.$owlItems[i];
+                    var playerData = {};
+
+                    if(currentItem.firstChild.classList.contains('video')) {
+
+                        playerData.item = this.$owlItems[i];
+                        players[i] = {
+                            data: playerData,
+                            youtubePlayer: false
+                        };
+                    }
+                }
+            },
+            afterMove: function() {
+
+                if(typeof players[this.prevItem] == 'undefined') {
+                    return;
+                }
+
+                if(players[this.prevItem].youtubePlayer != false) {
+                    players[this.prevItem].youtubePlayer.pauseVideo();
+                }
+            }
         });
+
+        var youtubeScript = document.createElement('script');
+        youtubeScript.src = 'https://www.youtube.com/iframe_api';
+
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(youtubeScript, firstScriptTag);
+
+        window.onYouTubeIframeAPIReady = function() {
+            youtubePlayerAvailable = true;
+        }
     };
 }
 simpleJSRoutingManager.srmController(srmHomeController);

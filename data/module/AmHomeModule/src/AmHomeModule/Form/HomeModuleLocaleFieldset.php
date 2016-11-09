@@ -25,6 +25,11 @@ class HomeModuleLocaleFieldset extends AdministratorFieldset
         $class = $imageUrl->getAttribute('class');
         $class .= ' browsefile';
         $imageUrl->setAttribute('class',$class);
+        $imageUrl->setAttribute('readonly','readonly');
+
+        $youtubeVideos = $this->serviceLocator->getServiceLocator()->get('YoutubeService')->getVideosInDatabase();
+
+        $imageUrl->setAttribute('data-youtube',json_encode($youtubeVideos->toObjectArray()));
 
         $imageUrl->setOption('partial_view','am-job/am-job-module/form-partial/image-url');
         $imageUrl->setOption('allow_add_multiple_files', true);

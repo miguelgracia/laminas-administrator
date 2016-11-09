@@ -23,6 +23,10 @@ h1, h2, h3, h4, h5, h6 {
     text-transform: uppercase;
 }
 
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+    color: #00344f;
+}
+
 article {
     margin-bottom: 50px;
 }
@@ -126,7 +130,12 @@ form textarea.form-control {
 }
 
 .abs .breadcrumb {
-    padding-top: 130px;
+    padding-top: 110px;
+    padding-left: 0;
+    margin-bottom: 10px;
+}
+
+.abs .breadcrumb > li:first-child a {
     padding-left: 0;
 }
 
@@ -135,7 +144,7 @@ form textarea.form-control {
 }
 
 .abs .breadcrumb a:hover {
-    border-top: 1px solid #00344f;;
+    border-top: 1px solid #00344f;
     border-bottom: 1px solid #00344f;
 }
 
@@ -151,7 +160,7 @@ nav {
 
 
 nav.navbar-fixed-top.not-visible {
-    top: 0px;
+    top: 0;
 }
 
 nav.navbar-fixed-top.visible {
@@ -391,6 +400,7 @@ footer a.legal-link:first-child:after {
     background-color: white;
     width: 100%;
     padding: 10px;
+    z-index: 99;
 }
 
 
@@ -404,10 +414,11 @@ footer a.legal-link:first-child:after {
 
 /** EMPRESA **/
 
-#collaborators_carousel .item{
+#collaborators_carousel .item {
     margin: 3px;
+    padding: 0 30px;
 }
-#collaborators_carousel .item img{
+#collaborators_carousel .item img {
     display: block;
     width: 100%;
     height: auto;

@@ -27,6 +27,11 @@ $(function () {
                         if(data.status == 'ko') {
                             title = 'Error';
                             type = 'danger';
+                            message = '';
+                            for(var e = 0; e < data.error.errors.length; e++) {
+                                message += data.error.errors[e].message + "<br>";
+                            }
+                            console.log(data);
                         }
 
                         var calloutParams = [

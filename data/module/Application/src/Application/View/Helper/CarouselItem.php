@@ -49,7 +49,7 @@ class CarouselItem extends AbstractHelper
             $mimeVideo = new MimeType(array('video','application'));
 
             if ($isImage->isValid($elementPath)) {
-                return "<img class='img-responsive' src='$path' alt='".$title->renderTitle()."'>";
+                return "<i class='fa fa-search-plus'></i><img class='img-responsive' src='$path' alt='".$title->renderTitle()."'>";
             } elseif($mimeVideo->isValid($elementPath)) {
                 $dirName = $dirFilter->filter($path);
                 $baseName = $baseNameFilter->filter($path);

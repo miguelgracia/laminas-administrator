@@ -28,7 +28,8 @@
                                 <li>Contacto</li>
                                 <li>Trabajos</li>
                             </ul>
-                            <p>Los campos que podemos editar son los siguientes:</p>
+               
+             <p>Los campos que podemos editar son los siguientes:</p>
                             <ul>
                                 <li><strong>Clave</strong> Clave única que identifica nuestro registro de sección.
                                     Debe ser descriptiva y nombre debe estar relacionado con los datos que vamos
@@ -242,9 +243,11 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            Para dar de alta un trabajo, es necesario asignarle una categoría. Para acceder
-                            a la gestión de categorías, deplegamos el menú "Trabajos" y pulsamos sobre el
-                            boton "Categorías". Los campos de categoría que podemos editar son los siguientes:
+                            <p>
+                                Para dar de alta un trabajo, es necesario asignarle una <strong>categoría</strong>. Para acceder
+                                a la gestión de categorías, deplegamos el menú "Trabajos" y pulsamos sobre el
+                                boton "Categorías". Los campos de categoría que podemos editar son los siguientes:
+                            </p>
                             <ul>
                                 <li><strong>Clave</strong>: Nombre único que distingue la categoría del resto</li>
                                 <li><strong>Activo</strong>: Activar o desactivar una categoría. <strong>Importante:</strong>
@@ -252,10 +255,33 @@
                                 a estar desactivados tambíen, por lo que si intentamos acceder a ellos, la web nos
                                 dará un error 404 (Página no encontrada)
                                 </li>
-                                <li><strong>Título</strong>Nombre de la categoría. Dicho nombre será el que aparezca
+                                <li><strong>Título</strong>: Nombre de la categoría. Dicho nombre será el que aparezca
                                 en el lateral derecho del listado de trabajos y como sub título en el detalle de un
                                 trabajo</li>
                             </ul>
+
+                            <p>Una vez tengamos lista al menos una categoría, podremos dar de alta nuestros trabajos.
+                            Los campos de la sección trabajos que podremos editar son los siguientes:</p>
+
+                            <ul>
+                                <li><strong>Categoría</strong>: Categoría a la que pertenecerá nuestro trabajo</li>
+                                <li><strong>Clave</strong>: Nombre único que distingue a un trabajo del resto</li>
+                                <li>Url Media: Imágen o video de youtube que podremos asociar a nuestro trabajo
+                                    Podemos añadir más de 1 archivo o video de youtube</li>
+                                <li><strong>Activo</strong>: Activar o desactivar el trabajo</li>
+                                <li><strong>Título</strong>: Título del trabajo</li>
+                                <li><strong>Segmento url</strong>: Este campo será una cadena de texto que identifica
+                                nuestro trabajo dentro de la url. Nunca podrá existir dos trabajos con el mismo valor
+                                    en su segmento url.</li>
+                                <li><strong>Contenido</strong>: Texto descriptivo de nuestro trabajo</li>
+                                <li>
+                                    <strong>Descripción interna (SEO)</strong>: El contenido que introduzcamos aquí no se verá
+                                    directamente en la web pero es igual de importante que si lo vieramos. Su redacción debe
+                                    cuidarse al máximo ya que ayuda al correcto posicionamiento de la web. Además, será
+                                    el texto que se muestre como descripción cuando compartamos la url por Facebook.
+                                </li>
+                            </ul>
+
                         </div>
                     </div>
                     <div class="panel box box-success collapsed-box" data-id="207">
@@ -270,46 +296,77 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="box-body"></div>
+                        <div class="box-body">
+                            <p>Para dar de alta contenido en la sección Blog, podemos aplicar los mismos pasos
+                            que para la sección Trabajos.</p>
+                        </div>
                     </div>
                     <div class="panel box box-success collapsed-box" data-id="216">
                         <div class="box-header">
                             <h4 class="box-title">
                                 <a data-toggle="collapse" data-parent="#menu_accordion" href="#collapse7">
-                                    Megabanners                                </a>
+                                    Megabanners
+                                </a>
                             </h4>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="box-body"></div>
+                        <div class="box-body">
+                            <p>
+                                Los megabanners son las imágenes que se muestran en la cabecera de la home.
+                                Ocupan el 100% del ancho de la ventana, por lo que su elección debe ser muy cuidada.
+                                <strong>Las dimensiones de la imagen deben rondar los 1300x550 pixeles</strong>
+                                Los campos que podremos editar son los siguientes:
+                            </p>
+                            <ul>
+                                <li><strong>Url del archivo</strong>: Archivo de imagen a subir</li>
+                                <li><strong>Activo</strong>: Activar o desactivar una imagen</li>
+                                <li><strong>Posición</strong>: Posición ordinal que ocupará la imagen
+                                en el carrusel. Cuanto más pequeño sea el número,antes se mostrará
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="panel box box-success collapsed-box" data-id="215">
                         <div class="box-header">
                             <h4 class="box-title">
                                 <a data-toggle="collapse" data-parent="#menu_accordion" href="#collapse8">
-                                    Media                                </a>
+                                    Media
+                                </a>
                             </h4>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="box-body"></div>
+                        <div class="box-body">
+                            <p>
+                                La sección media es la que nos facilita la gestión de los archivos
+                                de multimedia que posteriormente asociaremos a las distintas secciones de
+                                la web que puedan (o requieran) tener algún archivo de imagen.
+                                Su funcionamiento es similar al explorador de archivos de windows,
+                                pudiendo crear/eliminar/renombrar carpetas para incluir los archivos en ellas.
+                                Desde aquí, además, deberemos subir los videos que iran al canal de youtube.
+                            </p>
+                        </div>
                     </div>
                     <div class="panel box box-success collapsed-box" data-id="218">
                         <div class="box-header">
                             <h4 class="box-title">
                                 <a data-toggle="collapse" data-parent="#menu_accordion" href="#collapse9">
-                                    Páginas Legales                                </a>
+                                    Páginas Legales
+                                </a>
                             </h4>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="box-body"></div>
+                        <div class="box-body">
+
+                        </div>
                     </div>
                 </div>
 

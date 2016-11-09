@@ -20,11 +20,23 @@
 }
 .masonry .brick {
     margin-bottom: 17px;
+    position: relative;
 }
-.masonry .brick img, .masonry .brick video {
+.masonry .brick img,
+.masonry .brick video {
     -moz-transition: all .5s ease-in-out;
     -webkit-transition: all .5s ease-in-out;
     transition: all .5s ease-in-out;
+}
+
+.masonry .brick .fa-search-plus {
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    top: 10px;
+    right: 15px;
+    color: white;
+    font-size: 15px;
 }
 
 .masonry.bordered .brick.video.iframe {
@@ -35,7 +47,7 @@
     overflow:hidden;
 }
 
-.video.iframe iframe, .video.iframe object, .video.iframe embed {
+.iframe iframe, .iframe object, .iframe embed {
     position:absolute;
     top:0;
     left:0;

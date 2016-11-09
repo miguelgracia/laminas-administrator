@@ -37,6 +37,7 @@ class JobFieldset extends AdministratorFieldset
         $class = $imageUrl->getAttribute('class');
         $class .= ' browsefile';
         $imageUrl->setAttribute('class',$class);
+        $imageUrl->setAttribute('readonly','readonly');
 
         $youtubeVideos = $this->serviceLocator->getServiceLocator()->get('YoutubeService')->getVideosInDatabase();
 

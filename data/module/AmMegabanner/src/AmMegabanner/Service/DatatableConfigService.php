@@ -4,11 +4,14 @@ namespace AmMegabanner\Service;
 
 use Administrator\Service\DatatableConfig;
 use Administrator\Service\DatatableConfigInterface;
+use Administrator\Validator\Youtube;
 
 class DatatableConfigService extends DatatableConfig implements DatatableConfigInterface
 {
     public function getDatatableConfig()
     {
+        $youtubeValidator = new Youtube();
+
         $disallowSearchTo = array (
             'megabanners.id' => false,
         );
@@ -26,21 +29,16 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
                 $thisClass->setEditAndDeleteColumnsOptions($header);
                 return $header;
             },
-            'parse_row_data'=> function ($row) use($thisClass) {
+            'parse_row_data'=> function ($row) use($thisClass, $youtubeValidator) {
 
                 //$row contiene los datos de cada una de las filas que ha generado la consulta.
                 //Desde aquí podemos parsear los datos antes de visualizarlos por pantalla
 
-                if ($row['is_video']) {
-                    $row['element_url'] = sprintf("<a href='%s' target='_blank'>Ver video</a>", $row['element_url']);
-                } else {
-                    $row['element_url'] = sprintf("<img src='%s' width='100'/>", $row['element_url']);
-                }
+                $row['element_url'] = sprintf("<img src='%s' width='100'/>", $row['element_url']);
 
                 $thisClass->setEditAndDeleteColumnsValues($row);
 
                 $row['active'] = $row['active'] == '1' ? 'SI' : 'NO';
-                $row['is_video'] = $row['is_video'] == '1' ? 'SI' : 'NO';
 
                 return $row;
             }
@@ -54,7 +52,6 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             'fields' => array(
                 'id',
                 'active',
-                'is_video',
                 'element_url',
                 'order'
             ),

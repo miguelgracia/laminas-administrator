@@ -50,10 +50,6 @@ class AmYouTubeModuleController extends AuthController
 
         if ($token and !$client->isAccessTokenExpired()) {
 
-            $this->tableGateway->delete(new Expression(
-                'channel_id IS NULL OR channel_id = "" OR  LENGTH(code) < 11'
-            ));
-
             try {
                 // Call the channels.list method to retrieve information about the
                 // currently authenticated user's channel.
@@ -166,7 +162,6 @@ class AmYouTubeModuleController extends AuthController
     private function manageErrors($objError)
     {
         $errors = $objError->error->errors;
-
         foreach ($errors as $err) {
             $this->flashMessenger()->addErrorMessage($err->reason);
         }
@@ -361,15 +356,16 @@ class AmYouTubeModuleController extends AuthController
             return $this->goToSection($thisModule);
         }
 
-        try {
-            $model = $this->tableGateway->find($id);
-        } catch (\Exception $ex) {
-            return $this->goToSection($thisModule);
-        }
-
         $youtubeService = $this->serviceLocator->get('YoutubeService');
         $client = $youtubeService->getClient();
         $youtube = $youtubeService->getYoutubeService();
+
+        try {
+            $model = $this->tableGateway->find($id);
+        }catch (\Exception $ex) {
+            return $this->goToSection($thisModule);
+        }
+
         $checkAuth = false;
         $authErrors = array();
 
@@ -437,10 +433,12 @@ class AmYouTubeModuleController extends AuthController
                     } catch (\Google_Service_Exception $e) {
                         $this->manageErrors(json_decode($e->getMessage()));
                         $client->revokeToken();
+                        return $this->goToSection($thisModule);
                         $checkAuth = true;
                     } catch (\Google_Exception $e) {
                         $this->manageErrors(json_decode($e->getMessage()));
                         $client->revokeToken();
+                        return $this->goToSection($thisModule);
                         $checkAuth = true;
                     }
                 }
@@ -483,11 +481,15 @@ class AmYouTubeModuleController extends AuthController
 
     public function deleteAction()
     {
+        $request = $this->getRequest();
+
+        if (!$request->isPost()) {
+            return $this->goToSection('login');
+        }
+
         $youtubeService = $this->serviceLocator->get('YoutubeService');
         $client = $youtubeService->getClient();
         $youtube = $youtubeService->getYoutubeService();
-        $checkAuth = false;
-        $authErrors = array();
 
         $this->sessionService->action = 'index';
 
@@ -500,73 +502,94 @@ class AmYouTubeModuleController extends AuthController
 
         $response = $this->getResponse();
 
-        if ($token and !$client->isAccessTokenExpired()) {
-            $request = $this->getRequest();
-
-            if ($request->isPost()) {
-
-                $videoId = $this->params()->fromRoute('id');
-
-                $rowVideo = $this->tableGateway->find($videoId);
-
-                $codeVideo = $rowVideo->code;
-
-                try {
-                    $videos = $youtube->videos->listVideos('snippet,status', array('id' => $codeVideo));
-                    if (isset($videos[0])) {
-
-                        $youtube->videos->delete($codeVideo);
-
-                        $this->tableGateway->delete(array('id' => $videoId));
-
-                        $response->setContent(json_encode(array(
-                            'status' => 'ok',
-                            'message' => 'El video ha sido eliminado'
-                        )));
-
-                        return $response;
-                    } else {
-                        $response->setContent(json_encode(array(
-                            'status' => 'ko',
-                            'message' => 'El video no existe, ha sido borrado o no tiene permisos para eliminarlo  debido a que pertenece a otro canal de YouTube).'
-                        )));
-
-                        return $response;
-                    }
-
-                } catch (\Google_Service_Exception $e) {
-                    $response->setContent(json_encode(array(
-                        'status' => 'ko',
-                        'message' => $e->getMessage()
-                    )));
-                    return $response;
-                } catch (\Google_Exception $e) {
-                    $response->setContent(json_encode(array(
-                        'status' => 'ko',
-                        'message' => $e->getMessage()
-                    )));
-                    return $response;
-                } catch (\Exception $e) {
-                    $response->setContent(json_encode(array(
-                        'status' => 'ko',
-                        'message' => $e->getMessage()
-                    )));
-                    return $response;
-                }
-            }
-        } else {
+        if (!$token or $client->isAccessTokenExpired()) {
             $response->setContent(json_encode(array(
                 'status' => 'ko',
+                'error' => array(
+                    'errors' => array(
+                        array(
+                            "reason" => "cannot.access", //Este error no lo devuelve la api.
+                            "message" => "No ha sido posible acceder a la cuenta de google. Pulse en el botón \"sincronizar\" situado en la cabecera de este listado e inténtelo de nuevo.",
+                        )
+                    )
+                ),
                 'message' => 'No ha sido posible acceder a la cuenta de google. Pulse en el botón "sincronizar" situado en la cabecera de este listado e inténtelo de nuevo.'
             )));
             return $response;
         }
 
-        echo "<pre>";
-        print_r('jarrrrr');
-        echo "</pre>";
-        die;
-        //return $this->goToSection('login');
+        $videoId = $this->params()->fromRoute('id');
+        $rowVideo = $this->tableGateway->find($videoId);
+        $codeVideo = $rowVideo->code;
+
+        try {
+            $videos = $youtube->videos->listVideos('snippet,status', array('id' => $codeVideo));
+            if (isset($videos[0])) {
+
+                $youtube->videos->delete($codeVideo);
+
+                $this->tableGateway->delete(array('id' => $videoId));
+
+                $response->setContent(json_encode(array(
+                    'status' => 'ok',
+                    'message' => 'El video ha sido eliminado'
+                )));
+
+                return $response;
+            } else {
+                $response->setContent(json_encode(array(
+                    'status' => 'ko',
+                    'error' => array(
+                        'errors' => array(
+                            array(
+                                "reason" => "fail.delete", //Este error no lo devuelve la api.
+                                'message' => 'El video no existe, ha sido borrado o no tiene permisos para eliminarlo  debido a que pertenece a otro canal de YouTube.'
+                            )
+                        )
+                    ),
+                    'message' => 'El video no existe, ha sido borrado o no tiene permisos para eliminarlo  debido a que pertenece a otro canal de YouTube.'
+                )));
+
+                return $response;
+            }
+
+        } catch (\Google_Service_Exception $e) {
+            $errorMessage = $this->translateMessages(json_decode($e->getMessage()));
+            $arrayError = array(
+                'status' => 'ko',
+                'message' => json_decode($e->getMessage()),
+                'error' => $errorMessage->error
+            );
+            $response->setContent(json_encode($arrayError));
+            return $response;
+        } catch (\Google_Exception $e) {
+            $errorMessage = $this->translateMessages(json_decode($e->getMessage()));
+            $arrayError = array(
+                'status' => 'ko',
+                'message' => json_decode($e->getMessage()),
+                'error' => $errorMessage->error
+            );
+            $response->setContent(json_encode($arrayError));
+            return $response;
+        } catch (\Exception $e) {
+            $errorMessage = $this->translateMessages(json_decode($e->getMessage()));
+            $arrayError = array(
+                'status' => 'ko',
+                'message' => json_decode($e->getMessage()),
+                'error' => $errorMessage->error
+            );
+            $response->setContent(json_encode($arrayError));
+            return $response;
+        }
+    }
+
+    private function translateMessages($messages)
+    {
+
+        foreach ($messages->error->errors as &$error) {
+            $error->message = $this->serviceLocator->get('translator')->translate($error->reason . ' description');
+        }
+        return $messages;
     }
 
     public function oauthCallbackAction()
