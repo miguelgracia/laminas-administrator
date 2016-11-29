@@ -14,7 +14,14 @@ class BlogController extends ApplicationController
 
             $menuLang = $menu->locale->{$this->lang};
 
-            $this->headTitleHelper->append($menuLang[$menu->rows->blog->id]->name);
+            $menuLangBlog = $menuLang[$menu->rows->blog->id];
+
+            $this->headTitleHelper->append($menuLangBlog->name);
+
+            $ogFacebook = $this->openGraph->facebook();
+            $ogFacebook->title = $this->headTitleHelper->renderTitle();
+            $ogFacebook->description = $menuLangBlog->metaDescription;
+            $this->layout()->setVariable('og',$ogFacebook);
 
             $page = $this->params()->fromQuery('page');
 
@@ -52,8 +59,15 @@ class BlogController extends ApplicationController
 
             $currentCategory = $blogCategories['locale'][$this->lang][$uriCategories[$category]];
 
-            $this->headTitleHelper->append($menuLang[$menu->rows->blog->id]->name);
+            $menuLangBlog = $menuLang[$menu->rows->blog->id];
+
+            $this->headTitleHelper->append($menuLangBlog->name);
             $this->headTitleHelper->append($currentCategory['title']);
+
+            $ogFacebook = $this->openGraph->facebook();
+            $ogFacebook->title = $this->headTitleHelper->renderTitle();
+            $ogFacebook->description = $menuLangBlog->metaDescription;
+            $this->layout()->setVariable('og',$ogFacebook);
 
             $blogs = $this->api->blog->getData($this->lang, $category, $page);
 
@@ -98,9 +112,19 @@ class BlogController extends ApplicationController
 
                 $currentCategory = $blogCategories['locale'][$this->lang][$uriCategories[$category]];
 
-                $this->headTitleHelper->append($menuLang[$this->menu->rows->blog->id]->name);
+                $menuLangBlog = $menuLang[$this->menu->rows->blog->id];
+
+                $this->headTitleHelper->append($menuLangBlog->name);
                 $this->headTitleHelper->append($currentCategory['title']);
                 $this->headTitleHelper->append($blog->title);
+
+                $ogFacebook = $this->openGraph->facebook();
+                $ogFacebook->title = $this->headTitleHelper->renderTitle();
+                $ogFacebook->description = $menuLangBlog->metaDescription;
+
+                $ogFacebook->image = json_decode($blog->getImageUrl());
+
+                $this->layout()->setVariable('og',$ogFacebook);
 
                 $viewModel = new ViewModel(array(
                     'menu'              => $this->menu,

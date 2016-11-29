@@ -14,7 +14,15 @@ class JobController extends ApplicationController
 
             $menuLang = $menu->locale->{$this->lang};
 
-            $this->headTitleHelper->append($menuLang[$menu->rows->jobs->id]->name);
+            $menuLangJob = $menuLang[$menu->rows->jobs->id];
+
+            $this->headTitleHelper->append($menuLangJob->name);
+
+            $ogFacebook = $this->openGraph->facebook();
+            $ogFacebook->title = $this->headTitleHelper->renderTitle();
+            $ogFacebook->description = $menuLangJob->metaDescription;
+
+            $this->layout()->setVariable('og',$ogFacebook);
 
 
             $page = $this->params()->fromQuery('page');
@@ -53,8 +61,16 @@ class JobController extends ApplicationController
 
             $currentCategory = $jobCategories['locale'][$this->lang][$uriCategories[$category]];
 
-            $this->headTitleHelper->append($menuLang[$menu->rows->jobs->id]->name);
+            $menuLangJob = $menuLang[$menu->rows->jobs->id];
+
+            $this->headTitleHelper->append($menuLangJob->name);
             $this->headTitleHelper->append($currentCategory['title']);
+
+            $ogFacebook = $this->openGraph->facebook();
+            $ogFacebook->title = $this->headTitleHelper->renderTitle();
+            $ogFacebook->description = $menuLangJob->metaDescription;
+
+            $this->layout()->setVariable('og',$ogFacebook);
 
             $jobs = $this->api->job->getData($this->lang, $category, $page);
 
@@ -99,9 +115,19 @@ class JobController extends ApplicationController
 
                 $currentCategory = $jobCategories['locale'][$this->lang][$uriCategories[$category]];
 
-                $this->headTitleHelper->append($menuLang[$this->menu->rows->jobs->id]->name);
+                $menuLangJob = $menuLang[$this->menu->rows->jobs->id];
+
+                $this->headTitleHelper->append($menuLangJob->name);
                 $this->headTitleHelper->append($currentCategory['title']);
                 $this->headTitleHelper->append($job->title);
+
+                $ogFacebook = $this->openGraph->facebook();
+                $ogFacebook->title = $this->headTitleHelper->renderTitle();
+                $ogFacebook->description = $job->metaDescription;
+
+                $ogFacebook->image = json_decode($job->getImageUrl());
+
+                $this->layout()->setVariable('og',$ogFacebook);
 
                 $viewModel = new ViewModel(array(
                     'menu'              => $this->menu,

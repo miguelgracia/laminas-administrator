@@ -22,6 +22,10 @@ echo $this->doctype(); ?>
                         ->prependStylesheet('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans')
         ?>
         <meta name="theme-color" content="#00344F">
+
+        <?php if (isset($this->og)) {
+            $this->OpenGraphTag()->render($this->og);
+        }?>
     </head>
     <body>
         <nav class="navbar navbar-fixed-top transition not-visible" role="navigation">

@@ -35,6 +35,11 @@ class ImageService implements FactoryInterface
     /**
      * @var string
      */
+    protected $imageBackground = '#ffffff';
+
+    /**
+     * @var string
+     */
     protected $cacheImagePath = null;
 
     /**
@@ -125,13 +130,18 @@ class ImageService implements FactoryInterface
         }
     }
 
-    public function createImage($width = null, $height = null)
+    public function setImageBackground($color)
+    {
+        $this->imageBackground = $color;
+    }
+
+    public function createImage($width = null, $height = null, $clearCache = false)
     {
         $docRootCacheImagePath = $this->realPathFilter->filter($this->documentRoot.'/cache_media/');
 
         $cacheImagePath = $docRootCacheImagePath.DIRECTORY_SEPARATOR.$this->cacheImagePath;
 
-        if (!$this->isImageValidator->isValid($cacheImagePath)) {
+        if (!$this->isImageValidator->isValid($cacheImagePath) or $clearCache) {
             $preventUpsize = function ($constraint) {
                 $constraint->upsize();
             };
@@ -146,7 +156,7 @@ class ImageService implements FactoryInterface
             }
 
             $image->fit($width,$height,$preventUpsize);
-            $image->resizeCanvas($width,$height);
+            $image->resizeCanvas($width,$height,'center',false, $this->imageBackground);
 
             $arrayDirs = explode(DIRECTORY_SEPARATOR, $this->dirFilter->filter($this->cacheImagePath));
 

@@ -13,7 +13,15 @@ class CompanyController extends ApplicationController
 
             $menuLang = $menu->locale->{$this->lang};
 
-            $this->headTitleHelper->append($menuLang[$menu->rows->company->id]->name);
+            $menuLangCompany = $menuLang[$menu->rows->company->id];
+
+            $this->headTitleHelper->append($menuLangCompany->name);
+
+            $ogFacebook = $this->openGraph->facebook();
+            $ogFacebook->title = $this->headTitleHelper->renderTitle();
+            $ogFacebook->description = $menuLangCompany->metaDescription;
+
+            $this->layout()->setVariable('og',$ogFacebook);
 
             $viewParams = array(
                 'menu' => $menu,

@@ -20,6 +20,8 @@ abstract class ApplicationController extends AbstractActionController
 
     protected $headTitleHelper;
 
+    protected $openGraph;
+
     public function onDispatch(MvcEvent $e)
     {
         $this->headTitleHelper = $e->getApplication()->getServiceManager()->get('ViewHelperManager')->get('headTitle');
@@ -35,6 +37,15 @@ abstract class ApplicationController extends AbstractActionController
         $this->session = $this->serviceLocator->get('Application\Service\SessionService');
 
         $this->api = $this->serviceLocator->get('Application\Api');
+
+        $this->openGraph = $this->serviceLocator->get('OpenGraph');
+        $ogFacebook = $this->openGraph->facebook();
+        $ogFacebook->fb_id = "1593489187619085";
+        $ogFacebook->type = "website";
+        $ogFacebook->url = 'http://' . $_SERVER['SERVER_NAME'] . '/' . $_SERVER['REQUEST_URI'];
+        $ogFacebook->width = "500";
+        $ogFacebook->height = "300";
+        $ogFacebook->image = "http://absconsultor.es/img/white-logo-blue-background.png";
 
         $routeParams = $this->getEvent()->getRouteMatch()->getParams();
 

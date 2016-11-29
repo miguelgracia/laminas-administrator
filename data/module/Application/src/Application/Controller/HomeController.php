@@ -15,7 +15,18 @@ class HomeController extends ApplicationController
 {
     public function indexAction()
     {
+        $menu = $this->menu;
+
+        $menuLang = $menu->locale->{$this->lang};
+        $menuLangHome = $menuLang[$menu->rows->home->id];
+
         $this->headTitleHelper->append('Home');
+
+        $ogFacebook = $this->openGraph->facebook();
+        $ogFacebook->title = $this->headTitleHelper->renderTitle();
+        $ogFacebook->description = $menuLangHome->metaDescription;
+
+        $this->layout()->setVariable('og',$ogFacebook);
 
         return new ViewModel(array(
             'homeModules'   => $this->api->homeModule->getData($this->lang),

@@ -21,7 +21,15 @@ class ContactController extends ApplicationController
 
         $menuLang = $this->menu->locale->{$this->lang};
 
+        $menuLangContact = $menuLang[$menu->rows->contact->id];
+
         $this->headTitleHelper->append($menuLang[$this->menu->rows->contact->id]->name);
+
+        $ogFacebook = $this->openGraph->facebook();
+        $ogFacebook->title = $this->headTitleHelper->renderTitle();
+        $ogFacebook->description = $menuLangContact->metaDescription;
+
+        $this->layout()->setVariable('og',$ogFacebook);
 
         $mailSended = null;
 

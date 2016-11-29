@@ -20,7 +20,7 @@ return array(
                         'options' => array(
                             'route' => '/[:rnd]',
                             'constraints' => array(
-                                'rnd' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'rnd' => '[a-zA-Z0-9_-]*',
                             ),
                             'defaults' => array(
                                 '__NAMESPACE__' => 'MediaDispatcher\Controller',

@@ -57,6 +57,7 @@ class Module
                 'blogCategoryHelper'    => 'Application\View\Helper\BlogCategory',
                 'contactFormHelper'     => 'Application\View\Helper\ContactForm',
                 'carouselItemHelper'    => 'Application\View\Helper\CarouselItem',
+                'facebookShareHelper'   => 'Application\View\Helper\FacebookShare',
             ),
         );
     }

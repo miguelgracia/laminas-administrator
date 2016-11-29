@@ -2,7 +2,6 @@
 return array(
     'modules' => array(
         'Application',
-        'MediaDispatcher',
         'Administrator',
         'AmLogin',
         'AmHome',
@@ -26,7 +25,9 @@ return array(
         'AmAppData',
         'Api',
         'AmPartner',
-        'AmYouTube'
+        'AmYouTube',
+        'MediaDispatcher',
+        'OpenGraph'
     ),
     'hidden_modules' => array(
         'AmLogin',

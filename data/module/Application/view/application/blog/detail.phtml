@@ -26,7 +26,9 @@ $carouselHelper = $this->carouselItemHelper();
                 <div id="owl_carousel">
                     <?php echo $carouselHelper->render($images)?>
                 </div>
-                <?=$blog->content;?>
+                <?=$blog->content;
+                $this->facebookShareHelper()->render();
+                ?>
             </div>
         </div>
     </article>
