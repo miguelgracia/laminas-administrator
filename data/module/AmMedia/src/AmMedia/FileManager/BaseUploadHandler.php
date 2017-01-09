@@ -1357,7 +1357,7 @@ class BaseUploadHandler
                     } else {
                         $size = ($size == 0) ? 0 : $size - $subBytes;
                     }
-                    $headers->addHeader('Range','0-'.$size);
+                    $headers->addHeaderLine('Range','0-'.$size);
                     //$this->header('Range: 0-' . $size);
                 }
             }
