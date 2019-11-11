@@ -6,6 +6,8 @@
 
 namespace Administrator;
 
+use Administrator\Factory\AdministratorFormServiceFactory;
+use Administrator\Service\AdministratorFormService;
 use Administrator\View\Helper\AdministratorFormRow;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
@@ -73,7 +75,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 
                 'AuthService'                                       => 'Administrator\Service\AuthService',
                 'Administrator\Service\SessionService'              => 'Administrator\Service\SessionService',
-                'Administrator\Service\AdministratorFormService'    => 'Administrator\Service\AdministratorFormService',
+                AdministratorFormService::class => AdministratorFormServiceFactory::class,
                 'Administrator\Service\DatatableService'            => 'Administrator\Service\DatatableService',
             ),
             'invokables' => array(

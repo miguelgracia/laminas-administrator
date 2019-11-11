@@ -11,7 +11,7 @@ return array(
         'template_map' => array(
             'layout/admin-layout'       => __DIR__ . '/../view/layout/admin-layout.phtml',
             'layout/admin-login-layout' => __DIR__ . '/../view/layout/admin-login-layout.phtml',
-            //'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
+            'error/index'               => __DIR__ . '/../view/layout/error.phtml',
             //'error/404'               => __DIR__ . '/../view/error/404.phtml',
             //'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ),
@@ -41,11 +41,11 @@ return array(
 
         'routes' => array(
             'administrator' => array(
-                'type' => 'Segment',
+                'type' => \Zend\Router\Http\Segment::class,
                 'options' => array(
                     'route' => '/admin[/[:module[/[:action[/[:id]]]]]]',
                     'defaults' => array(
-                        'controller' => 'Administrator\Factory\AdminControllerFactory',
+                        'controller' => \Administrator\Factory\AdminControllerFactory::class,
                         'action' => 'index'
                     )
                 )

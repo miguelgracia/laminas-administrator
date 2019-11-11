@@ -125,15 +125,12 @@ class AdministratorFormService implements EventManagerAwareInterface
      * @param ServiceLocatorInterface $serviceLocator
      * @return $this
      */
-    public function __invoke(ServiceLocatorInterface $serviceLocator)
+    public function __construct($container, $formElementManager)
     {
-        $this->serviceLocator = $serviceLocator;
-
-        $this->formManager = $serviceLocator->get('FormElementManager');
+        $this->serviceLocator = $container;
+        $this->formManager = $formElementManager;
 
         $this->languages = $this->serviceLocator->get('AmLanguage\Model\LanguageTable')->all()->toKeyValueArray('id','name');
-
-        return $this;
     }
 
     public function setPrimaryKey($primaryKey)
