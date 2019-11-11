@@ -3,6 +3,7 @@
 namespace Administrator\Service;
 
 use Administrator\Model\AdministratorModel;
+use Administrator\Traits\ServiceLocatorAwareTrait;
 use Zend\Db\Metadata\Object\ColumnObject;
 
 use Zend\EventManager\EventManagerAwareInterface;
@@ -11,7 +12,6 @@ use Zend\EventManager\EventManagerAwareTrait;
 use Zend\Filter\Word\SeparatorToCamelCase;
 use Zend\Form\Fieldset;
 
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AdministratorFormService implements EventManagerAwareInterface
@@ -200,7 +200,6 @@ class AdministratorFormService implements EventManagerAwareInterface
     public function setForm($form = null, AdministratorModel $model)
     {
         if (!$this->form) {
-
             $this->baseModel = $model;
 
             $this->form = $this->formManager->get($form);

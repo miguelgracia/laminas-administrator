@@ -4,12 +4,11 @@
 namespace Administrator\Form;
 
 
+use Administrator\Traits\ServiceLocatorAwareTrait;
 use Zend\Filter\Word\SeparatorToSeparator;
 use Zend\Form\Form;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
-class AdministratorForm extends Form implements ServiceLocatorAwareInterface
+class AdministratorForm extends Form
 {
     use ServiceLocatorAwareTrait;
 

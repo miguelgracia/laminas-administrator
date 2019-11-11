@@ -5,6 +5,7 @@ namespace Administrator\Form;
 
 use Administrator\Filter\SlugFilter;
 use Administrator\Filter\MediaUri;
+use Administrator\Traits\ServiceLocatorAwareTrait;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Metadata\Source\Factory;
 use Zend\Db\Sql\Expression;
@@ -14,10 +15,8 @@ use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\Form\Fieldset;
 use Zend\Hydrator\ArraySerializable;
 use Zend\InputFilter\InputFilterProviderInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
-abstract class AdministratorFieldset extends Fieldset implements InputFilterProviderInterface, ServiceLocatorAwareInterface
+abstract class AdministratorFieldset extends Fieldset implements InputFilterProviderInterface
 {
     use ServiceLocatorAwareTrait;
 
