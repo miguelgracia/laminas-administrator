@@ -26,6 +26,8 @@ abstract class DatatableConfig
         $this->permissions = $this->serviceLocator->get('AmProfile\Service\ProfilePermissionService');
 
         $this->params = $this->controllerPluginManager->get('Params');
+
+        return $this;
     }
 
     public function getViewParams()

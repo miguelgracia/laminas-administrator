@@ -2,8 +2,12 @@
 
 namespace Administrator\Service;
 
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
 use Zend\Db\Sql\Select;
-use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
@@ -14,23 +18,19 @@ class AuthService implements FactoryInterface
     protected $userData = false;
     protected $authService;
 
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return $this
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $this->serviceLocator = $serviceLocator;
+        $this->serviceLocator = $container;
 
         //My assumption, you've alredy set dbAdapter
         //and has users table with columns : user_name and pass_word
         //that password hashed with md5
-        $dbAdapter = $serviceLocator->get('Zend\Db\Adapter\Adapter');
+        $dbAdapter = $container->get('Zend\Db\Adapter\Adapter');
 
         $dbTableAuthAdapter  = new  AuthAdapter($dbAdapter,
             'admin_users','username','password', "md5(?)");
 
-        $storage = $serviceLocator->get('Administrator\Model\AuthStorage');
+        $storage = $container->get('Administrator\Model\AuthStorage');
 
         $this->authService = new AuthenticationService($storage, $dbTableAuthAdapter);
 

@@ -2,6 +2,8 @@
 
 namespace Administrator\Service;
 
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
 use Zend\Db\Metadata\Metadata;
 
 use Zend\Db\Sql\Expression;
@@ -11,7 +13,9 @@ use Zend\Db\Sql\Where;
 
 use Zend\Filter\Word\SeparatorToSeparator;
 use Zend\Filter\Word\UnderscoreToSeparator;
-use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Model\ViewModel;
 
@@ -52,14 +56,9 @@ class DatatableService implements FactoryInterface
     protected $totalRecordsFiltered = 0;
     protected $result;
 
-
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return $this
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $this->serviceLocator = $serviceLocator;
+        $this->serviceLocator = $container;
 
         $this->spaceSeparator  = new UnderscoreToSeparator(' ');
         $this->dollarSeparator = new SeparatorToSeparator('.','$');
@@ -78,6 +77,7 @@ class DatatableService implements FactoryInterface
 
         return $this;
     }
+
 
     public function getServiceLocator()
     {

@@ -5,13 +5,18 @@ namespace Administrator\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Router\Http\RouteMatch;
+use Zend\Router\Http\RouteMatch;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 abstract class AuthController extends AbstractActionController
 {
+    /**
+     * @var ServiceLocatorInterface
+     */
+    protected $serviceLocator;
+
     protected $errorMessages = array(
         'ACCESS_SESSION_EXPIRED'    => 'La sesión ha caducado',
         'ACCESS_USER_DEACTIVATE'    => 'Tu usuario ha sido desactivado',
@@ -133,6 +138,8 @@ abstract class AuthController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
+        $this->serviceLocator = $e->getApplication()->getServiceManager();
+
         $this->setControllerVars();
 
         $this->sessionService   = $this->serviceLocator->get('Administrator\Service\SessionService');
