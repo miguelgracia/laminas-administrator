@@ -2,22 +2,22 @@
 
 namespace Administrator\Factory;
 
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 
 class AdministratorTableAbstractFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ServiceLocatorInterface $locator, $name, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
         return (substr($requestedName, -5) === 'Table');
     }
 
-    public function createServiceWithName(ServiceLocatorInterface $locator, $name, $requestedName)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if (!$locator->has($requestedName)) {
-            $locator->setInvokableClass($requestedName, $requestedName);
+        if (!$container->has($requestedName)) {
+            $container->setInvokableClass($requestedName, $requestedName);
         }
 
-        return $locator->get($requestedName);
+        return new $requestedName;
     }
 }

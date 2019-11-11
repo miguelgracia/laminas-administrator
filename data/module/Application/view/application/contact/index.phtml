@@ -9,8 +9,8 @@ $flashMessenger = $this->flashMessenger();
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?=$this->url($lang)?>">Home</a></li>
-            <li class="breadcrumb-item active"><?=$menu->locale->{$lang}[$contact]->name?></li>
+            <li class="breadcrumb-item"><a href="<?=$this->url('locale', ['locale' => $this->lang])?>">Home</a></li>
+            <li class="breadcrumb-item active"><?=$menu->locale->{$this->lang}[$contact]->name?></li>
         </ol>
     </div>
 </div>
@@ -19,12 +19,12 @@ $flashMessenger = $this->flashMessenger();
     <article>
         <div class="row">
             <div class="col-md-12">
-                <h1><?=$menu->locale->{$lang}[$contact]->name?></h1>
+                <h1><?=$menu->locale->{$this->lang}[$contact]->name?></h1>
 
 
                 <div class="row intro-section">
                     <div class="col-xs-12">
-                        <?=$menu->locale->{$lang}[$contact]->content;?>
+                        <?=$menu->locale->{$this->lang}[$contact]->content;?>
                     </div>
                 </div>
 
@@ -32,20 +32,20 @@ $flashMessenger = $this->flashMessenger();
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <?php
 
-                        if(is_bool($mailSended) and $mailSended === true) {
+                        if(is_bool($this->mailSended) and $this->mailSended === true) {
                             echo sprintf(
                                 "<div class='form-success'>%s</div>",
                                 $this->translate('Thank you for contacting us','frontend')
                             );
                         } else {
-                            $contactFormHelper->render($lang,$legal);
-                            if ($mailSended === false) {
+                            $contactFormHelper->render($this->lang,$this->legal);
+                            if ($this->mailSended === false) {
                                 echo sprintf(
                                     "<div class='form-error'>%s</div>",
                                     sprintf(
                                         $this->translate("An error occured when submitting the form. Try again later or contact us at <a href='mailto:%s'>%s</a>",'frontend'),
-                                        $appData->locale->{$lang}->email,
-                                        $appData->locale->{$lang}->email
+                                        $this->appData->locale->{$this->lang}->email,
+                                        $this->appData->locale->{$this->lang}->email
                                     )
                                 );
                             }
@@ -66,8 +66,8 @@ $flashMessenger = $this->flashMessenger();
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="contact-icons">
-                                    <h4><?=$this->translate('Form Phone','frontend');?></h4><a class="phone" href="tel:<?=$appData->locale->{$lang}->phone?>"><?=$appData->locale->{$lang}->phone?></a>
-                                    <h4>Email</h4><a class="mail" href="mailto:<?=$appData->locale->{$lang}->email?>"><?=$appData->locale->{$lang}->email?></a>
+                                    <h4><?=$this->translate('Form Phone','frontend');?></h4><a class="phone" href="tel:<?=$this->appData->locale->{$this->lang}->phone?>"><?=$this->appData->locale->{$this->lang}->phone?></a>
+                                    <h4>Email</h4><a class="mail" href="mailto:<?=$this->appData->locale->{$this->lang}->email?>"><?=$this->appData->locale->{$this->lang}->email?></a>
                                 </div>
                             </div>
                         </div>

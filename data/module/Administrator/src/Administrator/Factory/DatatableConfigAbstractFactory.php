@@ -2,7 +2,11 @@
 
 namespace Administrator\Factory;
 
-use Zend\ServiceManager\AbstractFactoryInterface;
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class DatatableConfigAbstractFactory implements AbstractFactoryInterface
@@ -10,12 +14,11 @@ class DatatableConfigAbstractFactory implements AbstractFactoryInterface
     /**
      * Determine if we can create a service with name
      *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param $name
+     * @param ContainerInterface $container
      * @param $requestedName
-     * @return bool
+     * @return void
      */
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
         return (substr($requestedName, -22) === 'DatatableConfigService');
     }
@@ -23,23 +26,18 @@ class DatatableConfigAbstractFactory implements AbstractFactoryInterface
     /**
      * Create service with name
      *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param $name
+     * @param ContainerInterface $container
      * @param $requestedName
+     * @param array|null $options
      * @return mixed
      */
-    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if (!$serviceLocator->has($requestedName)) {
-            $serviceLocator->setInvokableClass($requestedName, $requestedName);
+        if (!$container->has($requestedName)) {
+            $container->setInvokableClass($requestedName, $requestedName);
         }
 
-        $service = $serviceLocator->get($requestedName);
-
-        $service->setServiceLocator($serviceLocator);
-
-        return $service;
+        return (new $requestedName)->setServiceLocator($container);
     }
-
 
 }

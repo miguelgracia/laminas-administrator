@@ -1,30 +1,23 @@
 <?php
 namespace Administrator\Factory;
 
+use Interop\Container\ContainerInterface;
 use Zend\Filter\Word\DashToCamelCase;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class AdminControllerFactory implements FactoryInterface
 {
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $sm = $serviceLocator->getServiceLocator();
-
-        $routeMatch = $sm->get('Application')->getMvcEvent()->getRouteMatch();
+        $routeMatch = $container->get('Application')->getMvcEvent()->getRouteMatch();
         $module = $routeMatch->getParam('module');
 
         $module = $module == "" ? "login" : $module;
 
-        $dashToCamel = new DashToCamelCase();
+        $moduleName = 'Am'.((new DashToCamelCase)->filter($module));
 
-        $moduleName = 'Am'.$dashToCamel->filter($module);
+        $controller = sprintf("%s\\Controller\\%sModuleController", $moduleName, $moduleName);
 
-        $namespace = $moduleName."\\Controller\\".$moduleName."ModuleController";
-
-        $controller = $serviceLocator->get($namespace);
-
-        return $controller;
+        return new $controller;
     }
-
 }

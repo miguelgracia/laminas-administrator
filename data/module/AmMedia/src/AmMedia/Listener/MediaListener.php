@@ -12,7 +12,7 @@ class MediaListener implements ListenerAggregateInterface
 {
     protected $listeners = array();
 
-    public function attach(EventManagerInterface $events)
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
         $sharedEvents = $events->getSharedManager();
 

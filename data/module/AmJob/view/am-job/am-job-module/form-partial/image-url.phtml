@@ -10,31 +10,31 @@
  *      $renderErrors
  */
 
-$imagesUrl = $element->getValue();
+$imagesUrl = $this->element->getValue();
 
 $html = '';
 
 $formInput = $this->formInput();
-$element->setName($element->getName().'[]');
-$element->setAttribute('data-is-multiple','1');
+$this->element->setName($this->element->getName().'[]');
+$this->element->setAttribute('data-is-multiple','1');
 $row = "<div class = 'form-group'><div class='col-xs-12'>%s</div></div>";
 
-$id = $element->getAttribute('id');
-$element->setAttribute('data-id',$id);
+$id = $this->element->getAttribute('id');
+$this->element->setAttribute('data-id',$id);
 if (count($imagesUrl)) {
     foreach ($imagesUrl as $index => $url) {
-        $element->setValue($url);
+        $this->element->setValue($url);
 
-        $element->setAttribute('id',$id.$index);
-        $element->setAttribute('data-index',$index);
+        $this->element->setAttribute('id',$id.$index);
+        $this->element->setAttribute('data-index',$index);
 
-        $html .= sprintf($row,$formInput->render($element));
+        $html .= sprintf($row,$formInput->render($this->element));
     }
 } else {
-    $element->setValue('');
-    $element->setAttribute('id',$id."0");
-    $element->setAttribute('data-index',"0");
-    $html .= sprintf($row,$formInput->render($element));
+    $this->element->setValue('');
+    $this->element->setAttribute('id',$id."0");
+    $this->element->setAttribute('data-index',"0");
+    $html .= sprintf($row,$formInput->render($this->element));
 }
 
 echo $html . '<input type = "button" class="pull-right btn btn-info btn-flat allow_multiple_files" value="Nueva imagen" data-value="'.$id.'" />';

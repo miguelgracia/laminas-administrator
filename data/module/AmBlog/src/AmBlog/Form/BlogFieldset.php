@@ -13,15 +13,15 @@ class BlogFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = BlogTable::class;
 
-    public function initializers()
+    public function initializers($serviceLocator)
     {
-        $serviceLocator = $this->serviceLocator->getServiceLocator();
-
         return array(
             'fieldModifiers' => array(
                 'blogCategoriesId' => 'Select'
             ),
             'fieldValueOptions' => array(
+                // A VER COMO PASAMOS EL SERVICE LOCATOR AQUI. Esta funcion se llama desde la funcion
+                // initializers de AdministratorFormService
                 'blogCategoriesId' => function () use($serviceLocator) {
                     return $serviceLocator->get('AmBlogCategory\Model\BlogCategoryTable')->all()->toKeyValueArray('id','key');
                 },

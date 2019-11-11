@@ -2,12 +2,11 @@
 
 namespace AmModule\Service;
 
-
+use Interop\Container\ContainerInterface;
 use Zend\Code\Reflection\ClassReflection;
 use Zend\Filter\Word\CamelCaseToDash;
 use Zend\Filter\Word\DashToCamelCase;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class ModuleService implements FactoryInterface
 {
@@ -15,15 +14,15 @@ class ModuleService implements FactoryInterface
     protected $controllerActions;
     protected $sm;
 
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $this->sm = $serviceLocator;
+        $this->sm = $container;
 
-        $config = $serviceLocator->get('ApplicationConfig');
+        $config = $container->get('ApplicationConfig');
 
         $modules = $config['modules'];
 
-        //Devolvemos sólo aquellos módulos con el prefijo "Am" y que no estén en el array de hidden_modules
+        //Devolvemos sï¿½lo aquellos mï¿½dulos con el prefijo "Am" y que no estï¿½n en el array de hidden_modules
         $this->modules = array_filter($modules, function ($value) use($config) {
             return preg_match("/^Am/",$value) === 1 and !in_array($value, $config['hidden_modules']);
         });

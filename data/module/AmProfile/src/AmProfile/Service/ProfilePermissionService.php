@@ -1,8 +1,12 @@
 <?php
 namespace AmProfile\Service;
 
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
 use Zend\Filter\Word\DashToCamelCase;
-use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ProfilePermissionService implements FactoryInterface
@@ -13,9 +17,9 @@ class ProfilePermissionService implements FactoryInterface
 
     protected $serviceLocator;
 
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $this->serviceLocator = $serviceLocator;
+        $this->serviceLocator = $container;
 
         $authService = $this->serviceLocator->get('AuthService');
 

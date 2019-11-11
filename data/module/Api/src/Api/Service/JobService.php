@@ -5,15 +5,13 @@ namespace Api\Service;
 use Api\Model\JobLocaleTable;
 use Api\Model\JobTable;
 use Zend\Db\Sql\Predicate\Expression;
-use Zend\Db\Sql\Select;
-use Zend\ServiceManager\FactoryInterface;
 
-class JobService implements FactoryInterface
+class JobService implements AllowDatabaseAccessInterface
 {
-    use ApiServiceTrait;
+    use AllowDatabaseAccessTrait;
 
-    protected $table = JobTable::class;
-    protected $tableLocale = JobLocaleTable::class;
+    protected $tableName = JobTable::class;
+    protected $tableLocaleName = JobLocaleTable::class;
 
     public function getDetail($lang, $jobUri)
     {

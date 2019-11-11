@@ -1,4 +1,5 @@
 <?php
+
 return array(
     'view_manager' => array(
         'template_path_stack' => array(
@@ -12,11 +13,14 @@ return array(
         )
     ),
 
-    'service_manager' => array(
+    'form_elements' => [
+        'factories' => [
+            \AmBlog\Form\BlogForm::class => \Administrator\Factory\AdministratorFormFactory::class,
+            \AmBlog\Form\BlogFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class
+        ]
+    ],
 
-    ),
+    'service_manager' => array(),
 
-    'router' => array(
-
-    )
+    'router' => array()
 );

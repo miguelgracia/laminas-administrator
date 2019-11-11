@@ -4,14 +4,13 @@ namespace Api\Service;
 
 use Api\Model\BlogCategoryLocaleTable;
 use Api\Model\BlogCategoryTable;
-use Zend\ServiceManager\FactoryInterface;
 
-class BlogCategoryService implements FactoryInterface
+class BlogCategoryService implements AllowDatabaseAccessInterface
 {
-    use ApiServiceTrait;
+    use AllowDatabaseAccessTrait;
 
-    protected $table = BlogCategoryTable::class;
-    protected $tableLocale = BlogCategoryLocaleTable::class;
+    protected $tableName = BlogCategoryTable::class;
+    protected $tableLocaleName = BlogCategoryLocaleTable::class;
 
     public function getData()
     {

@@ -11,13 +11,10 @@ use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail;
-use Zend\ServiceManager\FactoryInterface;
 use Zend\Validator\EmailAddress;
 
-class ContactService implements FactoryInterface
+class ContactService
 {
-    use ApiServiceTrait;
-
     /**
      * @var \Zend\Form\Form
      */
@@ -76,7 +73,8 @@ class ContactService implements FactoryInterface
             $formData = $formData['contact'];
 
             $mail = new Message();
-            $mail->setFrom('absconsultor@absconsultor.es', "ABS Consultor - Contacto Web");
+//            $mail->setFrom('absconsultor@absconsultor.es', "ABS Consultor - Contacto Web");
+            $mail->setFrom('miguelgraciamartin@gmail.com', "ABS Consultor - Contacto Web");
             $mail->addTo($mailTo, 'ABS Consultor');
             $mail->setSubject('Información de contacto desde la web');
 

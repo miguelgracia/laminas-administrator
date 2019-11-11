@@ -2,18 +2,17 @@
 
 namespace Api\Service;
 
-
 use Api\Model\BlogLocaleTable;
 use Api\Model\BlogTable;
 use Zend\Db\Sql\Predicate\Expression;
-use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
-class BlogService implements FactoryInterface
+class BlogService implements AllowDatabaseAccessInterface
 {
-    use ApiServiceTrait;
+    use AllowDatabaseAccessTrait;
 
-    protected $table = BlogTable::class;
-    protected $tableLocale = BlogLocaleTable::class;
+    protected $tableName = BlogTable::class;
+    protected $tableLocaleName = BlogLocaleTable::class;
 
     public function getDetail($lang, $blogUri)
     {

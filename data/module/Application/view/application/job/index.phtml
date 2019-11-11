@@ -1,16 +1,16 @@
 <?php
-$jobMenuId         = $menu->rows['jobs']->id;
+$jobMenuId         = $this->menu->rows['jobs']->id;
 $jobHelper         = $this->jobHelper();
 $jobCategoryHelper = $this->jobCategoryHelper();
 ?>
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?=$this->url($lang)?>">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?=$this->url('locale', ['locale' => $this->lang])?>">Home</a></li>
             <?php if(!isset($currentCategory)):?>
-                <li class="breadcrumb-item active"><?=$menu->locale->{$lang}[$jobMenuId]->name?></li>
+                <li class="breadcrumb-item active"><?=$this->menu->locale->{$this->lang}[$jobMenuId]->name?></li>
             <?php else :?>
-                <li class="breadcrumb-item"><a href="<?=$this->url($lang.'/jobs')?>"><?=$menu->locale->{$lang}[$jobMenuId]->name?></a></li>
+                <li class="breadcrumb-item"><a href="<?=$this->url('locale/jobs', ['locale' => $this->lang])?>"><?=$this->menu->locale->{$this->lang}[$jobMenuId]->name?></a></li>
                 <li class="breadcrumb-item active"><?=$currentCategory['title']?></a></li>
             <?php endif?>
         </ol>
@@ -25,7 +25,7 @@ $jobCategoryHelper = $this->jobCategoryHelper();
             <div class="col-md-9">
 
                 <header>
-                    <h1><?=$menu->locale->{$lang}[$jobMenuId]->name?></h1>
+                    <h1><?=$this->menu->locale->{$this->lang}[$jobMenuId]->name?></h1>
                     <?php if(isset($currentCategory)):?>
                         <h2><?=$currentCategory['title']?></h2>
                     <?php endif?>
@@ -36,19 +36,19 @@ $jobCategoryHelper = $this->jobCategoryHelper();
                         <?php if(isset($currentCategory)):?>
                             <?=$currentCategory['content'];?>
                         <?php else :?>
-                            <?=$menu->locale->{$lang}[$jobMenuId]->content;?>
+                            <?=$this->menu->locale->{$this->lang}[$jobMenuId]->content;?>
                         <?php endif?>
                     </div>
                 </div>
 
                 <div class="row">
-                    <?php $jobHelper->render($lang, $jobs);?>
+                    <?php $jobHelper->render($this->lang, $this->jobs);?>
                 </div>
             </div>
             <aside class="col-md-3">
                 <h3>Categorias</h3>
                 <ul>
-                    <?php $jobCategoryHelper->render($lang,$jobCategories);?>
+                    <?php $jobCategoryHelper->render($this->lang,$this->jobCategories);?>
                 </ul>
             </aside>
         </div>
@@ -59,15 +59,15 @@ $jobCategoryHelper = $this->jobCategoryHelper();
                 // add at the end of the file after the table
                 echo $this->paginationControl(
                 // the paginator object
-                    $jobs,
+                    $this->jobs,
                     // the scrolling style
                     'sliding',
                     // the partial to use to render the control
                     'partial/paginator.phtml',
                     // the route to link to when a user clicks a control link
                     array(
-                        'route' => $routePagination,
-                        'routeParams' => $routeParams
+                        'route' => $this->routePagination,
+                        'routeParams' => $this->routeParams
                     )
                 );
                 ?>

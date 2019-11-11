@@ -4,14 +4,13 @@ namespace Api\Service;
 
 use Api\Model\JobCategoryLocaleTable;
 use Api\Model\JobCategoryTable;
-use Zend\ServiceManager\FactoryInterface;
 
-class JobCategoryService implements FactoryInterface
+class JobCategoryService implements AllowDatabaseAccessInterface
 {
-    use ApiServiceTrait;
+    use AllowDatabaseAccessTrait;
 
-    protected $table = JobCategoryTable::class;
-    protected $tableLocale = JobCategoryLocaleTable::class;
+    protected $tableName = JobCategoryTable::class;
+    protected $tableLocaleName = JobCategoryLocaleTable::class;
 
     public function getData()
     {

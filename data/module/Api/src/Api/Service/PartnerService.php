@@ -2,16 +2,14 @@
 
 namespace Api\Service;
 
-use Api\Model\PartnerLocaleTable;
 use Api\Model\PartnerTable;
-use Zend\ServiceManager\FactoryInterface;
 use Zend\Stdlib\ArrayObject;
 
-class PartnerService implements FactoryInterface
+class PartnerService implements AllowDatabaseAccessInterface
 {
-    use ApiServiceTrait;
+    use AllowDatabaseAccessTrait;
 
-    protected $table = PartnerTable::class;
+    protected $tableName = PartnerTable::class;
 
     public function getData($lang)
     {

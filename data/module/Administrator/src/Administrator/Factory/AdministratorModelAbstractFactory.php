@@ -2,17 +2,21 @@
 
 namespace Administrator\Factory;
 
-use Zend\ServiceManager\AbstractFactoryInterface;
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AdministratorModelAbstractFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ServiceLocatorInterface $locator, $name, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
         return (substr($requestedName, -5) === 'Model');
     }
 
-    public function createServiceWithName(ServiceLocatorInterface $locator, $name, $requestedName)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         if (!class_exists($requestedName)) {
             // Vamos a montar el nombre dinámicamente,
@@ -24,10 +28,11 @@ class AdministratorModelAbstractFactory implements AbstractFactoryInterface
             $requestedName = $trozos[0]."\\".$trozos[1]."\\AdministratorModel";
         }
 
-        if (!$locator->has($requestedName)) {
-            $locator->setInvokableClass($requestedName, $requestedName, false);
+        if (!$container->has($requestedName)) {
+            $container->setInvokableClass($requestedName, $requestedName, false);
         }
 
-        return $locator->create($requestedName);
+        return new $requestedName;
     }
+
 }

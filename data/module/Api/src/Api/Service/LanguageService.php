@@ -3,14 +3,12 @@
 namespace Api\Service;
 
 use Api\Model\LanguageTable;
-use Zend\ServiceManager\FactoryInterface;
 
-class LanguageService implements FactoryInterface
+class LanguageService implements AllowDatabaseAccessInterface
 {
-    use ApiServiceTrait;
+    use AllowDatabaseAccessTrait;
 
-    protected $table = LanguageTable::class;
-
+    protected $tableName = LanguageTable::class;
 
     public function getLanguagesAvailable()
     {

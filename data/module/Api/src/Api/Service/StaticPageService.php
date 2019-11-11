@@ -4,15 +4,13 @@ namespace Api\Service;
 
 use Api\Model\StaticPageLocaleTable;
 use Api\Model\StaticPageTable;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\Stdlib\ArrayObject;
 
-class StaticPageService implements FactoryInterface
+class StaticPageService implements AllowDatabaseAccessInterface
 {
-    use ApiServiceTrait;
+    use AllowDatabaseAccessTrait;
 
-    protected $table = StaticPageTable::class;
-    protected $tableLocale = StaticPageLocaleTable::class;
+    protected $tableName = StaticPageTable::class;
+    protected $tableLocaleName = StaticPageLocaleTable::class;
 
     protected $cacheData = array();
 

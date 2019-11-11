@@ -4,14 +4,13 @@ namespace Api\Service;
 
 use Api\Model\MegabannerLocaleTable;
 use Api\Model\MegabannerTable;
-use Zend\ServiceManager\FactoryInterface;
 use Zend\Stdlib\ArrayObject;
 
-class MegabannerService implements FactoryInterface
+class MegabannerService implements AllowDatabaseAccessInterface
 {
-    use ApiServiceTrait;
+    use AllowDatabaseAccessTrait;
 
-    protected $table = MegabannerTable::class;
+    protected $tableName = MegabannerTable::class;
 
     public function getData($lang)
     {

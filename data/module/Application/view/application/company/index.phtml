@@ -1,15 +1,15 @@
 <?php
-$partnerMenuId = $menu->rows['company/colaborators']->id;
-$company = $menu->rows['company']->id;
+$partnerMenuId = $this->menu->rows['company/colaborators']->id;
+$company = $this->menu->rows['company']->id;
 
-$partnerHelper = $this->partnerHelper($lang);
+$partnerHelper = $this->partnerHelper($this->lang);
 
 ?>
 <div class="row nav-breadcrumb hidden-xs">
     <div class="container">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?=$this->url($lang)?>">Home</a></li>
-            <li class="breadcrumb-item active"><?=$menu->locale->{$lang}[$company]->name?></li>
+            <li class="breadcrumb-item"><a href="<?=$this->url('locale', ['locale' => $this->lang])?>">Home</a></li>
+            <li class="breadcrumb-item active"><?=$this->menu->locale->{$this->lang}[$company]->name?></li>
         </ol>
     </div>
 </div>
@@ -18,9 +18,9 @@ $partnerHelper = $this->partnerHelper($lang);
 
     <article>
 
-        <h1><?=$menu->locale->{$lang}[$company]->name?></h1>
+        <h1><?=$this->menu->locale->{$this->lang}[$company]->name?></h1>
 
-        <?=$menu->locale->{$lang}[$company]->content?>
+        <?=$this->menu->locale->{$this->lang}[$company]->content?>
 
         <!--<img class="img-responsive" src="/media/maqueta/company1.png" />-->
 

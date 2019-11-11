@@ -6,8 +6,10 @@
 
 namespace AmModule;
 
+use AmModule\Service\ModuleService;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\Mvc\I18n\Translator;
 use Zend\Mvc\MvcEvent;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
@@ -43,12 +45,13 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
     public function onBootstrap(MvcEvent $e)
     {
         $serviceManager = $e->getApplication()->getServiceManager();
-        $translator = $serviceManager->get('translator');
+
+        $translator = $serviceManager->get(Translator::class);
 
         $locale = $translator->getLocale();
 
-        //Cargamos las traducciones de los módulos del administrador
-        $adminModules = $serviceManager->get('AmModule\Service\ModuleService')->getModules();
+        //Cargamos las traducciones de los mï¿½dulos del administrador
+        $adminModules = $serviceManager->get(ModuleService::class)->getModules();
 
         foreach ($adminModules as $module) {
             $translateFile = __DIR__."/../$module/language/$locale/locale.php";

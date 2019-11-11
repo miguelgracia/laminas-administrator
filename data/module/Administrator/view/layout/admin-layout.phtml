@@ -1,7 +1,4 @@
 <?php
-//$settings = $this->settings();
-
-
 echo $this->doctype();
 $basePath = $this->basePath() . '/administrator';
 ?>
@@ -70,7 +67,7 @@ $basePath = $this->basePath() . '/administrator';
 
 
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                            <span class="hidden-xs"><?php echo $userData->username; ?></span>
+                            <span class="hidden-xs"><?php echo $this->userData->username; ?></span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
@@ -78,10 +75,10 @@ $basePath = $this->basePath() . '/administrator';
                                 <?php echo "<img src='$imgPath' class='user-image' alt='User Image'>"; ?>
 
                                 <p>
-                                    <?php echo $userData->username; ?>
+                                    <?php echo $this->userData->username; ?>
                                     <small>
-                                        Sign up date: <?php echo $userData->createdAt; ?><br/>
-                                        Last login: <?php echo $userData->lastLogin;?>
+                                        Sign up date: <?php echo $this->userData->createdAt; ?><br/>
+                                        Last login: <?php echo $this->userData->lastLogin;?>
                                     </small>
                                 </p>
                             </li>

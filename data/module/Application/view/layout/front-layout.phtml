@@ -1,12 +1,17 @@
 <?php
 
+if (is_null($this->menu)) {
+    die;
+}
+
 $menuHelper       = $this->applicationMenuHelper();
 $socialIconHelper = $this->socialIconHelper();
 $legalLinkHelper  = $this->legalLinkHelper();
+$menu = $this->menu;
 
 echo $this->doctype(); ?>
 
-<html lang="<?=$lang?>">
+<html lang="<?=$this->lang?>">
     <head>
         <meta charset="utf-8">
         <?php echo $this->headTitle();?>
@@ -36,17 +41,19 @@ echo $this->doctype(); ?>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="<?php echo $this->url($lang,array('lang' => $lang)) ?>">
+                    <a class="navbar-brand" href="<?php echo $this->url('locale', array('locale' => $this->lang)) ?>">
                         <img class="hidden-xs" width="100" src="<?php echo $this->basePath('img/white-logo.png') ?>" alt="Logo ABS Consultor"/>
                         <img class="visible-xs" width="169" src="<?php echo $this->basePath('img/white-logo-horizontal.png') ?>" alt="Logo ABS Consultor"/>
                     </a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <?=$menuHelper->render($menu,$lang);?>
-                        <?php foreach($languages as $langForFlag):?>
-                            <!--<li class="lang"><a href="/<?/*=$langForFlag->code;*/?>"><span class="flag-icon <?/*=$langForFlag->code*/?>"></span> </a></li>-->
-                        <?php endforeach?>
+                        <?php if(!is_null($this->menu)):?>
+                            <?=$menuHelper->render($this->menu,$this->lang);?>
+                            <?php foreach($this->languages as $langForFlag):?>
+                                <li class="lang"><a href="/<?=$langForFlag->code;?>"><span class="flag-icon <?=$langForFlag->code?>"></span> </a></li>
+                            <?php endforeach?>
+                        <?php endif;?>
                     </ul>
                 </div>
             </div>
@@ -65,7 +72,9 @@ echo $this->doctype(); ?>
                             <div class="col-md-12">
                                 <p><?=$this->translate('Follow us','frontend');?></p>
                                 <div class="contact-icons">
-                                    <?=$socialIconHelper->render($appData->row);?>
+                                    <?php if(!is_null($this->appData)):?>
+                                    <?=$socialIconHelper->render($this->appData->row);?>
+                                    <?php endif;?>
                                 </div>
                             </div>
                         </div>
@@ -73,8 +82,8 @@ echo $this->doctype(); ?>
                             <div class="col-md-12">
                                 <p><?=$this->translate('Contact us','frontend');?></p>
                                 <div class="contact-icons">
-                                    <a class="phone" href="tel:<?=$appData->locale->{$lang}->phone?>"><?=$appData->locale->{$lang}->phone?> <i class="social-icon fa fa-phone"></i></a>
-                                    <a class="mail" href="mailto:<?=$appData->locale->{$lang}->email?>"><?=$appData->locale->{$lang}->email?> <i class="social-icon fa fa-envelope"></i></a>
+                                    <a class="phone" href="tel:<?=$this->appData->locale->{$this->lang}->phone?>"><?=$this->appData->locale->{$this->lang}->phone?> <i class="social-icon fa fa-phone"></i></a>
+                                    <a class="mail" href="mailto:<?=$this->appData->locale->{$this->lang}->email?>"><?=$this->appData->locale->{$this->lang}->email?> <i class="social-icon fa fa-envelope"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -83,23 +92,23 @@ echo $this->doctype(); ?>
 
                 <div class="row">
                     <div class="col-md-12">
-                        <?php $legalLinkHelper->render($legal,$lang);?>
+                        <?php $legalLinkHelper->render($this->legal,$this->lang);?>
                     </div>
                 </div>
             </div>
 
         </footer>
-        <?php if ($showCookieAlert) :?>
+        <?php if ($this->showCookieAlert) :?>
             <div id="cookie_alert" class="hide container-fluid">
                 <div class="col-md-12">
                     <?=$this->translate('Cookie message','frontend');?>
-                    <a href="<?=$this->url($lang.'/legal/page',array('page' => 'cookies'));?>"><?=$this->translate('More info','frontend');?></a>
+                    <a href="<?=$this->url('locale/legal/page',array('locale' => $this->lang, 'page' => 'cookies'));?>"><?=$this->translate('More info','frontend');?></a>
                     &nbsp;&nbsp;&nbsp;
                     <a href="#" id="close_cookie_alert"><?=$this->translate('Cookies agree','frontend');?></a>
                 </div>
             </div>
         <?php endif; ?>
-        <input type="hidden" id="simple-routing-manager" name="<?=$srmController;?>" value="<?=$controllerAction;?>" />
+        <input type="hidden" id="simple-routing-manager" name="<?=$this->srmController;?>" value="<?=$this->controllerAction;?>" />
         <!-- Scripts -->
         <?php echo $this->headScript()
             ->appendFile($this->basePath('absconsultor/dist/vendor-dist.js'))

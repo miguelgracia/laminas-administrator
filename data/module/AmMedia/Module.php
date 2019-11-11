@@ -58,7 +58,9 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 
     public function onBootstrap(MvcEvent $e)
     {
-        $eventManager  = $e->getApplication()->getEventManager();
-        $eventManager->attach(new MediaListener());
+        /*$eventManager  = $e->getApplication()->getEventManager();
+        $eventManager->attach(new MediaListener(), function($pepe) {
+
+        });*/
     }
 }

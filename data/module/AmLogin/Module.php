@@ -29,13 +29,13 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
      */
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
+        return [
+            'Zend\Loader\StandardAutoloader' => [
+                'namespaces' => [
                     // Autoload all classes from namespace 'AmHome' from '/am-home-module/AmHome/src/AmHome'
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 }
