@@ -25,7 +25,7 @@ class UserFieldset extends AdministratorFieldset
 
     public function initializers()
     {
-        $serviceLocator = $this->serviceLocator->getServiceLocator();
+        $serviceLocator = $this->serviceLocator;
 
         return array(
 

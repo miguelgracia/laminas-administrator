@@ -76,7 +76,7 @@ class AdministratorForm extends Form
 
     public function init()
     {
-        $serviceLocator = $this->serviceLocator->getServiceLocator();
+        $serviceLocator = $this->serviceLocator;
 
         $application = $serviceLocator->get('Application');
         $routeMatch  = $application->getMvcEvent()->getRouteMatch();
@@ -142,11 +142,9 @@ class AdministratorForm extends Form
      */
     private function setDefaultAction()
     {
-        $serviceLocator = $this->serviceLocator->getServiceLocator();
+        $viewHelper  = $this->serviceLocator->get('ViewHelperManager');
 
-        $viewHelper  = $serviceLocator->get('ViewHelperManager');
-
-        $application = $serviceLocator->get('Application');
+        $application = $this->serviceLocator->get('Application');
         $routeMatch  = $application->getMvcEvent()->getRouteMatch();
         $routeParams = $routeMatch->getParams();
 

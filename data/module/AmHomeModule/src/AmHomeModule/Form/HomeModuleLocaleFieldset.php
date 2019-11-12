@@ -27,7 +27,7 @@ class HomeModuleLocaleFieldset extends AdministratorFieldset
         $imageUrl->setAttribute('class',$class);
         $imageUrl->setAttribute('readonly','readonly');
 
-        $youtubeVideos = $this->serviceLocator->getServiceLocator()->get('YoutubeService')->getVideosInDatabase();
+        $youtubeVideos = $this->serviceLocator->get('YoutubeService')->getVideosInDatabase();
 
         $imageUrl->setAttribute('data-youtube',json_encode($youtubeVideos->toObjectArray()));
 

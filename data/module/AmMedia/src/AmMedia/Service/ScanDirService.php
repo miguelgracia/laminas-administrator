@@ -1,10 +1,9 @@
 <?php
 namespace AmMedia\Service;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\Validator\File\MimeType;
-use Zend\Validator\ValidatorInterface;
 
 class ScanDirService implements FactoryInterface
 {
@@ -12,7 +11,7 @@ class ScanDirService implements FactoryInterface
 
     protected $files = array();
 
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         return $this;
     }

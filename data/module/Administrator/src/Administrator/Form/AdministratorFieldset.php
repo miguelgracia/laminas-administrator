@@ -65,15 +65,13 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
     public function init()
     {
-        $serviceLocator       = $this->serviceLocator->getServiceLocator();
-
-        $this->tableGateway   = $serviceLocator->get($this->tableGatewayName);
+        $this->tableGateway   = $this->serviceLocator->get($this->tableGatewayName);
 
         $this->table          = $this->tableGateway->getTable();
 
-        $this->metadata       = Factory::createSourceFromAdapter($serviceLocator->get('Zend\Db\Adapter\Adapter'));
+        $this->metadata       = Factory::createSourceFromAdapter($this->serviceLocator->get('Zend\Db\Adapter\Adapter'));
 
-        $this->formActionType = $serviceLocator->get('Administrator\Service\AdministratorFormService')->getForm()->getActionType();
+        $this->formActionType = $this->serviceLocator->get('Administrator\Service\AdministratorFormService')->getForm()->getActionType();
     }
 
     public function setObjectModel($objectModel)

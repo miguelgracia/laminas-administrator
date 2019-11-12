@@ -3,10 +3,14 @@
 namespace MediaDispatcher\Service;
 
 
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
 use Intervention\Image\ImageManager;
 use Zend\Filter\Dir;
 use Zend\Filter\RealPath;
-use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\StringWrapper\Intl;
 use Zend\Validator\File\IsImage;
@@ -58,28 +62,27 @@ class ImageService implements FactoryInterface
      */
     private $realPathFilter;
 
-
-
     /**
      * Create service
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param $requestedName
+     * @param array|null $options
      * @return mixed
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $this->serviceLocator = $serviceLocator;
+        $this->serviceLocator = $container;
 
         $this->isImageValidator = new IsImage();
         $this->dirFilter = new Dir();
         $this->realPathFilter = new RealPath(false);
 
-        $this->viewHelperManager = $serviceLocator->get('ViewHelperManager');
+        $this->viewHelperManager = $container->get('ViewHelperManager');
 
         $this->imageManager = new ImageManager(array('driver' => 'gd'));
 
         $this->documentRoot = $this->realPathFilter->filter($_SERVER['DOCUMENT_ROOT']);
-
 
         return $this;
     }

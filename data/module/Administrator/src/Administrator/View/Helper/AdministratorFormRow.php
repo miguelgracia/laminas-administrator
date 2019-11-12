@@ -21,7 +21,7 @@ class AdministratorFormRow extends AbstractHelper
 
     function __construct($serviceLocator)
     {
-        $this->serviceLocator = $serviceLocator->getServiceLocator();
+        $this->serviceLocator = $serviceLocator;
     }
 
     private function formTemplate()

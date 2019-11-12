@@ -2,8 +2,12 @@
 namespace AmMedia\Service;
 
 
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
 use Intervention\Image\ImageManager;
-use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class InterventionImageService implements FactoryInterface
@@ -13,11 +17,12 @@ class InterventionImageService implements FactoryInterface
     /**
      * Create service
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param $requestedName
+     * @param array|null $options
      * @return mixed
      */
-
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         return new ImageManager(array('driver' => 'gd'));
     }

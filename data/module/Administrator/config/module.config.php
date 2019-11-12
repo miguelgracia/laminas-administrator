@@ -45,7 +45,7 @@ return array(
                 'options' => array(
                     'route' => '/admin[/[:module[/[:action[/[:id]]]]]]',
                     'defaults' => array(
-                        'controller' => \Administrator\Factory\AdminControllerFactory::class,
+                        'controller' => \Administrator\Factory\AdministratorControllerFactory::class,
                         'action' => 'index'
                     )
                 )

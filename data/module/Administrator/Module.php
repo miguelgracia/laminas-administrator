@@ -52,7 +52,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
     {
         return array(
             'factories' => array(
-                'Administrator\Factory\AdminControllerFactory' => 'Administrator\Factory\AdminControllerFactory',
+                'Administrator\Factory\AdministratorControllerFactory' => 'Administrator\Factory\AdministratorControllerFactory',
             ),
             'invokables' => array(
 

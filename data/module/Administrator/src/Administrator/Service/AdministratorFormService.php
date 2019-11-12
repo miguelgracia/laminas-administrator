@@ -140,7 +140,7 @@ class AdministratorFormService implements EventManagerAwareInterface
 
     public function addFieldset($fieldsetName, AdministratorModel $model, $options = array())
     {
-        $fieldset = $this->formManager->get($fieldsetName);
+        $fieldset = $this->formManager->build($fieldsetName);
 
         $fieldset->setObjectModel($model);
 
@@ -199,7 +199,7 @@ class AdministratorFormService implements EventManagerAwareInterface
         if (!$this->form) {
             $this->baseModel = $model;
 
-            $this->form = $this->formManager->get($form);
+            $this->form = $this->formManager->build($form);
 
             $this->initializers($this->form);
 

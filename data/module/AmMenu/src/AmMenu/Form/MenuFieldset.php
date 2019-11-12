@@ -13,7 +13,7 @@ class MenuFieldset extends AdministratorFieldset
 
     public function initializers()
     {
-        $serviceLocator = $this->serviceLocator->getServiceLocator();
+        $serviceLocator = $this->serviceLocator;
 
         $moduleTable = $serviceLocator->get('AmModule\Model\ModuleTable');
 
@@ -56,7 +56,7 @@ class MenuFieldset extends AdministratorFieldset
 
     public function addFields()
     {
-        $serviceLocator = $this->serviceLocator->getServiceLocator();
+        $serviceLocator = $this->serviceLocator;
 
         $formService = $serviceLocator->get('Administrator\Service\AdministratorFormService');
 
