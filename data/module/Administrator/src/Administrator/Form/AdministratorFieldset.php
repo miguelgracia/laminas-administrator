@@ -51,7 +51,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
     public function init()
     {
-        $this->table = $this->tableGateway->getTable();
+
     }
 
     public function setObjectModel($objectModel)
@@ -74,6 +74,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
     public function setTableGateway($tableGateway)
     {
         $this->tableGateway = $tableGateway;
+        $this->table = $tableGateway->getTable();
         return $this;
     }
 
