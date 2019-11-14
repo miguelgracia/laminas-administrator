@@ -6,11 +6,13 @@ return array(
         ),
     ),
 
-    'controllers' => array(
-        'invokables' => array(
-            'AmBlogCategory\Controller\AmBlogCategoryModuleController' => 'AmBlogCategory\Controller\AmBlogCategoryModuleController'
-        )
-    ),
+    'form_elements' => [
+        'factories' => [
+            \AmBlogCategory\Form\BlogCategoryForm::class => \Administrator\Factory\AdministratorFormFactory::class,
+            \AmBlogCategory\Form\BlogCategoryFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+            \AmBlogCategory\Form\BlogCategoryLocaleFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+        ]
+    ],
 
     'service_manager' => array(
 

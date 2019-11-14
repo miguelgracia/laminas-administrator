@@ -8,11 +8,12 @@ return array(
         ),
     ),
 
-    'controllers' => array(
-        'invokables' => array(
-            'AmMenu\Controller\AmMenuModuleController' => 'AmMenu\Controller\AmMenuModuleController'
-        )
-    ),
+    'form_elements' => [
+        'factories' => [
+            \AmMenu\Form\MenuForm::class => \Administrator\Factory\AdministratorFormFactory::class,
+            \AmMenu\Form\MenuFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+        ]
+    ],
 
     'service_manager' => array(
         'factories' => array(

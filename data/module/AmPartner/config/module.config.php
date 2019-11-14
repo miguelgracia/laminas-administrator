@@ -6,11 +6,12 @@ return array(
         ),
     ),
 
-    'controllers' => array(
-        'invokables' => array(
-            'AmPartner\Controller\AmPartnerModuleController' => 'AmPartner\Controller\AmPartnerModuleController'
-        )
-    ),
+    'form_elements' => [
+        'factories' => [
+            \AmPartner\Form\PartnerForm::class => \Administrator\Factory\AdministratorFormFactory::class,
+            \AmPartner\Form\PartnerFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+        ]
+    ],
 
     'service_manager' => array(
 

@@ -8,11 +8,12 @@ return array(
         ),
     ),
 
-    'controllers' => array(
-        'invokables' => array(
-            'AmProfile\Controller\AmProfileModuleController' => 'AmProfile\Controller\AmProfileModuleController'
-        )
-    ),
+    'form_elements' => [
+        'factories' => [
+            \AmProfile\Form\ProfileForm::class => \Administrator\Factory\AdministratorFormFactory::class,
+            \AmProfile\Form\ProfileFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+        ]
+    ],
 
     'service_manager' => array(
 

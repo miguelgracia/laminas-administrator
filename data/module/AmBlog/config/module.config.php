@@ -7,12 +7,6 @@ return array(
         ),
     ),
 
-    'controllers' => array(
-        'invokables' => array(
-            'AmBlog\Controller\AmBlogModuleController' => 'AmBlog\Controller\AmBlogModuleController'
-        )
-    ),
-
     'form_elements' => [
         'factories' => [
             \AmBlog\Form\BlogForm::class => \Administrator\Factory\AdministratorFormFactory::class,

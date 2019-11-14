@@ -6,11 +6,13 @@ return array(
         ),
     ),
 
-    'controllers' => array(
-        'invokables' => array(
-            'AmHomeModule\Controller\AmHomeModuleModuleController' => 'AmHomeModule\Controller\AmHomeModuleModuleController'
-        )
-    ),
+    'form_elements' => [
+        'factories' => [
+            \AmHomeModule\Form\HomeModuleForm::class => \Administrator\Factory\AdministratorFormFactory::class,
+            \AmHomeModule\Form\HomeModuleFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+            \AmHomeModule\Form\HomeModuleLocaleFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class
+        ]
+    ],
 
     'service_manager' => array(
 

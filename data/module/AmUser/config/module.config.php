@@ -12,11 +12,12 @@ return array(
         ),
     ),
 
-    'controllers' => array(
-        'invokables' => array(
-            'AmUser\Controller\AmUserModuleController' => 'AmUser\Controller\AmUserModuleController'
-        )
-    ),
+    'form_elements' => [
+        'factories' => [
+            \AmUser\Form\AmUserForm::class => \Administrator\Factory\AdministratorFormFactory::class,
+            \AmUser\Form\UserFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class
+        ]
+    ],
 
     'service_manager' => array(
 

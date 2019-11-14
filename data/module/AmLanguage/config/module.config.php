@@ -6,11 +6,12 @@ return array(
         ),
     ),
 
-    'controllers' => array(
-        'invokables' => array(
-            'AmLanguage\Controller\AmLanguageModuleController' => 'AmLanguage\Controller\AmLanguageModuleController'
-        )
-    ),
+    'form_elements' => [
+        'factories' => [
+            \AmLanguage\Form\LanguageForm::class => \Administrator\Factory\AdministratorFormFactory::class,
+            \AmLanguage\Form\LanguageFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+        ]
+    ],
 
     'service_manager' => array(
 

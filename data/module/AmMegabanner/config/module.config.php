@@ -6,11 +6,12 @@ return array(
         ),
     ),
 
-    'controllers' => array(
-        'invokables' => array(
-            'AmMegabanner\Controller\AmMegabannerModuleController' => 'AmMegabanner\Controller\AmMegabannerModuleController'
-        )
-    ),
+    'form_elements' => [
+        'factories' => [
+            \AmMegabanner\Form\MegabannerForm::class=> \Administrator\Factory\AdministratorFormFactory::class,
+            \AmMegabanner\Form\MegabannerFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+        ]
+    ],
 
     'service_manager' => array(
 
