@@ -71,7 +71,7 @@ class AdministratorForm extends Form
 
     public function init()
     {
-        $this->addDefaultFields();
+
     }
 
     public function setRouteParams($params)
@@ -116,31 +116,5 @@ class AdministratorForm extends Form
     public function getActionType()
     {
         return $this->actionType;
-    }
-
-    /**
-     *  Añadimos los elementos de formulario que en principio deben aparecer por defecto
-     *  Dicha función se ejecute desde el servicio GestorFormService
-     */
-    private function addDefaultFields()
-    {
-        $actionType = $this->actionType == self::ACTION_ADD ? 'Add' : 'Edit';
-
-        $this->add(array(
-            'name' => 'submit',
-            'type' => 'Submit',
-            'attributes' => array(
-                'value' => $actionType,
-                'id' => 'submitbutton',
-                'class' => 'btn btn-primary',
-            ),
-            'options' => array(
-                'label' => $actionType,
-            )
-        ),array(
-            'priority' => '-9999'
-        ));
-
-        return $this;
     }
 }
