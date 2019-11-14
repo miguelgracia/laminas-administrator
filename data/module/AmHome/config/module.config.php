@@ -12,12 +12,6 @@ return array(
         ),
     ),
 
-    'controllers' => array(
-        'invokables' => array(
-            'AmHome\Controller\AmHomeModuleController' => 'AmHome\Controller\AmHomeModuleController'
-        )
-    ),
-
     'service_manager' => array(
 
     ),

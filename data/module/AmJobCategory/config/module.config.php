@@ -6,11 +6,13 @@ return array(
         ),
     ),
 
-    'controllers' => array(
-        'invokables' => array(
-            'AmJobCategory\Controller\AmJobCategoryModuleController' => 'AmJobCategory\Controller\AmJobCategoryModuleController'
-        )
-    ),
+    'form_elements' => [
+        'factories' => [
+            \AmJobCategory\Form\JobCategoryForm::class => \Administrator\Factory\AdministratorFormFactory::class,
+            \AmJobCategory\Form\JobCategoryFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+            \AmJobCategory\Form\JobCategoryLocaleFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class
+        ]
+    ],
 
     'service_manager' => array(
 
