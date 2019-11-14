@@ -2,18 +2,13 @@
 
 namespace Administrator\Form;
 
-
 use Administrator\Filter\SlugFilter;
 use Administrator\Filter\MediaUri;
 use Administrator\Traits\ServiceLocatorAwareTrait;
 use Zend\Db\Metadata\Object\ColumnObject;
-use Zend\Db\Metadata\Source\Factory;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Where;
 use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\Form\Fieldset;
-use Zend\Hydrator\ArraySerializable;
 use Zend\InputFilter\InputFilterProviderInterface;
 
 abstract class AdministratorFieldset extends Fieldset implements InputFilterProviderInterface
@@ -47,8 +42,6 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
     protected $objectModel;
 
-    protected $formActionType;
-
     /**
      * @var array
      *
@@ -56,22 +49,9 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
      */
     protected $hiddenFields = array();
 
-    public function __construct()
-    {
-        parent::__construct(get_class($this));
-
-        $this->setHydrator(new ArraySerializable());
-    }
-
     public function init()
     {
-        $this->tableGateway   = $this->serviceLocator->get($this->tableGatewayName);
-
-        $this->table          = $this->tableGateway->getTable();
-
-        $this->metadata       = Factory::createSourceFromAdapter($this->serviceLocator->get('Zend\Db\Adapter\Adapter'));
-
-        $this->formActionType = $this->serviceLocator->get('Administrator\Service\AdministratorFormService')->getForm()->getActionType();
+        $this->table = $this->tableGateway->getTable();
     }
 
     public function setObjectModel($objectModel)
@@ -91,9 +71,20 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
         return $this->isPrimaryFieldset;
     }
 
+    public function setTableGateway($tableGateway)
+    {
+        $this->tableGateway = $tableGateway;
+        return $this;
+    }
+
     public function getTableGateway()
     {
         return $this->tableGateway;
+    }
+
+    public function getTableGatewayName()
+    {
+        return $this->tableGatewayName;
     }
 
     public function getColumns()
@@ -107,6 +98,12 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
     public function getMetadata()
     {
         return $this->metadata;
+    }
+
+    public function setMetadata($metadata)
+    {
+        $this->metadata = $metadata;
+        return $this;
     }
 
     public function getInputFilterSpecification()

@@ -3,15 +3,10 @@
 
 namespace Administrator\Form;
 
-
-use Administrator\Traits\ServiceLocatorAwareTrait;
-use Zend\Filter\Word\SeparatorToSeparator;
 use Zend\Form\Form;
 
 class AdministratorForm extends Form
 {
-    use ServiceLocatorAwareTrait;
-
     const ACTION_DEFAULT    = 'index';
     const ACTION_ADD        = 'add';
     const ACTION_EDIT       = 'edit';
@@ -76,25 +71,13 @@ class AdministratorForm extends Form
 
     public function init()
     {
-        $serviceLocator = $this->serviceLocator;
-
-        $application = $serviceLocator->get('Application');
-        $routeMatch  = $application->getMvcEvent()->getRouteMatch();
-        $this->routeParams = $routeMatch->getParams();
-
-        $this->setAttribute('class', 'form-horizontal');
-
-        /**
-         * Como el nombre del formulario lo seteamos con el nombre de la clase,
-         * convertimos el separador de namespace en guiones bajos;
-         */
-        $separatorToSeparator = new SeparatorToSeparator('\\','_');
-        $this->setName($separatorToSeparator->filter(get_class($this)));
-
-        $this->setDefaultAction();
-
-        $this->setActionType($this->routeParams['action']);
         $this->addDefaultFields();
+    }
+
+    public function setRouteParams($params)
+    {
+        $this->routeParams = $params;
+        return $this;
     }
 
     public function getRouteParams($param = false)
@@ -133,35 +116,6 @@ class AdministratorForm extends Form
     public function getActionType()
     {
         return $this->actionType;
-    }
-
-    /**
-     *  Seteamos el action por defecto en función de la url en la que nos encontramos
-     *  Busca los segmentos "section", "action" e "id" y los
-     *  rellena automáticamente.
-     */
-    private function setDefaultAction()
-    {
-        $viewHelper  = $this->serviceLocator->get('ViewHelperManager');
-
-        $application = $this->serviceLocator->get('Application');
-        $routeMatch  = $application->getMvcEvent()->getRouteMatch();
-        $routeParams = $routeMatch->getParams();
-
-        $params = array(
-            'module' => $routeParams['module'],
-            'action'  => $routeParams['action'],
-        );
-
-        if (isset($routeParams['id'])) {
-            $params['id'] = $routeParams['id'];
-        }
-
-        $url = $viewHelper->get('url');
-
-        $this->setAttribute('action', $url('administrator',$params));
-
-        return $this;
     }
 
     /**
