@@ -52,12 +52,6 @@ class AdministratorForm extends Form
      */
     protected $routeParams = array();
 
-
-    public function init()
-    {
-
-    }
-
     public function setRouteParams($params)
     {
         $this->routeParams = $params;

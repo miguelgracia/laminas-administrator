@@ -49,11 +49,6 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
      */
     protected $hiddenFields = array();
 
-    public function init()
-    {
-
-    }
-
     public function setObjectModel($objectModel)
     {
         $this->setObject($objectModel);

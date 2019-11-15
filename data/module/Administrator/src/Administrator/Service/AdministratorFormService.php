@@ -27,15 +27,6 @@ class AdministratorFormService implements EventManagerAwareInterface
 
     /**
      * @var array
-     *
-     * Array Clave/valor que contendrá los idiomas disponibles
-     * Se instancia en la función setForm y en principio se usará
-     * para saber el nombre del idioma.
-     */
-    protected $languages = array();
-
-    /**
-     * @var array
      */
     protected $fieldsets = array();
 
@@ -129,8 +120,6 @@ class AdministratorFormService implements EventManagerAwareInterface
     {
         $this->serviceLocator = $container;
         $this->formManager = $formElementManager;
-
-        $this->languages = $this->serviceLocator->get('AmLanguage\Model\LanguageTable')->all()->toKeyValueArray('id','name');
     }
 
     public function setPrimaryKey($primaryKey)
@@ -140,31 +129,20 @@ class AdministratorFormService implements EventManagerAwareInterface
 
     public function addFieldset($fieldsetName, AdministratorModel $model, $options = array())
     {
-        $fieldset = $this->formManager->build($fieldsetName);
-
-        $fieldset->setObjectModel($model);
-
-        $objectModel = $fieldset->getObjectModel();
-
         $isLocale = (isset($options['is_locale']) and $options['is_locale']);
 
-        $fieldset->setOption('is_locale',$isLocale);
+        $fieldset = $this->formManager->build($fieldsetName, [
+            'model' => $model,
+            'is_locale' => $isLocale
+        ]);
 
-        if ($isLocale) {
-            $fieldsetName .= "\\" . $objectModel->languageId;
-            $fieldset->setName($fieldsetName);
-            $fieldset->setOption('tab_name', $this->languages[$objectModel->languageId]);
+        if ($fieldset->isPrimaryFieldset()) {
+            $this->baseFieldset = $fieldset;
         }
 
-        if (!array_key_exists($fieldsetName, $this->fieldsets)) {
+        $this->initializers($fieldset);
+        $this->fieldsets[$fieldset->getName()] = $fieldset;
 
-            if ($fieldset->isPrimaryFieldset()) {
-                $this->baseFieldset = $fieldset;
-            }
-
-            $this->initializers($fieldset);
-            $this->fieldsets[$fieldsetName] = $fieldset;
-        }
         return $this;
     }
 
@@ -356,7 +334,7 @@ class AdministratorFormService implements EventManagerAwareInterface
         return $this;
     }
 
-    protected function setFieldParams(ColumnObject $column)
+    private function setFieldParams(ColumnObject $column)
     {
         $toCamel = new SeparatorToCamelCase('_');
         $columnName = lcfirst($toCamel->filter($column->getName()));
@@ -426,7 +404,7 @@ class AdministratorFormService implements EventManagerAwareInterface
         return $id;
     }
 
-    protected function setFormDataType($columnName, $dataType)
+    private function setFormDataType($columnName, $dataType)
     {
         if (array_key_exists($columnName, $this->fieldModifiers)) {
             return $this->fieldModifiers[$columnName];
