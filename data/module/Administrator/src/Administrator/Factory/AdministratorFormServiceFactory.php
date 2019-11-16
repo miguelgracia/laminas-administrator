@@ -12,7 +12,6 @@ class AdministratorFormServiceFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         return new AdministratorFormService(
-            $container,
             $container->get('FormElementManager')
         );
     }

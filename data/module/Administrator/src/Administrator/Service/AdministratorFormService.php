@@ -4,7 +4,6 @@ namespace Administrator\Service;
 
 use Administrator\Form\AdministratorForm;
 use Administrator\Model\AdministratorModel;
-use Administrator\Traits\ServiceLocatorAwareTrait;
 use Zend\Db\Metadata\Object\ColumnObject;
 
 use Zend\EventManager\EventManagerAwareInterface;
@@ -17,7 +16,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AdministratorFormService implements EventManagerAwareInterface
 {
-    use EventManagerAwareTrait, ServiceLocatorAwareTrait;
+    use EventManagerAwareTrait;
 
     protected $formManager;
 
@@ -106,12 +105,10 @@ class AdministratorFormService implements EventManagerAwareInterface
     }
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return $this
+     * @param $formElementManager
      */
-    public function __construct($container, $formElementManager)
+    public function __construct($formElementManager)
     {
-        $this->serviceLocator = $container;
         $this->formManager = $formElementManager;
     }
 
