@@ -127,49 +127,14 @@ class AdministratorFormService implements EventManagerAwareInterface
         $this->hiddenPrimaryKey = $primaryKey;
     }
 
-    public function addFieldset($fieldsetName, AdministratorModel $model, $options = array())
-    {
-        $isLocale = (isset($options['is_locale']) and $options['is_locale']);
-
-        $fieldset = $this->formManager->build($fieldsetName, [
-            'model' => $model,
-            'is_locale' => $isLocale
-        ]);
-
-        if ($fieldset->isPrimaryFieldset()) {
-            $this->baseFieldset = $fieldset;
-        }
-
-        $this->initializers($fieldset);
-        $this->fieldsets[$fieldset->getName()] = $fieldset;
-
-        return $this;
-    }
-
     public function getBaseFieldset()
     {
         return $this->baseFieldset;
     }
 
-    public function addLocaleFieldsets($localeClass, $options = array())
+    public function setBaseFieldset($baseFieldset)
     {
-        $baseTableGateway = $this->baseFieldset->getTableGateway();
-        $objectModel = $this->baseFieldset->getObjectModel();
-
-        $primaryId = isset($objectModel->id) ? $objectModel->id : 0;
-
-        $localeTableGatewayName = preg_replace("/(Table)$/", "LocaleTable", get_class($baseTableGateway));
-
-        $localeTableGateway = $this->serviceLocator->get($localeTableGatewayName);
-
-        $localeModels = $localeTableGateway->findLocales($primaryId);
-
-        foreach ($localeModels as $localModel) {
-            $localModel->relatedTableId = $primaryId;
-            $this->addFieldset($localeClass, $localModel, $options);
-        }
-
-        return $this;
+        $this->baseFieldset = $baseFieldset;
     }
 
     public function setForm($form = null, AdministratorModel $model)
@@ -251,9 +216,36 @@ class AdministratorFormService implements EventManagerAwareInterface
         $options['is_locale'] = $isLocale;
 
         if (!$isLocale) {
-            $this->addFieldset($fieldset, $this->baseModel, $options);
-        } else {
-            $this->addLocaleFieldsets($fieldset, $options);
+            $fieldset = $this->formManager->build($fieldset, [
+                'model' => $this->baseModel,
+                'is_locale' => $isLocale
+            ]);
+
+            $this->initializers($fieldset);
+            $this->fieldsets[$fieldset->getName()] = $fieldset;
+            return;
+        }
+
+        $baseTableGateway = $this->baseFieldset->getTableGateway();
+        $objectModel = $this->baseFieldset->getObjectModel();
+
+        $primaryId = isset($objectModel->id) ? $objectModel->id : 0;
+
+        $localeTableGatewayName = preg_replace("/(Table)$/", "LocaleTable", get_class($baseTableGateway));
+
+        $localeTableGateway = $this->serviceLocator->get($localeTableGatewayName);
+
+        $localeModels = $localeTableGateway->findLocales($primaryId);
+
+        foreach ($localeModels as $localModel) {
+            $localModel->relatedTableId = $primaryId;
+            $localeFieldset = $this->formManager->build($fieldset, [
+                'model' => $localModel,
+                'is_locale' => $isLocale
+            ]);
+
+            $this->initializers($localeFieldset);
+            $this->fieldsets[$localeFieldset->getName()] = $localeFieldset;
         }
     }
 

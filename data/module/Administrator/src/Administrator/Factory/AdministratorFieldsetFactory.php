@@ -1,6 +1,7 @@
 <?php
 namespace Administrator\Factory;
 
+use Administrator\Service\AdministratorFormService;
 use Interop\Container\ContainerInterface;
 use Zend\Db\Metadata\Source\Factory;
 use Zend\Hydrator\ArraySerializable;
@@ -10,6 +11,8 @@ class AdministratorFieldsetFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+        $formService = $container->get(AdministratorFormService::class);
+
         $fieldset = (new $requestedName($requestedName));
         $isLocale = $options['is_locale'];
 
@@ -27,6 +30,10 @@ class AdministratorFieldsetFactory implements FactoryInterface
             $languages = $container->get('AmLanguage\Model\LanguageTable')->all()->toKeyValueArray('id','name');
             $fieldset->setName($requestedName . "\\" . $objectModel->languageId);
             $fieldset->setOption('tab_name', $languages[$objectModel->languageId]);
+        }
+
+        if ($fieldset->isPrimaryFieldset()) {
+            $formService->setBaseFieldset($fieldset);
         }
 
         return $fieldset;
