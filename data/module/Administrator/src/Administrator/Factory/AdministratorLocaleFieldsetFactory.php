@@ -7,20 +7,54 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 
 class AdministratorLocaleFieldsetFactory implements FactoryInterface
 {
+    private $container;
+    private $fieldsets = [];
+    private $languages;
+
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $languages = $container->get('AmLanguage\Model\LanguageTable')->all()->toKeyValueArray('id','name');
+        $this->container = $container;
+        $this->languages = $container->get('AmLanguage\Model\LanguageTable')->all()->toKeyValueArray('id','name');
 
-        $objectModel = $options['model'];
-        $fieldset = (new $requestedName($requestedName));
+        $baseFieldset = $options['base_fieldset'];
+
+        $baseTableGateway = $baseFieldset->getTableGateway();
+        $objectModel = $baseFieldset->getObjectModel();
+
+        $primaryId = isset($objectModel->id) ? $objectModel->id : 0;
+
+        $localeTableGatewayName = preg_replace(
+            "/(Table)$/",
+            "LocaleTable",
+            get_class($baseTableGateway)
+        );
+
+        $localeTableGateway = $container->get($localeTableGatewayName);
+
+        $localeModels = $localeTableGateway->findLocales($primaryId);
+
+        foreach ($localeModels as $localModel) {
+            $localModel->relatedTableId = $primaryId;
+
+            $localeFieldset = $this->prepareFieldset($requestedName, $localModel);
+
+            $this->fieldsets[$localeFieldset->getName()] = $localeFieldset;
+        }
+
+        return $this->fieldsets;
+    }
+
+    private function prepareFieldset($fieldsetName, $objectModel)
+    {
+        $fieldset = (new $fieldsetName($fieldsetName));
 
         return $fieldset
-            ->setServiceLocator($container)
-            ->setTableGateway($container->get($fieldset->getTableGatewayName()))
+            ->setServiceLocator($this->container)
+            ->setTableGateway($this->container->get($fieldset->getTableGatewayName()))
             ->setObjectModel($objectModel)
-            ->setMetadata(Factory::createSourceFromAdapter($container->get('Zend\Db\Adapter\Adapter')))
-            ->setName($requestedName . "\\" . $objectModel->languageId)
+            ->setMetadata(Factory::createSourceFromAdapter($this->container->get('Zend\Db\Adapter\Adapter')))
+            ->setName($fieldsetName . "\\" . $objectModel->languageId)
             ->setOption('is_locale',true)
-            ->setOption('tab_name', $languages[$objectModel->languageId]);
+            ->setOption('tab_name', $this->languages[$objectModel->languageId]);
     }
 }

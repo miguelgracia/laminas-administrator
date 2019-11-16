@@ -2,6 +2,7 @@
 
 namespace Administrator\Service;
 
+use Administrator\Form\AdministratorForm;
 use Administrator\Model\AdministratorModel;
 use Administrator\Traits\ServiceLocatorAwareTrait;
 use Zend\Db\Metadata\Object\ColumnObject;
@@ -23,7 +24,7 @@ class AdministratorFormService implements EventManagerAwareInterface
     /**
      * @var \Zend\Form\Form
      */
-    protected $form;
+    protected $form = null;
 
     /**
      * @var array
@@ -34,14 +35,6 @@ class AdministratorFormService implements EventManagerAwareInterface
      * @var Fieldset
      */
     protected $baseFieldset = null;
-
-    /**
-     * @var AdministratorModel
-     *
-     * Variable que almacenará los datos del fieldset base
-     */
-    protected $baseModel = null;
-
 
     /**
      * @var array
@@ -139,27 +132,52 @@ class AdministratorFormService implements EventManagerAwareInterface
 
     public function setForm($form = null, AdministratorModel $model)
     {
-        if (!$this->form) {
-            $this->baseModel = $model;
-
-            $this->form = $this->formManager->build($form);
-
-            $formInitializers = $this->form->initializers();
-
-            foreach ($formInitializers['fieldsets'] as $fieldsetName) {
-                $this->setFieldset($fieldsetName);
-            }
-
-            $form = $this->form;
-
-            $triggerInit = $form->getRouteParams('action') == 'add'
-                ? $form::EVENT_CREATE_INIT_FORM
-                : $form::EVENT_UPDATE_INIT_FORM;
-
-            $eventResult = $this->eventTrigger($triggerInit);
+        if ($this->form instanceof AdministratorForm) {
+            return $this;
         }
 
+        $this->form = $this->formManager->build($form);
+
+        $formInitializers = $this->form->initializers();
+
+        foreach ($formInitializers['fieldsets'] as $fieldsetName) {
+            $this->setFieldset($fieldsetName, $model);
+        }
+
+        $form = $this->form;
+
+        $triggerInit = $form->getRouteParams('action') == 'add'
+            ? $form::EVENT_CREATE_INIT_FORM
+            : $form::EVENT_UPDATE_INIT_FORM;
+
+        $eventResult = $this->eventTrigger($triggerInit);
+
         return $this;
+    }
+
+    private function setFieldset($fieldsetName, $model)
+    {
+        $isLocale = strpos($fieldsetName, "LocaleFieldset") !== false;
+
+        if (!$isLocale) {
+            $fieldset = $this->formManager->build($fieldsetName, [
+                'model' => $model,
+            ]);
+
+            $this->initializers($fieldset);
+            $this->fieldsets[$fieldset->getName()] = $fieldset;
+            return;
+        }
+
+        $localeFieldsets = $this->formManager->build($fieldsetName, [
+            'base_fieldset' => $this->baseFieldset,
+        ]);
+
+        foreach ($localeFieldsets as $localeFieldset) {
+            $this->initializers($localeFieldset);
+        }
+
+        $this->fieldsets += $localeFieldsets;
     }
 
     public function initializers($instance)
@@ -212,42 +230,6 @@ class AdministratorFormService implements EventManagerAwareInterface
     public function setFieldModifiers($modifier, $value)
     {
         $this->fieldModifiers[$modifier] = $value;
-    }
-
-    public function setFieldset($fieldset)
-    {
-        $isLocale = strpos($fieldset, "LocaleFieldset") !== false;
-
-        if (!$isLocale) {
-            $fieldset = $this->formManager->build($fieldset, [
-                'model' => $this->baseModel,
-            ]);
-
-            $this->initializers($fieldset);
-            $this->fieldsets[$fieldset->getName()] = $fieldset;
-            return;
-        }
-
-        $baseTableGateway = $this->baseFieldset->getTableGateway();
-        $objectModel = $this->baseFieldset->getObjectModel();
-
-        $primaryId = isset($objectModel->id) ? $objectModel->id : 0;
-
-        $localeTableGatewayName = preg_replace("/(Table)$/", "LocaleTable", get_class($baseTableGateway));
-
-        $localeTableGateway = $this->serviceLocator->get($localeTableGatewayName);
-
-        $localeModels = $localeTableGateway->findLocales($primaryId);
-
-        foreach ($localeModels as $localModel) {
-            $localModel->relatedTableId = $primaryId;
-            $localeFieldset = $this->formManager->build($fieldset, [
-                'model' => $localModel
-            ]);
-
-            $this->initializers($localeFieldset);
-            $this->fieldsets[$localeFieldset->getName()] = $localeFieldset;
-        }
     }
 
     public function addFields()
