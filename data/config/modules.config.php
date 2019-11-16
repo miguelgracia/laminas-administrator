@@ -31,7 +31,6 @@ return [
     'Application',
     'AmLogin',
     'AmHome',
-    'AmConfiguration',
     'AmUser',
     'AmProfile',
     'AmModule',
