@@ -10,8 +10,8 @@ class StaticPageForm extends AdministratorForm
     {
         return array(
             'fieldsets' => array(
-                StaticPageFieldset::class => array(),
-                StaticPageLocaleFieldset::class => array(),
+                StaticPageFieldset::class,
+                StaticPageLocaleFieldset::class,
             )
         );
     }

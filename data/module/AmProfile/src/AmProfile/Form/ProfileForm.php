@@ -10,7 +10,7 @@ class ProfileForm extends AdministratorForm {
     {
         return array(
             'fieldsets' => array(
-                ProfileFieldset::class => array()
+                ProfileFieldset::class
             )
         );
     }

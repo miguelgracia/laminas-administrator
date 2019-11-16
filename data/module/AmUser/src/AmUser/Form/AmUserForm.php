@@ -10,7 +10,7 @@ class AmUserForm extends AdministratorForm {
     {
         return array(
             'fieldsets' => array(
-                UserFieldset::class => array(),
+                UserFieldset::class,
             )
         );
     }

@@ -10,8 +10,8 @@ class AppDataForm extends AdministratorForm
     {
         return array(
             'fieldsets' => array(
-                AppDataFieldset::class => array(),
-                AppDataLocaleFieldset::class => array(),
+                AppDataFieldset::class,
+                AppDataLocaleFieldset::class,
             )
         );
     }

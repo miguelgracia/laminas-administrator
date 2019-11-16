@@ -144,7 +144,11 @@ class AdministratorFormService implements EventManagerAwareInterface
 
             $this->form = $this->formManager->build($form);
 
-            $this->initializers($this->form);
+            $formInitializers = $this->form->initializers();
+
+            foreach ($formInitializers['fieldsets'] as $fieldsetName) {
+                $this->setFieldset($fieldsetName);
+            }
 
             $form = $this->form;
 
@@ -160,27 +164,28 @@ class AdministratorFormService implements EventManagerAwareInterface
 
     public function initializers($instance)
     {
-        if (method_exists($instance, 'initializers')) {
-            $initializers = $instance->initializers();
+        if (!method_exists($instance, 'initializers')) {
+            return;
+        }
 
-            foreach ($initializers as $property => $initializer) {
+        $initializers = $instance->initializers();
 
-                foreach ($initializer as $field => $value) {
+        foreach ($initializers as $property => $initializer) {
 
-                    $method = 'set' . ucfirst($property);
+            foreach ($initializer as $field => $value) {
 
-                    if (method_exists($this, $method)) {
-                        call_user_func_array(array($this,$method), array(
-                            $field,
-                            is_callable($value) ? $value() : $value
-                        ));
-                    } else {
-                        throw new \Exception('Method ' . $method . ' not exists in '.get_class($this));
-                    }
+                $method = 'set' . ucfirst($property);
+
+                if (!method_exists($this, $method)) {
+                    throw new \Exception('Method ' . $method . ' not exists in '.get_class($this));
                 }
+
+                call_user_func_array(array($this,$method), array(
+                    $field,
+                    is_callable($value) ? $value() : $value
+                ));
             }
         }
-        return $this;
     }
 
     public function getForm()
@@ -209,7 +214,7 @@ class AdministratorFormService implements EventManagerAwareInterface
         $this->fieldModifiers[$modifier] = $value;
     }
 
-    public function setFieldsets($fieldset, $options = array())
+    public function setFieldset($fieldset)
     {
         $isLocale = strpos($fieldset, "LocaleFieldset") !== false;
 

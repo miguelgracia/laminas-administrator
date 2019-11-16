@@ -10,7 +10,7 @@ class MegabannerForm extends AdministratorForm
     {
         return array(
             'fieldsets' => array(
-                MegabannerFieldset::class => array(),
+                MegabannerFieldset::class,
             )
         );
     }

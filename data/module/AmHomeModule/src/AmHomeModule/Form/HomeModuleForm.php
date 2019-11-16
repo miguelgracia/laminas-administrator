@@ -10,8 +10,8 @@ class HomeModuleForm extends AdministratorForm
     {
         return array(
             'fieldsets' => array(
-                HomeModuleFieldset::class => array(),
-                HomeModuleLocaleFieldset::class => array(),
+                HomeModuleFieldset::class,
+                HomeModuleLocaleFieldset::class,
             )
         );
     }

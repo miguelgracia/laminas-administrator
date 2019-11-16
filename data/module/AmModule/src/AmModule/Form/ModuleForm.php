@@ -10,7 +10,7 @@ class ModuleForm extends AdministratorForm {
     {
         return array(
             'fieldsets' => array(
-                ModuleFieldset::class => array()
+                ModuleFieldset::class
             )
         );
     }

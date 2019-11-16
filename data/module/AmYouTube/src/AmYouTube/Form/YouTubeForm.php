@@ -10,7 +10,7 @@ class YouTubeForm extends AdministratorForm
     {
         return array(
             'fieldsets' => array(
-                YouTubeFieldset::class => array(),
+                YouTubeFieldset::class,
             )
         );
     }

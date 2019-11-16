@@ -10,7 +10,7 @@ class LanguageForm extends AdministratorForm
     {
         return array(
             'fieldsets' => array(
-                LanguageFieldset::class => array()
+                LanguageFieldset::class
             )
         );
     }

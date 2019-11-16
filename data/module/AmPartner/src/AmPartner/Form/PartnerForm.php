@@ -10,7 +10,7 @@ class PartnerForm extends AdministratorForm
     {
         return array(
             'fieldsets' => array(
-                PartnerFieldset::class => array(),
+                PartnerFieldset::class,
             )
         );
     }

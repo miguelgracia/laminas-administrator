@@ -4,7 +4,6 @@ namespace Administrator\Factory;
 use Administrator\Service\AdministratorFormService;
 use Interop\Container\ContainerInterface;
 use Zend\Db\Metadata\Source\Factory;
-use Zend\Hydrator\ArraySerializable;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 class AdministratorFieldsetFactory implements FactoryInterface

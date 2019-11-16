@@ -10,8 +10,8 @@ class SectionForm extends AdministratorForm
     {
         return array(
             'fieldsets' => array(
-                SectionFieldset::class => array(),
-                SectionLocaleFieldset::class => array(),
+                SectionFieldset::class,
+                SectionLocaleFieldset::class,
             )
         );
     }
