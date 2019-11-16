@@ -11,7 +11,7 @@ return array(
         'factories' => [
             \AmBlog\Form\BlogForm::class => \Administrator\Factory\AdministratorFormFactory::class,
             \AmBlog\Form\BlogFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
-            \AmBlog\Form\BlogLocaleFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+            \AmBlog\Form\BlogLocaleFieldset::class => \Administrator\Factory\AdministratorLocaleFieldsetFactory::class,
         ]
     ],
 

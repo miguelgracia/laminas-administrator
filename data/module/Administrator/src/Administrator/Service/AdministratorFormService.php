@@ -213,12 +213,9 @@ class AdministratorFormService implements EventManagerAwareInterface
     {
         $isLocale = strpos($fieldset, "LocaleFieldset") !== false;
 
-        $options['is_locale'] = $isLocale;
-
         if (!$isLocale) {
             $fieldset = $this->formManager->build($fieldset, [
                 'model' => $this->baseModel,
-                'is_locale' => $isLocale
             ]);
 
             $this->initializers($fieldset);
@@ -240,8 +237,7 @@ class AdministratorFormService implements EventManagerAwareInterface
         foreach ($localeModels as $localModel) {
             $localModel->relatedTableId = $primaryId;
             $localeFieldset = $this->formManager->build($fieldset, [
-                'model' => $localModel,
-                'is_locale' => $isLocale
+                'model' => $localModel
             ]);
 
             $this->initializers($localeFieldset);

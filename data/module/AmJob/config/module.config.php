@@ -10,7 +10,7 @@ return array(
         'factories' => [
             \AmJob\Form\JobForm::class => \Administrator\Factory\AdministratorFormFactory::class,
             \AmJob\Form\JobFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
-            \AmJob\Form\JobLocaleFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class
+            \AmJob\Form\JobLocaleFieldset::class => \Administrator\Factory\AdministratorLocaleFieldsetFactory::class
         ]
     ],
 

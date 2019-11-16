@@ -10,7 +10,7 @@ return array(
         'factories' => [
             \AmBlogCategory\Form\BlogCategoryForm::class => \Administrator\Factory\AdministratorFormFactory::class,
             \AmBlogCategory\Form\BlogCategoryFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
-            \AmBlogCategory\Form\BlogCategoryLocaleFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+            \AmBlogCategory\Form\BlogCategoryLocaleFieldset::class => \Administrator\Factory\AdministratorLocaleFieldsetFactory::class,
         ]
     ],
 

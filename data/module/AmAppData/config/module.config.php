@@ -10,7 +10,7 @@ return array(
         'factories' => [
             \AmAppData\Form\AppDataForm::class => \Administrator\Factory\AdministratorFormFactory::class,
             \AmAppData\Form\AppDataFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
-            \AmAppData\Form\AppDataLocaleFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class
+            \AmAppData\Form\AppDataLocaleFieldset::class => \Administrator\Factory\AdministratorLocaleFieldsetFactory::class
         ]
     ],
 
