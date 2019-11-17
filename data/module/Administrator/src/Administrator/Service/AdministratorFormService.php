@@ -186,7 +186,7 @@ class AdministratorFormService implements EventManagerAwareInterface
                     'language_id'
                 ))) {
                     $element = $this->formManager->build(Hidden::class);
-                    $this->setFieldsetConfig($column, $element);
+                    $this->setElementConfig($column, $element);
                     $fieldset->add($element, $flags);
                     continue;
                 }
@@ -199,7 +199,7 @@ class AdministratorFormService implements EventManagerAwareInterface
                     $element = $this->formManager->build($dataType);
                 }
 
-                $this->setFieldsetConfig($column, $element);
+                $this->setElementConfig($column, $element);
 
                 $fieldset->add($element);
             }
@@ -220,7 +220,7 @@ class AdministratorFormService implements EventManagerAwareInterface
         return $this;
     }
 
-    private function setFieldsetConfig(ColumnObject $column, $fieldset)
+    private function setElementConfig(ColumnObject $column, &$element)
     {
         $toCamel = new SeparatorToCamelCase('_');
         $columnName = lcfirst($toCamel->filter($column->getName()));
@@ -232,7 +232,14 @@ class AdministratorFormService implements EventManagerAwareInterface
             'js-'.$columnName
         );
 
-        $options = array(
+        $classes = $element->getAttribute('class');
+        $options = $element->getOptions();
+
+        if (!is_null($classes)) {
+            $fieldClasses[] = $classes;
+        }
+
+        $options += array(
             'data_type' => $dataType,
             'label'     => $columnName,
             'label_attributes' => array(
@@ -259,7 +266,7 @@ class AdministratorFormService implements EventManagerAwareInterface
             );
         }
 
-        $fieldset
+        $element
             ->setName($columnName)
             ->setLabel($columnName)
             ->setOptions($options)

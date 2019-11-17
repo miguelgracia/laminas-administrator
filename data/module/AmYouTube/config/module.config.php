@@ -14,7 +14,7 @@ return array(
 
     'service_manager' => array(
         'factories' => array(
-            'YoutubeService' => 'AmYouTube\Service\YoutubeService'
+            \AmYouTube\Service\YoutubeService::class => \AmYouTube\Service\YoutubeService::class
         )
     ),
 

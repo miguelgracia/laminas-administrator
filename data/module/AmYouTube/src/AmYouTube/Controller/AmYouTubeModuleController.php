@@ -24,7 +24,7 @@ class AmYouTubeModuleController extends AuthController
             'title' => 'Sincronizar'
         );
 
-        $youtubeService = $this->serviceLocator->get('YoutubeService');
+        $youtubeService = $this->serviceLocator->get(\AmYouTube\Service\YoutubeService::class);
 
         $client = $youtubeService->getClient();
 
@@ -173,7 +173,7 @@ class AmYouTubeModuleController extends AuthController
 
         $model = $this->tableGateway->getEntityModel();
 
-        $youtubeService = $this->serviceLocator->get('YoutubeService');
+        $youtubeService = $this->serviceLocator->get(\AmYouTube\Service\YoutubeService::class);
         $client = $youtubeService->getClient();
         $youtube = $youtubeService->getYoutubeService();
         $checkAuth = false;
@@ -356,7 +356,7 @@ class AmYouTubeModuleController extends AuthController
             return $this->goToSection($thisModule);
         }
 
-        $youtubeService = $this->serviceLocator->get('YoutubeService');
+        $youtubeService = $this->serviceLocator->get(\AmYouTube\Service\YoutubeService::class);
         $client = $youtubeService->getClient();
         $youtube = $youtubeService->getYoutubeService();
 
@@ -487,7 +487,7 @@ class AmYouTubeModuleController extends AuthController
             return $this->goToSection('login');
         }
 
-        $youtubeService = $this->serviceLocator->get('YoutubeService');
+        $youtubeService = $this->serviceLocator->get(\AmYouTube\Service\YoutubeService::class);
         $client = $youtubeService->getClient();
         $youtube = $youtubeService->getYoutubeService();
 

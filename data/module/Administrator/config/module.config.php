@@ -59,6 +59,7 @@ return array(
             'metaDescription' => \Administrator\Form\Element\MetaDescription::class,
             'content' => \Zend\Form\Element\Textarea::class,
             'password' => \Zend\Form\Element\Password::class,
+            'imageUrl' => \Administrator\Form\Element\ImageUrl::class,
 
             /**
              * Si no se especifica el nombre del campo en base de datos, resolvemos un objeto
@@ -75,7 +76,8 @@ return array(
             'factories' => [
                 \Administrator\Form\Element\YesNoSelect::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
                 \Administrator\Form\Element\TargetLink::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
-                \Administrator\Form\Element\MetaDescription::class => \Zend\ServiceManager\Factory\InvokableFactory::class
+                \Administrator\Form\Element\MetaDescription::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
+                \Administrator\Form\Element\ImageUrl::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
             ],
         ],
         'abstract_factories' => [
