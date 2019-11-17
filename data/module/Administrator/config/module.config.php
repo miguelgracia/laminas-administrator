@@ -56,7 +56,7 @@ return array(
             'active' => \Administrator\Form\Element\YesNoSelect::class,
             'visible' => \Administrator\Form\Element\YesNoSelect::class,
             'targetLink' => \Administrator\Form\Element\TargetLink::class,
-            'metaDescription' => \Zend\Form\Element\Textarea::class,
+            'metaDescription' => \Administrator\Form\Element\MetaDescription::class,
             'content' => \Zend\Form\Element\Textarea::class,
             'password' => \Zend\Form\Element\Password::class,
 
@@ -75,6 +75,7 @@ return array(
             'factories' => [
                 \Administrator\Form\Element\YesNoSelect::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
                 \Administrator\Form\Element\TargetLink::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
+                \Administrator\Form\Element\MetaDescription::class => \Zend\ServiceManager\Factory\InvokableFactory::class
             ],
         ],
         'abstract_factories' => [
