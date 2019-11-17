@@ -10,9 +10,8 @@ use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerAwareTrait;
 
 use Zend\Filter\Word\SeparatorToCamelCase;
+use Zend\Form\Element\Hidden;
 use Zend\Form\Fieldset;
-
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AdministratorFormService implements EventManagerAwareInterface
 {
@@ -36,24 +35,6 @@ class AdministratorFormService implements EventManagerAwareInterface
     protected $baseFieldset = null;
 
     /**
-     * @var array
-     *
-     * Array asociativo que contendrá un conjunto de registros clave/valor para rellenar
-     * aquellos campos de tipo select.
-     *
-     * Ejemplo:
-     *
-     * $fieldValueOptions = array(
-     *      'idPerfil' => array(
-     *          '1' => 'Admin',
-     *          '2' => 'User',
-     *          '3' => 'Guest'
-     *       )
-     *  );
-     */
-    protected $fieldValueOptions = array();
-
-    /**
      * @var string
      *
      * Nombre por defecto del campo de tabla de base de datos que se usara
@@ -68,17 +49,6 @@ class AdministratorFormService implements EventManagerAwareInterface
      * Nombre del campo de la tabla locale que usaremos para relacionar con su tabla maestra
      */
     protected $hiddenRelatedKey = 'related_table_id';
-
-    /**
-     * @var array
-     *
-     * Este array incluye aquellos campos de base de datos que queremos redefinir su tipo.
-     * Por ejemplo. idPerfil en base de datos se guarda como tipo entero. Los tipos enteros
-     * se reflejan en el formulario como un campo input pero en nuestro caso queremos
-     * que sea un Select. Es aquí donde quedará almacenado dicho cambio. Los valores deben corresponder a
-     * elementos de tipo Form\Element. Se setea desde el initializer de los formularios
-     */
-    protected $fieldModifiers = array();
 
     /**
      * @var array
@@ -160,8 +130,6 @@ class AdministratorFormService implements EventManagerAwareInterface
             $fieldset = $this->formManager->build($fieldsetName, [
                 'model' => $model,
             ]);
-
-            $this->initializers($fieldset);
             $this->fieldsets[$fieldset->getName()] = $fieldset;
             return;
         }
@@ -170,37 +138,7 @@ class AdministratorFormService implements EventManagerAwareInterface
             'base_fieldset' => $this->baseFieldset,
         ]);
 
-        foreach ($localeFieldsets as $localeFieldset) {
-            $this->initializers($localeFieldset);
-        }
-
         $this->fieldsets += $localeFieldsets;
-    }
-
-    public function initializers($instance)
-    {
-        if (!method_exists($instance, 'initializers')) {
-            return;
-        }
-
-        $initializers = $instance->initializers();
-
-        foreach ($initializers as $property => $initializer) {
-
-            foreach ($initializer as $field => $value) {
-
-                $method = 'set' . ucfirst($property);
-
-                if (!method_exists($this, $method)) {
-                    throw new \Exception('Method ' . $method . ' not exists in '.get_class($this));
-                }
-
-                call_user_func_array(array($this,$method), array(
-                    $field,
-                    is_callable($value) ? $value() : $value
-                ));
-            }
-        }
     }
 
     public function getForm()
@@ -211,22 +149,6 @@ class AdministratorFormService implements EventManagerAwareInterface
     public function getRouteParams($param = false)
     {
         return $this->form->getRouteParams($param);
-    }
-
-    /**
-     * Setea los valores con los que vamos a rellenar los campos de tipo Select o Multicheckbox
-     *
-     * @param $fieldName
-     * @param array $valueOptions
-     */
-    public function setFieldValueOptions($fieldName, $valueOptions = array())
-    {
-        $this->fieldValueOptions[$fieldName] = $valueOptions;
-    }
-
-    public function setFieldModifiers($modifier, $value)
-    {
-        $this->fieldModifiers[$modifier] = $value;
     }
 
     public function addFields()
@@ -258,36 +180,28 @@ class AdministratorFormService implements EventManagerAwareInterface
                     'priority' => -($column->getOrdinalPosition() * 100),
                 );
 
-                $fieldParams = $this->setFieldParams($column);
-
                 if (in_array($column->getName(), array(
                     $this->hiddenPrimaryKey,
                     $this->hiddenRelatedKey,
                     'language_id'
                 ))) {
-                    $fieldParams['type'] = 'Hidden';
-                    $fieldset->add($fieldParams, $flags);
+                    $element = $this->formManager->build(Hidden::class);
+                    $this->setFieldsetConfig($column, $element);
+                    $fieldset->add($element, $flags);
                     continue;
                 }
 
                 $dataType = $column->getDataType();
 
-                $type = $this->setFormDataType($columnName, $dataType);
-
-                if ($type == 'Select' or $type == 'MultiCheckbox') {
-
-                    if ($dataType == 'enum' and !isset($this->fieldValueOptions[$columnName])) {
-                        $enumValues = $column->getErratas();
-                        $fieldParams['options']['value_options'] = $enumValues['permitted_values'];
-                    } else {
-                        $fieldParams['options']['value_options'] = $this->fieldValueOptions[$columnName];
-                    }
+                if ($this->formManager->has($columnName)) {
+                    $element = $this->formManager->build($columnName);
+                } else {
+                    $element = $this->formManager->build($dataType);
                 }
 
-                $fieldParams['type'] = $type;
+                $this->setFieldsetConfig($column, $element);
 
-                $fieldset->add($fieldParams,$flags);
-
+                $fieldset->add($element);
             }
 
             $fieldset->populateValues($fieldset->getObjectModel()->getArrayCopy());
@@ -306,7 +220,7 @@ class AdministratorFormService implements EventManagerAwareInterface
         return $this;
     }
 
-    private function setFieldParams(ColumnObject $column)
+    private function setFieldsetConfig(ColumnObject $column, $fieldset)
     {
         $toCamel = new SeparatorToCamelCase('_');
         $columnName = lcfirst($toCamel->filter($column->getName()));
@@ -332,30 +246,27 @@ class AdministratorFormService implements EventManagerAwareInterface
             'class' => implode(' ',$fieldClasses),
         );
 
-        switch ($dataType) {
-            case 'timestamp':
-                $class = 'form-control select-timestamp';
-                $options['day_attributes'] = array(
-                    'class' => $class . ' day'
-                );
-                $options['month_attributes'] = array(
-                    'class' => $class . ' month'
-                );
-                $options['year_attributes'] = array(
-                    'class' => $class . ' year'
-                );
-
-                break;
+        if ($dataType === 'timestamp') {
+            $class = 'form-control select-timestamp';
+            $options['day_attributes'] = array(
+                'class' => $class . ' day'
+            );
+            $options['month_attributes'] = array(
+                'class' => $class . ' month'
+            );
+            $options['year_attributes'] = array(
+                'class' => $class . ' year'
+            );
         }
 
-        $fieldParams = array(
-            'name'       => $columnName,
-            'label'      => $columnName,
-            'options'    => $options,
-            'attributes' => $attributes
-        );
+        $fieldset
+            ->setName($columnName)
+            ->setLabel($columnName)
+            ->setOptions($options)
+            ->setAttributes($attributes)
+        ;
 
-        return $fieldParams;
+        return $this;
     }
 
     /**
@@ -374,36 +285,6 @@ class AdministratorFormService implements EventManagerAwareInterface
         }
 
         return $id;
-    }
-
-    private function setFormDataType($columnName, $dataType)
-    {
-        if (array_key_exists($columnName, $this->fieldModifiers)) {
-            return $this->fieldModifiers[$columnName];
-        }
-
-        $fieldType = 'text';
-
-        // Conforme vayan surgiendo posibles valores de $dataType, el siguiente switch
-        // ira creciendo
-
-        switch ($dataType) {
-            case 'int':
-            case 'varchar':
-            case 'tinyint':
-                $fieldType = 'text';
-                break;
-            case 'enum':
-                $fieldType = 'Select';
-                break;
-            case 'timestamp':
-                $fieldType =  'DateSelect';
-                break;
-            default:
-
-        }
-
-        return $fieldType;
     }
 
     public function resolveForm($data)

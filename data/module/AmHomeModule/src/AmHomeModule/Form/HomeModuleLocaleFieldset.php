@@ -10,15 +10,6 @@ class HomeModuleLocaleFieldset extends AdministratorFieldset
 {
     protected $tableGatewayName = HomeModuleLocaleTable::class;
 
-    public function initializers()
-    {
-        return array(
-            'fieldModifiers' => array(
-                'content'           => 'Textarea',
-            ),
-        );
-    }
-
     public function addFields()
     {
         $imageUrl = $this->get('imageUrl');

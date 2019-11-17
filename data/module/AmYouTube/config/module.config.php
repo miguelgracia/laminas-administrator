@@ -18,7 +18,14 @@ return array(
         )
     ),
 
-    'router' => array(
-
-    )
+    'form_elements' => [
+        'aliases' => [
+            'visibility' => \AmYouTube\Form\Element\Visibility::class
+        ],
+        'factories' => [
+            \AmYouTube\Form\Element\Visibility::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
+            \AmUser\Form\AmUserForm::class => \Administrator\Factory\AdministratorFormFactory::class,
+            \AmUser\Form\UserFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class
+        ]
+    ],
 );

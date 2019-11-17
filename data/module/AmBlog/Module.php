@@ -22,9 +22,4 @@ class Module
             ),
         );
     }
-
-    public function onBootstrap(MvcEvent $e)
-    {
-
-    }
 }

@@ -13,18 +13,6 @@ class MegabannerFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = MegabannerTable::class;
 
-    public function initializers()
-    {
-        return array(
-            'fieldValueOptions' => array(
-                'active' => array(
-                    '0' => 'NO',
-                    '1' => 'SI'
-                ),
-            )
-        );
-    }
-
     public function addFields()
     {
         $elementUrl = $this->get('elementUrl');

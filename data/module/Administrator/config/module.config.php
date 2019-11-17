@@ -19,14 +19,6 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
-
-    'controllers' => array(
-
-    ),
-
-    'service_manager' => array(
-
-    ),
     'translator' => array(
         'locale' => 'es_ES',
         'translation_file_patterns' => array(
@@ -51,5 +43,43 @@ return array(
                 )
             )
         ),
-    )
+    ),
+    'form_elements' => [
+        /**
+         * Conforme vayan surgiendo posibles elementos por defecto en función del tipo de dato, el siguiente array
+         * ira creciendo
+         */
+        'aliases' => [
+            /**
+             * Nombres comunes en las tablas declaradas
+             */
+            'active' => \Administrator\Form\Element\YesNoSelect::class,
+            'visible' => \Administrator\Form\Element\YesNoSelect::class,
+            'targetLink' => \Administrator\Form\Element\TargetLink::class,
+            'metaDescription' => \Zend\Form\Element\Textarea::class,
+            'content' => \Zend\Form\Element\Textarea::class,
+            'password' => \Zend\Form\Element\Password::class,
+
+            /**
+             * Si no se especifica el nombre del campo en base de datos, resolvemos un objeto
+             * Element en función del tipo de dato seteado en mysql
+             */
+            'int' => \Zend\Form\Element\Text::class,
+            'varchar' => \Zend\Form\Element\Text::class,
+            'tinyint' => \Zend\Form\Element\Text::class,
+            'enum' => \Zend\Form\Element\Select::class,
+            'timestamp' => \Zend\Form\Element\DateSelect::class
+        ],
+
+        'form_elements' => [
+            'factories' => [
+                \Administrator\Form\Element\YesNoSelect::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
+                \Administrator\Form\Element\TargetLink::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
+            ],
+        ],
+        'abstract_factories' => [
+            \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class,
+            \Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
+        ]
+    ],
 );

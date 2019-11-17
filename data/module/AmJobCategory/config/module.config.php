@@ -7,6 +7,9 @@ return array(
     ),
 
     'form_elements' => [
+        'aliases' => [
+            'jobCategoriesId' => \Zend\Form\Element\Hidden::class,
+        ],
         'factories' => [
             \AmJobCategory\Form\JobCategoryForm::class => \Administrator\Factory\AdministratorFormFactory::class,
             \AmJobCategory\Form\JobCategoryFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,

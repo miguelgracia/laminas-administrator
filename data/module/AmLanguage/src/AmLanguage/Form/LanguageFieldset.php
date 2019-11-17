@@ -11,24 +11,6 @@ class LanguageFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = LanguageTable::class;
 
-    public function initializers()
-    {
-        return array(
-            'fieldValueOptions' => array(
-
-                'active' => array(
-                    '0' => 'NO',
-                    '1' => 'SI'
-                ),
-
-                'visible' => array(
-                    '0' => 'NO',
-                    '1' => 'SI'
-                ),
-            )
-        );
-    }
-
     public function addFields()
     {
         $permissions = $this->serviceLocator->get('AmProfile\Service\ProfilePermissionService');

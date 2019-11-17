@@ -9,6 +9,12 @@ return array(
     ),
 
     'form_elements' => [
+        'aliases' => [
+            'adminModuleId' => \AmMenu\Form\Element\AdminModuleId::class,
+            'parent' => \Zend\Form\Element\Hidden::class,
+            'order' => \Zend\Form\Element\Hidden::class,
+            'action' => \AmMenu\Form\Element\Action::class,
+        ],
         'factories' => [
             \AmMenu\Form\MenuForm::class => \Administrator\Factory\AdministratorFormFactory::class,
             \AmMenu\Form\MenuFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
@@ -20,8 +26,4 @@ return array(
             'Navigation' => 'AmMenu\Factory\MenuNavigationFactory',
         )
     ),
-
-    'router' => array(
-
-    )
 );

@@ -9,16 +9,6 @@ class SectionLocaleFieldset extends AdministratorFieldset
 {
     protected $tableGatewayName = SectionLocaleTable::class;
 
-    public function initializers()
-    {
-        return array(
-            'fieldModifiers' => array(
-                'metaDescription'   => 'Textarea',
-                'content'           => 'Textarea'
-            )
-        );
-    }
-
     public function addFields()
     {
         $metaDescription = $this->get('metaDescription');

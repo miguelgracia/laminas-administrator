@@ -10,19 +10,6 @@ class StaticPageLocaleFieldset extends AdministratorFieldset
 {
     protected $tableGatewayName = StaticPageLocaleTable::class;
 
-    public function initializers()
-    {
-        return array(
-            'fieldModifiers' => array(
-                'content'           => 'Textarea',
-                'metaDescription'   => 'Textarea'
-            ),
-            'fieldValueOptions' => array(
-
-            )
-        );
-    }
-
     public function addFields()
     {
         $metaDescription = $this->get('metaDescription');

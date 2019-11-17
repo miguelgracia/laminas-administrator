@@ -11,49 +11,6 @@ class MenuFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = MenuTable::class;
 
-    public function initializers()
-    {
-        $serviceLocator = $this->serviceLocator;
-
-        $moduleTable = $serviceLocator->get('AmModule\Model\ModuleTable');
-
-        $moduleController = $moduleTable->all()->toKeyValueArray('id','zendName');
-
-        return array(
-            'fieldModifiers' => array(
-                'parent'         => 'Hidden',
-                'order'         => 'Hidden',
-                'adminModuleId' => 'Select',
-                'action'        => 'Select'
-            ),
-            'fieldValueOptions' => array(
-                'adminModuleId' => function () use($moduleController) {
-
-                    return array('' => '[Ninguno]') + $moduleController;
-                },
-                'action' => function () use($serviceLocator, $moduleController) {
-
-                    $modules = $serviceLocator->get('AmModule\Service\ModuleService')->getControllerActionsModules();
-
-                    $modulesArray = array();
-
-                    foreach ($modules as $action => $module) {
-                        $explode = explode('.',$action);
-                        if (!isset($modulesArray[$explode[0]])) {
-                            $modulesArray[$explode[0]] = array(
-                                'label' => $explode[0],
-                                'options' => array()
-                            );
-                        }
-                        $modulesArray[$explode[0]]['options'][$explode[1]] = $explode[1];
-                    }
-
-                    return array('' => 'Selecciona una acción') + $modulesArray;
-                }
-            ),
-        );
-    }
-
     public function addFields()
     {
         $serviceLocator = $this->serviceLocator;

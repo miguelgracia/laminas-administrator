@@ -9,6 +9,11 @@ return array(
     ),
 
     'form_elements' => [
+        'aliases' => [
+            'permissions' => \AmProfile\Form\Element\Permissions::class,
+            'isAdmin' => \Administrator\Form\Element\YesNoSelect::class,
+            'description' => \Zend\Form\Element\Textarea::class,
+        ],
         'factories' => [
             \AmProfile\Form\ProfileForm::class => \Administrator\Factory\AdministratorFormFactory::class,
             \AmProfile\Form\ProfileFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,

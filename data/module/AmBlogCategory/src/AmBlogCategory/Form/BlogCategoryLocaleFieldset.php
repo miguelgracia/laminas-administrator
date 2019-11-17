@@ -9,19 +9,6 @@ class BlogCategoryLocaleFieldset extends AdministratorFieldset
 {
     protected $tableGatewayName = BlogCategoryLocaleTable::class;
 
-    public function initializers()
-    {
-        return array(
-            'fieldModifiers' => array(
-                'blogCategoriesId' => 'Hidden',
-                'metaDescription'   => 'Textarea'
-            ),
-            'fieldValueOptions' => array(
-
-            )
-        );
-    }
-
     public function addFields()
     {
         $metaDescription = $this->get('metaDescription');

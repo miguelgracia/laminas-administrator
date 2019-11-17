@@ -6,16 +6,15 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
-
     'form_elements' => [
+        'aliases' => [
+            'blogCategoriesId' => \AmBlog\Form\Element\BlogCategoriesId::class,
+        ],
         'factories' => [
+            \AmBlog\Form\Element\BlogCategoriesId::class => \Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
             \AmBlog\Form\BlogForm::class => \Administrator\Factory\AdministratorFormFactory::class,
             \AmBlog\Form\BlogFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
             \AmBlog\Form\BlogLocaleFieldset::class => \Administrator\Factory\AdministratorLocaleFieldsetFactory::class,
         ]
     ],
-
-    'service_manager' => array(),
-
-    'router' => array()
 );

@@ -12,19 +12,6 @@ class YouTubeFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = YouTubeTable::class;
 
-    public function initializers()
-    {
-        return array(
-            'fieldValueOptions' => array(
-                'visibility' => array(
-                    'public' => 'Público',
-                    'private' => 'Privado',
-                    'unlisted' => 'Oculto'
-                ),
-            )
-        );
-    }
-
     public function addFields()
     {
         $code = $this->get('code');

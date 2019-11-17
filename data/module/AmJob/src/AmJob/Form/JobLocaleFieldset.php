@@ -9,19 +9,6 @@ class JobLocaleFieldset extends AdministratorFieldset
 {
     protected $tableGatewayName = JobLocaleTable::class;
 
-    public function initializers()
-    {
-        return array(
-            'fieldModifiers' => array(
-                'content'           => 'Textarea',
-                'metaDescription'   => 'Textarea'
-            ),
-            'fieldValueOptions' => array(
-
-            )
-        );
-    }
-
     public function addFields()
     {
         $metaDescription = $this->get('metaDescription');

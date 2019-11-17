@@ -11,30 +11,6 @@ class ProfileFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = ProfileTable::class;
 
-    public function initializers()
-    {
-        $serviceLocator = $this->serviceLocator;
-
-        return array(
-            'fieldModifiers' => array(
-                'description'   => 'textarea',
-                'permissions' => 'MultiCheckbox',
-                'isAdmin' => 'Select'
-            ),
-            'fieldValueOptions' => array(
-                'isAdmin' => array(
-                    '0' => 'NO',
-                    '1' => 'SI'
-                ),
-                'permissions' => function () use($serviceLocator) {
-
-                    return $serviceLocator->get('AmModule\Service\ModuleService')->getControllerActionsModules();
-
-                }
-            )
-        );
-    }
-
     public function addFields()
     {
         $perm = $this->get('permissions');

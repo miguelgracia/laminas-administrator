@@ -12,25 +12,6 @@ class JobFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = JobTable::class;
 
-    public function initializers()
-    {
-        $serviceLocator = $this->serviceLocator;
-        return array(
-            'fieldModifiers' => array(
-                'jobCategoriesId' => 'Select'
-            ),
-            'fieldValueOptions' => array(
-                'jobCategoriesId' => function () use($serviceLocator) {
-                    return $serviceLocator->get('AmJobCategory\Model\JobCategoryTable')->all()->toKeyValueArray('id','key');
-                },
-                'active' => array(
-                    '0' => 'NO',
-                    '1' => 'SI'
-                ),
-            )
-        );
-    }
-
     public function addFields()
     {
         $imageUrl = $this->get('imageUrl');

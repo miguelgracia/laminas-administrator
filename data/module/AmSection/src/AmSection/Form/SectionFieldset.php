@@ -12,22 +12,6 @@ class SectionFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = SectionTable::class;
 
-    public function initializers()
-    {
-        return array(
-            'fieldValueOptions' => array(
-                'visible' => array(
-                    '0' => 'NO',
-                    '1' => 'SI'
-                ),
-                'active' => array(
-                    '0' => 'NO',
-                    '1' => 'SI'
-                )
-            )
-        );
-    }
-
     protected function setFilters(ColumnObject $column)
     {
         $filters = parent::setFilters($column);

@@ -23,39 +23,6 @@ class UserFieldset extends AdministratorFieldset
         return $hiddenFields;
     }
 
-    public function initializers()
-    {
-        $serviceLocator = $this->serviceLocator;
-
-        return array(
-
-            'fieldModifiers' => array(
-                'adminProfileId' => 'Select',
-                'password' => 'password'
-            ),
-            'fieldValueOptions' => array(
-                'active' => array(
-                    '0' => 'NO',
-                    '1' => 'SI'
-                ),
-                /**
-                 * El campo idPerfil se va a reflejar como un select de perfiles. Debemos indicar los valores
-                 * de dicho select. La funci�n setIdPerfil guarda, para el campo idPerfil, los valores que va
-                 * a tener el <select> de idPerfil
-                 */
-
-                'adminProfileId' => function () use($serviceLocator) {
-
-                    $gestorPerfilTable = $serviceLocator->get('AmProfile\Model\ProfileTable');
-
-                    $gestorPerfil = $gestorPerfilTable->all();
-
-                    return $gestorPerfil->toKeyValueArray('id','name');
-                }
-            )
-        );
-    }
-
     public function addFields()
     {
         //fechaAlta y ultimoLogin nunca deben ser editables. Se marcan como Readonly
