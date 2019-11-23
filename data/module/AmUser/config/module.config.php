@@ -9,10 +9,8 @@ return array(
     ),
 
     'form_elements' => [
-        'aliases' => [
-            'adminProfileId' => \AmUser\Form\Element\AdminProfileId::class
-        ],
         'factories' => [
+            \AmUser\Form\Element\AdminProfileId::class => \Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
             \AmUser\Form\AmUserForm::class => \Administrator\Factory\AdministratorFormFactory::class,
             \AmUser\Form\UserFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class
         ]

@@ -10,6 +10,7 @@ use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerAwareTrait;
 
 use Zend\Filter\Word\SeparatorToCamelCase;
+use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\Form\Element\Hidden;
 use Zend\Form\Fieldset;
 
@@ -168,10 +169,8 @@ class AdministratorFormService implements EventManagerAwareInterface
             $hiddenFields = $fieldset->getHiddenFields();
 
             foreach ($columns as $column) {
-
-                $toCamel = new SeparatorToCamelCase('_');
-                $columnName = lcfirst($toCamel->filter($column->getName()));
-
+                $pascalCaseColumnName = (new UnderscoreToCamelCase())->filter($column->getName());
+                $columnName = lcfirst($pascalCaseColumnName);
                 if (in_array($columnName, $hiddenFields)) {
                     continue;
                 }
@@ -193,11 +192,19 @@ class AdministratorFormService implements EventManagerAwareInterface
 
                 $dataType = $column->getDataType();
 
-                if ($this->formManager->has($columnName)) {
-                    $element = $this->formManager->build($columnName);
+                $fieldsetNamespaceName = (new \ReflectionClass($fieldset))->getNamespaceName();
+
+                $formElement = $fieldsetNamespaceName . '\\Element\\' . $pascalCaseColumnName;
+
+                if ($this->formManager->has($formElement)) {
+                    $elementName = $formElement;
+                } elseif($this->formManager->has($columnName)) {
+                    $elementName = $columnName;
                 } else {
-                    $element = $this->formManager->build($dataType);
+                    $elementName = $dataType;
                 }
+
+                $element = $this->formManager->build($elementName);
 
                 $this->setElementConfig($column, $element);
 
