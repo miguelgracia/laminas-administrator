@@ -10,7 +10,6 @@ use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerAwareTrait;
 
 use Zend\Filter\Word\SeparatorToCamelCase;
-use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\Form\Element\Hidden;
 use Zend\Form\Fieldset;
 
@@ -164,16 +163,9 @@ class AdministratorFormService implements EventManagerAwareInterface
 
         foreach ($this->fieldsets as &$fieldset) {
 
-            $columns = $fieldset->getColumns();
+            $columns = $fieldset->getColumns(false);
 
-            $hiddenFields = $fieldset->getHiddenFields();
-
-            foreach ($columns as $column) {
-                $pascalCaseColumnName = (new UnderscoreToCamelCase())->filter($column->getName());
-                $columnName = lcfirst($pascalCaseColumnName);
-                if (in_array($columnName, $hiddenFields)) {
-                    continue;
-                }
+            foreach ($columns as $columnName => $column) {
 
                 $flags = array(
                     'priority' => -($column->getOrdinalPosition() * 100),
@@ -194,7 +186,7 @@ class AdministratorFormService implements EventManagerAwareInterface
 
                 $fieldsetNamespaceName = (new \ReflectionClass($fieldset))->getNamespaceName();
 
-                $formElement = $fieldsetNamespaceName . '\\Element\\' . $pascalCaseColumnName;
+                $formElement = $fieldsetNamespaceName . '\\Element\\' . ucfirst($columnName);
 
                 if ($this->formManager->has($formElement)) {
                     $elementName = $formElement;

@@ -102,9 +102,28 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
         return $this->tableGatewayName;
     }
 
-    public function getColumns()
+    public function getColumns($includeHiddenColumns = true)
     {
-        return $this->columnsTable;
+        $dashToCamel = new UnderscoreToCamelCase();
+
+        $columns = [];
+
+        foreach ($this->columnsTable as $key => $column) {
+            $columnName = lcfirst($dashToCamel->filter($column->getName()));
+            $columns[$columnName] = $column;
+        }
+
+        if ($includeHiddenColumns) {
+            return $columns;
+        }
+
+        $hiddenFields = $this->getHiddenFields();
+
+        foreach ($hiddenFields as $hiddenField) {
+            unset($columns[$hiddenField]);
+        }
+
+        return $columns;
     }
 
     public function setColumns($columnsTable)
@@ -117,18 +136,9 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
     {
         $filter = array();
 
-        $dashToCamel = new UnderscoreToCamelCase();
+        $columns = $this->getColumns(false);
 
-        $hiddenFields = $this->getHiddenFields();
-
-        foreach ($this->columnsTable as $column) {
-
-            $columnName = lcfirst($dashToCamel->filter($column->getName()));
-
-            //Los campos seteados como ocultos no llevan inputFilter
-            if (in_array($columnName, $hiddenFields)) {
-                continue;
-            }
+        foreach ($columns as $columnName => $column) {
 
             $filter[$columnName] = [
                 'name' => $columnName,
@@ -143,7 +153,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
     private function isColumnRequired($column)
     {
-        return $this->isRelationalField($column->getName()) or $column->getIsNullable() ? false : true;
+        return ($this->isRelationalField($column->getName()) or $column->getIsNullable()) ? false : true;
     }
 
     /**
