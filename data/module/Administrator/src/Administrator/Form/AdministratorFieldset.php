@@ -11,6 +11,7 @@ use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\Form\Fieldset;
 use Zend\I18n\Validator\IsInt;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\Validator\Between;
 use Zend\Validator\Date;
 use Zend\Validator\StringLength;
 
@@ -216,6 +217,14 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
         $columnName = $column->getName();
 
         switch ($dataType) {
+            case 'tinyint':
+                $validators[] = array(
+                    'name' => Between::class,
+                    'options' => [
+                        'min' => 0,
+                        'max' => 127
+                    ]
+                );
             case 'int':
                 $validators[] = array(
                     'name' => IsInt::class
