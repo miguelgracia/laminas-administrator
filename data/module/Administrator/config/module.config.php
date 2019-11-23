@@ -71,17 +71,7 @@ return array(
             'enum' => \Zend\Form\Element\Select::class,
             'timestamp' => \Zend\Form\Element\DateSelect::class
         ],
-
-        'form_elements' => [
-            'factories' => [
-                \Administrator\Form\Element\YesNoSelect::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
-                \Administrator\Form\Element\TargetLink::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
-                \Administrator\Form\Element\MetaDescription::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
-                \Administrator\Form\Element\ImageUrl::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
-            ],
-        ],
         'abstract_factories' => [
-            \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class,
             \Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
         ]
     ],
