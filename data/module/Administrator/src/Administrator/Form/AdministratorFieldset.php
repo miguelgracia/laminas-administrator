@@ -122,18 +122,6 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
             $columnName = $column->getName();
 
-            $filterParams = array(
-                'filters' => $this->setFilters($column)
-            );
-
-            if (in_array($columnName, array('id', 'related_table_id'))) {
-                $required = false;
-            } else {
-                $required = $column->getIsNullable() ? false : true;
-                //seteamos los validadores en función del tipo de dato
-                $filterParams['validators'] = $this->setValidators($column);
-            }
-
             $name = lcfirst($dashToCamel->filter($columnName));
 
             //Los campos seteados como ocultos no se validan
@@ -141,10 +129,21 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
                 continue;
             }
 
-            $filterParams['name'] = $name;
-            $filterParams['required'] = $required;
+            $validators = [];
+            if (in_array($columnName, array('id', 'related_table_id'))) {
+                $required = false;
+            } else {
+                $required = $column->getIsNullable() ? false : true;
+                //seteamos los validadores en función del tipo de dato
+                $validators = $this->setValidators($column);
+            }
 
-            $filter[$name] = $filterParams;
+            $filter[$name] = [
+                'name' => $name,
+                'required' => $required,
+                'filters' => $this->setFilters($column),
+                'validators' => $validators
+            ];
         }
 
         return $filter;
