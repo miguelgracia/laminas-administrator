@@ -12,12 +12,16 @@ use Zend\EventManager\EventManagerAwareTrait;
 use Zend\Filter\Word\SeparatorToCamelCase;
 use Zend\Form\Element\Hidden;
 use Zend\Form\Fieldset;
+use Zend\Form\FormElementManager\FormElementManagerV3Polyfill;
 
 class AdministratorFormService implements EventManagerAwareInterface
 {
     use EventManagerAwareTrait;
 
-    protected $formManager;
+    /**
+     * @var FormElementManagerV3Polyfill
+     */
+    protected $formElementManager;
 
     /**
      * @var \Zend\Form\Form
@@ -79,7 +83,7 @@ class AdministratorFormService implements EventManagerAwareInterface
      */
     public function __construct($formElementManager)
     {
-        $this->formManager = $formElementManager;
+        $this->formElementManager = $formElementManager;
     }
 
     public function setPrimaryKey($primaryKey)
@@ -103,7 +107,7 @@ class AdministratorFormService implements EventManagerAwareInterface
             return $this;
         }
 
-        $this->form = $this->formManager->build($form);
+        $this->form = $this->formElementManager->build($form);
 
         $formInitializers = $this->form->initializers();
 
@@ -127,14 +131,14 @@ class AdministratorFormService implements EventManagerAwareInterface
         $isLocale = strpos($fieldsetName, "LocaleFieldset") !== false;
 
         if (!$isLocale) {
-            $fieldset = $this->formManager->build($fieldsetName, [
+            $fieldset = $this->formElementManager->build($fieldsetName, [
                 'model' => $model,
             ]);
             $this->fieldsets[$fieldset->getName()] = $fieldset;
             return;
         }
 
-        $localeFieldsets = $this->formManager->build($fieldsetName, [
+        $localeFieldsets = $this->formElementManager->build($fieldsetName, [
             'base_fieldset' => $this->baseFieldset,
         ]);
 
@@ -176,7 +180,7 @@ class AdministratorFormService implements EventManagerAwareInterface
                     $this->hiddenRelatedKey,
                     'language_id'
                 ))) {
-                    $element = $this->formManager->build(Hidden::class);
+                    $element = $this->formElementManager->build(Hidden::class);
                     $this->setElementConfig($column, $element);
                     $fieldset->add($element, $flags);
                     continue;
@@ -188,15 +192,15 @@ class AdministratorFormService implements EventManagerAwareInterface
 
                 $formElement = $fieldsetNamespaceName . '\\Element\\' . ucfirst($columnName);
 
-                if ($this->formManager->has($formElement)) {
+                if ($this->formElementManager->has($formElement)) {
                     $elementName = $formElement;
-                } elseif($this->formManager->has($columnName)) {
+                } elseif($this->formElementManager->has($columnName)) {
                     $elementName = $columnName;
                 } else {
                     $elementName = $dataType;
                 }
 
-                $element = $this->formManager->build($elementName);
+                $element = $this->formElementManager->build($elementName);
 
                 $this->setElementConfig($column, $element);
 
