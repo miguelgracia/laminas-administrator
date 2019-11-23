@@ -216,37 +216,34 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
         $dataType = $column->getDataType();
         $columnName = $column->getName();
 
-        switch ($dataType) {
-            case 'tinyint':
-                $validators[] = array(
-                    'name' => Between::class,
-                    'options' => [
-                        'min' => 0,
-                        'max' => 127
-                    ]
-                );
-            case 'int':
-                $validators[] = array(
-                    'name' => IsInt::class
-                );
-                break;
-            case 'varchar':
-                $validators[] = array(
-                    'name' => StringLength::class,
-                    'options' => array(
-                        'min' => '1',
-                        'max' => $column->getCharacterMaximumLength()
-                    )
-                );
-                break;
-            case 'timestamp':
-                $validators[] = array(
-                    'name' => Date::class,
-                    'options' => array(
-                        'format' => 'Y-m-d'
-                    )
-                );
-                break;
+        $validatorsConfig = [
+            'tinyint' => [
+                'name' => Between::class,
+                'options' => [
+                    'min' => 0,
+                    'max' => 127
+                ]
+            ],
+            'int' => [
+                'name' => IsInt::class
+            ],
+            'varchar' => [
+                'name' => StringLength::class,
+                'options' => array(
+                    'min' => '1',
+                    'max' => $column->getCharacterMaximumLength()
+                )
+            ],
+            'timestamp' => [
+                'name' => Date::class,
+                'options' => array(
+                    'format' => 'Y-m-d'
+                )
+            ]
+        ];
+
+        if (isset($validatorsConfig[$dataType])) {
+            $validators[] = $validatorsConfig[$dataType];
         }
 
         /**
@@ -280,7 +277,6 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
                     'value' => $this->get('id')->getValue()
                 );
             }
-
 
             $validators[] = array(
                 'name' => 'Zend\Validator\Db\NoRecordExists',
