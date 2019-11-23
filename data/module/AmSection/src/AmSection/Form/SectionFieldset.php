@@ -12,9 +12,9 @@ class SectionFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = SectionTable::class;
 
-    protected function setFilters(ColumnObject $column)
+    protected function getFilterSpecs(ColumnObject $column)
     {
-        $filters = parent::setFilters($column);
+        $filters = parent::getFilterSpecs($column);
 
         $columnName = $column->getName();
 

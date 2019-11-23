@@ -9,7 +9,10 @@ use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Sql\Where;
 use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\Form\Fieldset;
+use Zend\I18n\Validator\IsInt;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\Validator\Date;
+use Zend\Validator\StringLength;
 
 abstract class AdministratorFieldset extends Fieldset implements InputFilterProviderInterface
 {
@@ -120,36 +123,41 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
         foreach ($this->columnsTable as $column) {
 
-            $columnName = $column->getName();
+            $columnName = lcfirst($dashToCamel->filter($column->getName()));
 
-            $name = lcfirst($dashToCamel->filter($columnName));
-
-            //Los campos seteados como ocultos no se validan
-            if (in_array($name, $hiddenFields)) {
+            //Los campos seteados como ocultos no llevan inputFilter
+            if (in_array($columnName, $hiddenFields)) {
                 continue;
             }
 
-            $validators = [];
-            if (in_array($columnName, array('id', 'related_table_id'))) {
-                $required = false;
-            } else {
-                $required = $column->getIsNullable() ? false : true;
-                //seteamos los validadores en función del tipo de dato
-                $validators = $this->setValidators($column);
-            }
-
-            $filter[$name] = [
-                'name' => $name,
-                'required' => $required,
-                'filters' => $this->setFilters($column),
-                'validators' => $validators
+            $filter[$columnName] = [
+                'name' => $columnName,
+                'required' => $this->isColumnRequired($column),
+                'filters' => $this->getFilterSpecs($column),
+                'validators' => $this->getValidatorSpecs($column)
             ];
         }
 
         return $filter;
     }
 
-    protected function setFilters(ColumnObject $column)
+    private function isColumnRequired($column)
+    {
+        return $this->isRelationalField($column->getName()) or $column->getIsNullable() ? false : true;
+    }
+
+    /**
+     * Comprueba si el campo hace referencia al id de la tabla principal o al campo related_table_id de la tabla
+     * locale que corresponda
+     * @param $name
+     * @return bool
+     */
+    private function isRelationalField($name)
+    {
+        return in_array($name, array('id', 'related_table_id'));
+    }
+
+    protected function getFilterSpecs(ColumnObject $column)
     {
         $filters = array();
 
@@ -186,9 +194,13 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
         return $filters;
     }
 
-    protected function setValidators(ColumnObject $column)
+    protected function getValidatorSpecs(ColumnObject $column)
     {
         $validators = array();
+
+        if ($this->isRelationalField($column->getName())) {
+            return $validators;
+        }
 
         $dataType = $column->getDataType();
         $columnName = $column->getName();
@@ -196,12 +208,12 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
         switch ($dataType) {
             case 'int':
                 $validators[] = array(
-                    'name' => 'Zend\I18n\Validator\IsInt'
+                    'name' => IsInt::class
                 );
                 break;
             case 'varchar':
                 $validators[] = array(
-                    'name' => 'StringLength',
+                    'name' => StringLength::class,
                     'options' => array(
                         'min' => '1',
                         'max' => $column->getCharacterMaximumLength()
@@ -210,7 +222,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
                 break;
             case 'timestamp':
                 $validators[] = array(
-                    'name' => 'Zend\Validator\Date',
+                    'name' => Date::class,
                     'options' => array(
                         'format' => 'Y-m-d'
                     )
