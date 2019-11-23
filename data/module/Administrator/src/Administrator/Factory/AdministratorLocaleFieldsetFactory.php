@@ -48,11 +48,15 @@ class AdministratorLocaleFieldsetFactory implements FactoryInterface
     {
         $fieldset = (new $fieldsetName($fieldsetName));
 
+        $metadata = Factory::createSourceFromAdapter($this->container->get('Zend\Db\Adapter\Adapter'));
+        $tableGateway = $this->container->get($fieldset->getTableGatewayName());
+        $columns = $metadata->getColumns($tableGateway->getTable());
+
         return $fieldset
             ->setServiceLocator($this->container)
-            ->setTableGateway($this->container->get($fieldset->getTableGatewayName()))
+            ->setTableGateway($tableGateway)
+            ->setColumns($columns)
             ->setObjectModel($objectModel)
-            ->setMetadata(Factory::createSourceFromAdapter($this->container->get('Zend\Db\Adapter\Adapter')))
             ->setName($fieldsetName . "\\" . $objectModel->languageId)
             ->setOption('is_locale',true)
             ->setOption('tab_name', $this->languages[$objectModel->languageId]);

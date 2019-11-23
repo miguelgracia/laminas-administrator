@@ -30,15 +30,10 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
     protected $isPrimaryFieldset = false;
 
     /**
-     * @var \Zend\Db\Metadata\Metadata
-     *
-     * Nos da acceso a métodos para tratamiento de las tablas de base de datos.
-     * Listado de columnas, tipo de dato de las columnas, etc
+     * @var ColumnObject[]
      */
-    protected $metadata;
-
-    protected $table;
     protected $columnsTable;
+
 
     protected $objectModel;
 
@@ -48,6 +43,28 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
      * Contiene el nombre de aquellos campos que no queremos pintar en la vista
      */
     protected $hiddenFields = array();
+
+    /**
+     * @var \Zend\InputFilter\Factory
+     */
+    private $inputFilterFactory;
+
+    /**
+     * @var \Zend\Filter\FilterPluginManager
+     */
+    private $filterManager;
+
+    /**
+     * @var \Zend\Validator\ValidatorPluginManager
+     */
+    private $validatorManager;
+
+    public function init()
+    {
+        $this->inputFilterFactory = $this->factory->getInputFilterFactory();
+        $this->validatorManager = $this->inputFilterFactory->getDefaultValidatorChain()->getPluginManager();
+        $this->filterManager = $this->inputFilterFactory->getDefaultFilterChain()->getPluginManager();
+    }
 
     public function setObjectModel($objectModel)
     {
@@ -69,7 +86,6 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
     public function setTableGateway($tableGateway)
     {
         $this->tableGateway = $tableGateway;
-        $this->table = $tableGateway->getTable();
         return $this;
     }
 
@@ -85,20 +101,12 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
     public function getColumns()
     {
-        if (!$this->columnsTable) {
-            $this->columnsTable = $this->metadata->getColumns($this->table);
-        }
         return $this->columnsTable;
     }
 
-    public function getMetadata()
+    public function setColumns($columnsTable)
     {
-        return $this->metadata;
-    }
-
-    public function setMetadata($metadata)
-    {
-        $this->metadata = $metadata;
+        $this->columnsTable = $columnsTable;
         return $this;
     }
 
@@ -108,11 +116,9 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
         $dashToCamel = new UnderscoreToCamelCase();
 
-        $columns = $this->getColumns();
-
         $hiddenFields = $this->getHiddenFields();
 
-        foreach ($columns as $column) {
+        foreach ($this->columnsTable as $column) {
 
             $columnName = $column->getName();
 

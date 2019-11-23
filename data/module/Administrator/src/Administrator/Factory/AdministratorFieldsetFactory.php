@@ -18,10 +18,13 @@ class AdministratorFieldsetFactory implements FactoryInterface
             $formService->setBaseFieldset($fieldset);
         }
 
+        $metadata = Factory::createSourceFromAdapter($container->get('Zend\Db\Adapter\Adapter'));
+        $tableGateway = $container->get($fieldset->getTableGatewayName());
+        $columns = $metadata->getColumns($tableGateway->getTable());
         return $fieldset
             ->setServiceLocator($container)
-            ->setTableGateway($container->get($fieldset->getTableGatewayName()))
-            ->setMetadata(Factory::createSourceFromAdapter($container->get('Zend\Db\Adapter\Adapter')))
+            ->setTableGateway($tableGateway)
+            ->setColumns($columns)
             ->setObjectModel($options['model'])
             ->setOption('is_locale',false);
     }
