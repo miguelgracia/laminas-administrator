@@ -11,7 +11,8 @@ return array(
     'form_elements' => [
         'aliases' => [
             'parent' => \Zend\Form\Element\Hidden::class,
-            'order' => \Zend\Form\Element\Hidden::class,
+            // TODO: Lo suyo seria quiza que el alias realmente sea un objecto de tipo Element
+            'AmMenu\\Form\\Element\\Order' => \Zend\Form\Element\Hidden::class,
         ],
         'factories' => [
             \AmMenu\Form\Element\Action::class => \Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
