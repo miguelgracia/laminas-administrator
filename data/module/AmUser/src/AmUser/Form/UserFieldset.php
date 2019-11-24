@@ -23,7 +23,7 @@ class UserFieldset extends AdministratorFieldset
         return $hiddenFields;
     }
 
-    public function addFields()
+    public function addElements()
     {
         //fechaAlta y ultimoLogin nunca deben ser editables. Se marcan como Readonly
         //$this->get('createdAt')->setAttribute('readonly',true);

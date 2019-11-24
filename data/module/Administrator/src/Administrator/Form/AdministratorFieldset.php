@@ -300,7 +300,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
     }
 
     /**
-     * Esta función se busca en la función addFields de AdministratorFormService
+     * Esta función se busca en la función addElements de AdministratorFormService
      * Devuelve un array con los elementos del fieldset que no se deben pintar en el formulario
      *
      * @return array

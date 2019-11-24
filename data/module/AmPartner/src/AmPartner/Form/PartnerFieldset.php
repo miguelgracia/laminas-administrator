@@ -11,7 +11,7 @@ class PartnerFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = PartnerTable::class;
 
-    public function addFields()
+    public function addElements()
     {
         $logo = $this->get('logo');
         $class = $logo->getAttribute('class');

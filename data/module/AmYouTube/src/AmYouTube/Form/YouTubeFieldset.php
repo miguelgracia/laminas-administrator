@@ -12,7 +12,7 @@ class YouTubeFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = YouTubeTable::class;
 
-    public function addFields()
+    public function addElements()
     {
         $code = $this->get('code');
         $code->setAttribute('readonly','readonly');

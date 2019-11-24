@@ -11,7 +11,7 @@ class MenuFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = MenuTable::class;
 
-    public function addFields()
+    public function addElements()
     {
         //TODO: serviceLocator. Refactorizar eliminando la referencia a serviceLocator
         $formService = $this->serviceLocator->get('Administrator\Service\AdministratorFormService');

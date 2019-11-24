@@ -11,7 +11,7 @@ class LanguageFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = LanguageTable::class;
 
-    public function addFields()
+    public function addElements()
     {
         //TODO: serviceLocator. Refactorizar eliminando la referencia a serviceLocator
         $permissions = $this->serviceLocator->get('AmProfile\Service\ProfilePermissionService');

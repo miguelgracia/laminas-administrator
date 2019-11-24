@@ -207,15 +207,15 @@ class AdministratorFormService implements EventManagerAwareInterface
 
         $eventResult = $this->eventTrigger($triggerInit);
 
-        $this->addFields();
+        $this->addElements();
 
         return $this->form;
     }
 
-    public function addFields()
+    public function addElements()
     {
         /**
-         * Buscaremos en el objeto formulario y en los objetos Fieldset si existe el método addFields.
+         * Buscaremos en el objeto formulario y en los objetos Fieldset si existe el método addElements.
          * En caso afirmativo, lo ejecutamos para poder añadir campos adicionales
          * que se salga de la lógica predeterminada o, por ejemplo, redefinir
          * el atributo de algún campo concreto. (Vease Gestor\Form\GestorUsuariosForm)
