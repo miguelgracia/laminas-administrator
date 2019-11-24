@@ -227,6 +227,13 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
             'int' => [
                 'name' => IsInt::class
             ],
+            'char' => [
+                'name' => StringLength::class,
+                'options' => array(
+                    'min' => '1',
+                    'max' => $column->getCharacterMaximumLength()
+                )
+            ],
             'varchar' => [
                 'name' => StringLength::class,
                 'options' => array(

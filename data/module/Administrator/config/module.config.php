@@ -67,6 +67,7 @@ return array(
              */
             'int' => \Zend\Form\Element\Text::class,
             'varchar' => \Zend\Form\Element\Text::class,
+            'char' => \Zend\Form\Element\Text::class,
             'tinyint' => \Zend\Form\Element\Text::class,
             'enum' => \Zend\Form\Element\Select::class,
             'timestamp' => \Zend\Form\Element\DateSelect::class
