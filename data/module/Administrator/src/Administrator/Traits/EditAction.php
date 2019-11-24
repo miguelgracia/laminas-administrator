@@ -3,18 +3,15 @@
 namespace Administrator\Traits;
 
 
+use AmProfile\Service\ProfilePermissionService;
+
 trait EditAction
 {
     public function editAction()
     {
-        $serviceLocator = $this->serviceLocator;
+        $formService = $this->serviceLocator->get('Administrator\Service\AdministratorFormService');
 
-        $formService = $serviceLocator->get('Administrator\Service\AdministratorFormService');
-
-        $application = $serviceLocator->get('Application');
-        $routeMatch  = $application->getMvcEvent()->getRouteMatch();
-
-        $thisModule =  $routeMatch->getParam('module');
+        $thisModule =  $this->serviceLocator->get('Application')->getMvcEvent()->getRouteMatch()->getParam('module');
 
         $id = (int) $this->params()->fromRoute('id', 0);
 
@@ -28,7 +25,7 @@ trait EditAction
             return $this->goToSection($thisModule);
         }
 
-        $form = $formService->setForm($this->form, $model)->addFields()->getForm();
+        $form = $formService->prepareForm($this->form, $model);
 
         $request = $this->getRequest();
 
@@ -52,7 +49,7 @@ trait EditAction
 
         $module = $this->getEvent()->getRouteMatch()->getParam('module');
 
-        $permissions = $this->serviceLocator->get('AmProfile\Service\ProfilePermissionService');
+        $permissions = $this->serviceLocator->get(ProfilePermissionService::class);
         if ($permissions->hasModuleAccess($module, $addAction)) {
             $controller = $this->getPluginManager()->getController();
 

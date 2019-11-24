@@ -3,18 +3,17 @@
 namespace Administrator\Traits;
 
 
+use Administrator\Service\AdministratorFormService;
+
 trait AddAction
 {
     public function addAction()
     {
-        $formService = $this->serviceLocator->get('Administrator\Service\AdministratorFormService');
+        $formService = $this->serviceLocator->get(AdministratorFormService::class);
 
         $model = $this->tableGateway->getEntityModel();
 
-        $form = $formService
-            ->setForm($this->form, $model)
-            ->addFields()
-            ->getForm();
+        $form = $formService->prepareForm($this->form, $model);
 
         $request = $this->getRequest();
 

@@ -208,10 +208,7 @@ class AmYouTubeModuleController extends AuthController
 
         if ($token and !$client->isAccessTokenExpired()) {
 
-            $form = $formService
-                ->setForm($this->form, $model)
-                ->addFields()
-                ->getForm();
+            $form = $formService->prepareForm($this->form, $model);
 
             $request = $this->getRequest();
 
@@ -399,10 +396,7 @@ class AmYouTubeModuleController extends AuthController
 
         if ($token and !$client->isAccessTokenExpired()) {
 
-            $form = $formService
-                ->setForm($this->form, $model)
-                ->addFields()
-                ->getForm();
+            $form = $formService->prepareForm($this->form, $model);
 
             $request = $this->getRequest();
 

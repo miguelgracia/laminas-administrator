@@ -176,10 +176,10 @@ class AdministratorFormService implements EventManagerAwareInterface
         $this->baseFieldset = $baseFieldset;
     }
 
-    public function setForm($form = null, AdministratorModel $model)
+    public function prepareForm($form = null, AdministratorModel $model)
     {
         if ($this->form instanceof AdministratorForm) {
-            return $this;
+            return $this->form;
         }
 
         $this->form = $this->formElementManager->build($form);
@@ -196,7 +196,9 @@ class AdministratorFormService implements EventManagerAwareInterface
 
         $eventResult = $this->eventTrigger($triggerInit);
 
-        return $this;
+        $this->addFields();
+
+        return $this->form;
     }
 
     private function setFieldset($fieldsetName, $model)
@@ -216,11 +218,6 @@ class AdministratorFormService implements EventManagerAwareInterface
         ]);
 
         $this->fieldsets += $localeFieldsets;
-    }
-
-    public function getForm()
-    {
-        return $this->form;
     }
 
     public function addFields()
