@@ -16,9 +16,9 @@ class AmMenuModuleController extends AuthController
 
     public function indexAction()
     {
-        $entradas = $this->tableGateway->fetchAllOrdenados();
-
-        return compact('entradas');
+        return [
+            'entradas' => $this->tableGateway->fetchAllOrdenados(),
+        ];
     }
 
     public function saveOrderAction()
