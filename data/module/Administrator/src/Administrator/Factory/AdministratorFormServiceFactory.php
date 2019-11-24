@@ -11,9 +11,12 @@ class AdministratorFormServiceFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new AdministratorFormService(
-            $container->get('FormElementManager')
-        );
+        $routeParams = $container->get('Application')->getMvcEvent()->getRouteMatch()->getParams();
+
+        return (new AdministratorFormService(
+            $container->get('FormElementManager'),
+            $routeParams
+        ))->setActionType($routeParams['action']);
     }
 
 }

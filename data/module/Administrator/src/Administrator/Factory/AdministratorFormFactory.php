@@ -18,12 +18,10 @@ class AdministratorFormFactory implements FactoryInterface
          */
         $formName = (new SeparatorToSeparator('\\','_'))->filter($requestedName);
         $form = (new $requestedName($formName))
-            ->setRouteParams($routeParams)
             ->setAttribute('class', 'form-horizontal')
-            ->setAttribute('action', $urlHelper('administrator', $routeParams))
-            ->setActionType($routeParams['action']);
+            ->setAttribute('action', $urlHelper('administrator', $routeParams));
 
-        $this->addDefaultFields($form);
+        $this->addDefaultFields($form, $routeParams['action']);
 
         return $form;
     }
@@ -31,10 +29,13 @@ class AdministratorFormFactory implements FactoryInterface
     /**
      *  Añadimos los elementos de formulario que en principio deben aparecer por defecto
      *  Dicha función se ejecute desde el servicio GestorFormService
+     *
+     * @param $form
+     * @param $actionType
      */
-    private function addDefaultFields(&$form)
+    private function addDefaultFields(&$form, $actionType)
     {
-        $actionType = $form->getActionType() == $form::ACTION_ADD ? 'Add' : 'Edit';
+        $actionType = $actionType == $form::ACTION_ADD ? 'Add' : 'Edit';
 
         $form->add(array(
             'name' => 'submit',

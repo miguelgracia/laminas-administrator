@@ -57,12 +57,99 @@ class AdministratorFormService implements EventManagerAwareInterface
     /**
      * @var array
      *
+     * Tipos de action de formulario permitidos y su correspondencia con eventos
+     */
+    protected $allowedActionType = array(
+        AdministratorForm::ACTION_ADD        => self::EVENT_CREATE,
+        AdministratorForm::ACTION_DEFAULT    => self::EVENT_READ,
+        AdministratorForm::ACTION_EDIT       => self::EVENT_UPDATE,
+        AdministratorForm::ACTION_DELETE     => self::EVENT_DELETE,
+    );
+
+    protected $actionType = AdministratorForm::ACTION_ADD;
+
+    /**
+     * Constantes de eventos
+     */
+    const EVENT_READ        = 'read';
+
+    const EVENT_CREATE                      = 'create';
+    const EVENT_CREATE_INIT_FORM            = 'create.init.form';
+    const EVENT_CREATE_VALID_FORM_SUCCESS   = 'create.form.valid.success';
+    const EVENT_CREATE_VALID_FORM_FAILED    = 'create.form.valid.failed';
+    const EVENT_CREATE_SAVE_FORM            = 'create.form.save';
+
+    const EVENT_UPDATE                      = 'update';
+    const EVENT_UPDATE_INIT_FORM            = 'update.init.form';
+    const EVENT_UPDATE_VALID_FORM_SUCCESS   = 'update.form.valid.success';
+    const EVENT_UPDATE_VALID_FORM_FAILED    = 'update.form.valid.failed';
+    const EVENT_UPDATE_SAVE_FORM            = 'update.form.save';
+
+    const EVENT_DELETE      = 'delete';
+
+    /**
+     * @var array
+     *
      * Array clave / valor.
      * La clave corresponde a los id's que se van asignando a los elementos del formulario.
      * El valor es el número de veces que aparece ese id en el formulario.
      * Si un id se repite, le añadimos un sufijo númerico.
      */
     protected $elementsId = array();
+
+    /**
+     * @var array
+     *
+     * Contiene los parámetros de la url: section, action e id
+     */
+    protected $routeParams = array();
+
+    /**
+     * @param $formElementManager
+     */
+    public function __construct($formElementManager, $routeParams)
+    {
+        $this->formElementManager = $formElementManager;
+        $this->routeParams = $routeParams;
+    }
+
+    public function getRouteParams($param = false)
+    {
+        if (is_string($param)) {
+            return isset($this->routeParams[$param])
+                ? $this->routeParams[$param]
+                : false;
+        }
+
+        return $this->routeParams;
+    }
+
+    /**
+     * Seteamos el tipo de action del formulario
+     *
+     * @param string $actionType
+     */
+    public function setActionType($actionType)
+    {
+        if (!array_key_exists($actionType, $this->allowedActionType)) {
+            throw new \Exception('Action Type ' . $actionType . ' not allowed');
+        }
+
+        $this->actionType = $actionType;
+
+        return $this;
+    }
+
+    /**
+     * Devuelve el tipo de action del formulario
+     * Los resultados posibles son los definidos en la propiedad $allowedActionType
+     *
+     * @return string
+     */
+    public function getActionType()
+    {
+        return $this->actionType;
+    }
 
     public function eventTrigger($eventName,  $args = array())
     {
@@ -76,14 +163,6 @@ class AdministratorFormService implements EventManagerAwareInterface
         $result = $this->getEventManager()->trigger($eventName,null,$args)/*->first()*/;
 
         return $result;
-    }
-
-    /**
-     * @param $formElementManager
-     */
-    public function __construct($formElementManager)
-    {
-        $this->formElementManager = $formElementManager;
     }
 
     public function setPrimaryKey($primaryKey)
@@ -117,9 +196,9 @@ class AdministratorFormService implements EventManagerAwareInterface
 
         $form = $this->form;
 
-        $triggerInit = $form->getRouteParams('action') == 'add'
-            ? $form::EVENT_CREATE_INIT_FORM
-            : $form::EVENT_UPDATE_INIT_FORM;
+        $triggerInit = $this->getRouteParams('action') == 'add'
+            ? self::EVENT_CREATE_INIT_FORM
+            : self::EVENT_UPDATE_INIT_FORM;
 
         $eventResult = $this->eventTrigger($triggerInit);
 
@@ -148,11 +227,6 @@ class AdministratorFormService implements EventManagerAwareInterface
     public function getForm()
     {
         return $this->form;
-    }
-
-    public function getRouteParams($param = false)
-    {
-        return $this->form->getRouteParams($param);
     }
 
     public function addFields()
@@ -306,10 +380,10 @@ class AdministratorFormService implements EventManagerAwareInterface
         $isValid = true;
 
         if ($form->isValid()) {
-            $this->eventTrigger($form::EVENT_CREATE_VALID_FORM_SUCCESS);
+            $this->eventTrigger(self::EVENT_CREATE_VALID_FORM_SUCCESS);
         } else {
             $isValid = false;
-            $this->eventTrigger($form::EVENT_CREATE_VALID_FORM_FAILED);
+            $this->eventTrigger(self::EVENT_CREATE_VALID_FORM_FAILED);
         }
 
         return $isValid;
