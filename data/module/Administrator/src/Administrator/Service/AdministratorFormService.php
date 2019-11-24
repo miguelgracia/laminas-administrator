@@ -178,46 +178,38 @@ class AdministratorFormService implements EventManagerAwareInterface
 
     public function prepareForm($form = null, AdministratorModel $model)
     {
-        if ($this->form instanceof AdministratorForm) {
-            return $this->form;
-        }
-
         $this->form = $this->formElementManager->build($form);
 
         $formInitializers = $this->form->initializers();
 
         foreach ($formInitializers['fieldsets'] as $fieldsetName) {
-            $this->setFieldset($fieldsetName, $model);
+            $isLocale = strpos($fieldsetName, "LocaleFieldset") !== false;
+
+            if ($isLocale) {
+                $localeFieldsets = $this->formElementManager->build($fieldsetName, [
+                    'base_fieldset' => $this->baseFieldset,
+                ]);
+
+                $this->fieldsets += $localeFieldsets;
+
+                continue;
+            }
+
+            $fieldset = $this->formElementManager->build($fieldsetName, [
+                'model' => $model,
+            ]);
+            $this->fieldsets[$fieldset->getName()] = $fieldset;
         }
 
         $triggerInit = $this->getRouteParams('action') == 'add'
-            ? self::EVENT_CREATE_INIT_FORM
-            : self::EVENT_UPDATE_INIT_FORM;
+            ? AdministratorFormService::EVENT_CREATE_INIT_FORM
+            : AdministratorFormService::EVENT_UPDATE_INIT_FORM;
 
         $eventResult = $this->eventTrigger($triggerInit);
 
         $this->addFields();
 
         return $this->form;
-    }
-
-    private function setFieldset($fieldsetName, $model)
-    {
-        $isLocale = strpos($fieldsetName, "LocaleFieldset") !== false;
-
-        if (!$isLocale) {
-            $fieldset = $this->formElementManager->build($fieldsetName, [
-                'model' => $model,
-            ]);
-            $this->fieldsets[$fieldset->getName()] = $fieldset;
-            return;
-        }
-
-        $localeFieldsets = $this->formElementManager->build($fieldsetName, [
-            'base_fieldset' => $this->baseFieldset,
-        ]);
-
-        $this->fieldsets += $localeFieldsets;
     }
 
     public function addFields()
