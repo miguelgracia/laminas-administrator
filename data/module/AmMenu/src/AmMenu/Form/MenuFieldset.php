@@ -13,11 +13,12 @@ class MenuFieldset extends AdministratorFieldset
 
     public function addFields()
     {
+        //TODO: serviceLocator. Refactorizar eliminando la referencia a serviceLocator
         $serviceLocator = $this->serviceLocator;
 
         $formService = $serviceLocator->get('Administrator\Service\AdministratorFormService');
 
-        if ($formService->getForm()->getActionType() == 'add') {
+        if ($formService->getActionType() == 'add') {
             $padre = (int) $formService->getRouteParams('id');
 
             $fieldset = $formService->getBaseFieldset();

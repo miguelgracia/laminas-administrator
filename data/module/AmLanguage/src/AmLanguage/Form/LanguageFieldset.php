@@ -13,6 +13,7 @@ class LanguageFieldset extends AdministratorFieldset
 
     public function addFields()
     {
+        //TODO: serviceLocator. Refactorizar eliminando la referencia a serviceLocator
         $permissions = $this->serviceLocator->get('AmProfile\Service\ProfilePermissionService');
 
         if (!$permissions->isAdmin()) {
