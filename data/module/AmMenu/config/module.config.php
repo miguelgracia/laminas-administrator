@@ -10,8 +10,8 @@ return array(
 
     'form_elements' => [
         'aliases' => [
-            'parent' => \Zend\Form\Element\Hidden::class,
             // TODO: Lo suyo seria quiza que el alias realmente sea un objecto de tipo Element
+            'AmMenu\\Form\\Element\\Parent' => \Zend\Form\Element\Hidden::class,
             'AmMenu\\Form\\Element\\Order' => \Zend\Form\Element\Hidden::class,
         ],
         'factories' => [
@@ -24,7 +24,7 @@ return array(
 
     'service_manager' => array(
         'factories' => array(
-            'Navigation' => 'AmMenu\Factory\MenuNavigationFactory',
+            'Navigation' => \AmMenu\Factory\MenuNavigationFactory::class,
         )
     ),
 );
