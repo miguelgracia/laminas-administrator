@@ -23,9 +23,7 @@ trait AddAction
             $isValid = $formService->resolveForm($request->getPost());
 
             if ($isValid) {
-
                 $insertId = $formService->save();
-
                 return $this->goToSection($formService->getRouteParams('module'), array(
                     'action'  => 'edit',
                     'id'      => $insertId[0]

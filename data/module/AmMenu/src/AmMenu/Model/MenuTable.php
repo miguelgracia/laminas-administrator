@@ -3,6 +3,7 @@
 namespace AmMenu\Model;
 
 use Administrator\Model\AdministratorTable;
+use Zend\Db\Sql\Select;
 
 class MenuTable extends AdministratorTable
 {
@@ -14,13 +15,11 @@ class MenuTable extends AdministratorTable
     {
         $arrayResult = array();
 
-        $selectParent = $this->sql->select();
-
-        $selectParent->join(
+        $selectParent = $this->sql->select()->join(
             'admin_modules',
             'admin_menus.admin_module_id = admin_modules.id',
             'zend_name',
-            $selectParent::JOIN_LEFT
+            Select::JOIN_LEFT
         )->order('order ASC');
 
         //clonamos la consulta padre porque nos servirá para sacar los hijos ya que son los mismos
@@ -39,11 +38,11 @@ class MenuTable extends AdministratorTable
             // Vamos a sacar sus hijos
             $thisChildren = clone $selectChildren;
 
-            $thisChildren->where(array('admin_menus.parent' => $row->id));
+            $thisChildren->where(array(
+                'admin_menus.parent' => $row->id
+            ));
 
-            $resultInf = $this->selectWith($thisChildren);
-
-            $row->hijos = $resultInf->toObjectArray();
+            $row->hijos = $this->selectWith($thisChildren)->toObjectArray();
 
             $arrayResult[] = $row;
         }
