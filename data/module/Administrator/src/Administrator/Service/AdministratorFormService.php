@@ -106,6 +106,7 @@ class AdministratorFormService implements EventManagerAwareInterface
 
     /**
      * @param $formElementManager
+     * @param $routeParams
      */
     public function __construct($formElementManager, $routeParams)
     {
@@ -165,11 +166,6 @@ class AdministratorFormService implements EventManagerAwareInterface
         return $result;
     }
 
-    public function setPrimaryKey($primaryKey)
-    {
-        $this->hiddenPrimaryKey = $primaryKey;
-    }
-
     public function getBaseFieldset()
     {
         return $this->baseFieldset;
@@ -193,8 +189,6 @@ class AdministratorFormService implements EventManagerAwareInterface
         foreach ($formInitializers['fieldsets'] as $fieldsetName) {
             $this->setFieldset($fieldsetName, $model);
         }
-
-        $form = $this->form;
 
         $triggerInit = $this->getRouteParams('action') == 'add'
             ? self::EVENT_CREATE_INIT_FORM
