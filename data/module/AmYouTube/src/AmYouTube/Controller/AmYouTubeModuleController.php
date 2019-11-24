@@ -4,13 +4,14 @@ namespace AmYouTube\Controller;
 
 use Administrator\Controller\AuthController;
 use Administrator\Traits\IndexAction;
+use AmYouTube\Form\YouTubeForm;
 use Zend\Db\Sql\Expression;
 
 class AmYouTubeModuleController extends AuthController
 {
     use IndexAction;
 
-    protected $form = 'AmYouTube\\Form\\YouTubeForm';
+    protected $form = YouTubeForm::class;
 
     protected $OAUTH2_CLIENT_ID = '934446495538-k83kn2hhivvdm15um1j58srr0sc0r35l.apps.googleusercontent.com';
     protected $OAUTH2_CLIENT_SECRET = 'gEwlNEz_ItJEYMUvoBQV88n-';
