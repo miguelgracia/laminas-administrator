@@ -76,9 +76,7 @@ return array(
             \Administrator\Form\Element\YesNoSelect::class => \Zend\Form\ElementFactory::class,
             \Administrator\Form\Element\TargetLink::class => \Zend\Form\ElementFactory::class,
             \Administrator\Form\Element\MetaDescription::class => \Zend\Form\ElementFactory::class,
+            \Administrator\Form\Element\ImageUrl::class => \Administrator\Form\Element\ImageUrlFactory::class
         ],
-        'abstract_factories' => [
-            \Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
-        ]
     ],
 );
