@@ -182,6 +182,8 @@ class AdministratorFormService implements EventManagerAwareInterface
 
         $formInitializers = $this->form->initializers();
 
+        $fieldsets = [];
+
         foreach ($formInitializers['fieldsets'] as $fieldsetName) {
             $isLocale = strpos($fieldsetName, "LocaleFieldset") !== false;
 
@@ -190,7 +192,7 @@ class AdministratorFormService implements EventManagerAwareInterface
                     'base_fieldset' => $this->baseFieldset,
                 ]);
 
-                $this->fieldsets += $localeFieldsets;
+                $fieldsets += $localeFieldsets;
 
                 continue;
             }
@@ -198,8 +200,10 @@ class AdministratorFormService implements EventManagerAwareInterface
             $fieldset = $this->formElementManager->build($fieldsetName, [
                 'model' => $model,
             ]);
-            $this->fieldsets[$fieldset->getName()] = $fieldset;
+            $fieldsets[$fieldset->getName()] = $fieldset;
         }
+
+        $this->fieldsets = $fieldsets;
 
         $triggerInit = $this->getRouteParams('action') == 'add'
             ? AdministratorFormService::EVENT_CREATE_INIT_FORM
@@ -218,7 +222,7 @@ class AdministratorFormService implements EventManagerAwareInterface
          * Buscaremos en el objeto formulario y en los objetos Fieldset si existe el método addElements.
          * En caso afirmativo, lo ejecutamos para poder añadir campos adicionales
          * que se salga de la lógica predeterminada o, por ejemplo, redefinir
-         * el atributo de algún campo concreto. (Vease Gestor\Form\GestorUsuariosForm)
+         * el atributo de algún campo concreto.
          */
         $thisMethod = substr(strrchr(__METHOD__, '::'), 1);
 

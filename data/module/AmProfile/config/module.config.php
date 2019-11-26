@@ -14,8 +14,7 @@ return array(
             'description' => \Zend\Form\Element\Textarea::class,
         ],
         'factories' => [
-            \AmProfile\Form\Element\Permissions::class
-                => \Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
+            \AmProfile\Form\Element\Permissions::class => \AmProfile\Form\Element\PermissionsFactory::class,
             \AmProfile\Form\ProfileForm::class => \Administrator\Factory\AdministratorFormFactory::class,
             \AmProfile\Form\ProfileFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
         ]
@@ -28,8 +27,4 @@ return array(
                 => \AmProfile\Service\ProfilePermissionServiceFactory::class,
         )
     ),
-
-    'router' => array(
-
-    )
 );
