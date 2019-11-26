@@ -1,39 +1,23 @@
 <?php
 namespace AmProfile\Service;
 
-use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
 use Zend\Filter\Word\DashToCamelCase;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
-class ProfilePermissionService implements FactoryInterface
+class ProfilePermissionService
 {
     protected $userData;
 
-    protected $isSuperUser;
+    protected $controllerActionModules;
 
-    protected $serviceLocator;
-
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __construct($userData, $controllerActionModules )
     {
-        $this->serviceLocator = $container;
-
-        $authService = $this->serviceLocator->get('AuthService');
-
-        $dataUser = $authService->getUserData();
-
-        $this->userData = $dataUser;
-        $this->isSuperUser = (bool) $this->userData->isAdmin;
-
-        return $this;
+        $this->userData = $userData;
+        $this->controllerActionModules = $controllerActionModules;
     }
 
     public function isAdmin()
     {
-        return $this->isSuperUser;
+        return (bool) $this->userData->isAdmin;
     }
 
     /**
@@ -46,52 +30,52 @@ class ProfilePermissionService implements FactoryInterface
      */
     public function hasModuleAccess($controller, $action)
     {
-        $controllerActionModules = $this->serviceLocator->get('AmModule\Service\ModuleService')->getControllerActionsModules();
+        $action = lcfirst((new DashToCamelCase)->filter($action));
 
-        $dashToCamelFilter = new DashToCamelCase();
-
-        $action = lcfirst($dashToCamelFilter->filter($action));
-
-        if (!array_key_exists($controller . '.' . $action, $controllerActionModules)) {
+        if (!array_key_exists($controller . '.' . $action, $this->controllerActionModules)) {
             return false;
         }
-        if ($this->isSuperUser) {
+
+        if ($this->isAdmin()) {
             return 1;
         }
 
-        $permisos = json_decode($this->userData->permissions);
+        $hasModuleAccess = in_array($controller.'.'.$action, json_decode($this->userData->permissions));
 
-        $tienePermiso = in_array($controller.'.'.$action,$permisos);
-
-        return (int) $tienePermiso;
+        return (int) $hasModuleAccess;
     }
 
     public function redibujarMenu(&$dataMenu)
     {
-        if ($this->isSuperUser) {
+        if ($this->isAdmin()) {
             return $dataMenu;
         }
 
         foreach ($dataMenu as $i => $menuTemp) {
 
-            if ($menuTemp->zendName != '') {
-                if (!$this->hasModuleAccess($menuTemp->zendName,$menuTemp->action)) {
-                    //El usuario no tiene permisos de acceso. Eliminamos el registro del array
-                    unset($dataMenu[$i]);
-                    //no es necesario comprobar si hay acceso a los hijos porque directamente
-                    //no hay acceso al padre, así que continuamos con la siguiente iteración.
+            if ($menuTemp->zendName != '' and !$this->hasModuleAccess($menuTemp->zendName,$menuTemp->action)) {
+                /**
+                 * El usuario no tiene permisos de acceso. Eliminamos el registro del array
+                 */
+                unset($dataMenu[$i]);
 
-                    continue;
-                }
+                /**
+                 * no es necesario comprobar si hay acceso a los hijos porque directamente
+                 * no hay acceso al padre, así que continuamos con la siguiente iteración.
+                 */
+
+                continue;
             }
 
             foreach($menuTemp->hijos as $indexHijo => $hijo) {
-                if ($hijo->action != '') {
-                    if (!$this->hasModuleAccess($hijo->zendName, $hijo->action)) {
-                        //El usuario no tiene permisos de acceso. Eliminamos el registro del array
-                        unset($menuTemp->hijos[$indexHijo]);
-                    }
+                if ($hijo->action === '' or $this->hasModuleAccess($hijo->zendName, $hijo->action)) {
+                    continue;
                 }
+
+                /**
+                 * El usuario no tiene permisos de acceso. Eliminamos el registro del array
+                 */
+                unset($menuTemp->hijos[$indexHijo]);
             }
         }
 
