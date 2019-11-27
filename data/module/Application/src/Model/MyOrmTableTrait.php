@@ -30,6 +30,8 @@ trait MyOrmTableTrait
      *  Este método construye el nombre del modelo con el Model al final, para crear una instancia de ese
      * model. Es decir, que se trata de una especie de factoría abstracta que va a devolver una instancia
      * de modelo.
+     *
+     * TODO: refactorizar para eliminar serviceLocator de aqui
      */
     public function getEntityModel()
     {

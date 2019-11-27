@@ -79,4 +79,17 @@ return array(
             \Administrator\Form\Element\ImageUrl::class => \Administrator\Form\Element\ImageUrlFactory::class
         ],
     ],
+    'service_manager' => [
+        'factories' => [
+            \Administrator\Service\ConfigureFieldsetService::class => \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class,
+            \Administrator\Service\CheckIdService::class => \Zend\ServiceManager\Factory\InvokableFactory::class
+        ]
+    ],
+    \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class => [
+        \Administrator\Service\ConfigureFieldsetService::class => [
+            'FormElementManager',
+            \Administrator\Service\CheckIdService::class
+        ]
+    ]
+
 );
