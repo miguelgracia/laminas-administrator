@@ -35,9 +35,7 @@ class AdministratorFieldsetFactory implements FactoryInterface
         $tableGateway = $container->get($fieldset->getTableGatewayName());
         $columns = $metadata->getColumns($tableGateway->getTable());
 
-        $fieldset
-            ->setServiceLocator($container)
-            ->setTableGateway($tableGateway)
+        $fieldset->setTableGateway($tableGateway)
             ->setColumns($columns)
             ->setObjectModel($options['model'])
             ->setOption('is_locale',false);

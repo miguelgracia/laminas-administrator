@@ -19,6 +19,11 @@ return array(
             \AmMenu\Form\Element\AdminModuleId::class => \Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
             \AmMenu\Form\MenuForm::class => \Administrator\Factory\AdministratorFormFactory::class,
             \AmMenu\Form\MenuFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+        ],
+        'delegators' => [
+            \AmMenu\Form\MenuFieldset::class => [
+                \AmMenu\Form\Factory\MenuFieldsetDelegatorFactory::class
+            ]
         ]
     ],
 
