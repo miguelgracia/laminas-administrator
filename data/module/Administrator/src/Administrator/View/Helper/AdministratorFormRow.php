@@ -8,21 +8,9 @@ use Zend\View\Helper\AbstractHelper;
 
 class AdministratorFormRow extends AbstractHelper
 {
-    protected $serviceLocator;
-
     protected $view;
     protected $label;
     protected $elementError;
-    protected $formElement;
-
-    protected $elementsId = array();
-
-    protected $elementTemplates = array();
-
-    function __construct($serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-    }
 
     private function formTemplate()
     {

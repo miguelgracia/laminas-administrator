@@ -11,7 +11,9 @@ class FileManagerService implements FactoryInterface
     /**
      * Create service
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param $requestedName
+     * @param array|null $options
      * @return mixed
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)

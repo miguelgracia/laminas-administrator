@@ -11,7 +11,7 @@ class StaticPageFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = StaticPageTable::class;
 
-    public function addFields()
+    public function addElements()
     {
         if ($this->formActionType == 'edit') {
             $this->get('key')->setAttribute('readonly','readonly');

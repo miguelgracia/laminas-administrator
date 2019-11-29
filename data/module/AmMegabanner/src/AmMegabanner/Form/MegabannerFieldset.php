@@ -13,7 +13,7 @@ class MegabannerFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = MegabannerTable::class;
 
-    public function addFields()
+    public function addElements()
     {
         $elementUrl = $this->get('elementUrl');
         $class = $elementUrl->getAttribute('class');

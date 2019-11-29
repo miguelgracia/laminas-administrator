@@ -11,7 +11,7 @@ class ProfileFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = ProfileTable::class;
 
-    public function addFields()
+    public function addElements()
     {
         $perm = $this->get('permissions');
 

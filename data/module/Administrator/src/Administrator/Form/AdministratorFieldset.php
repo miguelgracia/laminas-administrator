@@ -4,7 +4,6 @@ namespace Administrator\Form;
 
 use Administrator\Filter\SlugFilter;
 use Administrator\Filter\MediaUri;
-use Administrator\Traits\ServiceLocatorAwareTrait;
 use Zend\Db\Metadata\Object\ColumnObject;
 use Zend\Db\Sql\Where;
 use Zend\Filter\Word\UnderscoreToCamelCase;
@@ -17,8 +16,6 @@ use Zend\Validator\StringLength;
 
 abstract class AdministratorFieldset extends Fieldset implements InputFilterProviderInterface
 {
-    use ServiceLocatorAwareTrait;
-
     protected $tableGateway;
 
     /**
@@ -300,7 +297,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
     }
 
     /**
-     * Esta función se busca en la función addFields de AdministratorFormService
+     * Esta función se busca en la función addElements de AdministratorFormService
      * Devuelve un array con los elementos del fieldset que no se deben pintar en el formulario
      *
      * @return array

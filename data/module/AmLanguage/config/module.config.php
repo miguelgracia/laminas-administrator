@@ -10,14 +10,11 @@ return array(
         'factories' => [
             \AmLanguage\Form\LanguageForm::class => \Administrator\Factory\AdministratorFormFactory::class,
             \AmLanguage\Form\LanguageFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+        ],
+        'delegators' => [
+            \AmLanguage\Form\LanguageFieldset::class => [
+                \AmLanguage\Form\Factory\LanguageFieldsetDelegatorFactory::class
+            ]
         ]
     ],
-
-    'service_manager' => array(
-
-    ),
-
-    'router' => array(
-
-    )
 );

@@ -39,22 +39,6 @@ class AdministratorFormService implements EventManagerAwareInterface
     protected $baseFieldset = null;
 
     /**
-     * @var string
-     *
-     * Nombre por defecto del campo de tabla de base de datos que se usara
-     * como valor oculto del formulario para usarlo como condicion en el where
-     * de consulta cuando guardamos un formulario de edición
-     */
-    protected $hiddenPrimaryKey = 'id';
-
-    /**
-     * @var string
-     *
-     * Nombre del campo de la tabla locale que usaremos para relacionar con su tabla maestra
-     */
-    protected $hiddenRelatedKey = 'related_table_id';
-
-    /**
      * @var array
      *
      * Tipos de action de formulario permitidos y su correspondencia con eventos
@@ -176,111 +160,57 @@ class AdministratorFormService implements EventManagerAwareInterface
         $this->baseFieldset = $baseFieldset;
     }
 
-    public function setForm($form = null, AdministratorModel $model)
+    public function prepareForm($form = null, AdministratorModel $model)
     {
-        if ($this->form instanceof AdministratorForm) {
-            return $this;
-        }
-
         $this->form = $this->formElementManager->build($form);
 
         $formInitializers = $this->form->initializers();
 
+        $fieldsets = [];
+
         foreach ($formInitializers['fieldsets'] as $fieldsetName) {
-            $this->setFieldset($fieldsetName, $model);
-        }
+            $isLocale = strpos($fieldsetName, "LocaleFieldset") !== false;
 
-        $triggerInit = $this->getRouteParams('action') == 'add'
-            ? self::EVENT_CREATE_INIT_FORM
-            : self::EVENT_UPDATE_INIT_FORM;
+            if ($isLocale) {
+                $localeFieldsets = $this->formElementManager->build($fieldsetName, [
+                    'base_fieldset' => $this->baseFieldset,
+                ]);
 
-        $eventResult = $this->eventTrigger($triggerInit);
+                $fieldsets += $localeFieldsets;
 
-        return $this;
-    }
+                continue;
+            }
 
-    private function setFieldset($fieldsetName, $model)
-    {
-        $isLocale = strpos($fieldsetName, "LocaleFieldset") !== false;
-
-        if (!$isLocale) {
             $fieldset = $this->formElementManager->build($fieldsetName, [
                 'model' => $model,
             ]);
-            $this->fieldsets[$fieldset->getName()] = $fieldset;
-            return;
+            $fieldsets[$fieldset->getName()] = $fieldset;
         }
 
-        $localeFieldsets = $this->formElementManager->build($fieldsetName, [
-            'base_fieldset' => $this->baseFieldset,
-        ]);
+        $this->fieldsets = $fieldsets;
 
-        $this->fieldsets += $localeFieldsets;
-    }
+        $triggerInit = $this->getRouteParams('action') == 'add'
+            ? AdministratorFormService::EVENT_CREATE_INIT_FORM
+            : AdministratorFormService::EVENT_UPDATE_INIT_FORM;
 
-    public function getForm()
-    {
+        $eventResult = $this->eventTrigger($triggerInit);
+
+        $this->addElements();
+
         return $this->form;
     }
 
-    public function addFields()
+    public function addElements()
     {
         /**
-         * Buscaremos en el objeto formulario y en los objetos Fieldset si existe el método addFields.
+         * Buscaremos en el objeto formulario y en los objetos Fieldset si existe el método addElements.
          * En caso afirmativo, lo ejecutamos para poder añadir campos adicionales
          * que se salga de la lógica predeterminada o, por ejemplo, redefinir
-         * el atributo de algún campo concreto. (Vease Gestor\Form\GestorUsuariosForm)
+         * el atributo de algún campo concreto.
          */
         $thisMethod = substr(strrchr(__METHOD__, '::'), 1);
 
         foreach ($this->fieldsets as &$fieldset) {
-
-            $columns = $fieldset->getColumns(false);
-
-            foreach ($columns as $columnName => $column) {
-
-                $flags = array(
-                    'priority' => -($column->getOrdinalPosition() * 100),
-                );
-
-                if (in_array($column->getName(), array(
-                    $this->hiddenPrimaryKey,
-                    $this->hiddenRelatedKey,
-                    'language_id'
-                ))) {
-                    $element = $this->formElementManager->build(Hidden::class);
-                    $this->setElementConfig($column, $element);
-                    $fieldset->add($element, $flags);
-                    continue;
-                }
-
-                $dataType = $column->getDataType();
-
-                $fieldsetNamespaceName = (new \ReflectionClass($fieldset))->getNamespaceName();
-
-                $formElement = $fieldsetNamespaceName . '\\Element\\' . ucfirst($columnName);
-
-                if ($this->formElementManager->has($formElement)) {
-                    $elementName = $formElement;
-                } elseif($this->formElementManager->has($columnName)) {
-                    $elementName = $columnName;
-                } else {
-                    $elementName = $dataType;
-                }
-
-                $element = $this->formElementManager->build($elementName);
-
-                $this->setElementConfig($column, $element);
-
-                $fieldset->add($element);
-            }
-
-            $fieldset->populateValues($fieldset->getObjectModel()->getArrayCopy());
-
-            if (method_exists($fieldset, $thisMethod)) {
-                $fieldset->{$thisMethod}();
-            }
-
             $this->form->add($fieldset);
         }
 
@@ -289,80 +219,6 @@ class AdministratorFormService implements EventManagerAwareInterface
         }
 
         return $this;
-    }
-
-    private function setElementConfig(ColumnObject $column, &$element)
-    {
-        $toCamel = new SeparatorToCamelCase('_');
-        $columnName = lcfirst($toCamel->filter($column->getName()));
-
-        $dataType = $column->getDataType();
-
-        $fieldClasses =  array(
-            'form-control',
-            'js-'.$columnName
-        );
-
-        $classes = $element->getAttribute('class');
-        $options = $element->getOptions();
-
-        if (!is_null($classes)) {
-            $fieldClasses[] = $classes;
-        }
-
-        $options += array(
-            'data_type' => $dataType,
-            'label'     => $columnName,
-            'label_attributes' => array(
-                'class' => 'col-sm-2 control-label'
-            ),
-            'priority' => -($column->getOrdinalPosition() * 100),
-        );
-
-        $attributes = array(
-            'id'    => $this->checkId($columnName),
-            'class' => implode(' ',$fieldClasses),
-        );
-
-        if ($dataType === 'timestamp') {
-            $class = 'form-control select-timestamp';
-            $options['day_attributes'] = array(
-                'class' => $class . ' day'
-            );
-            $options['month_attributes'] = array(
-                'class' => $class . ' month'
-            );
-            $options['year_attributes'] = array(
-                'class' => $class . ' year'
-            );
-        }
-
-        $element
-            ->setName($columnName)
-            ->setLabel($columnName)
-            ->setOptions($options)
-            ->setAttributes($attributes)
-        ;
-
-        return $this;
-    }
-
-    /**
-     * @param $formElement
-     *
-     * Comprobamos que los id's que se han asignado a los elementos de formulario no están repetidos
-     * Si encontramos un caso en el que sí este, añadimos un prefijo al id
-     */
-    private function checkId($id)
-    {
-        if (array_key_exists($id, $this->elementsId)) {
-            $this->elementsId[$id]++;
-            $id = $id . "_" . $this->elementsId[$id];
-        } else {
-            $this->elementsId[$id] = 0;
-        }
-
-        return $id;
     }
 
     public function resolveForm($data)

@@ -12,7 +12,7 @@ class AppDataFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = AppDataTable::class;
 
-    public function addFields()
+    public function addElements()
     {
         $key = $this->get('key');
         $key->setAttribute('readonly','readonly');

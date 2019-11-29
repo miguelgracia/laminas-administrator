@@ -72,8 +72,24 @@ return array(
             'enum' => \Zend\Form\Element\Select::class,
             'timestamp' => \Zend\Form\Element\DateSelect::class
         ],
-        'abstract_factories' => [
-            \Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
+        'factories' => [
+            \Administrator\Form\Element\YesNoSelect::class => \Zend\Form\ElementFactory::class,
+            \Administrator\Form\Element\TargetLink::class => \Zend\Form\ElementFactory::class,
+            \Administrator\Form\Element\MetaDescription::class => \Zend\Form\ElementFactory::class,
+            \Administrator\Form\Element\ImageUrl::class => \Administrator\Form\Element\ImageUrlFactory::class
+        ],
+    ],
+    'service_manager' => [
+        'factories' => [
+            \Administrator\Service\ConfigureFieldsetService::class => \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class,
+            \Administrator\Service\CheckIdService::class => \Zend\ServiceManager\Factory\InvokableFactory::class
         ]
     ],
+    \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class => [
+        \Administrator\Service\ConfigureFieldsetService::class => [
+            'FormElementManager',
+            \Administrator\Service\CheckIdService::class
+        ]
+    ]
+
 );
