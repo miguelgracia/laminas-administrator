@@ -9,7 +9,7 @@ class CheckIdService
     /**
      * @var int[]
      */
-    private $elementsId;
+    private $elementsId = [];
 
     /**
      * @param $formElement
