@@ -35,16 +35,7 @@ trait MyOrmTableTrait
      */
     public function getEntityModel()
     {
-        $entityModel = $this->serviceLocator->build($this->entityModelName);
-
-        $entityModel->setMetadata(
-            new Metadata(
-                $this->serviceLocator->get('Zend\Db\Adapter\Adapter')
-            ),
-            $this->table
-        );
-
-        return $entityModel;
+        return $this->serviceLocator->build($this->entityModelName);
     }
 
     public function setDbAdapter(Adapter $adapter)

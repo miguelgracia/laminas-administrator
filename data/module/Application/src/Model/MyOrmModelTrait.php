@@ -7,8 +7,6 @@ use Zend\Filter\Word\UnderscoreToCamelCase;
 
 trait MyOrmModelTrait
 {
-    protected $metadata;
-
     function __call($name, $arguments)
     {
         preg_match("/^(get|set)(.+)/", $name, $output_array);
@@ -62,7 +60,6 @@ trait MyOrmModelTrait
          * declaradas en esta clase:
          *
          * protected $inputFilter;
-         * protected $metadata;
          * protected $table;
          */
 
@@ -86,11 +83,6 @@ trait MyOrmModelTrait
         foreach ($data as $field => &$value) {
             $this->{$field} = $value;
         }
-    }
-
-    public function getMetadata()
-    {
-        return $this->metadata;
     }
 
     public function prepareToSave()
