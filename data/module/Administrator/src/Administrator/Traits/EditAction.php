@@ -2,15 +2,12 @@
 
 namespace Administrator\Traits;
 
-
 use AmProfile\Service\ProfilePermissionService;
 
 trait EditAction
 {
     public function editAction()
     {
-        $formService = $this->serviceLocator->get('Administrator\Service\AdministratorFormService');
-
         $thisModule =  $this->serviceLocator->get('Application')->getMvcEvent()->getRouteMatch()->getParam('module');
 
         $id = (int) $this->params()->fromRoute('id', 0);
@@ -25,16 +22,16 @@ trait EditAction
             return $this->goToSection($thisModule);
         }
 
-        $form = $formService->prepareForm($this->form, $model);
+        $form = $this->formService->prepareForm($this->form, $model);
 
         $request = $this->getRequest();
 
         if ($request->isPost()) {
 
-            $isValid = $formService->resolveForm($request->getPost());
+            $isValid = $this->formService->resolveForm($request->getPost());
 
             if ($isValid) {
-                $formService->save();
+                $this->formService->save();
                 return $this->goToEditSection($thisModule, $id);
             }
         }

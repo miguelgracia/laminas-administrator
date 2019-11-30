@@ -29,13 +29,25 @@ abstract class AuthController extends AbstractActionController
 
     protected $storage;
     protected $authService;
-
-    protected $tableGateway;
-
     protected $triggerResults;
 
+    protected $formService;
     protected $sessionService;
+    protected $tableGateway;
+
     protected $config;
+
+    public function __construct($sessionService, $tableGateway, $formService)
+    {
+        $this->sessionService = $sessionService;
+        $this->tableGateway = $tableGateway;
+        $this->formService = $formService;
+    }
+
+    public function getTableGateway()
+    {
+        return $this->tableGateway;
+    }
 
     public function getAuthService($returnAuthInstance = true)
     {
@@ -140,14 +152,7 @@ abstract class AuthController extends AbstractActionController
     {
         $this->serviceLocator = $e->getApplication()->getServiceManager();
 
-        $this->setControllerVars();
-
-        $this->sessionService   = $this->serviceLocator->get('Administrator\Service\SessionService');
-
-        // Sacamos la ruta para matchearla
-        $match = $e->getRouteMatch();
-
-        $this->routeMatch = $match;
+        $this->routeMatch = $e->getRouteMatch();
 
         $this->config = $this->serviceLocator->get('Config');
 
@@ -167,7 +172,6 @@ abstract class AuthController extends AbstractActionController
             $canAccess = $this->canAccess($module, $action);
 
             if ($canAccess !== true) {
-
                 return $this->accessErrorHandler($canAccess);
             }
         }
@@ -179,8 +183,6 @@ abstract class AuthController extends AbstractActionController
 
     protected function accessErrorHandler($errorKey)
     {
-        $request = $this->serviceLocator->get('Request');
-
         $jsonModel = new JsonModel(array(
             'status'    => 'ok',
             'response'  => 'false',
@@ -188,7 +190,7 @@ abstract class AuthController extends AbstractActionController
             'message'   => $this->errorMessages[$errorKey]
         ));
 
-        if ($request->isXmlHttpRequest()) {
+        if ($this->getRequest()->isXmlHttpRequest()) {
             $response = $this->getResponse();
             $response->setContent($jsonModel->serialize());
             return $response;
@@ -240,17 +242,6 @@ abstract class AuthController extends AbstractActionController
         $triggerName = $requestMethod . '.' . $module . '.' . $action;
 
         return $eventManager->trigger($triggerName, null, array('serviceLocator' => $this->serviceLocator));
-    }
-
-    public function setControllerVars()
-    {
-        $className = get_class($this);
-
-        $tableGateway = preg_replace('/^(Am)(\w+)\\\(\w+)\\\(\w+)(ModuleController)$/', "$1$2\\Model\\\\$2Table", $className);
-
-        if (class_exists($tableGateway)) {
-            $this->tableGateway = $this->serviceLocator->get($tableGateway);
-        }
     }
 
     protected function getView($params = array(), $viewName)
