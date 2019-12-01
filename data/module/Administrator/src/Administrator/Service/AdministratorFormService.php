@@ -151,24 +151,6 @@ class AdministratorFormService implements EventManagerAwareInterface
     {
         $this->form = $this->formElementManager->build($form);
 
-        $formInitializers = $this->form->initializers();
-
-        foreach ($formInitializers['fieldsets'] as $fieldsetName) {
-            $isLocale = strpos($fieldsetName, "LocaleFieldset") !== false;
-
-            if ($isLocale) {
-                $localeFieldsets = $this->formElementManager->build($fieldsetName);
-
-                foreach ($localeFieldsets as $localeFieldset) {
-                    $this->form->add($localeFieldset);
-                }
-
-                continue;
-            }
-
-            $this->form->add($this->formElementManager->build($fieldsetName));
-        }
-
         $triggerInit = $this->getRouteParams('action') == 'add'
             ? AdministratorFormService::EVENT_CREATE_INIT_FORM
             : AdministratorFormService::EVENT_UPDATE_INIT_FORM;
