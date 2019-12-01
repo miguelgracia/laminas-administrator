@@ -20,43 +20,34 @@ class AdministratorControllerFactory implements FactoryInterface
 
         $moduleName = 'Am'.((new DashToCamelCase)->filter($module));
 
-        $controller = sprintf("%s\\Controller\\%sModuleController", $moduleName, $moduleName);
+        $controllerClassName = sprintf("%s\\Controller\\%sModuleController", $moduleName, $moduleName);
 
-        $tableGateway = preg_replace(
-            '/^(Am)(\w+)\\\(\w+)\\\(\w+)(ModuleController)$/',
-            "$1$2\\Model\\\\$2Table",
-            $controller
-        );
-
-        $controller =  new $controller(
+        $controllerInstance =  new $controllerClassName(
             $container->get(SessionService::class),
             $container->get(ProfilePermissionService::class),
-            $container->get(AdministratorFormService::class),
             $container->get(DatatableService::class),
             $container->get('ViewRenderer')
         );
 
-        /**
-         * el objeto de tipo tableGateway no la podemos setear por defecto en el constructor
-         * ya que el modulo de login no tiene TableGateway asociado
-         */
         if ($module !== 'login') {
-            if (!class_exists($tableGateway)) {
-                $message = "Tablegateway $tableGateway not found";
-                var_dump($message);
-                die;
+            $controllerInstance->setFormService($container->get(AdministratorFormService::class));
 
+            $tableGateway = preg_replace(
+                '/^(Am)(\w+)\\\(\w+)\\\(\w+)(ModuleController)$/',
+                "$1$2\\Model\\\\$2Table",
+                $controllerClassName
+            );
+
+            if (class_exists($tableGateway)) {
                 /**
-                 * TODO: Si lanzamos la excepcion, la pantalla se queda en blanco y no vemos qué pasa.
-                 * hay que ver la forma de mostar el mensaje por pantalla
+                 * el objeto de tipo tableGateway no la podemos setear por defecto en el constructor
+                 * ya que el modulo de login no tiene TableGateway asociado
                  */
 
-                throw new \Exception($message);
-            } else {
-                $controller->setTableGateway($container->get($tableGateway));
+                $controllerInstance->setTableGateway($container->get($tableGateway));
             }
         }
 
-        return $controller;
+        return $controllerInstance;
     }
 }
