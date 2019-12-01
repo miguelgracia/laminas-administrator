@@ -22,7 +22,7 @@ trait EditAction
             return $this->goToSection($thisModule);
         }
 
-        $form = $this->formService->prepareForm($this->form, $this->model);
+        $form = $this->formService->prepareForm($this::FORM_CLASS);
 
         $request = $this->getRequest();
 

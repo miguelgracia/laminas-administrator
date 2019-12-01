@@ -12,7 +12,7 @@ class AmMenuModuleController extends AuthController
 {
     use AddAction, EditAction;
 
-    protected $form = MenuForm::class;
+    public const FORM_CLASS = MenuForm::class;
 
     public function indexAction()
     {

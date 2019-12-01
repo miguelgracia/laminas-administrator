@@ -11,7 +11,7 @@ class AmYouTubeModuleController extends AuthController
 {
     use IndexAction;
 
-    protected $form = YouTubeForm::class;
+    public const FORM_CLASS = YouTubeForm::class;
 
     protected $OAUTH2_CLIENT_ID = '934446495538-k83kn2hhivvdm15um1j58srr0sc0r35l.apps.googleusercontent.com';
     protected $OAUTH2_CLIENT_SECRET = 'gEwlNEz_ItJEYMUvoBQV88n-';
@@ -172,7 +172,7 @@ class AmYouTubeModuleController extends AuthController
     {
         $formService = $this->serviceLocator->get('Administrator\Service\AdministratorFormService');
 
-        $model = $this->tableGateway->getResultSetPrototype()->getObjectPrototype();
+        $this->model = $this->tableGateway->getResultSetPrototype()->getObjectPrototype();
 
         $youtubeService = $this->serviceLocator->get(\AmYouTube\Service\YoutubeService::class);
         $client = $youtubeService->getClient();
@@ -208,7 +208,7 @@ class AmYouTubeModuleController extends AuthController
 
         if ($token and !$client->isAccessTokenExpired()) {
 
-            $form = $formService->prepareForm($this->form, $model);
+            $form = $formService->prepareForm($this::FORM_CLASS);
 
             $request = $this->getRequest();
 
@@ -359,7 +359,7 @@ class AmYouTubeModuleController extends AuthController
         $youtube = $youtubeService->getYoutubeService();
 
         try {
-            $model = $this->tableGateway->find($id);
+            $this->model = $this->tableGateway->find($id);
         }catch (\Exception $ex) {
             return $this->goToSection($thisModule);
         }
@@ -396,7 +396,7 @@ class AmYouTubeModuleController extends AuthController
 
         if ($token and !$client->isAccessTokenExpired()) {
 
-            $form = $formService->prepareForm($this->form, $model);
+            $form = $formService->prepareForm($this::FORM_CLASS);
 
             $request = $this->getRequest();
 

@@ -12,6 +12,6 @@ class AmJobVideoModuleController extends AuthController
 {
     use indexAction, addAction, editAction;
 
-    protected $form = JobVideoForm::class;
+    public const FORM_CLASS = JobVideoForm::class;
 }
 

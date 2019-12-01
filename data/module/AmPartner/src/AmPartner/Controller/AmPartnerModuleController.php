@@ -13,6 +13,6 @@ class AmPartnerModuleController extends AuthController
 {
     use indexAction, addAction, editAction, deleteAction;
 
-    protected $form = PartnerForm::class;
+    public const FORM_CLASS = PartnerForm::class;
 }
 

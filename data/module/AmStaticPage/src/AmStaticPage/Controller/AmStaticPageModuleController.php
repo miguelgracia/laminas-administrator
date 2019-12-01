@@ -13,5 +13,5 @@ class AmStaticPageModuleController extends AuthController
 {
     use indexAction, addAction, editAction, DeleteAction;
 
-    protected $form = StaticPageForm::class;
+    public const FORM_CLASS = StaticPageForm::class;
 }

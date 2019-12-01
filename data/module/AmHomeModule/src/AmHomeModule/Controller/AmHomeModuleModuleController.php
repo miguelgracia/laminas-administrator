@@ -13,5 +13,5 @@ class AmHomeModuleModuleController extends AuthController
 {
     use IndexAction, AddAction, EditAction, DeleteAction;
 
-    protected $form = HomeModuleForm::class;
+    public const FORM_CLASS = HomeModuleForm::class;
 }

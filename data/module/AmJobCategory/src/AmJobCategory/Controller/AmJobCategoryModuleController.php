@@ -13,5 +13,5 @@ class AmJobCategoryModuleController extends AuthController
 {
     use IndexAction, AddAction, EditAction, DeleteAction;
 
-    protected $form = JobCategoryForm::class;
+    public const FORM_CLASS = JobCategoryForm::class;
 }

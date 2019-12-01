@@ -8,7 +8,7 @@ trait AddAction
     {
         $this->model = $this->tableGateway->getResultSetPrototype()->getObjectPrototype();
 
-        $form = $this->formService->prepareForm($this->form);
+        $form = $this->formService->prepareForm($this::FORM_CLASS);
 
         $request = $this->getRequest();
 
