@@ -157,9 +157,7 @@ class AdministratorFormService implements EventManagerAwareInterface
             $isLocale = strpos($fieldsetName, "LocaleFieldset") !== false;
 
             if ($isLocale) {
-                $localeFieldsets = $this->formElementManager->build($fieldsetName, [
-                    'base_fieldset' => $this->baseFieldset,
-                ]);
+                $localeFieldsets = $this->formElementManager->build($fieldsetName);
 
                 foreach ($localeFieldsets as $localeFieldset) {
                     $this->form->add($localeFieldset);
