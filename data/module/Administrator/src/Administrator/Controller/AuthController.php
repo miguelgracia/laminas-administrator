@@ -42,7 +42,6 @@ abstract class AuthController extends AbstractActionController
     public function __construct(
         $sessionService,
         $profilePermissionService,
-        $tableGateway,
         $formService,
         $datatableService,
         $viewRenderer
@@ -50,10 +49,14 @@ abstract class AuthController extends AbstractActionController
     {
         $this->sessionService = $sessionService;
         $this->profilePermissionService = $profilePermissionService;
-        $this->tableGateway = $tableGateway;
         $this->formService = $formService;
         $this->datatableService = $datatableService;
         $this->viewRenderer = $viewRenderer;
+    }
+
+    public function setTableGateway($tableGateway)
+    {
+        $this->tableGateway = $tableGateway;
     }
 
     public function getTableGateway()
