@@ -17,12 +17,12 @@ trait EditAction
         }
 
         try {
-            $model = $this->tableGateway->find($id);
+            $this->model = $this->tableGateway->find($id);
         } catch (\Exception $ex) {
             return $this->goToSection($thisModule);
         }
 
-        $form = $this->formService->prepareForm($this->form, $model);
+        $form = $this->formService->prepareForm($this->form, $this->model);
 
         $request = $this->getRequest();
 

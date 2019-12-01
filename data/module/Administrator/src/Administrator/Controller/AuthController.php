@@ -34,6 +34,7 @@ abstract class AuthController extends AbstractActionController
     protected $formService;
     protected $sessionService;
     protected $tableGateway;
+    protected $model;
 
     protected $config;
 
@@ -47,6 +48,11 @@ abstract class AuthController extends AbstractActionController
     public function getTableGateway()
     {
         return $this->tableGateway;
+    }
+
+    public function getModel()
+    {
+        return $this->model;
     }
 
     public function getAuthService($returnAuthInstance = true)

@@ -19,6 +19,8 @@ class AdministratorFieldsetFactory implements FactoryInterface
 
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+        $controllerPluginManager = $container->get('ControllerPluginManager');
+
         $this->checkIdService = $container->get(CheckIdService::class);
         $this->formElementManager = $container->get('FormElementManager');
         $this->configureFieldsetService = $container->get(ConfigureFieldsetService::class);
@@ -37,7 +39,7 @@ class AdministratorFieldsetFactory implements FactoryInterface
 
         $fieldset->setTableGateway($tableGateway)
             ->setColumns($columns)
-            ->setObjectModel($options['model'])
+            ->setObjectModel($controllerPluginManager->getController()->getModel())
             ->setOption('is_locale',false);
 
         $this->configureFieldsetService->configure($fieldset);

@@ -3,14 +3,8 @@
 namespace Administrator\Service;
 
 use Administrator\Form\AdministratorForm;
-use Administrator\Model\AdministratorModel;
-use Zend\Db\Metadata\Object\ColumnObject;
-
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerAwareTrait;
-
-use Zend\Filter\Word\SeparatorToCamelCase;
-use Zend\Form\Element\Hidden;
 use Zend\Form\Fieldset;
 use Zend\Form\FormElementManager\FormElementManagerV3Polyfill;
 
@@ -145,9 +139,7 @@ class AdministratorFormService implements EventManagerAwareInterface
         // que no interfiera con el guardado en base de datos.
 
 
-        $result = $this->getEventManager()->trigger($eventName,null,$args)/*->first()*/;
-
-        return $result;
+        return $this->getEventManager()->trigger($eventName,null,$args)/*->first()*/;
     }
 
     public function getBaseFieldset()
@@ -160,7 +152,7 @@ class AdministratorFormService implements EventManagerAwareInterface
         $this->baseFieldset = $baseFieldset;
     }
 
-    public function prepareForm($form = null, AdministratorModel $model)
+    public function prepareForm($form = null)
     {
         $this->form = $this->formElementManager->build($form);
 
@@ -181,9 +173,7 @@ class AdministratorFormService implements EventManagerAwareInterface
                 continue;
             }
 
-            $fieldset = $this->formElementManager->build($fieldsetName, [
-                'model' => $model,
-            ]);
+            $fieldset = $this->formElementManager->build($fieldsetName);
             $fieldsets[$fieldset->getName()] = $fieldset;
         }
 
