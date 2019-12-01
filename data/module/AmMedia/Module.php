@@ -2,12 +2,8 @@
 
 namespace AmMedia;
 
-use AmMedia\Listener\MediaListener;
-use AmMedia\View\Helper\PluploadHelp;
-use AmMedia\View\Helper\PluploadHelpLoad;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
-use Zend\Mvc\MvcEvent;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
@@ -22,9 +18,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                 'AmMedia\Model\MediaModel'   => 'AmMedia\Model\MediaModel',
             ),
             'factories' => array(
-
                 'AmMedia\Service\InterventionImageService' => 'AmMedia\Service\InterventionImageService',
-
             ),
         );
     }
@@ -54,13 +48,5 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                 )
             )
         );
-    }
-
-    public function onBootstrap(MvcEvent $e)
-    {
-        /*$eventManager  = $e->getApplication()->getEventManager();
-        $eventManager->attach(new MediaListener(), function($pepe) {
-
-        });*/
     }
 }
