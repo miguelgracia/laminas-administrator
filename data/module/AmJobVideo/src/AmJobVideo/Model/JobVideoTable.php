@@ -8,5 +8,5 @@ class JobVideoTable extends AdministratorTable
 {
     protected $table = 'jobs_videos';
 
-    protected $entityModelName =  JobVideoModel::class;
+    public const ENTITY_MODEL_CLASS =  JobVideoModel::class;
 }

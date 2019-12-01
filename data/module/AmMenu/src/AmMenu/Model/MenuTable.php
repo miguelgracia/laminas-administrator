@@ -9,7 +9,7 @@ class MenuTable extends AdministratorTable
 {
     protected $table = "admin_menus";
 
-    protected $entityModelName =  MenuModel::class;
+    public const ENTITY_MODEL_CLASS =  MenuModel::class;
 
     public function fetchAllOrdenados()
     {

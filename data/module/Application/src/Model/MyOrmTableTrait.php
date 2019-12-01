@@ -35,7 +35,7 @@ trait MyOrmTableTrait
      */
     public function getEntityModel()
     {
-        return $this->serviceLocator->build($this->entityModelName);
+        return $this->serviceLocator->build($this::ENTITY_MODEL_CLASS);
     }
 
     public function setDbAdapter(Adapter $adapter)

@@ -8,5 +8,5 @@ class HomeModuleTable extends AdministratorTable
 {
     protected $table = 'home_modules';
 
-    protected $entityModelName =  HomeModuleModel::class;
+    public const ENTITY_MODEL_CLASS =  HomeModuleModel::class;
 }
