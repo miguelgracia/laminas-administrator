@@ -172,7 +172,7 @@ class AmYouTubeModuleController extends AuthController
     {
         $formService = $this->serviceLocator->get('Administrator\Service\AdministratorFormService');
 
-        $model = $this->tableGateway->getEntityModel();
+        $model = $this->tableGateway->getResultSetPrototype()->getObjectPrototype();
 
         $youtubeService = $this->serviceLocator->get(\AmYouTube\Service\YoutubeService::class);
         $client = $youtubeService->getClient();

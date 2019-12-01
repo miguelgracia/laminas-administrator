@@ -6,7 +6,7 @@ trait AddAction
 {
     public function addAction()
     {
-        $model = $this->tableGateway->getEntityModel();
+        $model = $this->tableGateway->getResultSetPrototype()->getObjectPrototype();
 
         $form = $this->formService->prepareForm($this->form, $model);
 

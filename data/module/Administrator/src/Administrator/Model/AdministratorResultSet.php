@@ -15,7 +15,6 @@ class AdministratorResultSet extends HydratingResultSet
      */
     protected $hiddenProperties = array(
         'inputFilter',
-        'serviceLocator',
         'metadata'
     );
 
