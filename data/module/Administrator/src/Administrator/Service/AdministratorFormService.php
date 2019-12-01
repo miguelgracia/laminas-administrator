@@ -63,16 +63,6 @@ class AdministratorFormService implements EventManagerAwareInterface
     /**
      * @var array
      *
-     * Array clave / valor.
-     * La clave corresponde a los id's que se van asignando a los elementos del formulario.
-     * El valor es el número de veces que aparece ese id en el formulario.
-     * Si un id se repite, le añadimos un sufijo númerico.
-     */
-    protected $elementsId = array();
-
-    /**
-     * @var array
-     *
      * Contiene los parámetros de la url: section, action e id
      */
     protected $routeParams = array();

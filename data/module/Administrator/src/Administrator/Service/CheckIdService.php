@@ -8,6 +8,11 @@ class CheckIdService
 {
     /**
      * @var int[]
+     *
+     * Array clave / valor.
+     * La clave corresponde a los id's que se van asignando a los elementos del formulario.
+     * El valor es el número de veces que aparece ese id en el formulario.
+     * Si un id se repite, le añadimos un sufijo númerico.
      */
     private $elementsId = [];
 
