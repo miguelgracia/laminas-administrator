@@ -5,7 +5,6 @@ namespace Administrator\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
-use Zend\Router\Http\RouteMatch;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -25,7 +24,6 @@ abstract class AuthController extends AbstractActionController
 
     // Whitelist de rutas con las que no se muestra login
     protected $whitelist = array('login');
-    protected $routeMatch = null;
 
     protected $storage;
     protected $authService;
@@ -158,12 +156,12 @@ abstract class AuthController extends AbstractActionController
     {
         $this->serviceLocator = $e->getApplication()->getServiceManager();
 
-        $this->routeMatch = $e->getRouteMatch();
+        $routeMatch = $e->getRouteMatch();
 
         $this->config = $this->serviceLocator->get('Config');
 
-        $module = $this->routeMatch->getParam('module');
-        $action = $this->routeMatch->getParam('action');
+        $module = $routeMatch->getParam('module');
+        $action = $routeMatch->getParam('action');
 
         if ($module == "") {
             return $this->goToSection('login');
@@ -182,7 +180,10 @@ abstract class AuthController extends AbstractActionController
             }
         }
 
-        $this->triggerResults = $this->runAdministratorTrigger($this->routeMatch);
+        $this->triggerResults = $this->runAdministratorTrigger(
+            $routeMatch->getParam('module'),
+            $routeMatch->getParam('action')
+        );
 
         return parent::onDispatch($e);
     }
@@ -213,7 +214,7 @@ abstract class AuthController extends AbstractActionController
 
         if (!$authService->hasIdentity()){
 
-            $this->sessionService->section_referer = $this->routeMatch->getParams();
+            $this->sessionService->section_referer = $this->event->getRouteMatch()->getParams();
             $this->sessionService->query_params = $this->getRequest()->getQuery()->toArray();
 
             return 'ACCESS_SESSION_EXPIRED';
@@ -236,14 +237,11 @@ abstract class AuthController extends AbstractActionController
         return true;
     }
 
-    private function runAdministratorTrigger(RouteMatch $match)
+    private function runAdministratorTrigger($module, $action)
     {
         $eventManager = $this->getEventManager();
 
         $requestMethod = strtolower($this->getRequest()->getMethod());
-
-        $module = $match->getParam('module');
-        $action = $match->getParam('action');
 
         $triggerName = $requestMethod . '.' . $module . '.' . $action;
 

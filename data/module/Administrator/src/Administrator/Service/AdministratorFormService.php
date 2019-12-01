@@ -28,20 +28,6 @@ class AdministratorFormService implements EventManagerAwareInterface
     protected $baseFieldset = null;
 
     /**
-     * @var array
-     *
-     * Tipos de action de formulario permitidos y su correspondencia con eventos
-     */
-    protected $allowedActionType = array(
-        AdministratorForm::ACTION_ADD        => self::EVENT_CREATE,
-        AdministratorForm::ACTION_DEFAULT    => self::EVENT_READ,
-        AdministratorForm::ACTION_EDIT       => self::EVENT_UPDATE,
-        AdministratorForm::ACTION_DELETE     => self::EVENT_DELETE,
-    );
-
-    protected $actionType = AdministratorForm::ACTION_ADD;
-
-    /**
      * Constantes de eventos
      */
     const EVENT_READ        = 'read';
@@ -61,58 +47,11 @@ class AdministratorFormService implements EventManagerAwareInterface
     const EVENT_DELETE      = 'delete';
 
     /**
-     * @var array
-     *
-     * Contiene los parámetros de la url: section, action e id
-     */
-    protected $routeParams = array();
-
-    /**
      * @param $formElementManager
-     * @param $routeParams
      */
-    public function __construct($formElementManager, $routeParams)
+    public function __construct($formElementManager)
     {
         $this->formElementManager = $formElementManager;
-        $this->routeParams = $routeParams;
-    }
-
-    public function getRouteParams($param = false)
-    {
-        if (is_string($param)) {
-            return isset($this->routeParams[$param])
-                ? $this->routeParams[$param]
-                : false;
-        }
-
-        return $this->routeParams;
-    }
-
-    /**
-     * Seteamos el tipo de action del formulario
-     *
-     * @param string $actionType
-     */
-    public function setActionType($actionType)
-    {
-        if (!array_key_exists($actionType, $this->allowedActionType)) {
-            throw new \Exception('Action Type ' . $actionType . ' not allowed');
-        }
-
-        $this->actionType = $actionType;
-
-        return $this;
-    }
-
-    /**
-     * Devuelve el tipo de action del formulario
-     * Los resultados posibles son los definidos en la propiedad $allowedActionType
-     *
-     * @return string
-     */
-    public function getActionType()
-    {
-        return $this->actionType;
     }
 
     public function eventTrigger($eventName,  $args = array())
@@ -137,11 +76,11 @@ class AdministratorFormService implements EventManagerAwareInterface
         $this->baseFieldset = $baseFieldset;
     }
 
-    public function prepareForm($form = null)
+    public function prepareForm($form = null, $action)
     {
         $this->form = $this->formElementManager->build($form);
 
-        $triggerInit = $this->getRouteParams('action') == 'add'
+        $triggerInit = $action == AdministratorForm::ACTION_ADD
             ? AdministratorFormService::EVENT_CREATE_INIT_FORM
             : AdministratorFormService::EVENT_UPDATE_INIT_FORM;
 
@@ -183,7 +122,6 @@ class AdministratorFormService implements EventManagerAwareInterface
             $isLocaleFieldset = $fieldset->getOption('is_locale');
 
             if ($isLocaleFieldset) {
-
                 $model->relatedTableId = $primaryId;
             }
 

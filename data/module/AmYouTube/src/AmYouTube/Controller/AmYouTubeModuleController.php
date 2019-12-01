@@ -297,7 +297,7 @@ class AmYouTubeModuleController extends AuthController
 
                         $videoTableGateway->save($videoModel,$insertId[0]);
 
-                        return $this->goToSection($formService->getRouteParams('module'), array(
+                        return $this->goToSection($this->event->getRouteMatch()->getParam('module'), array(
                             'action'  => 'edit',
                             'id'      => $insertId[0]
                         ));

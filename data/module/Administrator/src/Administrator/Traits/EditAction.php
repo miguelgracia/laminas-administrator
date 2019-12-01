@@ -2,13 +2,14 @@
 
 namespace Administrator\Traits;
 
+use Administrator\Form\AdministratorForm;
 use AmProfile\Service\ProfilePermissionService;
 
 trait EditAction
 {
     public function editAction()
     {
-        $thisModule =  $this->serviceLocator->get('Application')->getMvcEvent()->getRouteMatch()->getParam('module');
+        $thisModule =  $this->event->getRouteMatch()->getParam('module');
 
         $id = (int) $this->params()->fromRoute('id', 0);
 
@@ -22,7 +23,7 @@ trait EditAction
             return $this->goToSection($thisModule);
         }
 
-        $form = $this->formService->prepareForm($this::FORM_CLASS);
+        $form = $this->formService->prepareForm($this::FORM_CLASS, AdministratorForm::ACTION_EDIT);
 
         $request = $this->getRequest();
 
@@ -44,7 +45,7 @@ trait EditAction
 
         $addAction = 'add';
 
-        $module = $this->getEvent()->getRouteMatch()->getParam('module');
+        $module = $this->event->getRouteMatch()->getParam('module');
 
         $permissions = $this->serviceLocator->get(ProfilePermissionService::class);
         if ($permissions->hasModuleAccess($module, $addAction)) {
