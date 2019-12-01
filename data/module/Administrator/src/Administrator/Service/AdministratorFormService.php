@@ -23,11 +23,6 @@ class AdministratorFormService implements EventManagerAwareInterface
     protected $form = null;
 
     /**
-     * @var array
-     */
-    protected $fieldsets = array();
-
-    /**
      * @var Fieldset
      */
     protected $baseFieldset = null;
@@ -158,8 +153,6 @@ class AdministratorFormService implements EventManagerAwareInterface
 
         $formInitializers = $this->form->initializers();
 
-        $fieldsets = [];
-
         foreach ($formInitializers['fieldsets'] as $fieldsetName) {
             $isLocale = strpos($fieldsetName, "LocaleFieldset") !== false;
 
@@ -168,26 +161,21 @@ class AdministratorFormService implements EventManagerAwareInterface
                     'base_fieldset' => $this->baseFieldset,
                 ]);
 
-                $fieldsets += $localeFieldsets;
+                foreach ($localeFieldsets as $localeFieldset) {
+                    $this->form->add($localeFieldset);
+                }
 
                 continue;
             }
 
-            $fieldset = $this->formElementManager->build($fieldsetName);
-            $fieldsets[$fieldset->getName()] = $fieldset;
+            $this->form->add($this->formElementManager->build($fieldsetName));
         }
-
-        $this->fieldsets = $fieldsets;
 
         $triggerInit = $this->getRouteParams('action') == 'add'
             ? AdministratorFormService::EVENT_CREATE_INIT_FORM
             : AdministratorFormService::EVENT_UPDATE_INIT_FORM;
 
         $eventResult = $this->eventTrigger($triggerInit);
-
-        foreach ($this->fieldsets as &$fieldset) {
-            $this->form->add($fieldset);
-        }
 
         return $this->form;
     }
@@ -215,9 +203,9 @@ class AdministratorFormService implements EventManagerAwareInterface
 
         $result[] = $primaryId;
 
-        unset($this->fieldsets[get_class($baseFieldset)]);
+        $this->form->remove(get_class($baseFieldset));
 
-        foreach ($this->fieldsets as $fieldset) {
+        foreach ($this->form->getFieldsets() as $fieldset) {
 
             $tableGateway   = $fieldset->getTableGateway();
             $model          = $fieldset->getObjectModel();

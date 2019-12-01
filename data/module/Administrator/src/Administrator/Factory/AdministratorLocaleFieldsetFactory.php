@@ -45,7 +45,7 @@ class AdministratorLocaleFieldsetFactory implements FactoryInterface
             $this->fieldsets[$localeFieldset->getName()] = $localeFieldset;
         }
 
-        return $this->fieldsets;
+        return array_values($this->fieldsets);
     }
 
     private function prepareFieldset($fieldsetName, $objectModel)
