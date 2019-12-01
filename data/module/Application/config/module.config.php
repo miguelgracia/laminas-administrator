@@ -13,10 +13,26 @@ use Application\Controller\ContactController;
 use Application\Controller\HomeController;
 use Application\Controller\JobController;
 use Application\Controller\LegalController;
+use Application\Factory\ApplicationHelperFactory;
+use Application\View\Helper\Blog;
+use Application\View\Helper\BlogCategory;
+use Application\View\Helper\CarouselItem;
+use Application\View\Helper\ContactForm;
+use Application\View\Helper\FacebookShare;
+use Application\View\Helper\HomeModule;
+use Application\View\Helper\Job;
+use Application\View\Helper\JobCategory;
+use Application\View\Helper\LegalLink;
+use Application\View\Helper\Megabanner;
+use Application\View\Helper\Menu;
+use Application\View\Helper\Partner;
+use Application\View\Helper\SocialIcon;
 use Zend\I18n\Translator\TranslatorServiceFactory;
+use Zend\I18n\View\Helper\Translate;
 use Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
+use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\Session\Storage\SessionArrayStorage;
 
 return [
@@ -245,6 +261,40 @@ return [
         'factories' => [
             'Translator' => TranslatorServiceFactory::class,
             'Application\Service\SessionService' => 'Application\Service\SessionService',
+        ],
+    ],
+    'view_helpers' => [
+        'aliases' => array(
+            'applicationMenuHelper' => Menu::class,
+            'socialIconHelper'      => SocialIcon::class,
+            'legalLinkHelper'       => LegalLink::class,
+            'megabannerHelper'      => Megabanner::class,
+            'homeModuleHelper'      => HomeModule::class,
+            'partnerHelper'         => Partner::class,
+            'jobHelper'             => Job::class,
+            'jobCategoryHelper'     => JobCategory::class,
+            'blogHelper'            => Blog::class,
+            'blogCategoryHelper'    => BlogCategory::class,
+            'contactFormHelper'     => ContactForm::class,
+            'carouselItemHelper'    => CarouselItem::class,
+            'facebookShareHelper'   => FacebookShare::class,
+            'translate'             => Translate::class
+        ),
+        'factories' => [
+            Menu::class => ApplicationHelperFactory::class,
+            SocialIcon::class => InvokableFactory::class,
+            LegalLink::class => InvokableFactory::class,
+            Megabanner::class => InvokableFactory::class,
+            HomeModule::class => InvokableFactory::class,
+            Partner::class => Partner::class,
+            Job::class => InvokableFactory::class,
+            JobCategory::class => InvokableFactory::class,
+            Blog::class => InvokableFactory::class,
+            BlogCategory::class => InvokableFactory::class,
+            ContactForm::class => ContactForm::class,
+            CarouselItem::class => CarouselItem::class,
+            FacebookShare::class => InvokableFactory::class,
+            Translate::class => InvokableFactory::class
         ],
     ],
     'translator' => [

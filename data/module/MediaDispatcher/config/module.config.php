@@ -3,6 +3,7 @@
 namespace MediaDispatcher;
 
 use MediaDispatcher\Controller\DispatcherController;
+use MediaDispatcher\View\Helper\DinamicUrlImage;
 
 return array(
 
@@ -43,4 +44,9 @@ return array(
             'MediaDispatcher\Controller\Dispatcher' => DispatcherController::class
         ),
     ),
+    'view_helpers' => [
+        'factories' => array(
+            'dinamicImageHelper' => DinamicUrlImage::class
+        )
+    ]
 );
