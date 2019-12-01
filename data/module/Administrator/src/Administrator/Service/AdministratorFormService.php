@@ -185,48 +185,24 @@ class AdministratorFormService implements EventManagerAwareInterface
 
         $eventResult = $this->eventTrigger($triggerInit);
 
-        $this->addElements();
-
-        return $this->form;
-    }
-
-    public function addElements()
-    {
-        /**
-         * Buscaremos en el objeto formulario y en los objetos Fieldset si existe el método addElements.
-         * En caso afirmativo, lo ejecutamos para poder añadir campos adicionales
-         * que se salga de la lógica predeterminada o, por ejemplo, redefinir
-         * el atributo de algún campo concreto.
-         */
-        $thisMethod = substr(strrchr(__METHOD__, '::'), 1);
-
         foreach ($this->fieldsets as &$fieldset) {
             $this->form->add($fieldset);
         }
 
-        if (method_exists($this->form, $thisMethod)) {
-            $this->form->{$thisMethod}();
-        }
-
-        return $this;
+        return $this->form;
     }
 
     public function resolveForm($data)
     {
-        $form = $this->form;
+        $this->form->bind($data);
 
-        $form->bind($data);
-
-        $isValid = true;
-
-        if ($form->isValid()) {
+        if ($this->form->isValid()) {
             $this->eventTrigger(self::EVENT_CREATE_VALID_FORM_SUCCESS);
-        } else {
-            $isValid = false;
-            $this->eventTrigger(self::EVENT_CREATE_VALID_FORM_FAILED);
+            return true;
         }
 
-        return $isValid;
+        $this->eventTrigger(self::EVENT_CREATE_VALID_FORM_FAILED);
+        return false;
     }
 
     public function save()
