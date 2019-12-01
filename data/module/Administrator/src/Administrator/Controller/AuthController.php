@@ -29,18 +29,31 @@ abstract class AuthController extends AbstractActionController
     protected $authService;
     protected $triggerResults;
 
-    protected $formService;
     protected $sessionService;
+    protected $profilePermissionService;
     protected $tableGateway;
+    protected $formService;
+    protected $datatableService;
+    protected $viewRenderer;
     protected $model;
 
     protected $config;
 
-    public function __construct($sessionService, $tableGateway, $formService)
+    public function __construct(
+        $sessionService,
+        $profilePermissionService,
+        $tableGateway,
+        $formService,
+        $datatableService,
+        $viewRenderer
+    )
     {
         $this->sessionService = $sessionService;
+        $this->profilePermissionService = $profilePermissionService;
         $this->tableGateway = $tableGateway;
         $this->formService = $formService;
+        $this->datatableService = $datatableService;
+        $this->viewRenderer = $viewRenderer;
     }
 
     public function getTableGateway()
@@ -228,9 +241,7 @@ abstract class AuthController extends AbstractActionController
             return 'ACCESS_USER_DEACTIVATE';
         }
 
-        $permissionsService = $this->serviceLocator->get('AmProfile\Service\ProfilePermissionService');
-
-        if (!$permissionsService->hasModuleAccess($module,$action)) {
+        if (!$this->profilePermissionService->hasModuleAccess($module,$action)) {
             return 'ACCESS_PERMISSION_DENIED';
         }
 
@@ -245,7 +256,7 @@ abstract class AuthController extends AbstractActionController
 
         $triggerName = $requestMethod . '.' . $module . '.' . $action;
 
-        return $eventManager->trigger($triggerName, null, array('serviceLocator' => $this->serviceLocator));
+        return $eventManager->trigger($triggerName, null);
     }
 
     protected function getView($params = array(), $viewName)
@@ -270,9 +281,8 @@ abstract class AuthController extends AbstractActionController
     public function parseTriggers()
     {
         $html = "";
-        $viewRenderer = $this->serviceLocator->get('ViewRenderer');
         foreach ($this->triggerResults as $result) {
-            $html .= $viewRenderer->render($result);
+            $html .= $this->viewRenderer->render($result);
         }
 
         return $html;

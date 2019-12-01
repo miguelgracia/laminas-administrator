@@ -2,7 +2,9 @@
 namespace Administrator\Factory;
 
 use Administrator\Service\AdministratorFormService;
+use Administrator\Service\DatatableService;
 use Administrator\Service\SessionService;
+use AmProfile\Service\ProfilePermissionService;
 use Interop\Container\ContainerInterface;
 use Zend\Filter\Word\DashToCamelCase;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -32,8 +34,11 @@ class AdministratorControllerFactory implements FactoryInterface
 
         return new $controller(
             $container->get(SessionService::class),
+            $container->get(ProfilePermissionService::class),
             $container->get($tableGateway),
-            $container->get(AdministratorFormService::class)
+            $container->get(AdministratorFormService::class),
+            $container->get(DatatableService::class),
+            $container->get('ViewRenderer')
         );
     }
 }

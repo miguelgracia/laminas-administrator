@@ -3,7 +3,6 @@
 namespace Administrator\Traits;
 
 use Administrator\Form\AdministratorForm;
-use AmProfile\Service\ProfilePermissionService;
 
 trait EditAction
 {
@@ -43,12 +42,11 @@ trait EditAction
 
         $viewParams = compact( 'form', 'title', 'blocks');
 
-        $addAction = 'add';
+        $addAction = AdministratorForm::ACTION_ADD;
 
         $module = $this->event->getRouteMatch()->getParam('module');
 
-        $permissions = $this->serviceLocator->get(ProfilePermissionService::class);
-        if ($permissions->hasModuleAccess($module, $addAction)) {
+        if ($this->profilePermissionService->hasModuleAccess($module, $addAction)) {
             $controller = $this->getPluginManager()->getController();
 
             if (method_exists($controller, $addAction .'Action')) {

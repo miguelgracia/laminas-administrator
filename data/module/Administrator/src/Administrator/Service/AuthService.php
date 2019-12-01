@@ -42,11 +42,6 @@ class AuthService implements FactoryInterface
         return $this->authService;
     }
 
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
-
     /**
      *
      * @param $username
