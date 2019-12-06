@@ -9,7 +9,7 @@ class ProfileTable extends AdministratorTable
 {
     protected $table = "admin_profiles";
 
-    protected $entityModelName =  ProfileModel::class;
+    public const ENTITY_MODEL_CLASS =  ProfileModel::class;
 
     public function deletePerfil($id)
     {

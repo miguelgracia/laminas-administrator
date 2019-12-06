@@ -8,5 +8,5 @@ class JobLocaleTable extends AdministratorTable
 {
     protected $table = 'jobs_locales';
 
-    protected $entityModelName =  JobLocaleModel::class;
+    public const ENTITY_MODEL_CLASS =  JobLocaleModel::class;
 }

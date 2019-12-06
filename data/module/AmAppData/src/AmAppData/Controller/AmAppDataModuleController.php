@@ -12,7 +12,7 @@ class AmAppDataModuleController extends AuthController
 {
     use indexAction, editAction;
 
-    protected $form = AppDataForm::class;
+    public const FORM_CLASS = AppDataForm::class;
 
     public function indexAction()
     {

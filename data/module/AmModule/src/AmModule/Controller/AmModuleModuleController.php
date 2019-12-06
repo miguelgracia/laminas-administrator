@@ -13,5 +13,5 @@ class AmModuleModuleController extends AuthController
 {
     use IndexAction, EditAction;
 
-    protected $form = ModuleForm::class;
+    public const FORM_CLASS = ModuleForm::class;
 }

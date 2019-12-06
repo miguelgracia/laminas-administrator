@@ -2,28 +2,25 @@
 
 namespace Administrator\Traits;
 
-
-use Administrator\Service\AdministratorFormService;
+use Administrator\Form\AdministratorForm;
 
 trait AddAction
 {
     public function addAction()
     {
-        $formService = $this->serviceLocator->get(AdministratorFormService::class);
+        $this->model = $this->tableGateway->getResultSetPrototype()->getObjectPrototype();
 
-        $model = $this->tableGateway->getEntityModel();
-
-        $form = $formService->prepareForm($this->form, $model);
+        $form = $this->formService->prepareForm($this::FORM_CLASS, AdministratorForm::ACTION_ADD);
 
         $request = $this->getRequest();
 
         if ($request->isPost()) {
 
-            $isValid = $formService->resolveForm($request->getPost());
+            $isValid = $this->formService->resolveForm($request->getPost());
 
             if ($isValid) {
-                $insertId = $formService->save();
-                return $this->goToSection($formService->getRouteParams('module'), array(
+                $insertId = $this->formService->save();
+                return $this->goToSection($this->event->getRouteMatch()->getParam('module'), array(
                     'action'  => 'edit',
                     'id'      => $insertId[0]
                 ));

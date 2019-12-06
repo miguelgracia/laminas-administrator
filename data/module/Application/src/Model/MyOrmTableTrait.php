@@ -12,54 +12,23 @@ use Zend\Hydrator\ClassMethods;
 
 trait MyOrmTableTrait
 {
-    protected $serviceLocator;
-
     protected $relatedKey = 'related_table_id';
 
     /**
-     * Instancia el service locator. Esta función se llama desde el inicializador que hay en module.php
-     *
-     * @param $sm
+     * TODO: quizá haya una solución mejor
+     * @param $resultSetPrototype
+     * @return $this
      */
-    public function setServiceLocator($sm)
+    public function setResultSetPrototype($resultSetPrototype)
     {
-        $this->serviceLocator = $sm;
-    }
-
-    /*
-     *  Este método construye el nombre del modelo con el Model al final, para crear una instancia de ese
-     * model. Es decir, que se trata de una especie de factoría abstracta que va a devolver una instancia
-     * de modelo.
-     *
-     * TODO: refactorizar para eliminar serviceLocator de aqui
-     */
-    public function getEntityModel()
-    {
-        $entityModel = $this->serviceLocator->build($this->entityModelName);
-
-        $entityModel->setMetadata(
-            new Metadata(
-                $this->serviceLocator->get('Zend\Db\Adapter\Adapter')
-            ),
-            $this->table
-        );
-
-        return $entityModel;
+        $this->resultSetPrototype = $resultSetPrototype;
+        return $this;
     }
 
     public function setDbAdapter(Adapter $adapter)
     {
         $this->adapter = $adapter;
-
-        $resultSetPrototype = new AdministratorResultSet();
-        $classMethods = new ClassMethods();
-        $resultSetPrototype->setHydrator($classMethods);
-
-        $resultSetPrototype->setObjectPrototype($this->getEntityModel());
-
-        $this->resultSetPrototype = $resultSetPrototype;
-
-        $this->initialize();
+        return $this;
     }
 
     public function getRelatedKey()

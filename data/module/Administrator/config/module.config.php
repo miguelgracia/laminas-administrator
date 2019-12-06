@@ -1,5 +1,16 @@
 <?php
 
+use Administrator\Factory\AdministratorControllerFactory;
+use Administrator\Factory\AdministratorFormServiceFactory;
+use Administrator\Factory\AdministratorModelAbstractFactory;
+use Administrator\Factory\AdministratorTableAbstractFactory;
+use Administrator\Factory\DatatableConfigAbstractFactory;
+use Administrator\Model\AuthStorage;
+use Administrator\Service\AdministratorFormService;
+use Administrator\Service\AuthService;
+use Administrator\Service\DatatableService;
+use Administrator\Service\SessionService;
+
 return array(
 
     'view_manager' => array(
@@ -37,13 +48,19 @@ return array(
                 'options' => array(
                     'route' => '/admin[/[:module[/[:action[/[:id]]]]]]',
                     'defaults' => array(
-                        'controller' => \Administrator\Factory\AdministratorControllerFactory::class,
+                        'controller' => AdministratorControllerFactory::class,
                         'action' => 'index'
                     )
                 )
             )
         ),
     ),
+
+    'controllers' => [
+        'factories' => array(
+            AdministratorControllerFactory::class =>  AdministratorControllerFactory::class,
+        ),
+    ],
     'form_elements' => [
         /**
          * Conforme vayan surgiendo posibles elementos por defecto en función del tipo de dato, el siguiente array
@@ -80,10 +97,34 @@ return array(
         ],
     ],
     'service_manager' => [
+        'initializers' => array(
+            \Administrator\Initializer\DatabaseInitializer::class,
+        ),
+        'abstract_factories' => array(
+            AdministratorTableAbstractFactory::class,
+            AdministratorModelAbstractFactory::class,
+            DatatableConfigAbstractFactory::class,
+        ),
         'factories' => [
+            AuthStorage::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
             \Administrator\Service\ConfigureFieldsetService::class => \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class,
-            \Administrator\Service\CheckIdService::class => \Zend\ServiceManager\Factory\InvokableFactory::class
+            \Administrator\Service\CheckIdService::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
+            'AuthService' => AuthService::class,
+            SessionService::class => SessionService::class,
+            AdministratorFormService::class => AdministratorFormServiceFactory::class,
+            DatatableService::class => DatatableService::class,
         ]
+    ],
+    'view_helpers' => [
+        'aliases' => [
+            'AdministratorMenu' => \Administrator\View\Helper\AdministratorMenu::class,
+        ],
+        'factories' => array(
+            \Administrator\View\Helper\AdministratorMenu::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
+            'administrator_form_row' => function () {
+                return new \Administrator\View\Helper\AdministratorFormRow;
+            }
+        )
     ],
     \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class => [
         \Administrator\Service\ConfigureFieldsetService::class => [

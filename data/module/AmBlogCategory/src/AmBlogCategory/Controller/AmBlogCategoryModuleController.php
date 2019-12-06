@@ -13,5 +13,5 @@ class AmBlogCategoryModuleController extends AuthController
 {
     use IndexAction, AddAction, EditAction, DeleteAction;
 
-    protected $form = BlogCategoryForm::class;
+    public const FORM_CLASS = BlogCategoryForm::class;
 }

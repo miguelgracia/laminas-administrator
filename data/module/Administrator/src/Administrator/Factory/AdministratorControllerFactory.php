@@ -1,6 +1,10 @@
 <?php
 namespace Administrator\Factory;
 
+use Administrator\Service\AdministratorFormService;
+use Administrator\Service\DatatableService;
+use Administrator\Service\SessionService;
+use AmProfile\Service\ProfilePermissionService;
 use Interop\Container\ContainerInterface;
 use Zend\Filter\Word\DashToCamelCase;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -16,8 +20,34 @@ class AdministratorControllerFactory implements FactoryInterface
 
         $moduleName = 'Am'.((new DashToCamelCase)->filter($module));
 
-        $controller = sprintf("%s\\Controller\\%sModuleController", $moduleName, $moduleName);
+        $controllerClassName = sprintf("%s\\Controller\\%sModuleController", $moduleName, $moduleName);
 
-        return new $controller;
+        $controllerInstance =  new $controllerClassName(
+            $container->get(SessionService::class),
+            $container->get(ProfilePermissionService::class),
+            $container->get(DatatableService::class),
+            $container->get('ViewRenderer')
+        );
+
+        if ($module !== 'login') {
+            $controllerInstance->setFormService($container->get(AdministratorFormService::class));
+
+            $tableGateway = preg_replace(
+                '/^(Am)(\w+)\\\(\w+)\\\(\w+)(ModuleController)$/',
+                "$1$2\\Model\\\\$2Table",
+                $controllerClassName
+            );
+
+            if (class_exists($tableGateway)) {
+                /**
+                 * el objeto de tipo tableGateway no la podemos setear por defecto en el constructor
+                 * ya que el modulo de login no tiene TableGateway asociado
+                 */
+
+                $controllerInstance->setTableGateway($container->get($tableGateway));
+            }
+        }
+
+        return $controllerInstance;
     }
 }

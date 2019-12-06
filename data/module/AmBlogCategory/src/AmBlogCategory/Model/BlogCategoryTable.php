@@ -8,5 +8,5 @@ class BlogCategoryTable extends AdministratorTable
 {
     protected $table = 'blog_categories';
 
-    protected $entityModelName =  BlogCategoryModel::class;
+    public const ENTITY_MODEL_CLASS =  BlogCategoryModel::class;
 }

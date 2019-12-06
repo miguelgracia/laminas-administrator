@@ -9,7 +9,7 @@ class UserTable extends AdministratorTable
 {
     public $table = 'admin_users';
 
-    protected $entityModelName =  UserModel::class;
+    public const ENTITY_MODEL_CLASS =  UserModel::class;
 
     public function save($model, $id = 0, $fieldKey = 'id')
     {

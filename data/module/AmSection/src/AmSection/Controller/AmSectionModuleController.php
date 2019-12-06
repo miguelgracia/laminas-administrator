@@ -13,5 +13,5 @@ class AmSectionModuleController extends AuthController
 {
     use IndexAction, AddAction, EditAction, DeleteAction;
 
-    protected $form = SectionForm::class;
+    public const FORM_CLASS = SectionForm::class;
 }

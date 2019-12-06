@@ -14,7 +14,7 @@ class AmUserModuleController extends AuthController
 {
     use IndexAction, AddAction, EditAction;
     
-    protected $form = AmUserForm::class;
+    public const FORM_CLASS = AmUserForm::class;
 
     /**
      * @return \Zend\Http\Response

@@ -12,5 +12,5 @@ class AmLanguageModuleController extends AuthController
 {
     use indexAction, addAction, editAction;
 
-    protected $form = LanguageForm::class;
+    public const FORM_CLASS = LanguageForm::class;
 }

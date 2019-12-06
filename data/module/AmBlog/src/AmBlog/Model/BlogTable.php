@@ -9,7 +9,7 @@ class BlogTable extends AdministratorTable
 {
     protected $table = 'blog_entries';
 
-    protected $entityModelName = BlogModel::class;
+    public const ENTITY_MODEL_CLASS = BlogModel::class;
 
     public function save($model, $id = 0, $fieldKey = 'id')
     {

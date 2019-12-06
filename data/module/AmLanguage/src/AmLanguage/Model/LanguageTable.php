@@ -8,5 +8,5 @@ class LanguageTable extends AdministratorTable
 {
     protected $table = 'languages';
 
-    protected $entityModelName =  LanguageModel::class;
+    public const ENTITY_MODEL_CLASS =  LanguageModel::class;
 }

@@ -15,7 +15,7 @@ class ApiTable extends AbstractTableGateway implements AdapterAwareInterface
 {
     use MyOrmTableTrait;
 
-    protected $entityModelName = ApiModel::class;
+    public const ENTITY_MODEL_CLASS = ApiModel::class;
 
     protected $tableLocaleService = null;
 

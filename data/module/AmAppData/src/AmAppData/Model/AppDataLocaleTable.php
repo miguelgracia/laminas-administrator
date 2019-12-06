@@ -8,5 +8,5 @@ class AppDataLocaleTable extends AdministratorTable
 {
     protected $table = 'app_datas_locales';
 
-    protected $entityModelName = AppDataLocaleModel::class;
+    public const ENTITY_MODEL_CLASS = AppDataLocaleModel::class;
 }

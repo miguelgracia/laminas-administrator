@@ -8,7 +8,7 @@ class MediaTable extends AdministratorTable
 {
     protected $table = 'media';
 
-    protected $entityModelName =  MediaModel::class;
+    public const ENTITY_MODEL_CLASS =  MediaModel::class;
 
     public function findByModel($model,$id_parent)
     {

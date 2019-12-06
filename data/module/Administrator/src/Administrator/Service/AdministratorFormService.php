@@ -3,14 +3,8 @@
 namespace Administrator\Service;
 
 use Administrator\Form\AdministratorForm;
-use Administrator\Model\AdministratorModel;
-use Zend\Db\Metadata\Object\ColumnObject;
-
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerAwareTrait;
-
-use Zend\Filter\Word\SeparatorToCamelCase;
-use Zend\Form\Element\Hidden;
 use Zend\Form\Fieldset;
 use Zend\Form\FormElementManager\FormElementManagerV3Polyfill;
 
@@ -29,28 +23,9 @@ class AdministratorFormService implements EventManagerAwareInterface
     protected $form = null;
 
     /**
-     * @var array
-     */
-    protected $fieldsets = array();
-
-    /**
      * @var Fieldset
      */
     protected $baseFieldset = null;
-
-    /**
-     * @var array
-     *
-     * Tipos de action de formulario permitidos y su correspondencia con eventos
-     */
-    protected $allowedActionType = array(
-        AdministratorForm::ACTION_ADD        => self::EVENT_CREATE,
-        AdministratorForm::ACTION_DEFAULT    => self::EVENT_READ,
-        AdministratorForm::ACTION_EDIT       => self::EVENT_UPDATE,
-        AdministratorForm::ACTION_DELETE     => self::EVENT_DELETE,
-    );
-
-    protected $actionType = AdministratorForm::ACTION_ADD;
 
     /**
      * Constantes de eventos
@@ -72,68 +47,11 @@ class AdministratorFormService implements EventManagerAwareInterface
     const EVENT_DELETE      = 'delete';
 
     /**
-     * @var array
-     *
-     * Array clave / valor.
-     * La clave corresponde a los id's que se van asignando a los elementos del formulario.
-     * El valor es el número de veces que aparece ese id en el formulario.
-     * Si un id se repite, le añadimos un sufijo númerico.
-     */
-    protected $elementsId = array();
-
-    /**
-     * @var array
-     *
-     * Contiene los parámetros de la url: section, action e id
-     */
-    protected $routeParams = array();
-
-    /**
      * @param $formElementManager
-     * @param $routeParams
      */
-    public function __construct($formElementManager, $routeParams)
+    public function __construct($formElementManager)
     {
         $this->formElementManager = $formElementManager;
-        $this->routeParams = $routeParams;
-    }
-
-    public function getRouteParams($param = false)
-    {
-        if (is_string($param)) {
-            return isset($this->routeParams[$param])
-                ? $this->routeParams[$param]
-                : false;
-        }
-
-        return $this->routeParams;
-    }
-
-    /**
-     * Seteamos el tipo de action del formulario
-     *
-     * @param string $actionType
-     */
-    public function setActionType($actionType)
-    {
-        if (!array_key_exists($actionType, $this->allowedActionType)) {
-            throw new \Exception('Action Type ' . $actionType . ' not allowed');
-        }
-
-        $this->actionType = $actionType;
-
-        return $this;
-    }
-
-    /**
-     * Devuelve el tipo de action del formulario
-     * Los resultados posibles son los definidos en la propiedad $allowedActionType
-     *
-     * @return string
-     */
-    public function getActionType()
-    {
-        return $this->actionType;
     }
 
     public function eventTrigger($eventName,  $args = array())
@@ -145,9 +63,7 @@ class AdministratorFormService implements EventManagerAwareInterface
         // que no interfiera con el guardado en base de datos.
 
 
-        $result = $this->getEventManager()->trigger($eventName,null,$args)/*->first()*/;
-
-        return $result;
+        return $this->getEventManager()->trigger($eventName,null,$args)/*->first()*/;
     }
 
     public function getBaseFieldset()
@@ -160,83 +76,30 @@ class AdministratorFormService implements EventManagerAwareInterface
         $this->baseFieldset = $baseFieldset;
     }
 
-    public function prepareForm($form = null, AdministratorModel $model)
+    public function prepareForm($form = null, $action)
     {
         $this->form = $this->formElementManager->build($form);
 
-        $formInitializers = $this->form->initializers();
-
-        $fieldsets = [];
-
-        foreach ($formInitializers['fieldsets'] as $fieldsetName) {
-            $isLocale = strpos($fieldsetName, "LocaleFieldset") !== false;
-
-            if ($isLocale) {
-                $localeFieldsets = $this->formElementManager->build($fieldsetName, [
-                    'base_fieldset' => $this->baseFieldset,
-                ]);
-
-                $fieldsets += $localeFieldsets;
-
-                continue;
-            }
-
-            $fieldset = $this->formElementManager->build($fieldsetName, [
-                'model' => $model,
-            ]);
-            $fieldsets[$fieldset->getName()] = $fieldset;
-        }
-
-        $this->fieldsets = $fieldsets;
-
-        $triggerInit = $this->getRouteParams('action') == 'add'
+        $triggerInit = $action == AdministratorForm::ACTION_ADD
             ? AdministratorFormService::EVENT_CREATE_INIT_FORM
             : AdministratorFormService::EVENT_UPDATE_INIT_FORM;
 
         $eventResult = $this->eventTrigger($triggerInit);
 
-        $this->addElements();
-
         return $this->form;
-    }
-
-    public function addElements()
-    {
-        /**
-         * Buscaremos en el objeto formulario y en los objetos Fieldset si existe el método addElements.
-         * En caso afirmativo, lo ejecutamos para poder añadir campos adicionales
-         * que se salga de la lógica predeterminada o, por ejemplo, redefinir
-         * el atributo de algún campo concreto.
-         */
-        $thisMethod = substr(strrchr(__METHOD__, '::'), 1);
-
-        foreach ($this->fieldsets as &$fieldset) {
-            $this->form->add($fieldset);
-        }
-
-        if (method_exists($this->form, $thisMethod)) {
-            $this->form->{$thisMethod}();
-        }
-
-        return $this;
     }
 
     public function resolveForm($data)
     {
-        $form = $this->form;
+        $this->form->bind($data);
 
-        $form->bind($data);
-
-        $isValid = true;
-
-        if ($form->isValid()) {
+        if ($this->form->isValid()) {
             $this->eventTrigger(self::EVENT_CREATE_VALID_FORM_SUCCESS);
-        } else {
-            $isValid = false;
-            $this->eventTrigger(self::EVENT_CREATE_VALID_FORM_FAILED);
+            return true;
         }
 
-        return $isValid;
+        $this->eventTrigger(self::EVENT_CREATE_VALID_FORM_FAILED);
+        return false;
     }
 
     public function save()
@@ -249,9 +112,9 @@ class AdministratorFormService implements EventManagerAwareInterface
 
         $result[] = $primaryId;
 
-        unset($this->fieldsets[get_class($baseFieldset)]);
+        $this->form->remove(get_class($baseFieldset));
 
-        foreach ($this->fieldsets as $fieldset) {
+        foreach ($this->form->getFieldsets() as $fieldset) {
 
             $tableGateway   = $fieldset->getTableGateway();
             $model          = $fieldset->getObjectModel();
@@ -259,7 +122,6 @@ class AdministratorFormService implements EventManagerAwareInterface
             $isLocaleFieldset = $fieldset->getOption('is_locale');
 
             if ($isLocaleFieldset) {
-
                 $model->relatedTableId = $primaryId;
             }
 

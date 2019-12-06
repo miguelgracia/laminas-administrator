@@ -11,7 +11,7 @@ class AmProfileModuleController extends AuthController
 {
     use IndexAction, AddAction, EditAction;
 
-    protected $form = ProfileForm::class;
+    public const FORM_CLASS = ProfileForm::class;
 
     public function deleteAction()
     {

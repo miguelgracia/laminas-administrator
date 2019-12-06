@@ -3,6 +3,7 @@
 namespace OpenGraph;
 
 use OpenGraph\Service\OpenGraphService;
+use OpenGraph\View\Helper\OpenGraphTag;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return array(
@@ -14,5 +15,10 @@ return array(
         'factories' => array(
             OpenGraphService::class => InvokableFactory::class
         )
-    )
+    ),
+    'view_helpers' => [
+        'factories' => array(
+            'OpenGraphTag' => OpenGraphTag::class
+        )
+    ]
 );

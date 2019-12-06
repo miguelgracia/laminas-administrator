@@ -5,7 +5,6 @@ namespace Administrator\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
-use Zend\Router\Http\RouteMatch;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -25,17 +24,55 @@ abstract class AuthController extends AbstractActionController
 
     // Whitelist de rutas con las que no se muestra login
     protected $whitelist = array('login');
-    protected $routeMatch = null;
 
     protected $storage;
     protected $authService;
-
-    protected $tableGateway;
-
     protected $triggerResults;
 
     protected $sessionService;
+    protected $profilePermissionService;
+    protected $tableGateway;
+    protected $formService;
+    protected $datatableService;
+    protected $viewRenderer;
+    protected $model;
+
     protected $config;
+
+    public function __construct(
+        $sessionService,
+        $profilePermissionService,
+        $datatableService,
+        $viewRenderer
+    )
+    {
+        $this->sessionService = $sessionService;
+        $this->profilePermissionService = $profilePermissionService;
+        $this->datatableService = $datatableService;
+        $this->viewRenderer = $viewRenderer;
+    }
+
+    public function setFormService($formService)
+    {
+        $this->formService = $formService;
+        return $this;
+    }
+
+    public function setTableGateway($tableGateway)
+    {
+        $this->tableGateway = $tableGateway;
+        return $this;
+    }
+
+    public function getTableGateway()
+    {
+        return $this->tableGateway;
+    }
+
+    public function getModel()
+    {
+        return $this->model;
+    }
 
     public function getAuthService($returnAuthInstance = true)
     {
@@ -140,19 +177,12 @@ abstract class AuthController extends AbstractActionController
     {
         $this->serviceLocator = $e->getApplication()->getServiceManager();
 
-        $this->setControllerVars();
-
-        $this->sessionService   = $this->serviceLocator->get('Administrator\Service\SessionService');
-
-        // Sacamos la ruta para matchearla
-        $match = $e->getRouteMatch();
-
-        $this->routeMatch = $match;
+        $routeMatch = $e->getRouteMatch();
 
         $this->config = $this->serviceLocator->get('Config');
 
-        $module = $this->routeMatch->getParam('module');
-        $action = $this->routeMatch->getParam('action');
+        $module = $routeMatch->getParam('module');
+        $action = $routeMatch->getParam('action');
 
         if ($module == "") {
             return $this->goToSection('login');
@@ -167,20 +197,20 @@ abstract class AuthController extends AbstractActionController
             $canAccess = $this->canAccess($module, $action);
 
             if ($canAccess !== true) {
-
                 return $this->accessErrorHandler($canAccess);
             }
         }
 
-        $this->triggerResults = $this->runAdministratorTrigger($this->routeMatch);
+        $this->triggerResults = $this->runAdministratorTrigger(
+            $routeMatch->getParam('module'),
+            $routeMatch->getParam('action')
+        );
 
         return parent::onDispatch($e);
     }
 
     protected function accessErrorHandler($errorKey)
     {
-        $request = $this->serviceLocator->get('Request');
-
         $jsonModel = new JsonModel(array(
             'status'    => 'ok',
             'response'  => 'false',
@@ -188,7 +218,7 @@ abstract class AuthController extends AbstractActionController
             'message'   => $this->errorMessages[$errorKey]
         ));
 
-        if ($request->isXmlHttpRequest()) {
+        if ($this->getRequest()->isXmlHttpRequest()) {
             $response = $this->getResponse();
             $response->setContent($jsonModel->serialize());
             return $response;
@@ -205,7 +235,7 @@ abstract class AuthController extends AbstractActionController
 
         if (!$authService->hasIdentity()){
 
-            $this->sessionService->section_referer = $this->routeMatch->getParams();
+            $this->sessionService->section_referer = $this->event->getRouteMatch()->getParams();
             $this->sessionService->query_params = $this->getRequest()->getQuery()->toArray();
 
             return 'ACCESS_SESSION_EXPIRED';
@@ -219,38 +249,22 @@ abstract class AuthController extends AbstractActionController
             return 'ACCESS_USER_DEACTIVATE';
         }
 
-        $permissionsService = $this->serviceLocator->get('AmProfile\Service\ProfilePermissionService');
-
-        if (!$permissionsService->hasModuleAccess($module,$action)) {
+        if (!$this->profilePermissionService->hasModuleAccess($module,$action)) {
             return 'ACCESS_PERMISSION_DENIED';
         }
 
         return true;
     }
 
-    private function runAdministratorTrigger(RouteMatch $match)
+    private function runAdministratorTrigger($module, $action)
     {
         $eventManager = $this->getEventManager();
 
         $requestMethod = strtolower($this->getRequest()->getMethod());
 
-        $module = $match->getParam('module');
-        $action = $match->getParam('action');
-
         $triggerName = $requestMethod . '.' . $module . '.' . $action;
 
-        return $eventManager->trigger($triggerName, null, array('serviceLocator' => $this->serviceLocator));
-    }
-
-    public function setControllerVars()
-    {
-        $className = get_class($this);
-
-        $tableGateway = preg_replace('/^(Am)(\w+)\\\(\w+)\\\(\w+)(ModuleController)$/', "$1$2\\Model\\\\$2Table", $className);
-
-        if (class_exists($tableGateway)) {
-            $this->tableGateway = $this->serviceLocator->get($tableGateway);
-        }
+        return $eventManager->trigger($triggerName, null);
     }
 
     protected function getView($params = array(), $viewName)
@@ -275,9 +289,8 @@ abstract class AuthController extends AbstractActionController
     public function parseTriggers()
     {
         $html = "";
-        $viewRenderer = $this->serviceLocator->get('ViewRenderer');
         foreach ($this->triggerResults as $result) {
-            $html .= $viewRenderer->render($result);
+            $html .= $this->viewRenderer->render($result);
         }
 
         return $html;

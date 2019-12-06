@@ -13,5 +13,5 @@ class AmMegabannerModuleController extends AuthController
 {
     use indexAction, addAction, editAction, DeleteAction;
 
-    protected $form = MegabannerForm::class;
+    public const FORM_CLASS = MegabannerForm::class;
 }

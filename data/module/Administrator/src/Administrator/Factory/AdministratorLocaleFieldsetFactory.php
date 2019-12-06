@@ -1,7 +1,9 @@
 <?php
 namespace Administrator\Factory;
 
+use Administrator\Service\AdministratorFormService;
 use Administrator\Service\ConfigureFieldsetService;
+use AmLanguage\Model\LanguageTable;
 use Interop\Container\ContainerInterface;
 use Zend\Db\Metadata\Source\Factory;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -17,10 +19,12 @@ class AdministratorLocaleFieldsetFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $this->container = $container;
-        $this->languages = $container->get('AmLanguage\Model\LanguageTable')->all()->toKeyValueArray('id','name');
+        $this->languages = $container->get(LanguageTable::class)->all()->toKeyValueArray('id','name');
         $this->configureFieldsetService = $container->get(ConfigureFieldsetService::class);
 
-        $baseFieldset = $options['base_fieldset'];
+        $formService = $container->get(AdministratorFormService::class);
+
+        $baseFieldset = $formService->getBaseFieldset();
 
         $baseTableGateway = $baseFieldset->getTableGateway();
         $objectModel = $baseFieldset->getObjectModel();
@@ -45,7 +49,7 @@ class AdministratorLocaleFieldsetFactory implements FactoryInterface
             $this->fieldsets[$localeFieldset->getName()] = $localeFieldset;
         }
 
-        return $this->fieldsets;
+        return array_values($this->fieldsets);
     }
 
     private function prepareFieldset($fieldsetName, $objectModel)

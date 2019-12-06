@@ -25,10 +25,6 @@ class UserFieldset extends AdministratorFieldset
 
     public function addElements()
     {
-        //fechaAlta y ultimoLogin nunca deben ser editables. Se marcan como Readonly
-        //$this->get('createdAt')->setAttribute('readonly',true);
-        //$this->get('lastLogin')->setAttribute('readonly',true);
-
         $this->add(array(
             'name' => 'password2',
             'type'  => 'password',
@@ -44,11 +40,9 @@ class UserFieldset extends AdministratorFieldset
                 'value' => '',
                 'class' => 'form-control',
             ),
-        ),array(
-            'priority' => -400,
         ));
 
-        if ($this->formActionType == 'edit') {
+        if ($this->get('id')->getValue() !== null) {
 
             $this->add(array(
                 'name' => 'checkPassword',
@@ -103,7 +97,7 @@ class UserFieldset extends AdministratorFieldset
             'required' => true
         );
 
-        if ($this->formActionType == 'edit') {
+        if ($this->get('id')->getValue() !== null) {
 
             $filter['checkPassword'] = array(
                 'name' => 'checkPassword',
