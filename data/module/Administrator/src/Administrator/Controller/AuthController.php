@@ -34,6 +34,7 @@ abstract class AuthController extends AbstractActionController
     protected $tableGateway;
     protected $formService;
     protected $datatableService;
+    protected $datatableConfigService;
     protected $viewRenderer;
     protected $model;
 
@@ -50,6 +51,12 @@ abstract class AuthController extends AbstractActionController
         $this->profilePermissionService = $profilePermissionService;
         $this->datatableService = $datatableService;
         $this->viewRenderer = $viewRenderer;
+    }
+
+    public function setDatatableConfigService($datatableConfigService)
+    {
+        $this->datatableConfigService = $datatableConfigService;
+        return $this;
     }
 
     public function setFormService($formService)

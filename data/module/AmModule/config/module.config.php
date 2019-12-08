@@ -20,8 +20,4 @@ return array(
             'AmModule\Service\ModuleService' => 'AmModule\Service\ModuleService'
         )
     ),
-
-    'router' => array(
-
-    )
 );

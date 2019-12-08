@@ -10,8 +10,6 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
 {
     public function getDatatableConfig()
     {
-        $youtubeValidator = new Youtube();
-
         $disallowSearchTo = array (
             'megabanners.id' => false,
         );
@@ -29,7 +27,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
                 $thisClass->setEditAndDeleteColumnsOptions($header);
                 return $header;
             },
-            'parse_row_data'=> function ($row) use($thisClass, $youtubeValidator) {
+            'parse_row_data'=> function ($row) use($thisClass) {
 
                 //$row contiene los datos de cada una de las filas que ha generado la consulta.
                 //Desde aquí podemos parsear los datos antes de visualizarlos por pantalla

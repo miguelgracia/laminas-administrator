@@ -4,7 +4,6 @@ use Administrator\Factory\AdministratorControllerFactory;
 use Administrator\Factory\AdministratorFormServiceFactory;
 use Administrator\Factory\AdministratorModelAbstractFactory;
 use Administrator\Factory\AdministratorTableAbstractFactory;
-use Administrator\Factory\DatatableConfigAbstractFactory;
 use Administrator\Model\AuthStorage;
 use Administrator\Service\AdministratorFormService;
 use Administrator\Service\AuthService;
@@ -61,6 +60,25 @@ return array(
             AdministratorControllerFactory::class =>  AdministratorControllerFactory::class,
         ),
     ],
+    'datatable' => [
+        'factories' => [
+            \AmAppData\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmBlog\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmBlogCategory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmHomeModule\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmJob\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmJobCategory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmLanguage\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmMegabanner\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmModule\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmPartner\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmProfile\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmSection\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmStaticPage\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmUser\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmYouTube\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+        ]
+    ],
     'form_elements' => [
         /**
          * Conforme vayan surgiendo posibles elementos por defecto en función del tipo de dato, el siguiente array
@@ -100,10 +118,12 @@ return array(
         'initializers' => array(
             \Administrator\Initializer\DatabaseInitializer::class,
         ),
+        'aliases' => [
+            'DatatablePluginManager' => \Administrator\Service\DatatablePluginManager::class,
+        ],
         'abstract_factories' => array(
             AdministratorTableAbstractFactory::class,
             AdministratorModelAbstractFactory::class,
-            DatatableConfigAbstractFactory::class,
         ),
         'factories' => [
             AuthStorage::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
@@ -112,7 +132,8 @@ return array(
             'AuthService' => AuthService::class,
             SessionService::class => SessionService::class,
             AdministratorFormService::class => AdministratorFormServiceFactory::class,
-            DatatableService::class => DatatableService::class,
+            \Administrator\Service\DatatablePluginManager::class => \Administrator\Factory\DatatablePluginManagerFactory::class,
+            DatatableService::class => \Administrator\Factory\DatatableFactory::class
         ]
     ],
     'view_helpers' => [
