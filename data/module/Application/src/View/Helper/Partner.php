@@ -6,15 +6,6 @@ use Zend\Form\View\Helper\AbstractHelper;
 
 class Partner extends AbstractHelper
 {
-    protected $lang;
-
-    public function __invoke($lang)
-    {
-        $this->lang = $lang;
-
-        return $this;
-    }
-
     private function getElementCarousel()
     {
         return "<div class='item'>

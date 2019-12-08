@@ -288,7 +288,7 @@ return [
             LegalLink::class => InvokableFactory::class,
             Megabanner::class => InvokableFactory::class,
             HomeModule::class => InvokableFactory::class,
-            Partner::class => Partner::class,
+            Partner::class => InvokableFactory::class,
             Job::class => InvokableFactory::class,
             JobCategory::class => InvokableFactory::class,
             Blog::class => InvokableFactory::class,
