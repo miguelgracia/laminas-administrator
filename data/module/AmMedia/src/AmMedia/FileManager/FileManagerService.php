@@ -4,7 +4,6 @@ namespace AmMedia\FileManager;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class FileManagerService implements FactoryInterface
 {

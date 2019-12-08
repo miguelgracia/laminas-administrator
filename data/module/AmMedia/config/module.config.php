@@ -7,22 +7,13 @@ return [
         ],
     ],
 
-    'controllers' => [
-        'invokables' => [
-            'AmMedia\Controller\AmMediaModuleController' => 'AmMedia\Controller\AmMediaModuleController'
-        ]
-    ],
-
     'service_manager' => [
         'factories' => [
-            'AmMedia\FileManager\FileManagerService' => 'AmMedia\FileManager\FileManagerService'
+            \AmMedia\FileManager\FileManagerService::class => \AmMedia\FileManager\FileManagerService::class,
+            \AmMedia\Service\ScanDirService::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
+            \AmMedia\Service\InterventionImageService::class => \AmMedia\Service\InterventionImageService::class,
+            \AmMedia\Model\MediaModel::class => \Zend\ServiceManager\Factory\InvokableFactory::class
         ],
-        'invokables' => [
-            'AmMedia\Service\ScanDirService' => 'AmMedia\Service\ScanDirService'
-        ]
-    ],
-
-    'router' => [
     ],
     'AmMedia' => [
         'FileManager' => [

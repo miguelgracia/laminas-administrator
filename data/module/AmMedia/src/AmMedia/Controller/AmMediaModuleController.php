@@ -3,19 +3,17 @@
 namespace AmMedia\Controller;
 
 use Administrator\Controller\AuthController;
-use AmMedia\Filter\VideoValidator;
+use AmMedia\FileManager\FileManagerService;
+use AmMedia\Service\InterventionImageService;
+use AmMedia\Service\ScanDirService;
 use Zend\Filter\BaseName;
 use Zend\Filter\Dir;
-use Zend\Filter\RealPath;
 use Zend\View\Model\JsonModel;
-use Zend\View\Model\ViewModel;
 
 class AmMediaModuleController extends AuthController
 {
-    protected $config;
-
     /**
-     * @return array|\Zend\View\Model\ViewModel
+     * @return void
      */
     public function indexAction()
     {
@@ -28,7 +26,7 @@ class AmMediaModuleController extends AuthController
 
     public function videoPosterAction()
     {
-        $scanDirService = $this->serviceLocator->get('AmMedia\Service\ScanDirService');
+        $scanDirService = $this->serviceLocator->get(ScanDirService::class);
 
         $scanDirService->scan([
             $_SERVER['DOCUMENT_ROOT'] . '/media',
@@ -44,21 +42,18 @@ class AmMediaModuleController extends AuthController
 
     public function savePosterAction()
     {
-        $imageManager = $this->serviceLocator->get('AmMedia\Service\InterventionImageService');
-        $dirFilter = new Dir();
-        $baseNameFilter = new BaseName();
-
         $video = $this->params()->fromPost('video');
         $videoPath = $this->params()->fromPost('path');
 
-        $basePath = $dirFilter->filter($videoPath);
-        $baseName = $baseNameFilter->filter($videoPath);
-
-        $image = $imageManager->make($video);
+        $basePath = (new Dir)->filter($videoPath);
+        $baseName = (new BaseName)->filter($videoPath);
 
         $imageToSave = $_SERVER['DOCUMENT_ROOT'] . $basePath . '/' . 'video-poster-' . md5($baseName) . '.jpg';
 
-        $image->save($imageToSave, 80);
+        $this->serviceLocator
+            ->get(InterventionImageService::class)
+            ->make($video)
+            ->save($imageToSave, 80);
 
         return new JsonModel([
             'result' => true
@@ -67,11 +62,9 @@ class AmMediaModuleController extends AuthController
 
     public function connectorAction()
     {
-        $fileManager = $this->serviceLocator->get('AmMedia\FileManager\FileManagerService');
-        $fileManagerResponse = $fileManager->handleRequest();
+        $fileManagerResponse = $this->serviceLocator->get(FileManagerService::class)->handleRequest();
 
-        $controllerResponse = $this->getResponse();
-        $controllerResponse->setContent($fileManagerResponse->getContent());
+        $controllerResponse = $this->getResponse()->setContent($fileManagerResponse->getContent());
 
         $fileManagerHeaders = $fileManagerResponse->getHeaders()->toArray();
 
