@@ -8,10 +8,26 @@ use AmMedia\Service\InterventionImageService;
 use AmMedia\Service\ScanDirService;
 use Zend\Filter\BaseName;
 use Zend\Filter\Dir;
+use Zend\Mvc\MvcEvent;
 use Zend\View\Model\JsonModel;
 
 class AmMediaModuleController extends AuthController
 {
+    protected $scanDirService;
+    protected $interventionImageService;
+    protected $fileManagerService;
+
+    public function onDispatch(MvcEvent $e)
+    {
+        $serviceLocator = $e->getApplication()->getServiceManager();
+
+        $this->scanDirService = $serviceLocator->get(ScanDirService::class);
+        $this->interventionImageService = $serviceLocator->get(InterventionImageService::class);
+        $this->fileManagerService = $serviceLocator->get(FileManagerService::class);
+
+        return parent::onDispatch($e);
+    }
+
     /**
      * @return void
      */
@@ -26,13 +42,11 @@ class AmMediaModuleController extends AuthController
 
     public function videoPosterAction()
     {
-        $scanDirService = $this->serviceLocator->get(ScanDirService::class);
-
-        $scanDirService->scan([
+        $this->scanDirService->scan([
             $_SERVER['DOCUMENT_ROOT'] . '/media',
         ]);
 
-        $videos = $scanDirService->getFiles([
+        $videos = $this->scanDirService->getFiles([
             'video/mp4',
             'application/octet-stream'
         ]);
@@ -50,8 +64,7 @@ class AmMediaModuleController extends AuthController
 
         $imageToSave = $_SERVER['DOCUMENT_ROOT'] . $basePath . '/' . 'video-poster-' . md5($baseName) . '.jpg';
 
-        $this->serviceLocator
-            ->get(InterventionImageService::class)
+        $this->interventionImageService
             ->make($video)
             ->save($imageToSave, 80);
 
@@ -62,7 +75,7 @@ class AmMediaModuleController extends AuthController
 
     public function connectorAction()
     {
-        $fileManagerResponse = $this->serviceLocator->get(FileManagerService::class)->handleRequest();
+        $fileManagerResponse = $this->fileManagerService->handleRequest($this->request);
 
         $controllerResponse = $this->getResponse()->setContent($fileManagerResponse->getContent());
 

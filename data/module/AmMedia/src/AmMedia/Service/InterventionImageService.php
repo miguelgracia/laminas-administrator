@@ -3,12 +3,8 @@
 namespace AmMedia\Service;
 
 use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
 use Intervention\Image\ImageManager;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 class InterventionImageService implements FactoryInterface
 {

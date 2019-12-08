@@ -188,12 +188,12 @@ abstract class BaseFilemanager
 
     /**
      * Invokes filemanager action based on request params and returns response
+     * @param $request
+     * @return array|string
      */
-    public function handleRequest()
+    public function handleRequest($request)
     {
         $response = '';
-
-        $request = $this->serviceLocator->get('Request');
 
         $get = $request->getQuery();
         $post = $request->getPost();

@@ -2,6 +2,7 @@
 
 namespace Administrator\Factory;
 
+use Administrator\Model\AuthStorage;
 use Administrator\Service\AdministratorFormService;
 use Administrator\Service\DatatableConfigInterface;
 use Administrator\Service\DatatableService;
@@ -25,38 +26,43 @@ class AdministratorControllerFactory implements FactoryInterface
         $controllerClassName = sprintf('%s\\Controller\\%sModuleController', $moduleName, $moduleName);
 
         $controllerInstance = new $controllerClassName(
+            $container->get('Config'),
             $container->get(SessionService::class),
+            $container->get('AuthService'),
+            $container->get(AuthStorage::class),
             $container->get(ProfilePermissionService::class),
             $container->get(DatatableService::class),
             $container->get('ViewRenderer')
         );
 
-        if ($module !== 'login') {
-            $datatableConfigServiceName = $moduleName . '\\Service\\DatatableConfigService';
-            $datatablePluginManager = $container->get('DatatablePluginManager');
+        if ($module === 'login') {
+            return $controllerInstance;
+        }
 
-            $controllerInstance->setFormService($container->get(AdministratorFormService::class));
+        $datatableConfigServiceName = $moduleName . '\\Service\\DatatableConfigService';
+        $datatablePluginManager = $container->get('DatatablePluginManager');
 
-            if ($datatablePluginManager->has($datatableConfigServiceName)) {
-                $controllerInstance->setDatatableConfigService(
-                    $datatablePluginManager->get($datatableConfigServiceName)
-                );
-            }
+        $controllerInstance->setFormService($container->get(AdministratorFormService::class));
 
-            $tableGateway = preg_replace(
-                '/^(Am)(\w+)\\\(\w+)\\\(\w+)(ModuleController)$/',
-                '$1$2\\Model\\\$2Table',
-                $controllerClassName
+        if ($datatablePluginManager->has($datatableConfigServiceName)) {
+            $controllerInstance->setDatatableConfigService(
+                $datatablePluginManager->get($datatableConfigServiceName)
             );
+        }
 
-            if (class_exists($tableGateway)) {
-                /**
-                 * el objeto de tipo tableGateway no la podemos setear por defecto en el constructor
-                 * ya que el modulo de login no tiene TableGateway asociado
-                 */
+        $tableGateway = preg_replace(
+            '/^(Am)(\w+)\\\(\w+)\\\(\w+)(ModuleController)$/',
+            '$1$2\\Model\\\$2Table',
+            $controllerClassName
+        );
 
-                $controllerInstance->setTableGateway($container->get($tableGateway));
-            }
+        if (class_exists($tableGateway)) {
+            /**
+             * el objeto de tipo tableGateway no la podemos setear por defecto en el constructor
+             * ya que el modulo de login no tiene TableGateway asociado
+             */
+
+            $controllerInstance->setTableGateway($container->get($tableGateway));
         }
 
         return $controllerInstance;

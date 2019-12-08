@@ -3,21 +3,15 @@
 namespace MediaDispatcher\Service;
 
 use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
 use Intervention\Image\ImageManager;
 use Zend\Filter\Dir;
 use Zend\Filter\RealPath;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\StringWrapper\Intl;
 use Zend\Validator\File\IsImage;
 
 class ImageService implements FactoryInterface
 {
-    protected $serviceLocator;
-
     protected $viewHelperManager;
 
     /**
@@ -70,8 +64,6 @@ class ImageService implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $this->serviceLocator = $container;
-
         $this->isImageValidator = new IsImage();
         $this->dirFilter = new Dir();
         $this->realPathFilter = new RealPath(false);

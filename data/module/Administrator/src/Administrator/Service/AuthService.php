@@ -2,44 +2,18 @@
 
 namespace Administrator\Service;
 
-use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
 use Zend\Db\Sql\Select;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Authentication\AuthenticationService;
-use Zend\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
 
-class AuthService implements FactoryInterface
+class AuthService
 {
-    protected $serviceLocator;
     protected $userData = false;
     protected $authService;
+    protected $userTable;
 
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __construct($authService, $userTable)
     {
-        $this->serviceLocator = $container;
-
-        //My assumption, you've alredy set dbAdapter
-        //and has users table with columns : user_name and pass_word
-        //that password hashed with md5
-        $dbAdapter = $container->get('Zend\Db\Adapter\Adapter');
-
-        $dbTableAuthAdapter = new  AuthAdapter(
-            $dbAdapter,
-            'admin_users',
-            'username',
-            'password',
-            'md5(?)'
-        );
-
-        $storage = $container->get('Administrator\Model\AuthStorage');
-
-        $this->authService = new AuthenticationService($storage, $dbTableAuthAdapter);
-
-        return $this;
+        $this->authService = $authService;
+        $this->userTable = $userTable;
     }
 
     public function getAuthInstance()
@@ -48,8 +22,6 @@ class AuthService implements FactoryInterface
     }
 
     /**
-     *
-     * @param $username
      * @return mixed
      */
     public function getUserData()
@@ -62,7 +34,7 @@ class AuthService implements FactoryInterface
 
         $username = $username['user'];
 
-        $rowset = $this->serviceLocator->get('AmUser\Model\UserTable')->select(function (Select $select) use ($username) {
+        $rowSet = $this->userTable->select(function (Select $select) use ($username) {
             $select
                 ->columns(['*'])
                 ->join(
@@ -75,7 +47,7 @@ class AuthService implements FactoryInterface
                 ]);
         });
 
-        $row = $rowset->current();
+        $row = $rowSet->current();
 
         $this->userData = $row ?: false;
 

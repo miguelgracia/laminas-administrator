@@ -579,7 +579,7 @@ EOD;
     }
 
     /**
-     * Genera las vistas para los módulos de admin que las requieran
+     * Genera las vistas para los mï¿½dulos de admin que las requieran
      */
     public function adminViewsAction()
     {
@@ -626,17 +626,6 @@ EOD;
 
     public function adminLocaleClassesAction()
     {
-        /*$console = $this->serviceLocator->get('console');
-
-        $request = $this->getRequest();
-        $name    = $request->getParam('name');
-        $path    = $request->getParam('path', '.');
-
-        if (!file_exists("$path/module") || !file_exists("$path/config/application.config.php")) {
-            $console->writeLine("The path $path doesn't contain a ZF2 application. I cannot create a module here.", Color::RED);
-            return;
-        }*/
-
         $this->adminTableAction(true);
         $this->adminModelAction(true);
         $this->adminFieldsetAction(true);

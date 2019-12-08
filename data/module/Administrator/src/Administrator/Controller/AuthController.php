@@ -4,17 +4,11 @@ namespace Administrator\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 abstract class AuthController extends AbstractActionController
 {
-    /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
-
     protected $errorMessages = [
         'ACCESS_SESSION_EXPIRED' => 'La sesión ha caducado',
         'ACCESS_USER_DEACTIVATE' => 'Tu usuario ha sido desactivado',
@@ -40,12 +34,18 @@ abstract class AuthController extends AbstractActionController
     protected $config;
 
     public function __construct(
+        $config,
         $sessionService,
+        $authService,
+        $storage,
         $profilePermissionService,
         $datatableService,
         $viewRenderer
     ) {
+        $this->config = $config;
         $this->sessionService = $sessionService;
+        $this->authService = $authService;
+        $this->storage = $storage;
         $this->profilePermissionService = $profilePermissionService;
         $this->datatableService = $datatableService;
         $this->viewRenderer = $viewRenderer;
@@ -81,19 +81,11 @@ abstract class AuthController extends AbstractActionController
 
     public function getAuthService($returnAuthInstance = true)
     {
-        if (!$this->authService) {
-            $this->authService = $this->serviceLocator->get('AuthService');
-        }
-
         return $returnAuthInstance ? $this->authService->getAuthInstance() : $this->authService;
     }
 
     public function getSessionStorage()
     {
-        if (!$this->storage) {
-            $this->storage = $this->serviceLocator->get('Administrator\Model\AuthStorage');
-        }
-
         return $this->storage;
     }
 
@@ -180,11 +172,7 @@ abstract class AuthController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
-        $this->serviceLocator = $e->getApplication()->getServiceManager();
-
         $routeMatch = $e->getRouteMatch();
-
-        $this->config = $this->serviceLocator->get('Config');
 
         $module = $routeMatch->getParam('module');
         $action = $routeMatch->getParam('action');

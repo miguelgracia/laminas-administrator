@@ -6,7 +6,6 @@ use Administrator\Factory\AdministratorModelAbstractFactory;
 use Administrator\Factory\AdministratorTableAbstractFactory;
 use Administrator\Model\AuthStorage;
 use Administrator\Service\AdministratorFormService;
-use Administrator\Service\AuthService;
 use Administrator\Service\DatatableService;
 use Administrator\Service\SessionService;
 
@@ -127,7 +126,7 @@ return [
             AuthStorage::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
             \Administrator\Service\ConfigureFieldsetService::class => \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class,
             \Administrator\Service\CheckIdService::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
-            'AuthService' => AuthService::class,
+            'AuthService' => \Administrator\Factory\AuthFactory::class,
             SessionService::class => SessionService::class,
             AdministratorFormService::class => AdministratorFormServiceFactory::class,
             \Administrator\Service\DatatablePluginManager::class => \Administrator\Factory\DatatablePluginManagerFactory::class,

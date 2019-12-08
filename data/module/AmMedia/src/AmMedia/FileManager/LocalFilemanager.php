@@ -15,7 +15,6 @@ namespace AmMedia\FileManager;
 
 use Zend\Http\Headers;
 use Zend\Http\Response;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Model\JsonModel;
 
 class LocalFilemanager extends BaseFilemanager
@@ -28,12 +27,8 @@ class LocalFilemanager extends BaseFilemanager
     protected $connector_script_url;
     protected $dynamic_fileroot = 'userfiles';
 
-    protected $serviceLocator;
-
-    public function __construct(ServiceLocatorInterface $serviceLocator, $extraConfig = [])
+    public function __construct($extraConfig = [])
     {
-        $this->serviceLocator = $serviceLocator;
-
         parent::__construct($extraConfig);
 
         $fileRoot = $this->config->options['fileRoot'];
