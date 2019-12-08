@@ -25,6 +25,7 @@ use Application\View\Helper\JobCategory;
 use Application\View\Helper\LegalLink;
 use Application\View\Helper\Megabanner;
 use Application\View\Helper\Menu;
+use Application\View\Helper\MenuDelegator;
 use Application\View\Helper\Partner;
 use Application\View\Helper\SocialIcon;
 use Zend\I18n\Translator\TranslatorServiceFactory;
@@ -32,6 +33,7 @@ use Zend\I18n\View\Helper\Translate;
 use Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
+use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\Session\Storage\SessionArrayStorage;
 
@@ -295,6 +297,11 @@ return [
             CarouselItem::class => CarouselItem::class,
             FacebookShare::class => InvokableFactory::class,
             Translate::class => InvokableFactory::class
+        ],
+        'delegators' => [
+            Menu::class => [
+                MenuDelegator::class
+            ]
         ],
     ],
     'translator' => [
