@@ -2,6 +2,7 @@
 namespace Administrator\Factory;
 
 use Administrator\Service\AdministratorFormService;
+use Administrator\Service\DatatableConfigInterface;
 use Administrator\Service\DatatableService;
 use Administrator\Service\SessionService;
 use AmProfile\Service\ProfilePermissionService;
@@ -22,7 +23,7 @@ class AdministratorControllerFactory implements FactoryInterface
 
         $controllerClassName = sprintf("%s\\Controller\\%sModuleController", $moduleName, $moduleName);
 
-        $controllerInstance =  new $controllerClassName(
+        $controllerInstance = new $controllerClassName(
             $container->get(SessionService::class),
             $container->get(ProfilePermissionService::class),
             $container->get(DatatableService::class),
@@ -30,7 +31,17 @@ class AdministratorControllerFactory implements FactoryInterface
         );
 
         if ($module !== 'login') {
+
+            $datatableConfigServiceName = $moduleName . "\\Service\\DatatableConfigService";
+            $datatablePluginManager = $container->get('DatatablePluginManager');
+
             $controllerInstance->setFormService($container->get(AdministratorFormService::class));
+
+            if ($datatablePluginManager->has($datatableConfigServiceName)) {
+                $controllerInstance->setDatatableConfigService(
+                    $datatablePluginManager->get($datatableConfigServiceName)
+                );
+            }
 
             $tableGateway = preg_replace(
                 '/^(Am)(\w+)\\\(\w+)\\\(\w+)(ModuleController)$/',

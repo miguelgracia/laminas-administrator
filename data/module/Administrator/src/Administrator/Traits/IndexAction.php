@@ -2,6 +2,8 @@
 
 namespace Administrator\Traits;
 
+use Administrator\Service\DatatableConfigInterface;
+use Zend\View\Model\ViewModel;
 
 trait IndexAction
 {
@@ -10,6 +12,30 @@ trait IndexAction
      */
     public function indexAction()
     {
-        return $this->datatableService->init()->run();
+        $this->datatableService->setConfig(
+            $this->datatableConfigService->getQueryConfig() +
+            $this->datatableConfigService->getDatatableConfig(),
+            $this->request->getPost('columns',[]),
+            $this->request->getPost('order',[])
+        );
+
+        if ($this->request->isPost()) {
+
+            $this->datatableService->setPagination(
+                $this->request->getPost('start', 1),
+                $this->request->getPost('length', 1)
+            );
+
+            return $this->getResponse()->setContent(json_encode($this->datatableService->getData()));
+        }
+
+        $viewParams = array(
+            'settings' => array(
+                'headers' => $this->datatableService->getHeaderFields()
+            )
+         ) + $this->datatableConfigService->getViewParams();
+
+        return (new ViewModel($viewParams))
+            ->setTemplate('administrator/list-datatable');
     }
 }
