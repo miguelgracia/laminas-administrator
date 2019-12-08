@@ -1,4 +1,5 @@
 <?php
+
 namespace AmTool\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
@@ -19,9 +20,9 @@ class ModuleController extends AbstractActionController
             $console->writeLine('No modules installed. Are you in the root folder of a ZF2 app?');
             return;
         }
-        $modules = array_diff($modules, array('AmTool'));
+        $modules = array_diff($modules, ['AmTool']);
 
-        $console->writeLine("Modules installed:");
+        $console->writeLine('Modules installed:');
         foreach ($modules as $module) {
             $console->writeLine($module, Color::GREEN);
         }
@@ -38,10 +39,10 @@ class ModuleController extends AbstractActionController
     protected function getModulesFromService()
     {
         $sm = $this->serviceLocator;
-        try{
+        try {
             /* @var $mm \Zend\ModuleManager\ModuleManager */
             $mm = $sm->get('modulemanager');
-        } catch(ServiceNotFoundException $e) {
+        } catch (ServiceNotFoundException $e) {
             return $this->sendError(
                 'Cannot get Zend\ModuleManager\ModuleManager instance. Is your application using it?'
             );

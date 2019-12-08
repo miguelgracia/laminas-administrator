@@ -43,12 +43,12 @@ class YoutubeService implements FactoryInterface
         $this->client->setClientSecret($this->OAUTH2_CLIENT_SECRET);
         $this->client->setScopes('https://www.googleapis.com/auth/youtube');
 
-        $redirect = $urlPlugin->fromRoute('administrator',array(
+        $redirect = $urlPlugin->fromRoute('administrator', [
             'module' => 'you-tube',
             'action' => 'oauth-callback'
-        ),array(
+        ], [
             'force_canonical' => true
-        ));
+        ]);
 
         $this->client->setRedirectUri($redirect);
 
@@ -60,7 +60,6 @@ class YoutubeService implements FactoryInterface
     {
         return $this->client;
     }
-
 
     public function getYoutubeService()
     {

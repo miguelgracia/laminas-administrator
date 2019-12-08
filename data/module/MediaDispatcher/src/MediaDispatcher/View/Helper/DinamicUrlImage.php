@@ -2,7 +2,6 @@
 
 namespace MediaDispatcher\View\Helper;
 
-
 use Zend\View\Helper\AbstractHelper;
 
 class DinamicUrlImage extends AbstractHelper
@@ -19,9 +18,9 @@ class DinamicUrlImage extends AbstractHelper
     {
         $url = $this->getView()->getHelperPluginManager()->get('Url');
 
-        $query = array(
+        $query = [
             'path' => $this->imagePath,
-        );
+        ];
 
         if (is_numeric($width)) {
             $query['width'] = $width;
@@ -31,11 +30,11 @@ class DinamicUrlImage extends AbstractHelper
             $query['height'] = $height;
         }
 
-        return $url('dispatch/random',array(
+        return $url('dispatch/random', [
             'rnd' => $randomUrl === true ? microtime(true) * 10000 : $randomUrl
-        ),array(
+        ], [
             'query' => $query,
             'force_canonical' => true
-        ));
+        ]);
     }
 }

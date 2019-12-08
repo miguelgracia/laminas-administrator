@@ -24,40 +24,39 @@ class ApiTable extends AbstractTableGateway implements AdapterAwareInterface
         $this->tableLocaleService = $tableLocaleService;
     }
 
-    public function paginate($languageCode = false, $tableFields = array(), $localeFields = array(), $callback = false)
+    public function paginate($languageCode = false, $tableFields = [], $localeFields = [], $callback = false)
     {
         $tableLocaleService = $this->tableLocaleService;
 
         $select = new Select($this->table);
-        $where = array();
+        $where = [];
 
         $select->columns($tableFields);
 
         if ($languageCode and $tableLocaleService) {
-
-            $where += array(
+            $where += [
                 'languages.active' => '1',
-                'languages.code'   => $languageCode,
-            );
+                'languages.code' => $languageCode,
+            ];
 
             $tableLocale = $tableLocaleService->getTable();
 
             $select->join(
                 $tableLocale,
-                new Expression($this->table.'.id =' .$tableLocale .'.related_table_id'),
+                new Expression($this->table . '.id =' . $tableLocale . '.related_table_id'),
                 $localeFields
             )->join(
                 'languages',
                 new Expression("languages.id = $tableLocale.language_id"),
-                array(
-                    "language_code" => "code"
-                ),
+                [
+                    'language_code' => 'code'
+                ],
                 Select::JOIN_RIGHT
             );
         }
 
         if (is_callable($callback)) {
-            call_user_func_array($callback,array(&$select,&$where));
+            call_user_func_array($callback, [&$select, &$where]);
         }
 
         $select->where($where);
@@ -79,57 +78,55 @@ class ApiTable extends AbstractTableGateway implements AdapterAwareInterface
 
         $key = $this->relatedKey;
 
-        $resultSet = $this->select(function (Select $select) use($key, $tableLocale, $languageCode) {
+        $resultSet = $this->select(function (Select $select) use ($key, $tableLocale, $languageCode) {
             $select
                 ->join(
                     'languages',
                     new Expression("languages.id = $tableLocale.language_id"),
-                    array(
-                        "language_id" => "id",
-                        "language_code" => "code"
-                    ),
+                    [
+                        'language_id' => 'id',
+                        'language_code' => 'code'
+                    ],
                     Select::JOIN_RIGHT
-                )->where(array(
+                )->where([
                     'languages.active' => '1',
-                    'languages.code'   => $languageCode
-                ));
+                    'languages.code' => $languageCode
+                ]);
         });
 
         return $resultSet;
     }
 
-    public function findRow($languageCode, $key, $keyValue, $tableFields = array(), $localeFields = array())
+    public function findRow($languageCode, $key, $keyValue, $tableFields = [], $localeFields = [])
     {
         $tableLocaleService = $this->tableLocaleService;
 
         $select = new Select($this->table);
 
-        $where = array();
+        $where = [];
 
         $where[$key] = $keyValue;
 
         $select->columns($tableFields);
 
         if ($languageCode and $tableLocaleService) {
-
-            $where += array(
+            $where += [
                 'languages.active' => '1',
-                'languages.code'   => $languageCode,
-            );
+                'languages.code' => $languageCode,
+            ];
 
             $tableLocale = $tableLocaleService->getTable();
 
-
             $select->join(
                 $tableLocale,
-                new Expression($this->table.'.id =' .$tableLocale .'.related_table_id'),
+                new Expression($this->table . '.id =' . $tableLocale . '.related_table_id'),
                 $localeFields
             )->join(
                 'languages',
                 new Expression("languages.id = $tableLocale.language_id"),
-                array(
-                    "language_code" => "code"
-                ),
+                [
+                    'language_code' => 'code'
+                ],
                 Select::JOIN_RIGHT
             );
         }
@@ -145,19 +142,19 @@ class ApiTable extends AbstractTableGateway implements AdapterAwareInterface
 
         $key = $this->relatedKey;
 
-        $resultSet = $this->select(function (Select $select) use($id, $key, $tableLocale) {
+        $resultSet = $this->select(function (Select $select) use ($id, $key, $tableLocale) {
             $select
                 ->join(
                     'languages',
                     new Expression("languages.id = $tableLocale.language_id " . (is_numeric($id) ? "AND $key = $id" : '')),
-                    array(
-                        "language_id" => "id",
-                        "language_code" =>'code'
-                    ),
+                    [
+                        'language_id' => 'id',
+                        'language_code' => 'code'
+                    ],
                     Select::JOIN_RIGHT
-                )->where(array(
+                )->where([
                     'languages.active' => '1'
-                ));
+                ]);
         });
 
         return $resultSet;

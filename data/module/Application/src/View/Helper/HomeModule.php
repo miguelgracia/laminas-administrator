@@ -44,11 +44,10 @@ class HomeModule extends AbstractHelper
         $youtubeValidator = new Youtube();
 
         foreach ($homeModules as $index => $homeModule) {
-
             $isEven = $index % 2 == 0;
 
             $urlElements = json_decode($homeModule->locale->imageUrl);
-            $elements = array();
+            $elements = [];
 
             foreach ($urlElements as $indexElement => $urlElement) {
                 $class = '';
@@ -58,7 +57,7 @@ class HomeModule extends AbstractHelper
                 if ($youtubeValidator->isValid($urlElement)) {
                     $videoId = preg_replace(
                         "/(.+)\/(.{11})$/",
-                        "$2",
+                        '$2',
                         $urlElement
                     );
 
@@ -68,25 +67,26 @@ class HomeModule extends AbstractHelper
                     $src = $videoId;
                     $class .= 'video iframe';
                 } else {
-                    $urlElement = sprintf("<img class='img-responsive' src='%s' />",$urlElement);
+                    $urlElement = sprintf("<img class='img-responsive' src='%s' />", $urlElement);
                 }
                 $elements[] = sprintf(
                     $this->getElementItem(),
                     $class,
                     $src,
-                    $urlElement);
+                    $urlElement
+                );
             }
 
             $imageWrapper = sprintf(
                 $this->getImageWrapper(),
-                ($isEven ? "col-md-push-6 col-sm-push-6 col-xs-push-6" : ""),
-                implode("\n",$elements)
+                ($isEven ? 'col-md-push-6 col-sm-push-6 col-xs-push-6' : ''),
+                implode("\n", $elements)
             );
 
             $linkUrl = $homeModule->locale->languageCode . $homeModule->locale->linkUrl;
             $contentWrapper = sprintf(
                 $this->getContentWrapper(),
-                ($isEven ? "col-md-pull-6 col-sm-pull-6 col-xs-pull-6" : ""),
+                ($isEven ? 'col-md-pull-6 col-sm-pull-6 col-xs-pull-6' : ''),
                 $linkUrl,
                 $homeModule->locale->title,
                 $homeModule->locale->content,
@@ -95,13 +95,13 @@ class HomeModule extends AbstractHelper
                 $homeModule->locale->linkText
             );
 
-            $sprintfParams = array(
+            $sprintfParams = [
                 $this->getListElement(),
                 $imageWrapper,
                 $contentWrapper
-            );
+            ];
 
-            $html .= call_user_func_array('sprintf',$sprintfParams);
+            $html .= call_user_func_array('sprintf', $sprintfParams);
         }
 
         echo $html;

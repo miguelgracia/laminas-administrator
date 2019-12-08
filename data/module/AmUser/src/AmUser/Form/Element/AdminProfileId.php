@@ -14,5 +14,4 @@ class AdminProfileId extends Select
             $profileTable->all()->toKeyValueArray('id', 'name')
         );
     }
-
 }

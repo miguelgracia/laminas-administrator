@@ -1,4 +1,5 @@
 <?php
+
 namespace AmProfile\Controller;
 
 use Administrator\Controller\AuthController;
@@ -33,9 +34,9 @@ class AmProfileModuleController extends AuthController
             return $this->goToSection('profile');
         }
 
-        return array(
-            'id'    => $id,
+        return [
+            'id' => $id,
             'perfil' => $this->tableGateway->find($id)
-        );
+        ];
     }
 }

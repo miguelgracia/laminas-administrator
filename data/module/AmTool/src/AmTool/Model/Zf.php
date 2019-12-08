@@ -1,16 +1,16 @@
 <?php
+
 namespace AmTool\Model;
 
 class Zf
 {
-
-    const LAST_VERSION    = 'http://framework.zend.com/api/zf-version?v=2';
-    const GET_TAGS        = 'https://api.github.com/repos/zendframework/zf2/tags';
-    const RELEASE_NAME    = 'release-';
+    const LAST_VERSION = 'http://framework.zend.com/api/zf-version?v=2';
+    const GET_TAGS = 'https://api.github.com/repos/zendframework/zf2/tags';
+    const RELEASE_NAME = 'release-';
 
     protected static $valueGenerator;
 
-    protected static $tags = array();
+    protected static $tags = [];
 
     /**
      * Get the last zf2 version available
@@ -71,7 +71,7 @@ class Zf
         if (empty($content)) {
             return false;
         }
-       return (file_put_contents($file, $content) !== false);
+        return (file_put_contents($file, $content) !== false);
     }
 
     /**

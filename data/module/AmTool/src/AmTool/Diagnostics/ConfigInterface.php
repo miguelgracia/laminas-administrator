@@ -1,4 +1,5 @@
 <?php
+
 namespace AmTool\Diagnostics;
 
 interface ConfigInterface
@@ -30,5 +31,4 @@ interface ConfigInterface
      * @param int $catchErrorSeverity
      */
     public function setCatchErrorSeverity($catchErrorSeverity);
-
 }

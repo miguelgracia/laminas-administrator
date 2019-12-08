@@ -15,22 +15,21 @@ trait AddAction
         $request = $this->getRequest();
 
         if ($request->isPost()) {
-
             $isValid = $this->formService->resolveForm($request->getPost());
 
             if ($isValid) {
                 $insertId = $this->formService->save();
-                return $this->goToSection($this->event->getRouteMatch()->getParam('module'), array(
-                    'action'  => 'edit',
-                    'id'      => $insertId[0]
-                ));
+                return $this->goToSection($this->event->getRouteMatch()->getParam('module'), [
+                    'action' => 'edit',
+                    'id' => $insertId[0]
+                ]);
             }
         }
 
-        $title = "Nuevo";
+        $title = 'Nuevo';
 
         $blocks = $this->parseTriggers();
 
-        return $this->getAddView(compact( 'form', 'title', 'blocks'));
+        return $this->getAddView(compact('form', 'title', 'blocks'));
     }
 }

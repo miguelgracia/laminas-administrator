@@ -13,7 +13,6 @@ use Zend\Filter\Word\CamelCaseToDash as CamelCaseToDashFilter;
 
 class CreateController extends AbstractActionController
 {
-
     public function projectAction()
     {
         if (!extension_loaded('zip')) {
@@ -23,12 +22,12 @@ class CreateController extends AbstractActionController
             return $this->sendError('You need to install the OpenSSL extension of PHP');
         }
         $console = $this->serviceLocator->get('console');
-        $tmpDir  = sys_get_temp_dir();
+        $tmpDir = sys_get_temp_dir();
         $request = $this->getRequest();
-        $path    = rtrim($request->getParam('path'), '/');
+        $path = rtrim($request->getParam('path'), '/');
 
         if (file_exists($path)) {
-            return $this->sendError (
+            return $this->sendError(
                 "The directory $path already exists. You cannot create a ZF2 project here."
             );
         }
@@ -40,8 +39,8 @@ class CreateController extends AbstractActionController
                 return $this->sendError('I cannot access the API of github.');
             }
             $console->writeLine(
-                "Warning: I cannot connect to github, I will use the last download of ZF2 Skeleton.",
-                 Color::GRAY
+                'Warning: I cannot connect to github, I will use the last download of ZF2 Skeleton.',
+                Color::GRAY
             );
         } else {
             $tmpFile = Skeleton::getTmpFileName($tmpDir, $commit);
@@ -56,7 +55,7 @@ class CreateController extends AbstractActionController
         $zip = new \ZipArchive;
         if ($zip->open($tmpFile)) {
             $stateIndex0 = $zip->statIndex(0);
-            $tmpSkeleton = $tmpDir . '/' . rtrim($stateIndex0['name'], "/");
+            $tmpSkeleton = $tmpDir . '/' . rtrim($stateIndex0['name'], '/');
             if (!$zip->extractTo($tmpDir)) {
                 return $this->sendError("Error during the unzip of $tmpFile.");
             }
@@ -85,7 +84,7 @@ class CreateController extends AbstractActionController
         }
         chmod("$path/composer.phar", 0755);
         $console->writeLine("ZF2 skeleton application installed in $path.", Color::GREEN);
-        $console->writeLine("In order to execute the skeleton application you need to install the ZF2 library.");
+        $console->writeLine('In order to execute the skeleton application you need to install the ZF2 library.');
         $console->writeLine("Execute: \"composer.phar install\" in $path");
         $console->writeLine("For more info in $path/README.md");
     }
@@ -93,11 +92,11 @@ class CreateController extends AbstractActionController
     public function controllerAction()
     {
         $console = $this->serviceLocator->get('console');
-        $tmpDir  = sys_get_temp_dir();
+        $tmpDir = sys_get_temp_dir();
         $request = $this->getRequest();
-        $name    = $request->getParam('name');
-        $module  = $request->getParam('module');
-        $path    = $request->getParam('path', '.');
+        $name = $request->getParam('name');
+        $module = $request->getParam('module');
+        $path = $request->getParam('path', '.');
 
         if (!file_exists("$path/module") || !file_exists("$path/config/application.config.php")) {
             return $this->sendError(
@@ -110,8 +109,8 @@ class CreateController extends AbstractActionController
             );
         }
 
-        $ucName     = ucfirst($name);
-        $ctrlPath   = $path . '/module/' . $module . '/src/' . $module . '/Controller/' . $ucName.'Controller.php';
+        $ucName = ucfirst($name);
+        $ctrlPath = $path . '/module/' . $module . '/src/' . $module . '/Controller/' . $ucName . 'Controller.php';
         $controller = $ucName . 'Controller';
 
         $code = new Generator\ClassGenerator();
@@ -120,20 +119,20 @@ class CreateController extends AbstractActionController
              ->addUse('Zend\View\Model\ViewModel');
 
         $code->setName($controller)
-             ->addMethods(array(
-                new Generator\MethodGenerator(
-                    'indexAction',
-                    array(),
-                    Generator\MethodGenerator::FLAG_PUBLIC,
-                    'return new ViewModel();'
-                ),
-             ))
+             ->addMethods([
+                 new Generator\MethodGenerator(
+                     'indexAction',
+                     [],
+                     Generator\MethodGenerator::FLAG_PUBLIC,
+                     'return new ViewModel();'
+                 ),
+             ])
              ->setExtendedClass('AbstractActionController');
 
         $file = new Generator\FileGenerator(
-            array(
-                'classes'  => array($code),
-            )
+            [
+                'classes' => [$code],
+            ]
         );
 
         $filter = new CamelCaseToDashFilter();
@@ -145,30 +144,29 @@ class CreateController extends AbstractActionController
         }
 
         $phtml = false;
-        $phtmlPath = $dir . "/index.phtml";
-        if (file_put_contents($phtmlPath, 'Action "index", controller "'.$ucName.'", module "'.$module.'".')) {
+        $phtmlPath = $dir . '/index.phtml';
+        if (file_put_contents($phtmlPath, 'Action "index", controller "' . $ucName . '", module "' . $module . '".')) {
             $phtml = true;
         }
 
         if (file_put_contents($ctrlPath, $file->generate()) && $phtml == true) {
             $console->writeLine("The controller $name has been created in module $module.", Color::GREEN);
         } else {
-            $console->writeLine("There was an error during controller creation.", Color::RED);
+            $console->writeLine('There was an error during controller creation.', Color::RED);
         }
     }
 
     public function methodAction()
     {
-        $console        = $this->serviceLocator->get('console');
-        $request        = $this->getRequest();
-        $action         = $request->getParam('name');
-        $controller     = $request->getParam('controllerName');
-        $module         = $request->getParam('module');
-        $path           = $request->getParam('path', '.');
-        $ucController   = ucfirst($controller);
+        $console = $this->serviceLocator->get('console');
+        $request = $this->getRequest();
+        $action = $request->getParam('name');
+        $controller = $request->getParam('controllerName');
+        $module = $request->getParam('module');
+        $path = $request->getParam('path', '.');
+        $ucController = ucfirst($controller);
         $controllerPath = sprintf('%s/module/%s/src/%s/Controller/%sController.php', $path, $module, $module, $ucController);
-        $class          = sprintf('%s\\Controller\\%sController', $module, $ucController);
-
+        $class = sprintf('%s\\Controller\\%sController', $module, $ucController);
 
         $console->writeLine("Creating action '$action' in controller '$module\\Controller\\$controller'.", Color::YELLOW);
 
@@ -183,7 +181,7 @@ class CreateController extends AbstractActionController
             );
         }
 
-        $fileReflection  = new Reflection\FileReflection($controllerPath, true);
+        $fileReflection = new Reflection\FileReflection($controllerPath, true);
         $classReflection = $fileReflection->getClass($class);
 
         $classGenerator = Generator\ClassGenerator::fromReflection($classReflection);
@@ -197,22 +195,22 @@ class CreateController extends AbstractActionController
             );
         }
 
-        $classGenerator->addMethods(array(
+        $classGenerator->addMethods([
             new Generator\MethodGenerator(
                 $action . 'Action',
-                array(),
+                [],
                 Generator\MethodGenerator::FLAG_PUBLIC,
                 'return new ViewModel();'
             ),
-        ));
+        ]);
 
         $fileGenerator = new Generator\FileGenerator(
-            array(
-                'classes'  => array($classGenerator),
-            )
+            [
+                'classes' => [$classGenerator],
+            ]
         );
 
-        $filter    = new CamelCaseToDashFilter();
+        $filter = new CamelCaseToDashFilter();
         $phtmlPath = sprintf(
             '%s/module/%s/view/%s/%s/%s.phtml',
             $path,
@@ -224,16 +222,16 @@ class CreateController extends AbstractActionController
         if (!file_exists($phtmlPath)) {
             $contents = sprintf("Module: %s\nController: %s\nAction: %s", $module, $controller, $action);
             if (file_put_contents($phtmlPath, $contents)) {
-                $console->writeLine(sprintf("Created view script at %s", $phtmlPath), Color::GREEN);
+                $console->writeLine(sprintf('Created view script at %s', $phtmlPath), Color::GREEN);
             } else {
-                $console->writeLine(sprintf("An error occurred when attempting to create view script at location %s", $phtmlPath), Color::RED);
+                $console->writeLine(sprintf('An error occurred when attempting to create view script at location %s', $phtmlPath), Color::RED);
             }
         }
 
         if (file_put_contents($controllerPath, $fileGenerator->generate())) {
             $console->writeLine(sprintf('The action %s has been created in controller %s\\Controller\\%s.', $action, $module, $controller), Color::GREEN);
         } else {
-            $console->writeLine("There was an error during action creation.", Color::RED);
+            $console->writeLine('There was an error during action creation.', Color::RED);
         }
     }
 
@@ -246,7 +244,7 @@ class CreateController extends AbstractActionController
 
         $moduleName = $request->getParam('name');
 
-        $currentParams->set('module',$moduleName);
+        $currentParams->set('module', $moduleName);
 
         $currentParams->set('name', $moduleName);
 
@@ -256,16 +254,15 @@ class CreateController extends AbstractActionController
         $this->adminFormAction();
         $this->adminModelAction();
         $this->adminTableAction();
-
     }
 
     public function moduleAction()
     {
         $console = $this->serviceLocator->get('console');
-        $tmpDir  = sys_get_temp_dir();
+        $tmpDir = sys_get_temp_dir();
         $request = $this->getRequest();
-        $name    = $request->getParam('name');
-        $path    = rtrim($request->getParam('path'), '/');
+        $name = $request->getParam('name');
+        $path = rtrim($request->getParam('path'), '/');
 
         if (empty($path)) {
             $path = '.';
@@ -297,13 +294,13 @@ class CreateController extends AbstractActionController
         $application = require "$path/config/application.config.php";
         if (!in_array($name, $application['modules'])) {
             $application['modules'][] = $name;
-            copy ("$path/config/application.config.php", "$path/config/application.config.old");
+            copy("$path/config/application.config.php", "$path/config/application.config.old");
             $content = <<<EOD
 <?php
 
 EOD;
 
-            $content .= 'return '. Skeleton::exportConfig($application) . ";\n";
+            $content .= 'return ' . Skeleton::exportConfig($application) . ";\n";
             file_put_contents("$path/config/application.config.php", $content);
         }
         if ($path === '.') {
@@ -317,9 +314,9 @@ EOD;
     {
         $console = $this->serviceLocator->get('console');
         $request = $this->getRequest();
-        $name    = $request->getParam('name');
-        $module  = $request->getParam('module');
-        $path    = $request->getParam('path', '.');
+        $name = $request->getParam('name');
+        $module = $request->getParam('module');
+        $path = $request->getParam('path', '.');
 
         $modelPath = "$path/module/$name/src/$name/Model";
 
@@ -329,7 +326,7 @@ EOD;
 
         $module = $name;
 
-        $name = preg_replace("/^Am/","",$name) . ($isLocale ? "Locale" : "");
+        $name = preg_replace('/^Am/', '', $name) . ($isLocale ? 'Locale' : '');
 
         if (!file_exists("$path/module") || !file_exists("$path/config/application.config.php")) {
             $console->writeLine("The path $path doesn't contain a ZF2 application. I cannot create a module here.", Color::RED);
@@ -340,8 +337,8 @@ EOD;
             return;
         }
 
-        $ucName     = ucfirst($name);
-        $ctrlPath   = $path . '/module/' . $module . '/src/' . $module . '/Model/' . $ucName.'Model.php';
+        $ucName = ucfirst($name);
+        $ctrlPath = $path . '/module/' . $module . '/src/' . $module . '/Model/' . $ucName . 'Model.php';
         $model = $ucName . 'Model';
 
         $code = new Generator\ClassGenerator();
@@ -352,15 +349,15 @@ EOD;
             ->setExtendedClass('AdministratorModel');
 
         $file = new Generator\FileGenerator(
-            array(
-                'classes'  => array($code),
-            )
+            [
+                'classes' => [$code],
+            ]
         );
 
         if (file_put_contents($ctrlPath, $file->generate())) {
             $console->writeLine("The model $name has been created in module $module.", Color::GREEN);
         } else {
-            $console->writeLine("There was an error during model creation.", Color::RED);
+            $console->writeLine('There was an error during model creation.', Color::RED);
         }
     }
 
@@ -368,8 +365,8 @@ EOD;
     {
         $console = $this->serviceLocator->get('console');
         $request = $this->getRequest();
-        $name    = $request->getParam('name');
-        $path    = $request->getParam('path', '.');
+        $name = $request->getParam('name');
+        $path = $request->getParam('path', '.');
 
         $modelPath = "$path/module/$name/src/$name/Model";
 
@@ -379,7 +376,7 @@ EOD;
 
         $module = $name;
 
-        $name = preg_replace("/^Am/","",$name) . ($isLocale ? "Locale" : "");
+        $name = preg_replace('/^Am/', '', $name) . ($isLocale ? 'Locale' : '');
 
         if (!file_exists("$path/module") || !file_exists("$path/config/application.config.php")) {
             $console->writeLine("The path $path doesn't contain a ZF2 application. I cannot create a module here.", Color::RED);
@@ -390,8 +387,8 @@ EOD;
             return;
         }
 
-        $ucName     = ucfirst($name);
-        $ctrlPath   = $path . '/module/' . $module . '/src/' . $module . '/Model/' . $ucName.'Table.php';
+        $ucName = ucfirst($name);
+        $ctrlPath = $path . '/module/' . $module . '/src/' . $module . '/Model/' . $ucName . 'Table.php';
 
         $table = $ucName . 'Table';
 
@@ -400,19 +397,19 @@ EOD;
             ->addUse('Administrator\Model\AdministratorTable');
 
         $code->setName($table)
-            ->addProperty('table','',Generator\PropertyGenerator::FLAG_PROTECTED)
+            ->addProperty('table', '', Generator\PropertyGenerator::FLAG_PROTECTED)
             ->setExtendedClass('AdministratorTable');
 
         $file = new Generator\FileGenerator(
-            array(
-                'classes'  => array($code),
-            )
+            [
+                'classes' => [$code],
+            ]
         );
 
         if (file_put_contents($ctrlPath, $file->generate())) {
             $console->writeLine("The table $name has been created in module $module.", Color::GREEN);
         } else {
-            $console->writeLine("There was an error during table creation.", Color::RED);
+            $console->writeLine('There was an error during table creation.', Color::RED);
         }
     }
 
@@ -420,8 +417,8 @@ EOD;
     {
         $console = $this->serviceLocator->get('console');
         $request = $this->getRequest();
-        $name    = $request->getParam('name');
-        $path    = $request->getParam('path', '.');
+        $name = $request->getParam('name');
+        $path = $request->getParam('path', '.');
 
         $formPath = "$path/module/$name/src/$name/Form";
 
@@ -431,16 +428,16 @@ EOD;
 
         $module = $name;
 
-        $name = preg_replace("/^Am/","",$name) . ($isLocale ? "Locale" : "") . "Fieldset";
+        $name = preg_replace('/^Am/', '', $name) . ($isLocale ? 'Locale' : '') . 'Fieldset';
 
         if (!file_exists("$path/module") || !file_exists("$path/config/application.config.php")) {
             $console->writeLine("The path $path doesn't contain a ZF2 application. I cannot create a module here.", Color::RED);
             return;
         }
 
-        $ucName     = ucfirst($name);
+        $ucName = ucfirst($name);
 
-        $ctrlPath   = $path . '/module/' . $module . '/src/' . $module . '/Form/' . $ucName.'.php';
+        $ctrlPath = $path . '/module/' . $module . '/src/' . $module . '/Form/' . $ucName . '.php';
 
         //Generamos el fieldset
         if (file_exists($ctrlPath)) {
@@ -457,15 +454,15 @@ EOD;
             ->setExtendedClass('AdministratorFieldset');
 
         $file = new Generator\FileGenerator(
-            array(
-                'classes'  => array($code),
-            )
+            [
+                'classes' => [$code],
+            ]
         );
 
         if (file_put_contents($ctrlPath, $file->generate())) {
             $console->writeLine("The fieldset $name has been created in module $module.", Color::GREEN);
         } else {
-            $console->writeLine("There was an error during fieldset creation.", Color::RED);
+            $console->writeLine('There was an error during fieldset creation.', Color::RED);
         }
     }
 
@@ -473,9 +470,9 @@ EOD;
     {
         $console = $this->serviceLocator->get('console');
         $request = $this->getRequest();
-        $name    = $request->getParam('name');
-        $module  = $request->getParam('module');
-        $path    = $request->getParam('path', '.');
+        $name = $request->getParam('name');
+        $module = $request->getParam('module');
+        $path = $request->getParam('path', '.');
 
         $formPath = "$path/module/$name/src/$name/Form";
 
@@ -483,7 +480,7 @@ EOD;
             mkdir($formPath, 0777, true);
         }
 
-        $name = preg_replace("/^Am/","",$name);
+        $name = preg_replace('/^Am/', '', $name);
 
         if (!file_exists("$path/module") || !file_exists("$path/config/application.config.php")) {
             $console->writeLine("The path $path doesn't contain a ZF2 application. I cannot create a module here.", Color::RED);
@@ -492,9 +489,9 @@ EOD;
 
         $formExists = false;
 
-        $ucName     = ucfirst($name);
+        $ucName = ucfirst($name);
 
-        $ctrlPath   = $path . '/module/' . $module . '/src/' . $module . '/Form/' . $ucName.'Form.php';
+        $ctrlPath = $path . '/module/' . $module . '/src/' . $module . '/Form/' . $ucName . 'Form.php';
 
         if (file_exists($ctrlPath)) {
             $console->writeLine("The form $name already exists in module $module.", Color::RED);
@@ -511,16 +508,16 @@ EOD;
             ->setExtendedClass('Form');
 
         $file = new Generator\FileGenerator(
-            array(
-                'classes'  => array($code),
-            )
+            [
+                'classes' => [$code],
+            ]
         );
 
         if (!$formExists) {
             if (file_put_contents($ctrlPath, $file->generate())) {
                 $console->writeLine("The form $name has been created in module $module.", Color::GREEN);
             } else {
-                $console->writeLine("There was an error during form creation.", Color::RED);
+                $console->writeLine('There was an error during form creation.', Color::RED);
             }
         }
 
@@ -533,9 +530,9 @@ EOD;
         $console = $this->serviceLocator->get('console');
 
         $request = $this->getRequest();
-        $name    = $request->getParam('name') . 'Module';
-        $module  = $request->getParam('module');
-        $path    = $request->getParam('path', '.');
+        $name = $request->getParam('name') . 'Module';
+        $module = $request->getParam('module');
+        $path = $request->getParam('path', '.');
 
         if (!file_exists("$path/module") || !file_exists("$path/config/application.config.php")) {
             $console->writeLine("The path $path doesn't contain a ZF2 application. I cannot create a module here.", Color::RED);
@@ -546,39 +543,38 @@ EOD;
             return;
         }
 
-        $ucName     = ucfirst($name);
-        $ctrlPath   = $path . '/module/' . $module . '/src/' . $module . '/Controller/' . $ucName.'Controller.php';
+        $ucName = ucfirst($name);
+        $ctrlPath = $path . '/module/' . $module . '/src/' . $module . '/Controller/' . $ucName . 'Controller.php';
         $controller = $ucName . 'Controller';
 
-        $formClass = ucfirst(preg_replace("/^Am/","",$module)) . 'Form';
+        $formClass = ucfirst(preg_replace('/^Am/', '', $module)) . 'Form';
 
         $code = new Generator\ClassGenerator();
         $code->setNamespaceName(ucfirst($module) . '\Controller')
             ->addUse('Administrator\Controller\AuthController')
             ->addUse('Administrator\Traits\AddAction')
             ->addUse('Administrator\Traits\EditAction')
-            ->addUse('Administrator\Traits\IndexAction')
-        ;
+            ->addUse('Administrator\Traits\IndexAction');
 
         $code->setName($controller)
-            ->addProperty("form",$module.'\Form\\'.$formClass,Generator\PropertyGenerator::FLAG_PROTECTED)
-            ->addTraits(array(
+            ->addProperty('form', $module . '\Form\\' . $formClass, Generator\PropertyGenerator::FLAG_PROTECTED)
+            ->addTraits([
                 'indexAction',
                 'addAction',
                 'editAction',
-            ))
+            ])
             ->setExtendedClass('AuthController');
 
         $file = new Generator\FileGenerator(
-            array(
-                'classes'  => array($code),
-            )
+            [
+                'classes' => [$code],
+            ]
         );
 
         if (file_put_contents($ctrlPath, $file->generate())) {
             $console->writeLine("The controller $name has been created in module $module.", Color::GREEN);
         } else {
-            $console->writeLine("There was an error during controller creation.", Color::RED);
+            $console->writeLine('There was an error during controller creation.', Color::RED);
         }
     }
 
@@ -590,8 +586,8 @@ EOD;
         $console = $this->serviceLocator->get('console');
 
         $request = $this->getRequest();
-        $name    = $request->getParam('name');
-        $path    = $request->getParam('path', '.');
+        $name = $request->getParam('name');
+        $path = $request->getParam('path', '.');
 
         if (!file_exists("$path/module") || !file_exists("$path/config/application.config.php")) {
             $console->writeLine("The path $path doesn't contain a ZF2 application. I cannot create a module here.", Color::RED);
@@ -606,22 +602,21 @@ EOD;
             mkdir($dir, 0777, true);
         }
 
-        $phtmlPath = $dir . "/index.phtml";
+        $phtmlPath = $dir . '/index.phtml';
         if (!file_exists($phtmlPath)) {
             if (file_put_contents($phtmlPath, Skeleton::getIndexView())) {
                 $console->writeLine("The view index.phtml has been created in module $name.", Color::GREEN);
             }
         }
 
-        $phtmlPath = $dir . "/add.phtml";
+        $phtmlPath = $dir . '/add.phtml';
         if (!file_exists($phtmlPath)) {
             if (file_put_contents($phtmlPath, Skeleton::getAddView())) {
                 $console->writeLine("The view add.phtml has been created in module $name.", Color::GREEN);
             }
         }
 
-
-        $phtmlPath = $dir . "/edit.phtml";
+        $phtmlPath = $dir . '/edit.phtml';
         if (!file_exists($phtmlPath)) {
             if (file_put_contents($phtmlPath, Skeleton::getAddView())) {
                 $console->writeLine("The view edit.phtml has been created in module $name.", Color::GREEN);

@@ -1,7 +1,7 @@
 <?php
 
-return array(
+return [
     'company' => 'empresa',
     'jobs' => 'trabajos',
     'contact' => 'contacto',
-);
+];

@@ -6,7 +6,4 @@ use Administrator\Model\AdministratorModel;
 
 class JobLocaleModel extends AdministratorModel
 {
-
-
 }
-

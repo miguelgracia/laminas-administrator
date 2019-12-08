@@ -8,7 +8,7 @@ trait EditAction
 {
     public function editAction()
     {
-        $thisModule =  $this->event->getRouteMatch()->getParam('module');
+        $thisModule = $this->event->getRouteMatch()->getParam('module');
 
         $id = (int) $this->params()->fromRoute('id', 0);
 
@@ -27,7 +27,6 @@ trait EditAction
         $request = $this->getRequest();
 
         if ($request->isPost()) {
-
             $isValid = $this->formService->resolveForm($request->getPost());
 
             if ($isValid) {
@@ -40,7 +39,7 @@ trait EditAction
 
         $blocks = $this->parseTriggers();
 
-        $viewParams = compact( 'form', 'title', 'blocks');
+        $viewParams = compact('form', 'title', 'blocks');
 
         $addAction = AdministratorForm::ACTION_ADD;
 
@@ -49,8 +48,8 @@ trait EditAction
         if ($this->profilePermissionService->hasModuleAccess($module, $addAction)) {
             $controller = $this->getPluginManager()->getController();
 
-            if (method_exists($controller, $addAction .'Action')) {
-                $viewParams['add_action'] = $controller->goToSection($module, array('action' => $addAction), true);
+            if (method_exists($controller, $addAction . 'Action')) {
+                $viewParams['add_action'] = $controller->goToSection($module, ['action' => $addAction], true);
             }
         }
 

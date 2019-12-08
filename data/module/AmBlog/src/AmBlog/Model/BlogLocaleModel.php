@@ -6,7 +6,4 @@ use Administrator\Model\AdministratorModel;
 
 class BlogLocaleModel extends AdministratorModel
 {
-
-
 }
-

@@ -15,12 +15,11 @@ trait IndexAction
         $this->datatableService->setConfig(
             $this->datatableConfigService->getQueryConfig() +
             $this->datatableConfigService->getDatatableConfig(),
-            $this->request->getPost('columns',[]),
-            $this->request->getPost('order',[])
+            $this->request->getPost('columns', []),
+            $this->request->getPost('order', [])
         );
 
         if ($this->request->isPost()) {
-
             $this->datatableService->setPagination(
                 $this->request->getPost('start', 1),
                 $this->request->getPost('length', 1)
@@ -29,11 +28,11 @@ trait IndexAction
             return $this->getResponse()->setContent(json_encode($this->datatableService->getData()));
         }
 
-        $viewParams = array(
-            'settings' => array(
+        $viewParams = [
+            'settings' => [
                 'headers' => $this->datatableService->getHeaderFields()
-            )
-         ) + $this->datatableConfigService->getViewParams();
+            ]
+        ] + $this->datatableConfigService->getViewParams();
 
         return (new ViewModel($viewParams))
             ->setTemplate('administrator/list-datatable');

@@ -4,14 +4,14 @@ namespace AmUser\Form;
 
 use Administrator\Form\AdministratorForm;
 
-class AmUserForm extends AdministratorForm {
-
+class AmUserForm extends AdministratorForm
+{
     public function initializers()
     {
-        return array(
-            'fieldsets' => array(
+        return [
+            'fieldsets' => [
                 UserFieldset::class,
-            )
-        );
+            ]
+        ];
     }
 }

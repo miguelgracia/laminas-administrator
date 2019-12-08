@@ -8,7 +8,7 @@ class JobTable extends AdministratorTable
 {
     protected $table = 'jobs';
 
-    public const ENTITY_MODEL_CLASS =  JobModel::class;
+    public const ENTITY_MODEL_CLASS = JobModel::class;
 
     public function save($model, $id = 0, $fieldKey = 'id')
     {

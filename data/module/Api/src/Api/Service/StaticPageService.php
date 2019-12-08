@@ -12,7 +12,7 @@ class StaticPageService implements AllowDatabaseAccessInterface
     protected $tableName = StaticPageTable::class;
     protected $tableLocaleName = StaticPageLocaleTable::class;
 
-    protected $cacheData = array();
+    protected $cacheData = [];
 
     public function getData()
     {
@@ -20,13 +20,13 @@ class StaticPageService implements AllowDatabaseAccessInterface
             return $this->cacheData[__FUNCTION__];
         }
 
-        $result = array(
-            'rows' => $this->table->all(array(
+        $result = [
+            'rows' => $this->table->all([
                 'active' => '1',
                 'deleted_at' => null
-            ))->setFetchGroupResultSet('id')->toArray(),
-            'locale' => $this->tableLocale->findLocales()->setFetchGroupResultSet('languageCode','urlKey')->toArray()
-        );
+            ])->setFetchGroupResultSet('id')->toArray(),
+            'locale' => $this->tableLocale->findLocales()->setFetchGroupResultSet('languageCode', 'urlKey')->toArray()
+        ];
 
         $this->cacheData[__FUNCTION__] = $result;
 

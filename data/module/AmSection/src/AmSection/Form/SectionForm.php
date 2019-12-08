@@ -8,11 +8,11 @@ class SectionForm extends AdministratorForm
 {
     public function initializers()
     {
-        return array(
-            'fieldsets' => array(
+        return [
+            'fieldsets' => [
                 SectionFieldset::class,
                 SectionLocaleFieldset::class,
-            )
-        );
+            ]
+        ];
     }
 }

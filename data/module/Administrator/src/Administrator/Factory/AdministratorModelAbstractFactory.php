@@ -15,7 +15,7 @@ class AdministratorModelAbstractFactory implements AbstractFactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         if (!class_exists($requestedName)) {
-            $requestedName = (new \ReflectionClass($requestedName))->getNamespaceName()."\\AdministratorModel";
+            $requestedName = (new \ReflectionClass($requestedName))->getNamespaceName() . '\\AdministratorModel';
         }
 
         if (!$container->has($requestedName)) {
@@ -24,5 +24,4 @@ class AdministratorModelAbstractFactory implements AbstractFactoryInterface
 
         return new $requestedName;
     }
-
 }

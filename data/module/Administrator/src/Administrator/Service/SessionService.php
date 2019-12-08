@@ -15,16 +15,16 @@ class SessionService implements FactoryInterface, SessionServiceInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $this->initSession(array(
+        $this->initSession([
             'remember_me_seconds' => 180,
             'use_cookies' => true,
             'cookie_httponly' => true,
-        ));
+        ]);
 
         return new Container('administrator');
     }
 
-    public function initSession(Array $config)
+    public function initSession(array $config)
     {
         $sessionConfig = new SessionConfig();
         $sessionConfig->setOptions($config);

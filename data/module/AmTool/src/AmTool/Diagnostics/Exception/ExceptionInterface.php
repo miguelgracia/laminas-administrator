@@ -13,4 +13,5 @@ namespace AmTool\Diagnostics\Exception;
  * Zend_Session_Exception
  */
 interface ExceptionInterface
-{}
+{
+}

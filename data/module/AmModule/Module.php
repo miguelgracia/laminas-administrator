@@ -23,14 +23,15 @@ class Module
         $adminModules = $serviceManager->get(ModuleService::class)->getModules();
 
         foreach ($adminModules as $module) {
-            $translateFile = __DIR__."/../$module/language/$locale/locale.php";
-            $translateFile = str_replace('/',DIRECTORY_SEPARATOR,$translateFile);
+            $translateFile = __DIR__ . "/../$module/language/$locale/locale.php";
+            $translateFile = str_replace('/', DIRECTORY_SEPARATOR, $translateFile);
             if (is_file($translateFile)) {
                 $translator->getTranslator()->addTranslationFile(
                     'phpArray',
                     $translateFile,
                     'default',
-                    $locale);
+                    $locale
+                );
             }
         }
     }

@@ -8,5 +8,5 @@ class SectionLocaleTable extends AdministratorTable
 {
     protected $table = 'app_routes_locales';
 
-    public const ENTITY_MODEL_CLASS =  SectionLocaleModel::class;
+    public const ENTITY_MODEL_CLASS = SectionLocaleModel::class;
 }

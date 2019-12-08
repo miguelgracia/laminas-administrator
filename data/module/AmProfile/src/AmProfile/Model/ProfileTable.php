@@ -7,13 +7,13 @@ use Administrator\Model\AdministratorTable;
 
 class ProfileTable extends AdministratorTable
 {
-    protected $table = "admin_profiles";
+    protected $table = 'admin_profiles';
 
-    public const ENTITY_MODEL_CLASS =  ProfileModel::class;
+    public const ENTITY_MODEL_CLASS = ProfileModel::class;
 
     public function deletePerfil($id)
     {
-        $this->delete(array('id' => (int) $id));
+        $this->delete(['id' => (int) $id]);
     }
 
     public function find($id, $key = 'id')

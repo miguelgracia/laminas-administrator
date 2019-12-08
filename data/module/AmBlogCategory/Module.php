@@ -1,4 +1,5 @@
 <?php
+
 namespace AmBlogCategory;
 
 use Autoload\ModuleConfigTrait;

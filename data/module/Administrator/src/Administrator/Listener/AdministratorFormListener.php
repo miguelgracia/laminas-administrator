@@ -7,21 +7,21 @@ use Zend\EventManager\EventManagerInterface;
 
 class AdministratorFormListener implements ListenerAggregateInterface
 {
-    protected $listeners = array();
+    protected $listeners = [];
 
-    public function attach(EventManagerInterface $events)
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
         $sharedEvents = $events->getSharedManager();
 
-        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService','create.init.form',array($this,'onCreateInitForm'),100);
-        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService','create.form.valid.success',array($this,'onCreateFormValidSuccess'),100);
-        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService','create.form.valid.failed',array($this,'onCreateFormValidFailed'),100);
-        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService','create.form.save',array($this,'onCreateFormSave'),100);
+        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService', 'create.init.form', [$this, 'onCreateInitForm'], 100);
+        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService', 'create.form.valid.success', [$this, 'onCreateFormValidSuccess'], 100);
+        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService', 'create.form.valid.failed', [$this, 'onCreateFormValidFailed'], 100);
+        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService', 'create.form.save', [$this, 'onCreateFormSave'], 100);
 
-        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService','update.init.form',array($this,'onUpdateInitForm'),100);
-        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService','update.form.valid.success',array($this,'onUpdateFormValidSuccess'),100);
-        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService','update.form.valid.failed',array($this,'onUpdateFormValidFailed'),100);
-        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService','update.form.save',array($this,'onUpdateFormSave'),100);
+        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService', 'update.init.form', [$this, 'onUpdateInitForm'], 100);
+        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService', 'update.form.valid.success', [$this, 'onUpdateFormValidSuccess'], 100);
+        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService', 'update.form.valid.failed', [$this, 'onUpdateFormValidFailed'], 100);
+        $this->listeners[] = $sharedEvents->attach('Administrator\Service\AdministratorFormService', 'update.form.save', [$this, 'onUpdateFormSave'], 100);
     }
 
     public function detach(EventManagerInterface $events)

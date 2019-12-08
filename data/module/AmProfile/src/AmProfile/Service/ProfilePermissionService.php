@@ -1,4 +1,5 @@
 <?php
+
 namespace AmProfile\Service;
 
 use Zend\Filter\Word\DashToCamelCase;
@@ -9,7 +10,7 @@ class ProfilePermissionService
 
     protected $controllerActionModules;
 
-    public function __construct($userData, $controllerActionModules )
+    public function __construct($userData, $controllerActionModules)
     {
         $this->userData = $userData;
         $this->controllerActionModules = $controllerActionModules;
@@ -40,7 +41,7 @@ class ProfilePermissionService
             return 1;
         }
 
-        $hasModuleAccess = in_array($controller.'.'.$action, json_decode($this->userData->permissions));
+        $hasModuleAccess = in_array($controller . '.' . $action, json_decode($this->userData->permissions));
 
         return (int) $hasModuleAccess;
     }
@@ -52,8 +53,7 @@ class ProfilePermissionService
         }
 
         foreach ($dataMenu as $i => $menuTemp) {
-
-            if ($menuTemp->zendName != '' and !$this->hasModuleAccess($menuTemp->zendName,$menuTemp->action)) {
+            if ($menuTemp->zendName != '' and !$this->hasModuleAccess($menuTemp->zendName, $menuTemp->action)) {
                 /**
                  * El usuario no tiene permisos de acceso. Eliminamos el registro del array
                  */
@@ -67,7 +67,7 @@ class ProfilePermissionService
                 continue;
             }
 
-            foreach($menuTemp->hijos as $indexHijo => $hijo) {
+            foreach ($menuTemp->hijos as $indexHijo => $hijo) {
                 if ($hijo->action === '' or $this->hasModuleAccess($hijo->zendName, $hijo->action)) {
                     continue;
                 }

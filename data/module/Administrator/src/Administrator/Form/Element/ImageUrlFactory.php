@@ -15,11 +15,11 @@ class ImageUrlFactory implements FactoryInterface
         $youtubeVideos = $container->get(YoutubeService::class)->getVideosInDatabase();
 
         return $imageUrl
-            ->setOption('partial_view','administrator/form-partial/image-url')
+            ->setOption('partial_view', 'administrator/form-partial/image-url')
             ->setOption('allow_add_multiple_files', true)
             ->setAttribute('type', 'text')
             ->setAttribute('class', 'browsefile')
             ->setAttribute('readonly', 'readonly')
-            ->setAttribute('data-youtube',json_encode($youtubeVideos->toObjectArray()));
+            ->setAttribute('data-youtube', json_encode($youtubeVideos->toObjectArray()));
     }
 }

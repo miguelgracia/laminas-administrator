@@ -6,19 +6,18 @@ use OpenGraph\Service\OpenGraphService;
 use OpenGraph\View\Helper\OpenGraphTag;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
-return array(
-
-    'service_manager' => array(
+return [
+    'service_manager' => [
         'aliases' => [
             'OpenGraph' => OpenGraphService::class
         ],
-        'factories' => array(
+        'factories' => [
             OpenGraphService::class => InvokableFactory::class
-        )
-    ),
+        ]
+    ],
     'view_helpers' => [
-        'factories' => array(
+        'factories' => [
             'OpenGraphTag' => OpenGraphTag::class
-        )
+        ]
     ]
-);
+];

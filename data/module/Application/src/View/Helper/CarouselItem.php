@@ -2,7 +2,6 @@
 
 namespace Application\View\Helper;
 
-
 use Administrator\Validator\Youtube;
 use Zend\Code\Scanner\FileScanner;
 use Zend\Filter\BaseName;
@@ -46,14 +45,14 @@ class CarouselItem extends AbstractHelper
             $elementPath = $_SERVER['DOCUMENT_ROOT'] . $path;
 
             $isImage = new IsImage();
-            $mimeVideo = new MimeType(array('video','application'));
+            $mimeVideo = new MimeType(['video', 'application']);
 
             if ($isImage->isValid($elementPath)) {
-                return "<i class='fa fa-search-plus'></i><img class='img-responsive' src='$path' alt='".$title->renderTitle()."'>";
-            } elseif($mimeVideo->isValid($elementPath)) {
+                return "<i class='fa fa-search-plus'></i><img class='img-responsive' src='$path' alt='" . $title->renderTitle() . "'>";
+            } elseif ($mimeVideo->isValid($elementPath)) {
                 $dirName = $dirFilter->filter($path);
                 $baseName = $baseNameFilter->filter($path);
-                $videoPoster = $dirName .'/video-poster-'.md5($baseName).'.jpg';
+                $videoPoster = $dirName . '/video-poster-' . md5($baseName) . '.jpg';
                 return "<video poster='$videoPoster' width='100%' controls src='$path'></video>";
             }
 
@@ -63,9 +62,9 @@ class CarouselItem extends AbstractHelper
         }
     }
 
-    public function render($elementsPath = array())
+    public function render($elementsPath = [])
     {
-        $html = array();
+        $html = [];
 
         foreach ($elementsPath as $elementPath) {
             $element = $this->getHtmlElementByPath($elementPath);
@@ -73,6 +72,6 @@ class CarouselItem extends AbstractHelper
                 $html[] = sprintf($this->getItemWrapper($elementPath), $element);
             }
         }
-        return implode("\n",$html);
+        return implode("\n", $html);
     }
 }

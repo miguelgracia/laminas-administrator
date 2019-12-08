@@ -10,7 +10,7 @@ class ContactController extends ApplicationController
 {
     public function indexAction()
     {
-        $prg = $this->prg($this->url()->fromRoute('locale/contact', ['locale' => $this->lang]),true);
+        $prg = $this->prg($this->url()->fromRoute('locale/contact', ['locale' => $this->lang]), true);
 
         if ($prg instanceof \Zend\Http\PhpEnvironment\Response) {
             // Returned a response to redirect us.
@@ -31,17 +31,15 @@ class ContactController extends ApplicationController
         $ogFacebook->title = $this->headTitleHelper->renderTitle();
         $ogFacebook->description = $menuLangContact->metaDescription;
 
-        $this->layout()->setVariable('og',$ogFacebook);
+        $this->layout()->setVariable('og', $ogFacebook);
 
         $mailSended = null;
 
         if ($prg === false) {
-
             if (!isset($menu->rows->contact) or $menu->rows->contact->active == 0) {
                 $this->getResponse()->setStatusCode(404);
             }
         } else {
-
             $contactService = $this->serviceManager->get(ContactService::class);
             $contactService->bindForm($prg);
 
@@ -53,13 +51,13 @@ class ContactController extends ApplicationController
             }
         }
 
-        return new ViewModel(array(
-            'formObject'     => $form,
-            'legal'          => $this->serviceManager->get(StaticPageService::class)->getData(),
-            'menu'           => $this->menu,
-            'lang'           => $this->lang,
-            'appData'        => $this->appData,
-            'mailSended'     => $mailSended,
-        ));
+        return new ViewModel([
+            'formObject' => $form,
+            'legal' => $this->serviceManager->get(StaticPageService::class)->getData(),
+            'menu' => $this->menu,
+            'lang' => $this->lang,
+            'appData' => $this->appData,
+            'mailSended' => $mailSended,
+        ]);
     }
 }

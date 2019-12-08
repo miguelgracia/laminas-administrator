@@ -21,10 +21,10 @@ class AdministratorFormRow extends AbstractHelper
     private function localeTabTemplate($tplType = '')
     {
         switch ($tplType) {
-            case "link":
+            case 'link':
                 $template = "<li class='%s'><a href='#tab_%s' data-toggle='tab'>%s</a></li>";
                 break;
-            case "tab":
+            case 'tab':
                 $template = "<div class='tab-pane %s' id='tab_%s'>%s</div>";
                 break;
             default:
@@ -83,17 +83,16 @@ class AdministratorFormRow extends AbstractHelper
                             %s
                         </div>
                      </div>";
-
         }
 
-        array_unshift($params,$template);
+        array_unshift($params, $template);
 
-        return call_user_func_array('sprintf',$params);
+        return call_user_func_array('sprintf', $params);
     }
 
     public function renderFieldset($fieldset)
     {
-        $render = "";
+        $render = '';
 
         foreach ($fieldset as $element) {
             $render .= $this->render($element);
@@ -105,10 +104,10 @@ class AdministratorFormRow extends AbstractHelper
     public function render($formElement)
     {
         if ($formElement instanceof Form) {
-            $boxBody    = "";
-            $boxFooter  = "";
-            $localeTabs = "";
-            $linkTabs   = "";
+            $boxBody = '';
+            $boxFooter = '';
+            $localeTabs = '';
+            $linkTabs = '';
 
             $form = $formElement;
             $index = 0;
@@ -117,14 +116,14 @@ class AdministratorFormRow extends AbstractHelper
                     if ($element->getOption('is_locale')) {
                         $index++;
                         $activeClass = $linkTabs == '' ? 'active' : '';
-                        $linkTabs .= sprintf($this->localeTabTemplate('link'),$activeClass,$index,$element->getOption("tab_name"));
-                        $localeTabs .= sprintf($this->localeTabTemplate('tab'),$activeClass,$index,$this->renderFieldset($element));
+                        $linkTabs .= sprintf($this->localeTabTemplate('link'), $activeClass, $index, $element->getOption('tab_name'));
+                        $localeTabs .= sprintf($this->localeTabTemplate('tab'), $activeClass, $index, $this->renderFieldset($element));
                     } else {
                         $boxBody .= $this->renderFieldset($element);
                     }
                 } else {
                     $elementHtml = $this->render($element);
-                    if (in_array($element->getAttribute('type'), array('submit', 'button', 'hidden'))) {
+                    if (in_array($element->getAttribute('type'), ['submit', 'button', 'hidden'])) {
                         $boxFooter .= $elementHtml;
                     } else {
                         $boxBody .= $elementHtml;
@@ -134,14 +133,14 @@ class AdministratorFormRow extends AbstractHelper
 
             $tabTpl = $localeTabs != '' ? sprintf($this->localeTabTemplate(), $linkTabs, $localeTabs) : '';
 
-            return sprintf($this->formTemplate(),$boxBody,$tabTpl,$boxFooter);
+            return sprintf($this->formTemplate(), $boxBody, $tabTpl, $boxFooter);
         }
 
         $label = $this->label;
         $elementError = $this->elementError;
 
         $elementType = $formElement->getAttribute('type');
-        $dataType    = $formElement->getOption('data_type');
+        $dataType = $formElement->getOption('data_type');
         $partialView = $formElement->getOption('partial_view');
 
         if ($partialView) {
@@ -149,14 +148,13 @@ class AdministratorFormRow extends AbstractHelper
             //la l�gica de pintado (pasa a formar parte de dicha vista parcial)
             $input = $this->view->formRow()->setPartial($partialView)->render($formElement);
         } else {
-
-            $viewHelperForElementType = array(
-                'textarea'       => 'formTextarea',
-                'select'         => 'formSelect',
-                'checkbox'       => 'formRow',
+            $viewHelperForElementType = [
+                'textarea' => 'formTextarea',
+                'select' => 'formSelect',
+                'checkbox' => 'formRow',
                 'multi_checkbox' => 'formRow',
-                'submit'         => 'formSubmit'
-            );
+                'submit' => 'formSubmit'
+            ];
 
             if (array_key_exists($elementType, $viewHelperForElementType)) {
                 $input = $this->view->{$viewHelperForElementType[$elementType]}($formElement);
@@ -167,14 +165,14 @@ class AdministratorFormRow extends AbstractHelper
             }
         }
 
-        return $this->printTemplate($elementType, array(
+        return $this->printTemplate($elementType, [
             $label($formElement),
             $input,
             $elementError($formElement),
-        ));
+        ]);
     }
 
-    function __invoke()
+    public function __invoke()
     {
         $this->view = $this->getView();
 
@@ -183,9 +181,9 @@ class AdministratorFormRow extends AbstractHelper
         $this->elementError = $this->view->plugin('formElementErrors');
 
         $this->elementError
-            ->setAttributes(array(
+            ->setAttributes([
                 'class' => 'control-label error'
-            ))
+            ])
             //Cambiamos el envoltorio de los mensajes de error
             ->setMessageOpenFormat('<label%s>')
             ->setMessageSeparatorString('')

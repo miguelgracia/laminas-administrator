@@ -1,4 +1,5 @@
 <?php
+
 namespace AmProfile\Service;
 
 use Interop\Container\ContainerInterface;

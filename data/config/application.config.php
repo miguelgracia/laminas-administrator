@@ -9,10 +9,10 @@
 return [
     // Retrieve list of modules used in this application.
     'modules' => require __DIR__ . '/modules.config.php',
-    'hidden_modules' => array(
+    'hidden_modules' => [
         'AmLogin',
         'AmTool',
-    ),
+    ],
 
     // These are various options for the listeners attached to the ModuleManager
     'module_listener_options' => [

@@ -28,13 +28,13 @@ class HomeController extends ApplicationController
         $ogFacebook->title = $this->headTitleHelper->renderTitle();
         $ogFacebook->description = $menuLangHome->metaDescription;
 
-        $this->layout()->setVariable('og',$ogFacebook);
+        $this->layout()->setVariable('og', $ogFacebook);
 
-        return new ViewModel(array(
-            'homeModules'   => $this->serviceManager->get(HomeModuleService::class)->getData($this->lang),
-            'megabanners'   => $this->serviceManager->get(MegabannerService::class)->getData($this->lang),
-            'lang'          => $this->lang,
-            'menu'          => $this->menu
-        ));
+        return new ViewModel([
+            'homeModules' => $this->serviceManager->get(HomeModuleService::class)->getData($this->lang),
+            'megabanners' => $this->serviceManager->get(MegabannerService::class)->getData($this->lang),
+            'lang' => $this->lang,
+            'menu' => $this->menu
+        ]);
     }
 }

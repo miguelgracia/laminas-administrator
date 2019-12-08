@@ -1,4 +1,5 @@
 <?php
+
 namespace AmTool\Diagnostics\Reporter;
 
 use ArrayObject;
@@ -71,7 +72,9 @@ class BasicConsole implements ReporterInterface
      * @param  bool           $alias The alias being targeted by the check
      * @return bool|void      Return false to prevent check from happening
      */
-    public function onBeforeRun(CheckInterface $check, $alias = null) {}
+    public function onBeforeRun(CheckInterface $check, $alias = null)
+    {
+    }
 
     /**
      * This method is called every time a Check has been performed.
@@ -103,8 +106,10 @@ class BasicConsole implements ReporterInterface
             $this->console->write(
                 str_pad(
                     str_pad($this->iter, $this->countLength, ' ', STR_PAD_LEFT) . ' / ' . $this->total .
-                    ' (' . str_pad(round($this->iter / $this->total * 100), 3, ' ', STR_PAD_LEFT) . '%)'
-                    , $this->gutter, ' ', STR_PAD_LEFT
+                    ' (' . str_pad(round($this->iter / $this->total * 100), 3, ' ', STR_PAD_LEFT) . '%)',
+                    $this->gutter,
+                    ' ',
+                    STR_PAD_LEFT
                 )
             );
             $this->pos = 1;
@@ -146,8 +151,9 @@ class BasicConsole implements ReporterInterface
         ) {
             $line = 'OK (' . $this->total . ' diagnostic checks)';
             $this->console->writeLine(
-                str_pad($line, $this->width-1, ' ', STR_PAD_RIGHT),
-                Color::NORMAL, Color::GREEN
+                str_pad($line, $this->width - 1, ' ', STR_PAD_RIGHT),
+                Color::NORMAL,
+                Color::GREEN
             );
         } elseif ($results->getFailureCount() == 0) {
             $line = $results->getWarningCount() . ' warnings';
@@ -165,8 +171,9 @@ class BasicConsole implements ReporterInterface
             $line .= '.';
 
             $this->console->writeLine(
-                str_pad($line, $this->width-1, ' ', STR_PAD_RIGHT),
-                Color::NORMAL, Color::YELLOW
+                str_pad($line, $this->width - 1, ' ', STR_PAD_RIGHT),
+                Color::NORMAL,
+                Color::YELLOW
             );
         } else {
             $line = $results->getFailureCount() . ' failures, ';
@@ -186,7 +193,8 @@ class BasicConsole implements ReporterInterface
 
             $this->console->writeLine(
                 str_pad($line, $this->width, ' ', STR_PAD_RIGHT),
-                Color::NORMAL, Color::RED
+                Color::NORMAL,
+                Color::RED
             );
         }
 

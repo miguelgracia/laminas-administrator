@@ -1,4 +1,5 @@
 <?php
+
 namespace Administrator\Validator;
 
 use Traversable;
@@ -9,7 +10,6 @@ use Zend\Stdlib\ArrayUtils;
  */
 class IsImage extends \Zend\Validator\File\IsImage
 {
-
     /**
      * Sets validator options
      *

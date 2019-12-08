@@ -7,7 +7,6 @@ use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Having;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
-
 use Zend\Filter\Word\SeparatorToSeparator;
 use Zend\Filter\Word\UnderscoreToSeparator;
 
@@ -15,20 +14,20 @@ class DatatableService
 {
     protected $config;
 
-    protected $fields = array();
-    protected $headerFields = array();
+    protected $fields = [];
+    protected $headerFields = [];
 
     protected $columns;
     protected $order;
     protected $pageStart;
     protected $pageLength;
-    protected $parseFieldToOrder = array();
+    protected $parseFieldToOrder = [];
 
     protected $adapter;
     protected $sql;
     protected $select;
 
-    protected $rows = array();
+    protected $rows = [];
     protected $totalRecords = 0;
     protected $totalRecordsFiltered = 0;
     protected $result;
@@ -45,15 +44,15 @@ class DatatableService
         $this->sql = new Sql($adapter);
     }
 
-    public function setConfig($config = array(), $columns = [], $order = [])
+    public function setConfig($config = [], $columns = [], $order = [])
     {
         $this->config = $config;
         $this->columns = $columns;
         $this->order = $order;
 
-        $fields = array();
+        $fields = [];
 
-        $queryFields = array();
+        $queryFields = [];
 
         if (isset($this->config['fields'])) {
             $queryFields = $this->config['fields'];
@@ -65,7 +64,7 @@ class DatatableService
                     $field = $index;
                     $this->parseFieldToOrder[] = $field;
                 }
-                $fields[$this->config['from'] .'.'.$field] = $field;
+                $fields[$this->config['from'] . '.' . $field] = $field;
             }
         }
 
@@ -78,13 +77,13 @@ class DatatableService
                 if (isset($joinParams[2]) and count($joinParams[2]) > 0) {
                     $auxJoinFields = $joinParams[2];
                     $joinTable = $joinParams[0];
-                    $joinFields = array();
-                    array_walk($auxJoinFields,function(&$elem, $index) use ($joinTable, &$joinFields){
+                    $joinFields = [];
+                    array_walk($auxJoinFields, function (&$elem, $index) use ($joinTable, &$joinFields) {
                         if (!is_string($elem)) {
                             $elem = $index;
                             $this->parseFieldToOrder[] = $elem;
                         }
-                        $joinFields[$joinTable .'.'.$elem] = $elem;
+                        $joinFields[$joinTable . '.' . $elem] = $elem;
                     });
                     $fields = array_merge($fields, $joinFields);
                 }
@@ -110,34 +109,33 @@ class DatatableService
     {
         $translator = $this->translator;
 
-        $spaceSeparator  = new UnderscoreToSeparator(' ');
-        $dollarSeparator = new SeparatorToSeparator('.','$');
-
+        $spaceSeparator = new UnderscoreToSeparator(' ');
+        $dollarSeparator = new SeparatorToSeparator('.', '$');
 
         $currentFields = $this->headerFields;
         $config = $this->config;
         $fields = $currentFields + $fields;
 
-        array_walk($fields, function (&$elem, $index) use($translator,$spaceSeparator, $dollarSeparator, $config) {
+        array_walk($fields, function (&$elem, $index) use ($translator,$spaceSeparator, $dollarSeparator, $config) {
             $searchable = isset($config['searchable'][$index]) ? $config['searchable'][$index] : true;
             $orderable = isset($config['orderable'][$index]) ? $config['orderable'][$index] : true;
 
-            $elem = array(
+            $elem = [
                 'value' => $translator->translate($spaceSeparator->filter($elem)),
                 'json_key' => $dollarSeparator->filter($index),
-                'options' => array(
+                'options' => [
                     'searchable' => $searchable,
                     'orderable' => $orderable
-                ),
+                ],
                 /**
                  * attributes contendrá aquellos atributos que se añadiran
                  * a la etiqueta th de cada columna
                  */
-                'attributes' => array()
-            );
+                'attributes' => []
+            ];
         });
         if (isset($this->config['columns']) and is_callable($this->config['columns'])) {
-            $fields = call_user_func_array($this->config['columns'],array($fields));
+            $fields = call_user_func_array($this->config['columns'], [$fields]);
         }
 
         $this->headerFields = $fields;
@@ -152,7 +150,7 @@ class DatatableService
     public function setFrom($from)
     {
         $this->select = $this->sql->select($from);
-        $this->select->quantifier(new Expression("SQL_CALC_FOUND_ROWS"));
+        $this->select->quantifier(new Expression('SQL_CALC_FOUND_ROWS'));
         $this->select->columns($this->config['fields']);
         return $this;
     }
@@ -162,7 +160,7 @@ class DatatableService
         $select = $this->select;
 
         foreach ($joins as $joinParams) {
-            call_user_func_array(array($select, 'join'),$joinParams);
+            call_user_func_array([$select, 'join'], $joinParams);
         }
 
         return $this;
@@ -179,7 +177,6 @@ class DatatableService
     public function setColumnFilters()
     {
         foreach ($this->columns as $column) {
-
             if ($column['search']['value'] === '') {
                 continue;
             }
@@ -190,17 +187,17 @@ class DatatableService
             /**
              * Coge la parte del string que se encuentra después del último punto
              */
-            $fieldName = preg_replace("/(.+)\.(.+)$/", "$2", $columnName);
+            $fieldName = preg_replace("/(.+)\.(.+)$/", '$2', $columnName);
 
             //TODO: Implementar un sistema para hacer más flexible el tipo de having (having like, having >, having <...)
 
-            if (isset($this->config['having_fields']) and in_array($fieldName,$this->config['having_fields'])) {
+            if (isset($this->config['having_fields']) and in_array($fieldName, $this->config['having_fields'])) {
                 $this->select->having(function (Having $having) use ($fieldName, $columnValue) {
-                    $having->like($fieldName, '%'.$columnValue.'%');
+                    $having->like($fieldName, '%' . $columnValue . '%');
                 });
             } else {
                 $this->select->where(function (Where $where) use ($columnName, $columnValue) {
-                    $where->like($columnName, "%".$columnValue."%");
+                    $where->like($columnName, '%' . $columnValue . '%');
                 });
             }
         }
@@ -216,16 +213,15 @@ class DatatableService
 
     public function setOrder()
     {
-        $order = array();
+        $order = [];
 
         foreach ($this->order as $fieldOrder) {
-
-            $field = (new SeparatorToSeparator('$','.'))->filter($this->columns[$fieldOrder['column']]['name']);
+            $field = (new SeparatorToSeparator('$', '.'))->filter($this->columns[$fieldOrder['column']]['name']);
 
             /**
              * Coge la parte del string que se encuentra después del último punto
              */
-            $auxField = preg_replace("/(.+)\.(.+)$/", "$2", $field);
+            $auxField = preg_replace("/(.+)\.(.+)$/", '$2', $field);
 
             /**
              * Si la siguiente condición se cumple es porque el campo por el que vamos a ordenar
@@ -236,7 +232,7 @@ class DatatableService
                 $field = $auxField;
             }
 
-            $order[] = $field. ' ' . $fieldOrder['dir'];
+            $order[] = $field . ' ' . $fieldOrder['dir'];
         }
 
         $this->select->order($order);
@@ -250,7 +246,7 @@ class DatatableService
 
     public function foundRows()
     {
-        $countRows = $this->adapter->query("SELECT FOUND_ROWS() AS rows", Adapter::QUERY_MODE_EXECUTE)->toArray();
+        $countRows = $this->adapter->query('SELECT FOUND_ROWS() AS rows', Adapter::QUERY_MODE_EXECUTE)->toArray();
         return $countRows[0]['rows'];
     }
 
@@ -299,7 +295,7 @@ class DatatableService
         if (isset($_SESSION['datatable_query'])) {
             $query = $_SESSION['datatable_query'];
             if ($removeLimit) {
-                $query = preg_replace("/(LIMIT.+)$/s","",$query);
+                $query = preg_replace('/(LIMIT.+)$/s', '', $query);
             }
         }
 
@@ -331,16 +327,16 @@ class DatatableService
     public function parseRows(&$rows)
     {
         $fieldKeys = array_keys($this->headerFields);
-        $dollarSeparator = new SeparatorToSeparator('.','$');
-        array_walk($fieldKeys, function (&$elem) use($dollarSeparator){
+        $dollarSeparator = new SeparatorToSeparator('.', '$');
+        array_walk($fieldKeys, function (&$elem) use ($dollarSeparator) {
             $elem = $dollarSeparator->filter($elem);
         });
 
         foreach ($rows as &$row) {
             if (isset($this->config['parse_row_data']) and is_callable($this->config['parse_row_data'])) {
-                $row = call_user_func_array($this->config['parse_row_data'],array($row));
+                $row = call_user_func_array($this->config['parse_row_data'], [$row]);
             }
-            $row = array_combine($fieldKeys,array_values($row));
+            $row = array_combine($fieldKeys, array_values($row));
         }
     }
 

@@ -22,7 +22,7 @@ class MediaUri extends AbstractFilter
 {
     protected $relativePath = '/media/';
 
-    protected $htmlTags = array();
+    protected $htmlTags = [];
 
     /**
      * Sets filter options
@@ -48,10 +48,10 @@ class MediaUri extends AbstractFilter
 
     private function setSrc($value)
     {
-        $pregReplaceFilter = new PregReplace(array(
+        $pregReplaceFilter = new PregReplace([
             'pattern' => '/^(\/*media|\/)*/',
-            'replacement' => $this->relativePath.'$2'
-        ));
+            'replacement' => $this->relativePath . '$2'
+        ]);
 
         $youtubeValidator = new Youtube();
 
@@ -63,8 +63,7 @@ class MediaUri extends AbstractFilter
                 }
                 $val = $this->setSrc($val);
             }
-
-        } elseif($value != '') {
+        } elseif ($value != '') {
             if (!$youtubeValidator->isValid($value)) {
                 $value = $pregReplaceFilter->filter($value);
             }
@@ -72,7 +71,6 @@ class MediaUri extends AbstractFilter
 
         return $value;
     }
-
 
     /**
      * Returns the result of filtering $value
@@ -84,7 +82,6 @@ class MediaUri extends AbstractFilter
     public function filter($value)
     {
         if (is_array($this->htmlTags) and count($this->htmlTags) > 0) {
-
             $currentValue = $value;
 
             try {
@@ -108,14 +105,13 @@ class MediaUri extends AbstractFilter
                             }
                         }
                         if (!$hasClassAttribute) {
-                            $node->setAttribute('class','inline-element');
+                            $node->setAttribute('class', 'inline-element');
                         }
                     }
                 }
 
-                $value = preg_replace('/^<!DOCTYPE.+?>/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $dom->saveHTML()));
+                $value = preg_replace('/^<!DOCTYPE.+?>/', '', str_replace(['<html>', '</html>', '<body>', '</body>'], ['', '', '', ''], $dom->saveHTML()));
             } catch (\Exception $ex) {
-
                 /*
                  * El parse del html ha fallado, bien por que $value es
                  * una cadena vacía o por cualquier otro motivo

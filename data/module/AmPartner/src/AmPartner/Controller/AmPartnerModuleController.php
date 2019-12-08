@@ -15,4 +15,3 @@ class AmPartnerModuleController extends AuthController
 
     public const FORM_CLASS = PartnerForm::class;
 }
-

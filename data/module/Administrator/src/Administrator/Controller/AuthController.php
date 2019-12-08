@@ -2,7 +2,6 @@
 
 namespace Administrator\Controller;
 
-
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -16,14 +15,14 @@ abstract class AuthController extends AbstractActionController
      */
     protected $serviceLocator;
 
-    protected $errorMessages = array(
-        'ACCESS_SESSION_EXPIRED'    => 'La sesión ha caducado',
-        'ACCESS_USER_DEACTIVATE'    => 'Tu usuario ha sido desactivado',
-        'ACCESS_PERMISSION_DENIED'  => 'Acceso denegado'
-    );
+    protected $errorMessages = [
+        'ACCESS_SESSION_EXPIRED' => 'La sesión ha caducado',
+        'ACCESS_USER_DEACTIVATE' => 'Tu usuario ha sido desactivado',
+        'ACCESS_PERMISSION_DENIED' => 'Acceso denegado'
+    ];
 
     // Whitelist de rutas con las que no se muestra login
-    protected $whitelist = array('login');
+    protected $whitelist = ['login'];
 
     protected $storage;
     protected $authService;
@@ -45,8 +44,7 @@ abstract class AuthController extends AbstractActionController
         $profilePermissionService,
         $datatableService,
         $viewRenderer
-    )
-    {
+    ) {
         $this->sessionService = $sessionService;
         $this->profilePermissionService = $profilePermissionService;
         $this->datatableService = $datatableService;
@@ -83,7 +81,7 @@ abstract class AuthController extends AbstractActionController
 
     public function getAuthService($returnAuthInstance = true)
     {
-        if (! $this->authService) {
+        if (!$this->authService) {
             $this->authService = $this->serviceLocator->get('AuthService');
         }
 
@@ -92,7 +90,7 @@ abstract class AuthController extends AbstractActionController
 
     public function getSessionStorage()
     {
-        if (! $this->storage) {
+        if (!$this->storage) {
             $this->storage = $this->serviceLocator->get('Administrator\Model\AuthStorage');
         }
 
@@ -108,11 +106,11 @@ abstract class AuthController extends AbstractActionController
      *
      * @return \Zend\Http\Response
      */
-    public function goToSection($module, $params = array(), $returnLink = false, $options = array())
+    public function goToSection($module, $params = [], $returnLink = false, $options = [])
     {
-        $defaultParams = array(
+        $defaultParams = [
             'module' => $module
-        );
+        ];
 
         if (!array_key_exists('action', $params)) {
             $params['action'] = 'index';
@@ -125,14 +123,14 @@ abstract class AuthController extends AbstractActionController
             : $this->redirect()->toRoute('administrator', $defaultParams, $options);
     }
 
-    public function gotoAddSection($module, $returnLink = false, $options = array())
+    public function gotoAddSection($module, $returnLink = false, $options = [])
     {
-        return $this->goToSection($module,array('action' => 'add'),$returnLink, $options);
+        return $this->goToSection($module, ['action' => 'add'], $returnLink, $options);
     }
 
-    public function goToEditSection($module, $id, $returnLink = false, $options = array())
+    public function goToEditSection($module, $id, $returnLink = false, $options = [])
     {
-        return $this->goToSection($module,array('action' => 'edit', 'id' => $id), $returnLink, $options);
+        return $this->goToSection($module, ['action' => 'edit', 'id' => $id], $returnLink, $options);
     }
 
     protected function getUserData()
@@ -157,10 +155,10 @@ abstract class AuthController extends AbstractActionController
 
         $result = $authService->authenticate();
 
-        $this->getAuthService()->getStorage()->write(array(
+        $this->getAuthService()->getStorage()->write([
             'user' => $username,
             'password' => $password
-        ));
+        ]);
 
         if ($result->getCode() != 1) {
             $this->forbidUser();
@@ -191,14 +189,13 @@ abstract class AuthController extends AbstractActionController
         $module = $routeMatch->getParam('module');
         $action = $routeMatch->getParam('action');
 
-        if ($module == "") {
+        if ($module == '') {
             return $this->goToSection('login');
         }
 
         $this->layout('layout/admin-login-layout');
 
         if (!in_array($module, $this->whitelist)) {
-
             $this->layout('layout/admin-layout');
 
             $canAccess = $this->canAccess($module, $action);
@@ -218,12 +215,12 @@ abstract class AuthController extends AbstractActionController
 
     protected function accessErrorHandler($errorKey)
     {
-        $jsonModel = new JsonModel(array(
-            'status'    => 'ok',
-            'response'  => 'false',
-            'error'     => true,
-            'message'   => $this->errorMessages[$errorKey]
-        ));
+        $jsonModel = new JsonModel([
+            'status' => 'ok',
+            'response' => 'false',
+            'error' => true,
+            'message' => $this->errorMessages[$errorKey]
+        ]);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             $response = $this->getResponse();
@@ -240,8 +237,7 @@ abstract class AuthController extends AbstractActionController
         // Comprobamos si esta autenticado
         $authService = $this->getAuthService();
 
-        if (!$authService->hasIdentity()){
-
+        if (!$authService->hasIdentity()) {
             $this->sessionService->section_referer = $this->event->getRouteMatch()->getParams();
             $this->sessionService->query_params = $this->getRequest()->getQuery()->toArray();
 
@@ -256,7 +252,7 @@ abstract class AuthController extends AbstractActionController
             return 'ACCESS_USER_DEACTIVATE';
         }
 
-        if (!$this->profilePermissionService->hasModuleAccess($module,$action)) {
+        if (!$this->profilePermissionService->hasModuleAccess($module, $action)) {
             return 'ACCESS_PERMISSION_DENIED';
         }
 
@@ -274,28 +270,27 @@ abstract class AuthController extends AbstractActionController
         return $eventManager->trigger($triggerName, null);
     }
 
-    protected function getView($params = array(), $viewName)
+    protected function getView($params = [], $viewName)
     {
         $viewModel = new ViewModel($params);
-        $viewModel->setTemplate('administrator/'.$viewName);
+        $viewModel->setTemplate('administrator/' . $viewName);
 
         return $viewModel;
     }
 
-
-    public function getAddView($params = array())
+    public function getAddView($params = [])
     {
-        return $this->getView($params,'add');
+        return $this->getView($params, 'add');
     }
 
-    public function getEditView($params = array())
+    public function getEditView($params = [])
     {
-        return $this->getView($params,'edit');
+        return $this->getView($params, 'edit');
     }
 
     public function parseTriggers()
     {
-        $html = "";
+        $html = '';
         foreach ($this->triggerResults as $result) {
             $html .= $this->viewRenderer->render($result);
         }

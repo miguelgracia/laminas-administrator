@@ -11,4 +11,5 @@ namespace AmTool\Diagnostics\Exception;
 
 class InvalidArgumentException extends \InvalidArgumentException implements
     ExceptionInterface
-{}
+{
+}

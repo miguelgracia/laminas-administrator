@@ -8,9 +8,7 @@
 
 namespace Administrator\View\Helper;
 
-
 use Zend\View\Helper\Navigation\Menu;
-
 use RecursiveIteratorIterator;
 use Zend\Navigation\AbstractContainer;
 use Zend\Navigation\Page\AbstractPage;
@@ -26,6 +24,7 @@ class AdministratorMenu extends Menu
         $this->ulClassMenuOpen = $class;
         return $this;
     }
+
     /**
      * Renders a normal menu (called from {@link renderMenu()})
      *
@@ -61,15 +60,17 @@ class AdministratorMenu extends Menu
         $escaper = $this->view->plugin('escapeHtmlAttr');
 
         if ($found) {
-            $foundPage  = $found['page'];
+            $foundPage = $found['page'];
             $foundDepth = $found['depth'];
         } else {
             $foundPage = null;
         }
 
         // create iterator
-        $iterator = new RecursiveIteratorIterator($container,
-            RecursiveIteratorIterator::SELF_FIRST);
+        $iterator = new RecursiveIteratorIterator(
+            $container,
+            RecursiveIteratorIterator::SELF_FIRST
+        );
         if (is_int($maxDepth)) {
             $iterator->setMaxDepth($maxDepth);
         }
@@ -111,18 +112,17 @@ class AdministratorMenu extends Menu
 
             if ($depth > $prevDepth) {
                 // start new ul tag
-                if ($ulClass && $depth ==  0) {
+                if ($ulClass && $depth == 0) {
                     $ulClass = ' class="' . $escaper($ulClass) . '"';
                 } else {
-
                     /*
                      * buscamos la opci�n pagesWrapClass (creada por nosotros para a�adir al ul del submen�)
                      * se setea en la clase GestorNavigation
                      */
 
-                    $wrapClass = $page->get('pagesWrapClass') ?: "";
+                    $wrapClass = $page->get('pagesWrapClass') ?: '';
                     if ($isActive) {
-                        $wrapClass .= ' '.$this->ulClassMenuOpen;
+                        $wrapClass .= ' ' . $this->ulClassMenuOpen;
                     }
                     $ulClass = ' class="' . $escaper($wrapClass) . '"';
                 }
@@ -142,7 +142,7 @@ class AdministratorMenu extends Menu
             }
 
             // render li tag and page
-            $liClasses = array();
+            $liClasses = [];
             // Is page active?
             if ($isActive) {
                 $liClasses[] = $liActiveClass;
@@ -162,8 +162,8 @@ class AdministratorMenu extends Menu
 
         if ($html) {
             // done iterating container; close open ul/li tags
-            for ($i = $prevDepth+1; $i > 0; $i--) {
-                $myIndent = $indent . str_repeat('        ', $i-1);
+            for ($i = $prevDepth + 1; $i > 0; $i--) {
+                $myIndent = $indent . str_repeat('        ', $i - 1);
                 $html .= $myIndent . '    </li>' . PHP_EOL
                     . $myIndent . '</ul>' . PHP_EOL;
             }

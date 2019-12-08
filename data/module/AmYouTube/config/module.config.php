@@ -1,22 +1,22 @@
 <?php
-return array(
-    'view_manager' => array(
-        'template_path_stack' => array(
+return [
+    'view_manager' => [
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-    ),
+        ],
+    ],
 
-    'controllers' => array(
-        'invokables' => array(
+    'controllers' => [
+        'invokables' => [
             'AmYouTube\Controller\AmYouTubeModuleController' => 'AmYouTube\Controller\AmYouTubeModuleController'
-        )
-    ),
+        ]
+    ],
 
-    'service_manager' => array(
-        'factories' => array(
+    'service_manager' => [
+        'factories' => [
             \AmYouTube\Service\YoutubeService::class => \AmYouTube\Service\YoutubeService::class
-        )
-    ),
+        ]
+    ],
 
     'form_elements' => [
         'factories' => [
@@ -25,4 +25,4 @@ return array(
             \AmUser\Form\UserFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class
         ]
     ],
-);
+];

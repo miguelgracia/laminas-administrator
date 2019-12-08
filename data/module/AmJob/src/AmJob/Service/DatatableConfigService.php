@@ -9,15 +9,15 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
 {
     public function getDatatableConfig()
     {
-        $disallowSearchTo = array (
+        $disallowSearchTo = [
             'jobs.id' => false,
-        );
+        ];
 
         $disallowOrderTo = $disallowSearchTo;
 
         $thisClass = $this;
 
-        return array(
+        return [
             'searchable' => $disallowSearchTo,
             'orderable' => $disallowOrderTo,
             'columns' => function ($header) use ($thisClass) {
@@ -28,41 +28,38 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
 
                 return $header;
             },
-            'parse_row_data'=> function ($row) use($thisClass) {
-
+            'parse_row_data' => function ($row) use ($thisClass) {
                 //$row contiene los datos de cada una de las filas que ha generado la consulta.
                 $thisClass->setEditAndDeleteColumnsValues($row);
 
                 $row['active'] = $row['active'] == '1' ? 'SI' : 'NO';
                 return $row;
             }
-        );
+        ];
     }
 
     public function getQueryConfig()
     {
-        return array(
+        return [
             //En fields solo tenemos que añadir los campos de la tabla indicada en 'from'
-            'fields' => array(
+            'fields' => [
                 'id',
                 'key',
                 'created_at',
                 'active'
-            ),
+            ],
             'from' => 'jobs',
-            'join' => array(),
+            'join' => [],
             //Los campos que están dentro del 'having_fields' no se veran afectados por la clausula where al
             //filtar, sino por la clausula having. Esto es necesario para aquellos campos cuyo valor dependen
             //de una agrupación y deseamos filtrar por ellos.
-            'having_fields' => array(
-
-            ),
+            'having_fields' => [
+            ],
             /*'where' => array(
 
             ),*/
-            'group' => array(
-
-            )
-        );
+            'group' => [
+            ]
+        ];
     }
 }

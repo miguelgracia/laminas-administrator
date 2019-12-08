@@ -15,12 +15,10 @@ class MegabannerService implements AllowDatabaseAccessInterface
     public function getData($lang)
     {
         $rows = new ArrayObject(
-
-            $this->table->all(array(
+            $this->table->all([
                 'active' => '1',
                 'deleted_at' => null
-            ), array('order ASC'))->setFetchGroupResultSet('id')->toObjectArray(),
-
+            ], ['order ASC'])->setFetchGroupResultSet('id')->toObjectArray(),
             ArrayObject::ARRAY_AS_PROPS
         );
 

@@ -14,7 +14,6 @@ class DatabaseInitializer implements InitializerInterface
     {
         //Seteamos el dbAdapter y el resultset para todos los modelos)
         if ($instance instanceof \Zend\Db\Adapter\AdapterAwareInterface) {
-
             $resultSet = (new AdministratorResultSet)
                 ->setHydrator(new ClassMethods)
                 ->setObjectPrototype($container->get($instance::ENTITY_MODEL_CLASS));

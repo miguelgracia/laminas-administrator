@@ -14,4 +14,3 @@ class AmJobVideoModuleController extends AuthController
 
     public const FORM_CLASS = JobVideoForm::class;
 }
-

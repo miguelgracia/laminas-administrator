@@ -1,4 +1,5 @@
 <?php
+
 namespace Administrator\Factory;
 
 use Administrator\Service\AdministratorFormService;
@@ -19,7 +20,7 @@ class AdministratorLocaleFieldsetFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $this->container = $container;
-        $this->languages = $container->get(LanguageTable::class)->all()->toKeyValueArray('id','name');
+        $this->languages = $container->get(LanguageTable::class)->all()->toKeyValueArray('id', 'name');
         $this->configureFieldsetService = $container->get(ConfigureFieldsetService::class);
 
         $formService = $container->get(AdministratorFormService::class);
@@ -32,8 +33,8 @@ class AdministratorLocaleFieldsetFactory implements FactoryInterface
         $primaryId = isset($objectModel->id) ? $objectModel->id : 0;
 
         $localeTableGatewayName = preg_replace(
-            "/(Table)$/",
-            "LocaleTable",
+            '/(Table)$/',
+            'LocaleTable',
             get_class($baseTableGateway)
         );
 
@@ -64,8 +65,8 @@ class AdministratorLocaleFieldsetFactory implements FactoryInterface
             ->setTableGateway($tableGateway)
             ->setColumns($columns)
             ->setObjectModel($objectModel)
-            ->setName($fieldsetName . "\\" . $objectModel->languageId)
-            ->setOption('is_locale',true)
+            ->setName($fieldsetName . '\\' . $objectModel->languageId)
+            ->setOption('is_locale', true)
             ->setOption('tab_name', $this->languages[$objectModel->languageId]);
 
         $this->configureFieldsetService->configure($fieldset);

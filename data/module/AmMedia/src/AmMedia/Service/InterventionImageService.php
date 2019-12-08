@@ -1,6 +1,6 @@
 <?php
-namespace AmMedia\Service;
 
+namespace AmMedia\Service;
 
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
@@ -24,6 +24,6 @@ class InterventionImageService implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new ImageManager(array('driver' => 'gd'));
+        return new ImageManager(['driver' => 'gd']);
     }
 }

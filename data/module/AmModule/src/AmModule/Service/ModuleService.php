@@ -10,7 +10,7 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 
 class ModuleService implements FactoryInterface
 {
-    protected $modules = array();
+    protected $modules = [];
     protected $controllerActions;
     protected $sm;
 
@@ -23,8 +23,8 @@ class ModuleService implements FactoryInterface
         $modules = $config['modules'];
 
         //Devolvemos s�lo aquellos m�dulos con el prefijo "Am" y que no est�n en el array de hidden_modules
-        $this->modules = array_filter($modules, function ($value) use($config) {
-            return preg_match("/^Am/",$value) === 1 and !in_array($value, $config['hidden_modules']);
+        $this->modules = array_filter($modules, function ($value) use ($config) {
+            return preg_match('/^Am/', $value) === 1 and !in_array($value, $config['hidden_modules']);
         });
 
         $this->updateAvailableModules();
@@ -36,24 +36,22 @@ class ModuleService implements FactoryInterface
     {
         $moduleTable = $this->sm->get('AmModule\Model\ModuleTable');
 
-        $availableModules = $moduleTable->select()->toKeyValueArray('id','zendName');
+        $availableModules = $moduleTable->select()->toKeyValueArray('id', 'zendName');
 
-        $newModules = array();
+        $newModules = [];
 
         $filter = new CamelCaseToDash();
 
         foreach ($this->modules as $module) {
-
-            $module = mb_strtolower($filter->filter(preg_replace('/^Am/i','', $module)));
+            $module = mb_strtolower($filter->filter(preg_replace('/^Am/i', '', $module)));
 
             if (!in_array($module, $availableModules)) {
-
                 $newModules[] = $module;
 
-                $moduleTable->save(array(
+                $moduleTable->save([
                     'zend_name' => $module,
                     'public_name' => $module
-                ));
+                ]);
             }
         }
 
@@ -75,37 +73,34 @@ class ModuleService implements FactoryInterface
 
         $filterDashToCamelCase = new DashToCamelCase();
 
-        $hiddenMethods = array(
+        $hiddenMethods = [
             'getMethodFromAction',
             'notFoundAction'
-        );
+        ];
 
-        $controllerActions = array();
+        $controllerActions = [];
 
         foreach ($listaControladores as $i => $controller) {
-
             $controllerNamespace = '\Am%s\Controller\Am%sModuleController';
 
             $controllerName = $filterDashToCamelCase->filter($controller->zendName);
 
-            $class = sprintf($controllerNamespace,$controllerName,$controllerName);
+            $class = sprintf($controllerNamespace, $controllerName, $controllerName);
 
             if (class_exists($class)) {
                 $reflectionController = new ClassReflection($class);
                 $controllerMethods = $reflectionController->getMethods();
 
-                $actions = array();
+                $actions = [];
                 foreach ($controllerMethods as $method) {
-
                     $name = $method->getName();
 
-                    if (stripos($name, 'action') !== false and !in_array($name,$hiddenMethods)) {
-                        $action = preg_replace("/(Action)$/", "$2", $name);
-                        $controllerActions[$controller->zendName . '.' .$action] = $action;
+                    if (stripos($name, 'action') !== false and !in_array($name, $hiddenMethods)) {
+                        $action = preg_replace('/(Action)$/', '$2', $name);
+                        $controllerActions[$controller->zendName . '.' . $action] = $action;
                     }
                 }
                 asort($actions);
-
             }
         }
 

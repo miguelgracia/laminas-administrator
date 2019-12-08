@@ -9,7 +9,7 @@ class Config
 {
     protected $configPath;
 
-    protected $config = array();
+    protected $config = [];
 
     public static function findValueInArray($dottedName, array $valueArray)
     {
@@ -30,17 +30,16 @@ class Config
     {
         $this->configPath = $configPath;
         if (file_exists($configPath)) {
-            $this->config = include($configPath);
+            $this->config = include $configPath;
         }
     }
 
     public function write($dottedName, $value)
     {
-
-        $getset = function($getset, $name, $value, &$array) {
+        $getset = function ($getset, $name, $value, &$array) {
             $n = array_shift($name);
             if (count($name) > 0) {
-                $array[$n] = array();
+                $array[$n] = [];
                 $newArray = &$array[$n];
                 $getset($getset, $name, $value, $newArray);
             } else {
@@ -48,7 +47,7 @@ class Config
             }
         };
 
-        $newNestedArray = array();
+        $newNestedArray = [];
         $getset($getset, explode('.', $dottedName), $value, $newNestedArray);
 
         $newFullConfig = ArrayUtils::merge($this->config, $newNestedArray);
@@ -61,5 +60,4 @@ class Config
     {
         return static::findValueInArray($dottedName, $this->config);
     }
-
 }

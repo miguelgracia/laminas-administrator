@@ -1,4 +1,5 @@
 <?php
+
 namespace AmAppData;
 
 use Autoload\ModuleConfigTrait;

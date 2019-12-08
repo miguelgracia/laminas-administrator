@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AmJob\Form\Element;
 
 use AmJobCategory\Model\JobCategoryTable;

@@ -11,20 +11,19 @@ use Zend\Console\ColorInterface as Color;
 
 class InstallController extends AbstractActionController
 {
-
     public function zfAction()
     {
         if (!extension_loaded('zip')) {
             return $this->sendError('You need to install the ZIP extension of PHP');
         }
         $console = $this->serviceLocator->get('console');
-        $tmpDir  = sys_get_temp_dir();
+        $tmpDir = sys_get_temp_dir();
         $request = $this->getRequest();
         $version = $request->getParam('version');
-        $path    = rtrim($request->getParam('path'), '/');
+        $path = rtrim($request->getParam('path'), '/');
 
         if (file_exists($path)) {
-            return $this->sendError (
+            return $this->sendError(
                 "The directory $path already exists. You cannot install the ZF2 library here."
             );
         }
@@ -32,13 +31,13 @@ class InstallController extends AbstractActionController
         if (empty($version)) {
             $version = Zf::getLastVersion();
             if (false === $version) {
-                return $this->sendError (
-                    "I cannot connect to the Zend Framework website."
+                return $this->sendError(
+                    'I cannot connect to the Zend Framework website.'
                 );
             }
         } else {
             if (!Zf::checkVersion($version)) {
-                return $this->sendError (
+                return $this->sendError(
                     "The specified ZF version, $version, doesn't exist."
                 );
             }
@@ -47,8 +46,8 @@ class InstallController extends AbstractActionController
         $tmpFile = ZF::getTmpFileName($tmpDir, $version);
         if (!file_exists($tmpFile)) {
             if (!Zf::downloadZip($tmpFile, $version)) {
-                return $this->sendError (
-                    "I cannot download the ZF2 library from github."
+                return $this->sendError(
+                    'I cannot download the ZF2 library from github.'
                 );
             }
         }
@@ -56,7 +55,7 @@ class InstallController extends AbstractActionController
         $zip = new \ZipArchive;
         if ($zip->open($tmpFile)) {
             $zipFolders = $zip->statIndex(0);
-            $zipFolder = $tmpDir . '/' . rtrim($zipFolders['name'], "/");
+            $zipFolder = $tmpDir . '/' . rtrim($zipFolders['name'], '/');
             if (!$zip->extractTo($tmpDir)) {
                 return $this->sendError("Error during the unzip of $tmpFile.");
             }

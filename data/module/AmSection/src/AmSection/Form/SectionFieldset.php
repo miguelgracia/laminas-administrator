@@ -19,16 +19,14 @@ class SectionFieldset extends AdministratorFieldset
         $columnName = $column->getName();
 
         if ($columnName == 'key') {
+            $filterClassArray = array_column($filters, 'name');
 
-            $filterClassArray = array_column($filters,'name');
-
-            $slugFilterIdInArray = array_search('Administrator\Filter\SlugFilter',$filterClassArray);
+            $slugFilterIdInArray = array_search('Administrator\Filter\SlugFilter', $filterClassArray);
 
             if (is_numeric($slugFilterIdInArray)) {
                 $filters[$slugFilterIdInArray]['options']['separator'] = '/';
             }
         }
-
 
         return $filters;
     }

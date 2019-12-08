@@ -2,7 +2,6 @@
 
 namespace Application\Model;
 
-
 use Administrator\Model\AdministratorResultSet;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Metadata\Metadata;
@@ -38,19 +37,19 @@ trait MyOrmTableTrait
 
     public function isLocaleTable()
     {
-        preg_match("/_locales$/", $this->table, $result);
+        preg_match('/_locales$/', $this->table, $result);
         return count($result) > 0;
     }
 
     public function isTableRow($id, $fieldKey = 'id')
     {
-        $id  = (int) $id;
-        return $this->select(array($fieldKey => $id))->count() > 0;
+        $id = (int) $id;
+        return $this->select([$fieldKey => $id])->count() > 0;
     }
 
-    public function all($where = array(),$orderBy = array())
+    public function all($where = [], $orderBy = [])
     {
-        return $this->select(function (Select $select) use($where, $orderBy) {
+        return $this->select(function (Select $select) use ($where, $orderBy) {
             $select->where($where);
             $select->order($orderBy);
         });
@@ -58,8 +57,8 @@ trait MyOrmTableTrait
 
     public function find($id, $key = 'id')
     {
-        $id  = (int) $id;
-        $rowset = $this->select(array($key => $id));
+        $id = (int) $id;
+        $rowset = $this->select([$key => $id]);
         $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find row $id with key $key in table " . $this->table);
@@ -69,9 +68,9 @@ trait MyOrmTableTrait
 
     public function findMany($id, $key = 'id')
     {
-        $id  = (int) $id;
+        $id = (int) $id;
 
-        $rowset = $this->select(array($key => $id));
+        $rowset = $this->select([$key => $id]);
 
         return $rowset;
     }
@@ -82,18 +81,18 @@ trait MyOrmTableTrait
 
         $key = $this->relatedKey;
 
-        $resultSet = $this->select(function (Select $select) use($id, $key, $tableLocale) {
+        $resultSet = $this->select(function (Select $select) use ($id, $key, $tableLocale) {
             $select
                 ->join(
                     'languages',
                     new Expression("languages.id = $tableLocale.language_id AND $key = $id"),
-                    array(
-                        "language_id" => "id"
-                    ),
+                    [
+                        'language_id' => 'id'
+                    ],
                     Select::JOIN_RIGHT
-                )->where(array(
+                )->where([
                     'languages.active' => '1'
-                ))->order('languages.order ASC');
+                ])->order('languages.order ASC');
         });
 
         return $resultSet;
@@ -101,18 +100,17 @@ trait MyOrmTableTrait
 
     public function deleteRow($id, $key = 'id')
     {
-        return $this->delete(array($key => (int) $id));
+        return $this->delete([$key => (int) $id]);
     }
 
     public function deleteSoft($id, $fieldKey = 'id')
     {
         if ($this->isTableRow($id, $fieldKey)) {
-            return $this->update(array(
+            return $this->update([
                 'deletedAt' => date('Y-m-d H:i:s')
-            ), array($fieldKey => $id));
+            ], [$fieldKey => $id]);
         } else {
-            throw new \Exception($this->table . ' ' . $fieldKey .' id does not exist');
+            throw new \Exception($this->table . ' ' . $fieldKey . ' id does not exist');
         }
     }
-
 }

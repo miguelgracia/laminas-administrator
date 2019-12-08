@@ -19,14 +19,13 @@ class JobCategory extends AbstractHelper
         $html = '';
 
         foreach ($jobCategories['rows'] as $index => $jobCategory) {
-
             if ($jobCategory['active'] == '1') {
                 $html .= sprintf(
                     $this->getContentWrapper(),
-                    $url('locale/jobs/category',array(
+                    $url('locale/jobs/category', [
                         'locale' => $lang,
                         'category' => $jobCategories['locale'][$lang][$jobCategory['id']]['urlKey']
-                    )),
+                    ]),
                     $jobCategories['locale'][$lang][$jobCategory['id']]['title']
                 );
             }

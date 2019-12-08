@@ -10,5 +10,4 @@ class LanguageFieldset extends AdministratorFieldset
     protected $isPrimaryFieldset = true;
 
     protected $tableGatewayName = LanguageTable::class;
-
 }

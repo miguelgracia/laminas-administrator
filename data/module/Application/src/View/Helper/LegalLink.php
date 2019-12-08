@@ -12,16 +12,14 @@ class LegalLink extends AbstractHelper
         $url = $this->view->plugin('Url');
 
         if (count($data['rows']) > 0) {
-            
             foreach ($data['locale'][$lang] as $uriSegment => $locale) {
-
                 if (is_array($locale) and isset($data['rows'][$locale['relatedTableId']])) {
                     echo sprintf(
                         '<a class="legal-link" href="%s">%s</a>',
-                        $url('locale/legal/page',array(
+                        $url('locale/legal/page', [
                             'locale' => $lang,
                             'page' => $locale['urlKey']
-                        )),
+                        ]),
                         $locale['title']
                     );
                 }

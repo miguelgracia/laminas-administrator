@@ -7,17 +7,17 @@ use Zend\Filter\Word\UnderscoreToCamelCase;
 
 trait MyOrmModelTrait
 {
-    function __call($name, $arguments)
+    public function __call($name, $arguments)
     {
-        preg_match("/^(get|set)(.+)/", $name, $output_array);
+        preg_match('/^(get|set)(.+)/', $name, $output_array);
 
         if (isset($output_array[1])) {
             switch ($output_array[1]) {
-                case "get":
+                case 'get':
                     $property = $this->parseProperty($output_array[2]);
                     return property_exists($this, $property) ? $this->{$property} : null;
                     break;
-                case "set":
+                case 'set':
                     $property = $this->parseProperty($output_array[2]);
                     $this->{$property} = $arguments[0];
                     return $this;
@@ -87,7 +87,7 @@ trait MyOrmModelTrait
 
     public function prepareToSave()
     {
-        $toSaveArray = array();
+        $toSaveArray = [];
 
         $props = $this->getArrayCopy();
 

@@ -8,13 +8,11 @@ class HomeModuleForm extends AdministratorForm
 {
     public function initializers()
     {
-        return array(
-            'fieldsets' => array(
+        return [
+            'fieldsets' => [
                 HomeModuleFieldset::class,
                 HomeModuleLocaleFieldset::class,
-            )
-        );
+            ]
+        ];
     }
-
 }
-

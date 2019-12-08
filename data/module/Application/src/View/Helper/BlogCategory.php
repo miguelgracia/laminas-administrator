@@ -19,13 +19,12 @@ class BlogCategory extends AbstractHelper
         $html = '';
 
         foreach ($blogCategories['rows'] as $index => $blogCategory) {
-
             if ($blogCategory['active'] == '1') {
                 $html .= sprintf(
                     $this->getContentWrapper(),
-                    $url($lang.'/blog/category',array(
+                    $url($lang . '/blog/category', [
                         'category' => $blogCategories['locale'][$lang][$blogCategory['id']]['urlKey']
-                    )),
+                    ]),
                     $blogCategories['locale'][$lang][$blogCategory['id']]['title']
                 );
             }

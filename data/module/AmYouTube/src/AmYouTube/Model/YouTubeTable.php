@@ -8,5 +8,5 @@ class YouTubeTable extends AdministratorTable
 {
     protected $table = 'youtube_videos';
 
-    public const ENTITY_MODEL_CLASS =  YouTubeModel::class;
+    public const ENTITY_MODEL_CLASS = YouTubeModel::class;
 }

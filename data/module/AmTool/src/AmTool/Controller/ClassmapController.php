@@ -12,20 +12,19 @@ use Zend\Loader\StandardAutoloader;
 use Zend\Console\ColorInterface as Color;
 use Zend\Version;
 
-
 class ClassmapController extends AbstractActionController
 {
     public function generateAction()
     {
         /* @var $request \Zend\Console\Request          */
         /* @var $console \Zend\Console\AdapterInterface */
-        $request      = $this->getRequest();
-        $console      = $this->serviceLocator->get('console');
+        $request = $this->getRequest();
+        $console = $this->serviceLocator->get('console');
         $relativePath = '';
-        $usingStdout  = false;
-        $directory    = $request->getParam('directory');
-        $appending    = $request->getParam('append', false) || $request->getParam('a', false);
-        $overwrite    = $request->getParam('overwrite', false) || $request->getParam('w', false);
+        $usingStdout = false;
+        $directory = $request->getParam('directory');
+        $appending = $request->getParam('append', false) || $request->getParam('a', false);
+        $overwrite = $request->getParam('overwrite', false) || $request->getParam('w', false);
 
         // Validate directory
         if (!is_dir($directory)) {
@@ -40,7 +39,7 @@ class ClassmapController extends AbstractActionController
         // Determine output file name
         $output = $request->getParam('destination', $directory . '/autoload_classmap.php');
         if ('-' == $output) {
-            $output      = STDOUT;
+            $output = STDOUT;
             $usingStdout = true;
         } elseif (is_dir($output)) {
             $m = new ConsoleModel();
@@ -70,7 +69,7 @@ class ClassmapController extends AbstractActionController
                     $relativePath = substr($directory, strlen($classmapPath) + 1) . '/';
                 }
             } else {
-                $libraryPathParts  = explode('/', $directory);
+                $libraryPathParts = explode('/', $directory);
                 $classmapPathParts = explode('/', $classmapPath);
 
                 // Find the common part
@@ -106,13 +105,12 @@ class ClassmapController extends AbstractActionController
             $console->write('Scanning for files containing PHP classes ');
         }
 
-
         // Get the ClassFileLocator, and pass it the library path
         $l = new ClassFileLocator($directory);
 
         // Iterate over each element in the path, and create a map of
         // classname => filename, where the filename is relative to the library path
-        $map   = new \stdClass;
+        $map = new \stdClass;
         $count = 0;
         foreach ($l as $file) {
             $filename = str_replace($directory . '/', '', str_replace(DIRECTORY_SEPARATOR, '/', $file->getPath()) . '/' . $file->getFilename());
@@ -129,7 +127,7 @@ class ClassmapController extends AbstractActionController
         }
 
         if (!$usingStdout) {
-            $console->writeLine(" DONE", Color::GREEN);
+            $console->writeLine(' DONE', Color::GREEN);
             $console->write('Found ');
             $console->write((int)$count, Color::LIGHT_WHITE);
             $console->writeLine(' PHP classes');
@@ -194,7 +192,7 @@ class ClassmapController extends AbstractActionController
         }, $content);
 
         if (!$usingStdout) {
-            $console->writeLine(" DONE" . PHP_EOL, Color::GREEN);
+            $console->writeLine(' DONE' . PHP_EOL, Color::GREEN);
             $console->write('Writing classmap to ');
             $console->write($output, Color::LIGHT_WHITE);
             $console->write('... ');
@@ -204,10 +202,8 @@ class ClassmapController extends AbstractActionController
         file_put_contents($output, $content);
 
         if (!$usingStdout) {
-            $console->writeLine(" DONE", Color::GREEN);
+            $console->writeLine(' DONE', Color::GREEN);
             $console->writeLine('Wrote classmap to ' . realpath($output), Color::LIGHT_WHITE);
         }
     }
-
-
 }

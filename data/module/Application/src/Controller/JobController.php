@@ -13,7 +13,6 @@ class JobController extends ApplicationController
         $menu = $this->menu;
 
         if (isset($menu->rows->jobs) and $menu->rows->jobs->active == 1) {
-
             $menuLang = $menu->locale->{$this->lang};
 
             $menuLangJob = $menuLang[$menu->rows->jobs->id];
@@ -24,24 +23,22 @@ class JobController extends ApplicationController
             $ogFacebook->title = $this->headTitleHelper->renderTitle();
             $ogFacebook->description = $menuLangJob->metaDescription;
 
-            $this->layout()->setVariable('og',$ogFacebook);
+            $this->layout()->setVariable('og', $ogFacebook);
 
             $page = $this->params()->fromQuery('page');
 
             $jobs = $this->serviceManager->get(JobService::class)->getData($this->lang, false, $page);
             $jobCategories = $this->serviceManager->get(JobCategoryService::class)->getData($this->lang);
 
-            return new ViewModel(array(
-                'menu'            => $this->menu,
-                'lang'            => $this->lang,
-                'jobs'            => $jobs,
-                'jobCategories'   => $jobCategories,
-                'routePagination' => $this->lang .'/jobs',
-                'routeParams'     => array()
-            ));
+            return new ViewModel([
+                'menu' => $this->menu,
+                'lang' => $this->lang,
+                'jobs' => $jobs,
+                'jobCategories' => $jobCategories,
+                'routePagination' => $this->lang . '/jobs',
+                'routeParams' => []
+            ]);
         }
-
-
 
         $this->getResponse()->setStatusCode(404);
     }
@@ -59,7 +56,6 @@ class JobController extends ApplicationController
         $uriCategories = array_column($jobCategories['locale'][$this->lang], 'relatedTableId', 'urlKey');
 
         if (isset($uriCategories[$category]) and $jobCategories['rows'][$uriCategories[$category]]['active'] == '1') {
-
             $menuLang = $menu->locale->{$this->lang};
 
             $currentCategory = $jobCategories['locale'][$this->lang][$uriCategories[$category]];
@@ -73,21 +69,21 @@ class JobController extends ApplicationController
             $ogFacebook->title = $this->headTitleHelper->renderTitle();
             $ogFacebook->description = $menuLangJob->metaDescription;
 
-            $this->layout()->setVariable('og',$ogFacebook);
+            $this->layout()->setVariable('og', $ogFacebook);
 
             $jobs = $this->serviceManager->get(JobService::class)->getData($this->lang, $category, $page);
 
-            $viewModel = new ViewModel(array(
-                'menu'              => $this->menu,
-                'lang'              => $this->lang,
-                'jobs'              => $jobs,
-                'currentCategory'   => $currentCategory,
-                'jobCategories'     => $jobCategories,
-                'routePagination'   => $this->lang .'/jobs/category',
-                'routeParams'       => array(
+            $viewModel = new ViewModel([
+                'menu' => $this->menu,
+                'lang' => $this->lang,
+                'jobs' => $jobs,
+                'currentCategory' => $currentCategory,
+                'jobCategories' => $jobCategories,
+                'routePagination' => $this->lang . '/jobs/category',
+                'routeParams' => [
                     'category' => $category
-                )
-            ));
+                ]
+            ]);
 
             $viewModel->setTemplate('application/job/index');
 
@@ -107,11 +103,9 @@ class JobController extends ApplicationController
         $uriCategories = array_column($jobCategories['locale'][$this->lang], 'relatedTableId', 'urlKey');
 
         if (isset($uriCategories[$category]) and $jobCategories['rows'][$uriCategories[$category]]['active'] == '1') {
-
             $job = $this->serviceManager->get(JobService::class)->getDetail($this->lang, $jobUri);
 
             if ($job->count()) {
-
                 $job = $job->current();
 
                 $menuLang = $this->menu->locale->{$this->lang};
@@ -130,15 +124,15 @@ class JobController extends ApplicationController
 
                 $ogFacebook->image = json_decode($job->getImageUrl());
 
-                $this->layout()->setVariable('og',$ogFacebook);
+                $this->layout()->setVariable('og', $ogFacebook);
 
-                $viewModel = new ViewModel(array(
-                    'menu'              => $this->menu,
-                    'lang'              => $this->lang,
-                    'job'               => $job,
-                    'currentCategory'   => $currentCategory,
-                    'jobCategories'     => $jobCategories
-                ));
+                $viewModel = new ViewModel([
+                    'menu' => $this->menu,
+                    'lang' => $this->lang,
+                    'job' => $job,
+                    'currentCategory' => $currentCategory,
+                    'jobCategories' => $jobCategories
+                ]);
 
                 return $viewModel;
             }

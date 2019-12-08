@@ -1,4 +1,5 @@
 <?php
+
 namespace AmTool\Diagnostics;
 
 use Traversable;
@@ -26,7 +27,7 @@ class Runner extends ZendDiagnosticsRunner
             $this->setConfig($config);
         }
 
-        return parent::__construct(array(), $checks, $reporter);
+        return parent::__construct([], $checks, $reporter);
     }
 
     /**
