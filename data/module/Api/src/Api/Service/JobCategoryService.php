@@ -4,20 +4,19 @@ namespace Api\Service;
 
 use Api\Model\JobCategoryLocaleTable;
 use Api\Model\JobCategoryTable;
-use Zend\ServiceManager\FactoryInterface;
 
-class JobCategoryService implements FactoryInterface
+class JobCategoryService implements AllowDatabaseAccessInterface
 {
-    use ApiServiceTrait;
+    use AllowDatabaseAccessTrait;
 
-    protected $table = JobCategoryTable::class;
-    protected $tableLocale = JobCategoryLocaleTable::class;
+    protected $tableName = JobCategoryTable::class;
+    protected $tableLocaleName = JobCategoryLocaleTable::class;
 
     public function getData()
     {
-        return array(
-            'rows' => $this->table->all(array('deleted_at' => null))->setFetchGroupResultSet('id')->toArray(),
-            'locale' => $this->tableLocale->findLocales()->setFetchGroupResultSet('languageCode','relatedTableId')->toArray()
-        );
+        return [
+            'rows' => $this->table->all(['deleted_at' => null])->setFetchGroupResultSet('id')->toArray(),
+            'locale' => $this->tableLocale->findLocales()->setFetchGroupResultSet('languageCode', 'relatedTableId')->toArray()
+        ];
     }
 }

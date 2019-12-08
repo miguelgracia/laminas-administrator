@@ -1,22 +1,21 @@
 <?php
-return array(
-    'view_manager' => array(
-        'template_path_stack' => array(
+return [
+    'view_manager' => [
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-    ),
+        ],
+    ],
 
-    'controllers' => array(
-        'invokables' => array(
-            'AmMegabanner\Controller\AmMegabannerModuleController' => 'AmMegabanner\Controller\AmMegabannerModuleController'
-        )
-    ),
+    'form_elements' => [
+        'factories' => [
+            \AmMegabanner\Form\MegabannerForm::class => \Administrator\Factory\AdministratorFormFactory::class,
+            \AmMegabanner\Form\MegabannerFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+        ]
+    ],
 
-    'service_manager' => array(
+    'service_manager' => [
+    ],
 
-    ),
-
-    'router' => array(
-
-    )
-);
+    'router' => [
+    ]
+];

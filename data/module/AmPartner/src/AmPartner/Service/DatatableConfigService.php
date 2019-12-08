@@ -9,15 +9,15 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
 {
     public function getDatatableConfig()
     {
-        $disallowSearchTo = array (
+        $disallowSearchTo = [
             'partners.id' => false,
-        );
+        ];
 
         $disallowOrderTo = $disallowSearchTo;
 
         $thisClass = $this;
 
-        return array(
+        return [
             'searchable' => $disallowSearchTo,
             'orderable' => $disallowOrderTo,
             'columns' => function ($header) use ($thisClass) {
@@ -28,8 +28,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
 
                 return $header;
             },
-            'parse_row_data'=> function ($row) use($thisClass) {
-
+            'parse_row_data' => function ($row) use ($thisClass) {
                 //$row contiene los datos de cada una de las filas que ha generado la consulta.
                 //Desde aquí podemos parsear los datos antes de visualizarlos por pantalla
                 $thisClass->setEditAndDeleteColumnsValues($row);
@@ -38,29 +37,28 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
 
                 return $row;
             }
-        );
+        ];
     }
 
     public function getQueryConfig()
     {
-        return array(
+        return [
             //En fields solo tenemos que añadir los campos de la tabla indicada en 'from'
-            'fields' => array(
+            'fields' => [
                 'id',
                 'name',
                 'website',
                 'active',
-            ),
+            ],
             'from' => 'partners',
-            'join' => array(),
+            'join' => [],
 
-            'having_fields' => array(
-
-            ),
+            'having_fields' => [
+            ],
             /*'where' => array(
 
             ),*/
-            'group' => array()
-        );
+            'group' => []
+        ];
     }
 }

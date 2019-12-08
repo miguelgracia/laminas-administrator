@@ -2,28 +2,13 @@
 
 namespace OpenGraph\Service;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-
-class OpenGraphService implements FactoryInterface
+class OpenGraphService
 {
-    protected $serviceLocator;
-
     protected $facebook;
 
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __construct()
     {
-        $this->serviceLocator = $serviceLocator;
-
         $this->facebook = new \stdClass();
-
-        return $this;
     }
 
     public function facebook()

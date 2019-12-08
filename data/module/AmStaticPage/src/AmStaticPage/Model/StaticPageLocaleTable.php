@@ -8,5 +8,5 @@ class StaticPageLocaleTable extends AdministratorTable
 {
     protected $table = 'static_pages_locales';
 
-    protected $entityModelName =  StaticPageLocaleModel::class;
+    public const ENTITY_MODEL_CLASS = StaticPageLocaleModel::class;
 }

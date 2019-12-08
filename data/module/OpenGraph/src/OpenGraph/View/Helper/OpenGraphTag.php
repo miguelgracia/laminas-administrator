@@ -7,16 +7,16 @@ use Zend\View\Helper\AbstractHelper;
 
 class OpenGraphTag extends AbstractHelper
 {
-    protected $props = array(
-        'title'       => 'og:title',
-        'image'       => 'og:image',
-        'width'       => 'og:image:width',
-        'height'      => 'og:image:height',
+    protected $props = [
+        'title' => 'og:title',
+        'image' => 'og:image',
+        'width' => 'og:image:width',
+        'height' => 'og:image:height',
         'description' => 'og:description',
-        'type'        => 'og:type',
-        'fb_id'       => 'fb:app_id',
-        'url'         => 'og:url'
-    );
+        'type' => 'og:type',
+        'fb_id' => 'fb:app_id',
+        'url' => 'og:url'
+    ];
 
     public function __invoke()
     {
@@ -42,8 +42,10 @@ class OpenGraphTag extends AbstractHelper
                 if (array_key_exists($key, $this->props)) {
                     foreach ($item as $itemValue) {
                         if ($key == 'image') {
-                            if(!$isImageValidator->isValid($itemValue)) continue;
-                            $itemValue = "http://absconsultor.es" . $itemValue;
+                            if (!$isImageValidator->isValid($itemValue)) {
+                                continue;
+                            }
+                            $itemValue = 'http://absconsultor.es' . $itemValue;
                         }
                         echo sprintf($this->openTag(), $this->props[$key], $itemValue);
                     }

@@ -1,16 +1,15 @@
 <?php
+
 namespace AmLogin\Controller;
 
 use Administrator\Controller\AuthController;
 use Administrator\Form\DatosAccesoForm;
 use Administrator\Form\RecordarPasswordForm;
-
 use Zend\View\Model\ViewModel;
-
 
 class AmLoginModuleController extends AuthController
 {
-    protected $data = array();
+    protected $data = [];
 
     public function indexAction()
     {
@@ -23,8 +22,7 @@ class AmLoginModuleController extends AuthController
             $this->data['foundPassword'] = $_SESSION['foundPassword'];
         }
 
-        unset($_SESSION['userFound']);
-        unset($_SESSION['foundPassword']);
+        unset($_SESSION['userFound'], $_SESSION['foundPassword']);
 
         return new ViewModel($this->data);
     }
@@ -34,7 +32,7 @@ class AmLoginModuleController extends AuthController
         $this->getSessionStorage()->forgetMe();
         $this->getAuthService()->clearIdentity();
 
-        $this->flashmessenger()->addMessage("Ha salido de la plataforma.");
+        $this->flashmessenger()->addMessage('Ha salido de la plataforma.');
         return $this->goToSection('login');
     }
 
@@ -43,17 +41,16 @@ class AmLoginModuleController extends AuthController
         $request = $this->getRequest();
 
         if ($request->isXmlHttpRequest()) {
-
             $response = $this->getResponse();
 
             $hasIdentity = $this->getAuthService()->hasIdentity();
 
-            $response->setContent(json_encode(array(
+            $response->setContent(json_encode([
                 'status' => 'ok',
                 'error' => '',
                 'response' => $hasIdentity,
-                'message' => !$hasIdentity  ? 'Tu sesión ha caducado, refresca la página y vuelve a loguearte' :''
-            )));
+                'message' => !$hasIdentity ? 'Tu sesión ha caducado, refresca la página y vuelve a loguearte' : ''
+            ]));
 
             return $response;
         }
@@ -69,16 +66,15 @@ class AmLoginModuleController extends AuthController
 
             $request = $this->getRequest();
 
-            $viewData = array();
+            $viewData = [];
 
             if ($request->isPost()) {
-
                 $form->bind($request->getPost());
 
                 if ($form->isValid()) {
                     $userTable = $this->sm->get('Gestor\Model\GestorUsuariosTable');
 
-                    $userData = $userTable->getUserdata($request->getPost('username'),$this->config['encrypt_key']);
+                    $userData = $userTable->getUserdata($request->getPost('username'), $this->config['encrypt_key']);
                     $email = $request->getPost('email');
 
                     if ($userData) {
@@ -86,7 +82,6 @@ class AmLoginModuleController extends AuthController
                         //no podrán ver su password mediante este método.
                         $encryptKey = $this->config['encrypt_key'];
                         if ($userData->idPerfil != 1) {
-
                         } else {
                             return $this->goToSection('login');
                         }
@@ -107,14 +102,13 @@ class AmLoginModuleController extends AuthController
         }
 
         return $this->goToSection('home');
-
     }
 
     public function checkLoginAction()
     {
         $redirectTo = 'login';
-        $redirectParams = array();
-        $queryParams = array();
+        $redirectParams = [];
+        $queryParams = [];
 
         if ($this->getRequest()->isPost()) {
             // sacamos los datos del login
@@ -124,10 +118,10 @@ class AmLoginModuleController extends AuthController
             $passwordCheck = $postFields['password'];
 
             try {
-                $result = $this->checkUser($userCheck,$passwordCheck);
+                $result = $this->checkUser($userCheck, $passwordCheck);
 
                 if ($result->getCode() != $result::SUCCESS) {
-                    $this->flashMessenger()->addMessage("Usuario o password incorrectos");
+                    $this->flashMessenger()->addMessage('Usuario o password incorrectos');
                 }
 
                 if ($result->isValid()) {
@@ -145,16 +139,15 @@ class AmLoginModuleController extends AuthController
                     }
 
                     //$this->getSessionStorage()->setRememberMe(0);
-                    $this->saveLastLogin($userCheck,$passwordCheck);
+                    $this->saveLastLogin($userCheck, $passwordCheck);
                 }
-
             } catch (\Exception $ex) {
-                $this->flashMessenger()->addMessage($ex->getMessage() . "Usuario o password incorrectos.");
+                $this->flashMessenger()->addMessage($ex->getMessage() . 'Usuario o password incorrectos.');
                 $redirectTo = 'login';
             }
         }
 
-        return $this->goToSection($redirectTo, $redirectParams, false, array('query' => $queryParams));
+        return $this->goToSection($redirectTo, $redirectParams, false, ['query' => $queryParams]);
     }
 
     private function saveLastLogin($userCheck, $passwordCheck)

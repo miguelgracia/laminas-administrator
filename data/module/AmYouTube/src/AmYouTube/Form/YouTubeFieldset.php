@@ -12,48 +12,35 @@ class YouTubeFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = YouTubeTable::class;
 
-    public function initializers()
-    {
-        return array(
-            'fieldValueOptions' => array(
-                'visibility' => array(
-                    'public' => 'Público',
-                    'private' => 'Privado',
-                    'unlisted' => 'Oculto'
-                ),
-            )
-        );
-    }
-
-    public function addFields()
+    public function addElements()
     {
         $code = $this->get('code');
-        $code->setAttribute('readonly','readonly');
+        $code->setAttribute('readonly', 'readonly');
 
         $channelId = $this->get('channelId');
-        $channelId->setAttribute('readonly','readonly');
+        $channelId->setAttribute('readonly', 'readonly');
 
         $channelTitle = $this->get('channelTitle');
-        $channelTitle->setAttribute('readonly','readonly');
+        $channelTitle->setAttribute('readonly', 'readonly');
 
         if ($this->formActionType == 'add') {
-            $this->add(array(
+            $this->add([
                 'name' => 'upload',
                 'type' => 'Text',
-                'options' => array(
+                'options' => [
                     'label' => 'Video',
-                    'label_attributes' => array(
+                    'label_attributes' => [
                         'class' => 'col-sm-2 control-label'
-                    ),
+                    ],
                     'partial_view' => 'administrator/form-partial/image-url',
-                ),
-                'attributes' => array(
+                ],
+                'attributes' => [
                     'id' => 'upload',
                     'class' => 'form-control browsefile'
-                )
-            ),array(
+                ]
+            ], [
                 'priority' => -1000
-            ));
+            ]);
         }
     }
 
@@ -63,18 +50,17 @@ class YouTubeFieldset extends AdministratorFieldset
 
         if ($this->formActionType == 'add') {
             //TODO: no funciona el validador cuando hemos añadido el campo a mano. REVISAR
-            $inputFilter['upload'] = array(
+            $inputFilter['upload'] = [
                 'name' => 'upload',
                 'required' => true,
-                'filters' => array(
-                    array(
+                'filters' => [
+                    [
                         'name' => MediaUri::class
-                    )
-                )
-            );
+                    ]
+                ]
+            ];
         }
 
         return $inputFilter;
     }
 }
-

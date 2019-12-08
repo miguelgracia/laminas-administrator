@@ -1,0 +1,179 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ZendSkeletonApplication\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-17 02:11+0200\n"
+"PO-Revision-Date: 2016-09-23 16:35+0200\n"
+"Last-Translator: Evan Coury <me@evancoury.com>\n"
+"Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 1.8.9\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../src/Application/View/Helper/Blog.php:64 ../src/Application/View/Helper/Job.php:64
+msgid "Read more"
+msgstr ""
+
+#: ../src/Application/View/Helper/Partner.php:27 ../view/layout/front-layout.phtml:95
+msgid "More info"
+msgstr "+ Info"
+
+#: ../view/application/company/index.phtml:33
+msgid "Our Partners"
+msgstr ""
+
+#: ../view/application/contact/index.phtml:28
+msgid "Form Name"
+msgstr "Name"
+
+#: ../view/application/contact/index.phtml:34
+msgid "Form Email"
+msgstr "Email"
+
+#: ../view/application/contact/index.phtml:40 ../view/application/contact/index.phtml:76
+msgid "Form Phone"
+msgstr "Phone"
+
+#: ../view/application/contact/index.phtml:46
+msgid "Form Message"
+msgstr "Message"
+
+msgid "Form Captcha"
+msgstr "Enter Captcha"
+
+msgid "I agree with the terms and conditions of use"
+msgstr "I agree with the <a href='%s' target='_blank'>terms and conditions of use</a>"
+
+#: ../view/application/contact/index.phtml:59
+msgid "Form Send"
+msgstr "Send"
+
+msgid "Thank you for contacting us"
+msgstr ""
+
+msgid "An error occured when submitting the form. Try again later or contact us at <a href='mailto:%s'>%s</a>"
+msgstr ""
+
+#: ../view/application/contact/index.phtml:66
+msgid "Social Networks"
+msgstr ""
+
+# Zend\Validator\NotEmpty
+msgid "Value is required and can't be empty"
+msgstr ""
+
+# Zend\Validator\EmailAddress
+msgid "Invalid email format"
+msgstr ""
+
+msgid "The input is not a valid email address. Use the basic format local-part@hostname"
+msgstr ""
+
+msgid "'%hostname%' is not a valid hostname for the email address"
+msgstr ""
+
+msgid "'%hostname%' does not appear to have any valid MX or A records for the email address"
+msgstr ""
+
+msgid "'%hostname%' is not in a routable network segment. The email address should not be resolved from public network"
+msgstr ""
+
+msgid "'%localPart%' can not be matched against dot-atom format"
+msgstr ""
+
+msgid "'%localPart%' can not be matched against quoted-string format"
+msgstr ""
+
+msgid "'%localPart%' is not a valid local part for the email address"
+msgstr ""
+
+msgid "The input exceeds the allowed length"
+msgstr ""
+
+#: ../view/error/404-old.phtml:2 ../view/error/404.phtml:2
+msgid "A 404 error occurred"
+msgstr ""
+
+#: ../view/error/404-old.phtml:11
+msgid "The requested controller was unable to dispatch the request."
+msgstr ""
+
+#: ../view/error/404-old.phtml:14
+msgid "The requested controller could not be mapped to an existing controller class."
+msgstr ""
+
+#: ../view/error/404-old.phtml:17
+msgid "The requested controller was not dispatchable."
+msgstr ""
+
+#: ../view/error/404-old.phtml:20
+msgid "The requested URL could not be matched by routing."
+msgstr ""
+
+#: ../view/error/404-old.phtml:23
+msgid "We cannot determine at this time why a 404 was generated."
+msgstr ""
+
+#: ../view/error/404-old.phtml:35
+msgid "Controller"
+msgstr ""
+
+#: ../view/error/404-old.phtml:42
+#, php-format
+msgid "resolves to %s"
+msgstr ""
+
+#: ../view/error/404-old.phtml:54 ../view/error/index.phtml:8
+msgid "Additional information"
+msgstr ""
+
+#: ../view/error/404-old.phtml:57 ../view/error/404-old.phtml:82 ../view/error/index.phtml:11
+#: ../view/error/index.phtml:36
+msgid "File"
+msgstr ""
+
+#: ../view/error/404-old.phtml:61 ../view/error/404-old.phtml:86 ../view/error/index.phtml:15
+#: ../view/error/index.phtml:40
+msgid "Message"
+msgstr ""
+
+#: ../view/error/404-old.phtml:65 ../view/error/404-old.phtml:90 ../view/error/index.phtml:19
+#: ../view/error/index.phtml:44
+msgid "Stack trace"
+msgstr ""
+
+#: ../view/error/404-old.phtml:76 ../view/error/index.phtml:30
+msgid "Previous exceptions"
+msgstr ""
+
+#: ../view/error/404-old.phtml:110 ../view/error/index.phtml:64
+msgid "No Exception available"
+msgstr ""
+
+#: ../view/error/index.phtml:1
+msgid "An error occurred"
+msgstr ""
+
+#: ../view/layout/front-layout.phtml:65
+msgid "Follow us"
+msgstr ""
+
+#: ../view/layout/front-layout.phtml:73
+msgid "Contact us"
+msgstr ""
+
+#: ../view/layout/front-layout.phtml:94
+msgid "Cookie message"
+msgstr ""
+"Esta Web utiliza cookies analíticas de terceros para facilitar la navegación y obtener información de uso de sus "
+"visitantes. Si continúa navegando, consideraremos que acepta su uso. Puede obtener más información en nuestra "
+"política de cookies."
+
+#: ../view/layout/front-layout.phtml:97
+msgid "Cookies agree"
+msgstr "I agree"

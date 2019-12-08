@@ -3,38 +3,44 @@
 namespace MediaDispatcher\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\MvcEvent;
 
 class DispatcherController extends AbstractActionController
 {
+    protected $imageService;
+
     public function dispatchAction()
     {
-        $imageService = $this->serviceLocator->get('dinamicImage');
-
         $path = $this->params()->fromQuery('path');
         $width = $this->params()->fromQuery('width');
         $height = $this->params()->fromQuery('height');
         $clearCache = (bool) $this->params()->fromQuery('cache');
-        $color = (bool) $this->params()->fromQuery('background');
-        $color = '#000000';
+        $color = $this->params()->fromQuery('background', '#000000');
 
-        $imageService->setImageBackground($color);
+        $this->imageService->setImageBackground($color);
 
         try {
-            $imageService->setImagePath($path);
-            $image = $imageService->createImage($width,$height, $clearCache);
+            $this->imageService->setImagePath($path);
+            $image = $this->imageService->createImage($width, $height, $clearCache);
         } catch (\Exception $ex) {
-            $imageService->setImagePath('/img/white-logo.png',DIRECTORY_SEPARATOR);
-            $image = $imageService->createImage($width,$height, $clearCache);
+            $this->imageService->setImagePath('/img/white-logo.png', DIRECTORY_SEPARATOR);
+            $image = $this->imageService->createImage($width, $height, $clearCache);
         }
 
         $response = $this->getResponse();
 
         $headers = $response->getHeaders();
 
-        $headers->addHeaderLine('Content-Type',$image->mime());
+        $headers->addHeaderLine('Content-Type', $image->mime());
         //$headers->addHeaderLine('Content-Length',$image->filesize());
         $response->setContent($image->encode());
 
         return $response;
+    }
+
+    public function onDispatch(MvcEvent $e)
+    {
+        $this->imageService = $e->getApplication()->getServiceManager()->get('dinamicImage');
+        return parent::onDispatch($e);
     }
 }

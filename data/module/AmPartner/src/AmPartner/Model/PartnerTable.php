@@ -8,5 +8,5 @@ class PartnerTable extends AdministratorTable
 {
     protected $table = 'partners';
 
-    protected $entityModelName =  PartnerModel::class;
+    public const ENTITY_MODEL_CLASS = PartnerModel::class;
 }

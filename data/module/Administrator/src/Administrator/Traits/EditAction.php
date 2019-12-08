@@ -2,19 +2,13 @@
 
 namespace Administrator\Traits;
 
+use Administrator\Form\AdministratorForm;
 
 trait EditAction
 {
     public function editAction()
     {
-        $serviceLocator = $this->serviceLocator;
-
-        $formService = $serviceLocator->get('Administrator\Service\AdministratorFormService');
-
-        $application = $serviceLocator->get('Application');
-        $routeMatch  = $application->getMvcEvent()->getRouteMatch();
-
-        $thisModule =  $routeMatch->getParam('module');
+        $thisModule = $this->event->getRouteMatch()->getParam('module');
 
         $id = (int) $this->params()->fromRoute('id', 0);
 
@@ -23,21 +17,20 @@ trait EditAction
         }
 
         try {
-            $model = $this->tableGateway->find($id);
+            $this->model = $this->tableGateway->find($id);
         } catch (\Exception $ex) {
             return $this->goToSection($thisModule);
         }
 
-        $form = $formService->setForm($this->form, $model)->addFields()->getForm();
+        $form = $this->formService->prepareForm($this::FORM_CLASS, AdministratorForm::ACTION_EDIT);
 
         $request = $this->getRequest();
 
         if ($request->isPost()) {
-
-            $isValid = $formService->resolveForm($request->getPost());
+            $isValid = $this->formService->resolveForm($request->getPost());
 
             if ($isValid) {
-                $formService->save();
+                $this->formService->save();
                 return $this->goToEditSection($thisModule, $id);
             }
         }
@@ -46,18 +39,17 @@ trait EditAction
 
         $blocks = $this->parseTriggers();
 
-        $viewParams = compact( 'form', 'title', 'blocks');
+        $viewParams = compact('form', 'title', 'blocks');
 
-        $addAction = 'add';
+        $addAction = AdministratorForm::ACTION_ADD;
 
-        $module = $this->getEvent()->getRouteMatch()->getParam('module');
+        $module = $this->event->getRouteMatch()->getParam('module');
 
-        $permissions = $this->serviceLocator->get('AmProfile\Service\ProfilePermissionService');
-        if ($permissions->hasModuleAccess($module, $addAction)) {
+        if ($this->profilePermissionService->hasModuleAccess($module, $addAction)) {
             $controller = $this->getPluginManager()->getController();
 
-            if (method_exists($controller, $addAction .'Action')) {
-                $viewParams['add_action'] = $controller->goToSection($module, array('action' => $addAction), true);
+            if (method_exists($controller, $addAction . 'Action')) {
+                $viewParams['add_action'] = $controller->goToSection($module, ['action' => $addAction], true);
             }
         }
 

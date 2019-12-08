@@ -11,20 +11,8 @@ class ModuleFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = ModuleTable::class;
 
-    public function initializers()
+    public function addElements()
     {
-        return array(
-            'fieldModifiers' => array(
-
-            ),
-            'fieldValueOptions' => array(
-
-            )
-        );
-    }
-
-    public function addFields()
-    {
-        $this->get('zendName')->setAttribute('readonly','readonly');
+        $this->get('zendName')->setAttribute('readonly', 'readonly');
     }
 }

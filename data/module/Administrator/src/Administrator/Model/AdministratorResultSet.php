@@ -13,11 +13,10 @@ class AdministratorResultSet extends HydratingResultSet
      *
      * @var array
      */
-    protected $hiddenProperties = array(
+    protected $hiddenProperties = [
         'inputFilter',
-        'serviceLocator',
         'metadata'
-    );
+    ];
 
     /**
      * @var $fieldFetchPrimaryColumn
@@ -41,7 +40,7 @@ class AdministratorResultSet extends HydratingResultSet
         foreach ($this->hiddenProperties as $hiddenProperty) {
             if (is_array($row) and array_key_exists($hiddenProperty, $row)) {
                 unset($row[$hiddenProperty]);
-            } elseif(is_object($row) and property_exists($row, $hiddenProperty)) {
+            } elseif (is_object($row) and property_exists($row, $hiddenProperty)) {
                 unset($row->{$hiddenProperty});
             }
         }
@@ -66,9 +65,8 @@ class AdministratorResultSet extends HydratingResultSet
      */
     public function toArray()
     {
-        $return = array();
+        $return = [];
         foreach ($this as $currentIndex => $row) {
-
             $currentRow = $this->setCurrentRow($row);
 
             $this->removeHiddenProperties($currentRow);
@@ -96,8 +94,7 @@ class AdministratorResultSet extends HydratingResultSet
      */
     public function toObjectArray(&$return = [])
     {
-        $setRow = function ($row, $primaryIndex, $secondaryIndex = null) use(&$return) {
-
+        $setRow = function ($row, $primaryIndex, $secondaryIndex = null) use (&$return) {
             if ($secondaryIndex !== null) {
                 if (is_object($return)) {
                     if (!property_exists($return, $primaryIndex)) {
@@ -117,14 +114,12 @@ class AdministratorResultSet extends HydratingResultSet
         };
 
         foreach ($this as $currentIndex => $row) {
-
             $currentRow = $this->setCurrentRowObject($row);
 
             $this->removeHiddenProperties($currentRow);
 
             if (!is_null($currentRow)) {
-
-                $funcParams = array($currentRow, $currentIndex);
+                $funcParams = [$currentRow, $currentIndex];
 
                 if (!is_null($this->fieldFetchPrimaryColumn) and isset($currentRow->{$this->fieldFetchPrimaryColumn})) {
                     $funcParams[1] = $currentRow->{$this->fieldFetchPrimaryColumn};
@@ -134,24 +129,24 @@ class AdministratorResultSet extends HydratingResultSet
                     }
                 }
 
-                call_user_func_array($setRow,$funcParams);
+                call_user_func_array($setRow, $funcParams);
             }
         }
         return $return;
     }
 
-    public function toKeyValueArray($key, $value = array())
+    public function toKeyValueArray($key, $value = [])
     {
-        $return = array();
+        $return = [];
         foreach ($this as $row) {
             $currentRow = $this->setCurrentRow($row);
             $this->removeHiddenProperties($currentRow);
             if (is_array($value)) {
-                $values = array();
-                array_map(function ($elem) use($currentRow, &$values) {
-                     $values[] = $currentRow[$elem];
-                },$value);
-                $stringVal = implode(' ',$values);
+                $values = [];
+                array_map(function ($elem) use ($currentRow, &$values) {
+                    $values[] = $currentRow[$elem];
+                }, $value);
+                $stringVal = implode(' ', $values);
             } else {
                 $stringVal = $currentRow[$value];
             }
@@ -160,7 +155,6 @@ class AdministratorResultSet extends HydratingResultSet
         }
         return $return;
     }
-
 
     private function setCurrentRow($row)
     {

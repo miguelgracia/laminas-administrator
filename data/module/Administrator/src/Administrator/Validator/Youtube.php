@@ -1,4 +1,5 @@
 <?php
+
 namespace Administrator\Validator;
 
 use Zend\Validator\Exception;

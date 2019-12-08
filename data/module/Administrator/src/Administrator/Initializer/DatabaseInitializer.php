@@ -2,19 +2,26 @@
 
 namespace Administrator\Initializer;
 
-
-use Zend\ServiceManager\InitializerInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Administrator\Model\AdministratorResultSet;
+use Interop\Container\ContainerInterface;
+use Zend\Db\Adapter\Adapter;
+use Zend\Hydrator\ClassMethods;
+use Zend\ServiceManager\Initializer\InitializerInterface;
 
 class DatabaseInitializer implements InitializerInterface
 {
-    public function initialize($instance, ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $instance)
     {
-        //Seteamos el dbAdapter para todos los modelos)
+        //Seteamos el dbAdapter y el resultset para todos los modelos)
         if ($instance instanceof \Zend\Db\Adapter\AdapterAwareInterface) {
-            $instance->setServiceLocator($serviceLocator);
-            $instance->setDbAdapter($serviceLocator->get('Zend\Db\Adapter\Adapter'));
+            $resultSet = (new AdministratorResultSet)
+                ->setHydrator(new ClassMethods)
+                ->setObjectPrototype($container->get($instance::ENTITY_MODEL_CLASS));
+
+            $instance
+                ->setResultSetPrototype($resultSet)
+                ->setDbAdapter($container->get(Adapter::class))
+                ->initialize();
         }
     }
-
 }

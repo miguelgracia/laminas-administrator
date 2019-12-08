@@ -1,22 +1,22 @@
 <?php
-return array(
-    'view_manager' => array(
-        'template_path_stack' => array(
+return [
+    'view_manager' => [
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-    ),
+        ],
+    ],
 
-    'controllers' => array(
-        'invokables' => array(
-            'AmHomeModule\Controller\AmHomeModuleModuleController' => 'AmHomeModule\Controller\AmHomeModuleModuleController'
-        )
-    ),
+    'form_elements' => [
+        'factories' => [
+            \AmHomeModule\Form\HomeModuleForm::class => \Administrator\Factory\AdministratorFormFactory::class,
+            \AmHomeModule\Form\HomeModuleFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+            \AmHomeModule\Form\HomeModuleLocaleFieldset::class => \Administrator\Factory\AdministratorLocaleFieldsetFactory::class
+        ]
+    ],
 
-    'service_manager' => array(
+    'service_manager' => [
+    ],
 
-    ),
-
-    'router' => array(
-
-    )
-);
+    'router' => [
+    ]
+];

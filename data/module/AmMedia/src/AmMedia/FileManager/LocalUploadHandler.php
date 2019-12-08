@@ -16,7 +16,6 @@ class LocalUploadHandler extends BaseUploadHandler
      */
     protected $fmData;
 
-
     public function __construct($options = null, $initialize = false, $error_messages = null)
     {
         parent::__construct($options, $initialize, $error_messages);
@@ -41,21 +40,21 @@ class LocalUploadHandler extends BaseUploadHandler
 
         $images = $this->fm->config->images;
         // original image settings
-        $this->options['image_versions'] = array(
-            '' => array(
+        $this->options['image_versions'] = [
+            '' => [
                 'auto_orient' => $images['main']['autoOrient'],
                 'max_width' => $images['main']['maxWidth'],
                 'max_height' => $images['main']['maxHeight'],
-            ),
-        );
+            ],
+        ];
         // image thumbnail settings
-        if(isset($images['thumbnail']) && $images['thumbnail']['enabled'] === true) {
-            $this->options['image_versions']['thumbnail'] = array(
+        if (isset($images['thumbnail']) && $images['thumbnail']['enabled'] === true) {
+            $this->options['image_versions']['thumbnail'] = [
                 'upload_dir' => $this->fmData['thumbnails_dir'],
                 'crop' => $images['thumbnail']['crop'],
                 'max_width' => $images['thumbnail']['maxWidth'],
                 'max_height' => $images['thumbnail']['maxHeight'],
-            );
+            ];
         }
 
         $this->error_messages['accept_file_types'] = $this->fm->lang('INVALID_FILE_TYPE');
@@ -69,7 +68,7 @@ class LocalUploadHandler extends BaseUploadHandler
         $file_path = $this->get_upload_path($file_name);
         if ($this->is_valid_image_file($file_path)) {
             $version = 'thumbnail';
-            if(isset($this->options['image_versions'][$version])) {
+            if (isset($this->options['image_versions'][$version])) {
                 $thumbnail_options = $this->options['image_versions'][$version];
                 $this->create_scaled_image($file_name, $version, $thumbnail_options);
                 // Free memory:
@@ -80,11 +79,12 @@ class LocalUploadHandler extends BaseUploadHandler
 
     protected function trim_file_name($file_path, $name, $size, $type, $error, $index, $content_range)
     {
-        return $this->fm->normalizeString($name, array('.', '-'));
+        return $this->fm->normalizeString($name, ['.', '-']);
     }
 
-    protected function get_unique_filename($file_path, $name, $size, $type, $error, $index, $content_range) {
-        if($this->fm->config->upload['overwrite']) {
+    protected function get_unique_filename($file_path, $name, $size, $type, $error, $index, $content_range)
+    {
+        if ($this->fm->config->upload['overwrite']) {
             return $name;
         }
         return parent::get_unique_filename($file_path, $name, $size, $type, $error, $index, $content_range);
@@ -119,8 +119,9 @@ class LocalUploadHandler extends BaseUploadHandler
             return false;
         }
         if ($this->options['max_file_size'] && (
-                $file_size > $this->options['max_file_size'] ||
-                $file->size > $this->options['max_file_size'])
+            $file_size > $this->options['max_file_size'] ||
+                $file->size > $this->options['max_file_size']
+        )
         ) {
             $file->error = $this->get_error_message('max_file_size');
             return false;
@@ -137,7 +138,7 @@ class LocalUploadHandler extends BaseUploadHandler
             $file->error = $this->get_error_message('max_number_of_files');
             return false;
         }
-        if($this->fmData['images_only'] && !$this->is_valid_image_file($uploaded_file)) {
+        if ($this->fmData['images_only'] && !$this->is_valid_image_file($uploaded_file)) {
             $file->error = sprintf($this->fm->lang('UPLOAD_IMAGES_ONLY'));
             return false;
         }
@@ -155,14 +156,13 @@ class LocalUploadHandler extends BaseUploadHandler
                 @$this->options['image_versions']['']['auto_orient'] &&
                 function_exists('exif_read_data') &&
                 ($exif = @exif_read_data($uploaded_file)) &&
-                (((int) @$exif['Orientation']) >= 5 )
+                (((int) @$exif['Orientation']) >= 5)
             ) {
                 $tmp = $img_width;
                 $img_width = $img_height;
                 $img_height = $tmp;
                 unset($tmp);
             }
-
         }
         if (!empty($img_width)) {
             if ($max_width && $img_width > $max_width) {

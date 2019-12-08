@@ -11,23 +11,10 @@ class StaticPageFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = StaticPageTable::class;
 
-    public function initializers()
-    {
-        return array(
-            'fieldValueOptions' => array(
-                'active' => array(
-                    '0' => 'NO',
-                    '1' => 'SI'
-                ),
-            )
-        );
-    }
-
-    public function addFields()
+    public function addElements()
     {
         if ($this->formActionType == 'edit') {
-            $this->get('key')->setAttribute('readonly','readonly');
+            $this->get('key')->setAttribute('readonly', 'readonly');
         }
     }
 }
-

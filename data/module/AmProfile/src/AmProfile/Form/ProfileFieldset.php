@@ -11,43 +11,19 @@ class ProfileFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = ProfileTable::class;
 
-    public function initializers()
-    {
-        $serviceLocator = $this->serviceLocator->getServiceLocator();
-
-        return array(
-            'fieldModifiers' => array(
-                'description'   => 'textarea',
-                'permissions' => 'MultiCheckbox',
-                'isAdmin' => 'Select'
-            ),
-            'fieldValueOptions' => array(
-                'isAdmin' => array(
-                    '0' => 'NO',
-                    '1' => 'SI'
-                ),
-                'permissions' => function () use($serviceLocator) {
-
-                    return $serviceLocator->get('AmModule\Service\ModuleService')->getControllerActionsModules();
-
-                }
-            )
-        );
-    }
-
-    public function addFields()
+    public function addElements()
     {
         $perm = $this->get('permissions');
 
-        $perm->setOption('partial_view','am-profile/am-profile-module/form-partial/permission');
+        $perm->setOption('partial_view', 'am-profile/am-profile-module/form-partial/permission');
 
-        $perm->setOption('label','permissions');
+        $perm->setOption('label', 'permissions');
         $perm->setAttribute('class', '');
         $perm->setUseHiddenElement(true);
 
-        $perm->setLabelAttributes(array(
+        $perm->setLabelAttributes([
             'class' => 'col-sm-3'
-        ));
+        ]);
 
         //Añadimos la clase no-editor para que no cargue el plugin ckeditor en este campo
         $description = $this->get('description');

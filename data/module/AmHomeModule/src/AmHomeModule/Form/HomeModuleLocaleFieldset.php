@@ -10,38 +10,13 @@ class HomeModuleLocaleFieldset extends AdministratorFieldset
 {
     protected $tableGatewayName = HomeModuleLocaleTable::class;
 
-    public function initializers()
-    {
-        return array(
-            'fieldModifiers' => array(
-                'content'           => 'Textarea',
-            ),
-        );
-    }
-
-    public function addFields()
-    {
-        $imageUrl = $this->get('imageUrl');
-        $class = $imageUrl->getAttribute('class');
-        $class .= ' browsefile';
-        $imageUrl->setAttribute('class',$class);
-        $imageUrl->setAttribute('readonly','readonly');
-
-        $youtubeVideos = $this->serviceLocator->getServiceLocator()->get('YoutubeService')->getVideosInDatabase();
-
-        $imageUrl->setAttribute('data-youtube',json_encode($youtubeVideos->toObjectArray()));
-
-        $imageUrl->setOption('partial_view','am-job/am-job-module/form-partial/image-url');
-        $imageUrl->setOption('allow_add_multiple_files', true);
-    }
-
     public function getInputFilterSpecification()
     {
         $inputFilter = parent::getInputFilterSpecification();
 
-        $inputFilter['imageUrl']['filters'][] = array(
+        $inputFilter['imageUrl']['filters'][] = [
             'name' => MediaUri::class
-        );
+        ];
 
         return $inputFilter;
     }

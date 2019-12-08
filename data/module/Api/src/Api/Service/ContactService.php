@@ -11,13 +11,10 @@ use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail;
-use Zend\ServiceManager\FactoryInterface;
 use Zend\Validator\EmailAddress;
 
-class ContactService implements FactoryInterface
+class ContactService
 {
-    use ApiServiceTrait;
-
     /**
      * @var \Zend\Form\Form
      */
@@ -25,7 +22,7 @@ class ContactService implements FactoryInterface
 
     public function createForm()
     {
-        $fieldset = new ContactFieldset('contact', array());
+        $fieldset = new ContactFieldset('contact', []);
         $this->form = new Form();
         $this->form->add($fieldset);
 
@@ -35,17 +32,17 @@ class ContactService implements FactoryInterface
 
         $fontPath = $realPathFilter->filter($_SERVER['DOCUMENT_ROOT'] . '/font/arial.ttf');
 
-        $imageCaptcha = new Image(array(
+        $imageCaptcha = new Image([
             'font' => $fontPath
-        ));
+        ]);
 
-        $imageCaptcha->setImgDir($_SERVER['DOCUMENT_ROOT'].'/captcha');
-        $imageCaptcha->setImgUrl("/captcha");
+        $imageCaptcha->setImgDir($_SERVER['DOCUMENT_ROOT'] . '/captcha');
+        $imageCaptcha->setImgUrl('/captcha');
 
         $captcha->setCaptcha($imageCaptcha);
 
-        $captcha->setAttribute('id','captcha');
-        $captcha->setAttribute('class','form-control');
+        $captcha->setAttribute('id', 'captcha');
+        $captcha->setAttribute('class', 'form-control');
         $this->form->add($captcha);
         $this->form->setAttribute('method', 'post');
         $inputFilter = new InputFilter();
@@ -76,11 +73,12 @@ class ContactService implements FactoryInterface
             $formData = $formData['contact'];
 
             $mail = new Message();
-            $mail->setFrom('absconsultor@absconsultor.es', "ABS Consultor - Contacto Web");
+//            $mail->setFrom('absconsultor@absconsultor.es', "ABS Consultor - Contacto Web");
+            $mail->setFrom('miguelgraciamartin@gmail.com', 'ABS Consultor - Contacto Web');
             $mail->addTo($mailTo, 'ABS Consultor');
             $mail->setSubject('Información de contacto desde la web');
 
-            $body  = 'Nombre   : ' . $formData['name'] . "\n";
+            $body = 'Nombre   : ' . $formData['name'] . "\n";
             $body .= 'Email    : ' . $formData['email'] . "\n";
             $body .= 'Teléfono : ' . $formData['phone'] . "\n";
             $body .= 'Mensaje  : ' . $formData['message'] . "\n";

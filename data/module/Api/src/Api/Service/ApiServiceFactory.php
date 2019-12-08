@@ -2,57 +2,28 @@
 
 namespace Api\Service;
 
-
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class ApiServiceFactory implements FactoryInterface
 {
-    private $serviceLocator;
-
-    private $allowedServices = [
-        'AppData',
-        'Blog',
-        'BlogCategory',
-        'Contact',
-        'HomeModule',
-        'Job',
-        'JobCategory',
-        'Language',
-        'Megabanner',
-        'Partner',
-        'Section',
-        'StaticPage',
-    ];
-
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $this->serviceLocator = $serviceLocator;
+        $service = new $requestedName($container);
 
-        return $this;
-    }
+        if ($service instanceof AllowDatabaseAccessInterface) {
+            $tableName = $service->getTableName();
+            if (class_exists($tableName)) {
+                $service->setTable($container->get($tableName));
+            }
 
-    /**
-     * is utilized for reading data from inaccessible members.
-     *
-     * @param $name string
-     * @return mixed
-     */
-    function __get($service)
-    {
-        $service = ucfirst($service);
+            $tableLocaleName = $service->getTableLocaleName();
 
-        if (in_array($service, $this->allowedServices)) {
-            $serviceName = sprintf('Application\Api\\%s', $service);
-            return $this->serviceLocator->get($serviceName);
+            if (class_exists($tableLocaleName)) {
+                $service->setTableLocale($container->get($tableLocaleName));
+            }
         }
 
-        throw new \Exception('Api Services Not Exist');
+        return $service;
     }
 }

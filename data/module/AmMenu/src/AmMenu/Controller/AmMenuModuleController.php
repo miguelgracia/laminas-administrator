@@ -1,37 +1,36 @@
 <?php
+
 namespace AmMenu\Controller;
 
 use Administrator\Controller\AuthController;
 use Administrator\Traits\AddAction;
 use Administrator\Traits\EditAction;
-
 use AmMenu\Form\MenuForm;
-
 
 class AmMenuModuleController extends AuthController
 {
     use AddAction, EditAction;
 
-    protected $form = MenuForm::class;
+    public const FORM_CLASS = MenuForm::class;
 
     public function indexAction()
     {
-        $entradas = $this->tableGateway->fetchAllOrdenados();
-
-        return compact('entradas');
+        return [
+            'entradas' => $this->tableGateway->fetchAllOrdenados(),
+        ];
     }
 
     public function saveOrderAction()
     {
         $request = $this->getRequest();
-        $result = array();
+        $result = [];
 
         if ($request->isPost()) {
             $menuIds = $this->params()->fromPost('elements');
             foreach ($menuIds as $index => $id) {
-                $this->tableGateway->save(array(
+                $this->tableGateway->save([
                     'order' => (int) $index + 1
-                ),$id);
+                ], $id);
             }
             echo json_encode($result);
             die;

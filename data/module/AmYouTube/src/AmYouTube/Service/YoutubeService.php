@@ -2,8 +2,11 @@
 
 namespace AmYouTube\Service;
 
-
-use Zend\ServiceManager\FactoryInterface;
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class YoutubeService implements FactoryInterface
@@ -19,10 +22,10 @@ class YoutubeService implements FactoryInterface
     protected $client;
     protected $token;
 
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $this->serviceLocator = $serviceLocator;
-        $this->sessionService = $serviceLocator->get('Administrator\Service\SessionService');
+        $this->serviceLocator = $container;
+        $this->sessionService = $container->get('Administrator\Service\SessionService');
         $this->controllerPluginManager = $this->serviceLocator->get('ControllerPluginManager');
 
         $urlPlugin = $this->controllerPluginManager->get('url');
@@ -40,12 +43,12 @@ class YoutubeService implements FactoryInterface
         $this->client->setClientSecret($this->OAUTH2_CLIENT_SECRET);
         $this->client->setScopes('https://www.googleapis.com/auth/youtube');
 
-        $redirect = $urlPlugin->fromRoute('administrator',array(
+        $redirect = $urlPlugin->fromRoute('administrator', [
             'module' => 'you-tube',
             'action' => 'oauth-callback'
-        ),array(
+        ], [
             'force_canonical' => true
-        ));
+        ]);
 
         $this->client->setRedirectUri($redirect);
 
@@ -57,7 +60,6 @@ class YoutubeService implements FactoryInterface
     {
         return $this->client;
     }
-
 
     public function getYoutubeService()
     {

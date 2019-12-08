@@ -10,17 +10,4 @@ class BlogCategoryFieldset extends AdministratorFieldset
     protected $isPrimaryFieldset = true;
 
     protected $tableGatewayName = BlogCategoryTable::class;
-
-    public function initializers()
-    {
-        return array(
-            'fieldValueOptions' => array(
-                'active' => array(
-                    '0' => 'NO',
-                    '1' => 'SI'
-                ),
-            )
-        );
-    }
 }
-

@@ -2,32 +2,26 @@
 
 namespace Administrator\Factory;
 
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 
 class AdministratorModelAbstractFactory implements AbstractFactoryInterface
 {
-    public function canCreateServiceWithName(ServiceLocatorInterface $locator, $name, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
         return (substr($requestedName, -5) === 'Model');
     }
 
-    public function createServiceWithName(ServiceLocatorInterface $locator, $name, $requestedName)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         if (!class_exists($requestedName)) {
-            // Vamos a montar el nombre dinámicamente,
-            // solo conservamos "GestorModel", y si cambia la aplicación
-            // no tenemos que tocar esto
-
-            $trozos = explode('\\', $requestedName);
-            // Sabemos que nos podemos guardar los dos primeros trozos del namespace
-            $requestedName = $trozos[0]."\\".$trozos[1]."\\AdministratorModel";
+            $requestedName = (new \ReflectionClass($requestedName))->getNamespaceName() . '\\AdministratorModel';
         }
 
-        if (!$locator->has($requestedName)) {
-            $locator->setInvokableClass($requestedName, $requestedName, false);
+        if (!$container->has($requestedName)) {
+            $container->setInvokableClass($requestedName, $requestedName, false);
         }
 
-        return $locator->create($requestedName);
+        return new $requestedName;
     }
 }

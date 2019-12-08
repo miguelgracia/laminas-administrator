@@ -3,38 +3,17 @@
 namespace Administrator\Service;
 
 use Zend\Db\Sql\Select;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Authentication\AuthenticationService;
-use Zend\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
 
-class AuthService implements FactoryInterface
+class AuthService
 {
-    protected $serviceLocator;
     protected $userData = false;
     protected $authService;
+    protected $userTable;
 
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return $this
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __construct($authService, $userTable)
     {
-        $this->serviceLocator = $serviceLocator;
-
-        //My assumption, you've alredy set dbAdapter
-        //and has users table with columns : user_name and pass_word
-        //that password hashed with md5
-        $dbAdapter = $serviceLocator->get('Zend\Db\Adapter\Adapter');
-
-        $dbTableAuthAdapter  = new  AuthAdapter($dbAdapter,
-            'admin_users','username','password', "md5(?)");
-
-        $storage = $serviceLocator->get('Administrator\Model\AuthStorage');
-
-        $this->authService = new AuthenticationService($storage, $dbTableAuthAdapter);
-
-        return $this;
+        $this->authService = $authService;
+        $this->userTable = $userTable;
     }
 
     public function getAuthInstance()
@@ -42,14 +21,7 @@ class AuthService implements FactoryInterface
         return $this->authService;
     }
 
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
-
     /**
-     *
-     * @param $username
      * @return mixed
      */
     public function getUserData()
@@ -62,20 +34,20 @@ class AuthService implements FactoryInterface
 
         $username = $username['user'];
 
-        $rowset = $this->serviceLocator->get('AmUser\Model\UserTable')->select(function (Select $select) use($username) {
+        $rowSet = $this->userTable->select(function (Select $select) use ($username) {
             $select
-                ->columns(array('*'))
+                ->columns(['*'])
                 ->join(
                     'admin_profiles',
                     'admin_profiles.id = admin_users.admin_profile_id',
-                    array('is_admin','permissions','key')
+                    ['is_admin', 'permissions', 'key']
                 )
-                ->where(array(
+                ->where([
                     'username' => $username
-                ));
+                ]);
         });
 
-        $row = $rowset->current();
+        $row = $rowSet->current();
 
         $this->userData = $row ?: false;
 

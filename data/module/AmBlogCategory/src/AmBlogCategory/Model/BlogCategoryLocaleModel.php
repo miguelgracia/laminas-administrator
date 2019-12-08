@@ -6,5 +6,4 @@ use Administrator\Model\AdministratorModel;
 
 class BlogCategoryLocaleModel extends AdministratorModel
 {
-
 }

@@ -1,22 +1,17 @@
 <?php
-return array(
-    'view_manager' => array(
-        'template_path_stack' => array(
+return [
+    'view_manager' => [
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-    ),
+        ],
+    ],
 
-    'controllers' => array(
-        'invokables' => array(
-            'AmJob\Controller\AmJobModuleController' => 'AmJob\Controller\AmJobModuleController'
-        )
-    ),
-
-    'service_manager' => array(
-
-    ),
-
-    'router' => array(
-
-    )
-);
+    'form_elements' => [
+        'factories' => [
+            \AmJob\Form\Element\JobCategoriesId::class => \AmJob\Form\Element\JobCategoriesIdFactory::class,
+            \AmJob\Form\JobForm::class => \Administrator\Factory\AdministratorFormFactory::class,
+            \AmJob\Form\JobFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+            \AmJob\Form\JobLocaleFieldset::class => \Administrator\Factory\AdministratorLocaleFieldsetFactory::class
+        ]
+    ],
+];

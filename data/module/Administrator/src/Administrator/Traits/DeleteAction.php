@@ -2,7 +2,6 @@
 
 namespace Administrator\Traits;
 
-
 trait DeleteAction
 {
     /**
@@ -13,14 +12,13 @@ trait DeleteAction
         $request = $this->getRequest();
 
         if ($request->isPost()) {
-
-            $this->tableGateway->delete(array('id' => $this->params()->fromRoute('id')));
+            $this->tableGateway->delete(['id' => $this->params()->fromRoute('id')]);
 
             $response = $this->getResponse();
-            $response->setContent(json_encode(array(
+            $response->setContent(json_encode([
                 'status' => 'ok',
                 'message' => 'Registro ELIMINADO'
-            )));
+            ]));
             return $response;
         }
 

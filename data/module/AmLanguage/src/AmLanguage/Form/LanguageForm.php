@@ -8,10 +8,10 @@ class LanguageForm extends AdministratorForm
 {
     public function initializers()
     {
-        return array(
-            'fieldsets' => array(
-                LanguageFieldset::class => array()
-            )
-        );
+        return [
+            'fieldsets' => [
+                LanguageFieldset::class
+            ]
+        ];
     }
 }

@@ -4,50 +4,42 @@ namespace Administrator\Service;
 
 use Zend\Filter\Word\DashToCamelCase;
 use Zend\Mvc\Controller\Plugin\Params;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 abstract class DatatableConfig
 {
-    protected $serviceLocator;
     protected $controllerPluginManager;
     protected $permissions;
 
-    /**
-     * @var Params
-     */
-    protected $params;
+    protected $translator;
 
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-
-        $this->controllerPluginManager = $this->serviceLocator->get('ControllerPluginManager');
-
-        $this->permissions = $this->serviceLocator->get('AmProfile\Service\ProfilePermissionService');
-
-        $this->params = $this->controllerPluginManager->get('Params');
+    public function __construct(
+        $controllerPluginManager,
+        $permissions,
+        $translator
+    ) {
+        $this->controllerPluginManager = $controllerPluginManager;
+        $this->permissions = $permissions;
+        $this->translator = $translator;
     }
 
     public function getViewParams()
     {
-        $translator = $this->serviceLocator->get('Translator');
-
-        $module = $this->params->fromRoute('module');
+        $module = $this->controllerPluginManager->get('Params')->fromRoute('module');
 
         $filter = new DashToCamelCase();
 
-        $viewParams = array(
-            'table_id'   => lcfirst($filter->filter($module)).'Table',
-            'title'      => sprintf($translator->translate("List of %s module"),$module)
-        );
+        $viewParams = [
+            'table_id' => lcfirst($filter->filter($module)) . 'Table',
+            'title' => sprintf($this->translator->translate('List of %s module'), $module)
+        ];
 
         $addAction = 'add';
 
         if ($this->permissions->hasModuleAccess($module, $addAction)) {
             $controller = $this->controllerPluginManager->getController();
 
-            if (method_exists($controller, $addAction .'Action')) {
-                $viewParams['add_action'] = $controller->goToSection($module, array('action' => $addAction), true);
+            if (method_exists($controller, $addAction . 'Action')) {
+                $viewParams['add_action'] = $controller->goToSection($module, ['action' => $addAction], true);
             }
         }
         return $viewParams;
@@ -55,40 +47,39 @@ abstract class DatatableConfig
 
     protected function setEditAndDeleteColumnsOptions(&$header)
     {
-        $translator = $this->serviceLocator->get('Translator');
-
-        $module = $this->params->fromRoute('module');
+        $module = $this->controllerPluginManager->get('Params')->fromRoute('module');
 
         $canEdit = $this->permissions->hasModuleAccess($module, 'edit');
         $canDelete = $this->permissions->hasModuleAccess($module, 'delete');
 
-        if($canEdit) {
+        if ($canEdit) {
             //Añadimos las columnas que contendrán los iconos de edición y activar/desactivar
-            $header['edit'] = array(
-                'value' => $translator->translate('Edit'),
-                'options' => array(
+            $header['edit'] = [
+                'value' => $this->translator->translate('Edit'),
+                'options' => [
                     'orderable' => false,
                     'searchable' => false,
                     'visible' => $canEdit
-                )
-            );
+                ]
+            ];
         }
 
         if ($canDelete) {
-            $header['delete'] = array(
-                'value' => $translator->translate('Delete'),
-                'options' => array(
+            $header['delete'] = [
+                'value' => $this->translator->translate('Delete'),
+                'options' => [
                     'orderable' => false,
                     'searchable' => false,
                     'visible' => $canDelete
-                )
-            );
+                ]
+            ];
         }
     }
 
     public function setEditAndDeleteColumnsValues(&$row)
     {
-        $module = $this->params->fromRoute('module');
+        $params = $this->controllerPluginManager->get('Params');
+        $module = $params->fromRoute('module');
 
         $canEdit = $this->permissions->hasModuleAccess($module, 'edit');
         $canDelete = $this->permissions->hasModuleAccess($module, 'delete');
@@ -97,13 +88,13 @@ abstract class DatatableConfig
 
         $controller = $this->controllerPluginManager->getController();
 
-        $module = $this->params->fromRoute('module');
+        $module = $params->fromRoute('module');
 
-        $editUrl = $controller->goToSection($module,array('action' => 'edit', 'id' => $row['id']),true);
-        $deleteUrl = $controller->goToSection($module,array('action' => 'delete','id' => $row['id']),true);
+        $editUrl = $controller->goToSection($module, ['action' => 'edit', 'id' => $row['id']], true);
+        $deleteUrl = $controller->goToSection($module, ['action' => 'delete', 'id' => $row['id']], true);
 
         if ($canEdit) {
-            $row['edit'] = sprintf($link,$editUrl, 'fa-edit');
+            $row['edit'] = sprintf($link, $editUrl, 'fa-edit');
         }
 
         if ($canDelete) {

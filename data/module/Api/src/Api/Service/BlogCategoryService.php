@@ -4,20 +4,19 @@ namespace Api\Service;
 
 use Api\Model\BlogCategoryLocaleTable;
 use Api\Model\BlogCategoryTable;
-use Zend\ServiceManager\FactoryInterface;
 
-class BlogCategoryService implements FactoryInterface
+class BlogCategoryService implements AllowDatabaseAccessInterface
 {
-    use ApiServiceTrait;
+    use AllowDatabaseAccessTrait;
 
-    protected $table = BlogCategoryTable::class;
-    protected $tableLocale = BlogCategoryLocaleTable::class;
+    protected $tableName = BlogCategoryTable::class;
+    protected $tableLocaleName = BlogCategoryLocaleTable::class;
 
     public function getData()
     {
-        return array(
-            'rows' => $this->table->all(array('deleted_at' => null))->setFetchGroupResultSet('id')->toArray(),
-            'locale' => $this->tableLocale->findLocales()->setFetchGroupResultSet('languageCode','relatedTableId')->toArray()
-        );
+        return [
+            'rows' => $this->table->all(['deleted_at' => null])->setFetchGroupResultSet('id')->toArray(),
+            'locale' => $this->tableLocale->findLocales()->setFetchGroupResultSet('languageCode', 'relatedTableId')->toArray()
+        ];
     }
 }

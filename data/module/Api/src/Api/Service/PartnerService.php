@@ -2,26 +2,22 @@
 
 namespace Api\Service;
 
-use Api\Model\PartnerLocaleTable;
 use Api\Model\PartnerTable;
-use Zend\ServiceManager\FactoryInterface;
 use Zend\Stdlib\ArrayObject;
 
-class PartnerService implements FactoryInterface
+class PartnerService implements AllowDatabaseAccessInterface
 {
-    use ApiServiceTrait;
+    use AllowDatabaseAccessTrait;
 
-    protected $table = PartnerTable::class;
+    protected $tableName = PartnerTable::class;
 
     public function getData($lang)
     {
         $rows = new ArrayObject(
-
-            $this->table->all(array(
+            $this->table->all([
                 'active' => '1',
                 'deleted_at' => null
-            ))->setFetchGroupResultSet('id')->toObjectArray(),
-
+            ])->setFetchGroupResultSet('id')->toObjectArray(),
             ArrayObject::ARRAY_AS_PROPS
         );
 

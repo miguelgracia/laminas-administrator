@@ -4,25 +4,22 @@ namespace Api\Service;
 
 use Api\Model\HomeModuleLocaleTable;
 use Api\Model\HomeModuleTable;
-use Zend\ServiceManager\FactoryInterface;
 use Zend\Stdlib\ArrayObject;
 
-class HomeModuleService implements FactoryInterface
+class HomeModuleService implements AllowDatabaseAccessInterface
 {
-    use ApiServiceTrait;
+    use AllowDatabaseAccessTrait;
 
-    protected $table = HomeModuleTable::class;
-    protected $tableLocale = HomeModuleLocaleTable::class;
+    protected $tableName = HomeModuleTable::class;
+    protected $tableLocaleName = HomeModuleLocaleTable::class;
 
     public function getData($lang)
     {
         $rows = new ArrayObject(
-
-            $this->table->all(array(
+            $this->table->all([
                 'active' => '1',
                 'deleted_at' => null
-            ))->setFetchGroupResultSet('id')->toObjectArray(),
-
+            ])->setFetchGroupResultSet('id')->toObjectArray(),
             ArrayObject::ARRAY_AS_PROPS
         );
 

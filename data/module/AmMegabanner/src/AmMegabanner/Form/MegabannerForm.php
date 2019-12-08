@@ -8,11 +8,10 @@ class MegabannerForm extends AdministratorForm
 {
     public function initializers()
     {
-        return array(
-            'fieldsets' => array(
-                MegabannerFieldset::class => array(),
-            )
-        );
+        return [
+            'fieldsets' => [
+                MegabannerFieldset::class,
+            ]
+        ];
     }
 }
-

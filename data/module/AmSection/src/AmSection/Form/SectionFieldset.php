@@ -12,39 +12,21 @@ class SectionFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = SectionTable::class;
 
-    public function initializers()
+    protected function getFilterSpecs(ColumnObject $column)
     {
-        return array(
-            'fieldValueOptions' => array(
-                'visible' => array(
-                    '0' => 'NO',
-                    '1' => 'SI'
-                ),
-                'active' => array(
-                    '0' => 'NO',
-                    '1' => 'SI'
-                )
-            )
-        );
-    }
-
-    protected function setFilters(ColumnObject $column)
-    {
-        $filters = parent::setFilters($column);
+        $filters = parent::getFilterSpecs($column);
 
         $columnName = $column->getName();
 
         if ($columnName == 'key') {
+            $filterClassArray = array_column($filters, 'name');
 
-            $filterClassArray = array_column($filters,'name');
-
-            $slugFilterIdInArray = array_search('Administrator\Filter\SlugFilter',$filterClassArray);
+            $slugFilterIdInArray = array_search('Administrator\Filter\SlugFilter', $filterClassArray);
 
             if (is_numeric($slugFilterIdInArray)) {
                 $filters[$slugFilterIdInArray]['options']['separator'] = '/';
             }
         }
-
 
         return $filters;
     }

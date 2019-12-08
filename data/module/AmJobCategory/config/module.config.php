@@ -1,22 +1,25 @@
 <?php
-return array(
-    'view_manager' => array(
-        'template_path_stack' => array(
+return [
+    'view_manager' => [
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-    ),
+        ],
+    ],
 
-    'controllers' => array(
-        'invokables' => array(
-            'AmJobCategory\Controller\AmJobCategoryModuleController' => 'AmJobCategory\Controller\AmJobCategoryModuleController'
-        )
-    ),
+    'form_elements' => [
+        'aliases' => [
+            'jobCategoriesId' => \Zend\Form\Element\Hidden::class,
+        ],
+        'factories' => [
+            \AmJobCategory\Form\JobCategoryForm::class => \Administrator\Factory\AdministratorFormFactory::class,
+            \AmJobCategory\Form\JobCategoryFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
+            \AmJobCategory\Form\JobCategoryLocaleFieldset::class => \Administrator\Factory\AdministratorLocaleFieldsetFactory::class
+        ]
+    ],
 
-    'service_manager' => array(
+    'service_manager' => [
+    ],
 
-    ),
-
-    'router' => array(
-
-    )
-);
+    'router' => [
+    ]
+];

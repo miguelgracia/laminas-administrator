@@ -1,25 +1,24 @@
 <?php
-return array(
-    'view_manager' => array(
-        'template_path_stack' => array(
+return [
+    'view_manager' => [
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-    ),
-    'service_manager' => array(
-        'factories' => array(
-            'Application\Api'              => 'Api\Service\ApiServiceFactory',
-            'Application\Api\AppData'      => 'Api\Service\AppDataService',
-            'Application\Api\Blog'         => 'Api\Service\BlogService',
-            'Application\Api\BlogCategory' => 'Api\Service\BlogCategoryService',
-            'Application\Api\HomeModule'   => 'Api\Service\HomeModuleService',
-            'Application\Api\Job'          => 'Api\Service\JobService',
-            'Application\Api\JobCategory'  => 'Api\Service\JobCategoryService',
-            'Application\Api\Language'     => 'Api\Service\LanguageService',
-            'Application\Api\Megabanner'   => 'Api\Service\MegabannerService',
-            'Application\Api\Section'      => 'Api\Service\SectionService',
-            'Application\Api\StaticPage'   => 'Api\Service\StaticPageService',
-            'Application\Api\Partner'      => 'Api\Service\PartnerService',
-            'Application\Api\Contact'      => 'Api\Service\ContactService',
-        )
-    ),
-);
+        ],
+    ],
+    'service_manager' => [
+        'factories' => [
+            \Api\Service\AppDataService::class => \Api\Service\ApiServiceFactory::class,
+            \Api\Service\BlogService::class => \Api\Service\ApiServiceFactory::class,
+            \Api\Service\BlogCategoryService::class => \Api\Service\ApiServiceFactory::class,
+            \Api\Service\HomeModuleService::class => \Api\Service\ApiServiceFactory::class,
+            \Api\Service\JobService::class => \Api\Service\ApiServiceFactory::class,
+            \Api\Service\JobCategoryService::class => \Api\Service\ApiServiceFactory::class,
+            \Api\Service\LanguageService::class => \Api\Service\ApiServiceFactory::class,
+            \Api\Service\MegabannerService::class => \Api\Service\ApiServiceFactory::class,
+            \Api\Service\SectionService::class => \Api\Service\ApiServiceFactory::class,
+            \Api\Service\StaticPageService::class => \Api\Service\ApiServiceFactory::class,
+            \Api\Service\PartnerService::class => \Api\Service\ApiServiceFactory::class,
+            \Api\Service\ContactService::class => \Api\Service\ApiServiceFactory::class,
+        ],
+    ],
+];

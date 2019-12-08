@@ -7,10 +7,11 @@ use Administrator\Traits\AddAction;
 use Administrator\Traits\DeleteAction;
 use Administrator\Traits\EditAction;
 use Administrator\Traits\IndexAction;
+use AmMegabanner\Form\MegabannerForm;
 
 class AmMegabannerModuleController extends AuthController
 {
     use indexAction, addAction, editAction, DeleteAction;
 
-    protected $form = 'AmMegabanner\\Form\\MegabannerForm';
+    public const FORM_CLASS = MegabannerForm::class;
 }

@@ -4,28 +4,26 @@ namespace Api\Service;
 
 use Api\Model\AppDataLocaleTable;
 use Api\Model\AppDataTable;
-use Zend\ServiceManager\FactoryInterface;
 use Zend\Stdlib\ArrayObject;
 
-class AppDataService implements FactoryInterface
+class AppDataService implements AllowDatabaseAccessInterface
 {
-    use ApiServiceTrait;
+    use AllowDatabaseAccessTrait;
 
-    protected $table       = AppDataTable::class;
-    protected $tableLocale = AppDataLocaleTable::class;
+    protected $tableName = AppDataTable::class;
+    protected $tableLocaleName = AppDataLocaleTable::class;
 
-    public function getData ()
+    public function getData()
     {
-        $row = $this->table->find('app-data','key');
+        $row = $this->table->find('app-data', 'key');
 
         $locales = $this->tableLocale->findLocales($row->id)->setFetchGroupResultSet('languageCode');
         $localeObj = new \stdClass();
         $locales->toObjectArray($localeObj);
 
-        return new ArrayObject(array(
+        return new ArrayObject([
             'row' => $row->getObjectCopy(),
             'locale' => $localeObj
-        ),ArrayObject::ARRAY_AS_PROPS);
-
+        ], ArrayObject::ARRAY_AS_PROPS);
     }
 }

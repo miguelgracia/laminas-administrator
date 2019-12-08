@@ -1,24 +1,28 @@
 <?php
-return array(
-    'view_manager' => array(
-        'template_path_stack' => array(
+return [
+    'view_manager' => [
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-    ),
+        ],
+    ],
 
-    'controllers' => array(
-        'invokables' => array(
+    'controllers' => [
+        'invokables' => [
             'AmYouTube\Controller\AmYouTubeModuleController' => 'AmYouTube\Controller\AmYouTubeModuleController'
-        )
-    ),
+        ]
+    ],
 
-    'service_manager' => array(
-        'factories' => array(
-            'YoutubeService' => 'AmYouTube\Service\YoutubeService'
-        )
-    ),
+    'service_manager' => [
+        'factories' => [
+            \AmYouTube\Service\YoutubeService::class => \AmYouTube\Service\YoutubeService::class
+        ]
+    ],
 
-    'router' => array(
-
-    )
-);
+    'form_elements' => [
+        'factories' => [
+            \AmYouTube\Form\Element\Visibility::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
+            \AmUser\Form\AmUserForm::class => \Administrator\Factory\AdministratorFormFactory::class,
+            \AmUser\Form\UserFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class
+        ]
+    ],
+];

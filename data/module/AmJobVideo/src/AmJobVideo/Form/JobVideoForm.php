@@ -6,5 +6,4 @@ use Administrator\Form\AdministratorForm;
 
 class JobVideoForm extends AdministratorForm
 {
-
 }

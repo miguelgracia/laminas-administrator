@@ -2,24 +2,22 @@
 
 namespace AmMedia\FileManager;
 
-
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class FileManagerService implements FactoryInterface
 {
     /**
      * Create service
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param $requestedName
+     * @param array|null $options
      * @return mixed
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $config = $serviceLocator->get('Config');
-
-        $baseConfig = $config['AmMedia']['FileManager'];
-
-        return new LocalFilemanager($serviceLocator, $baseConfig);
+        $config = $container->get('Config');
+        return new LocalFilemanager($config['AmMedia']['FileManager']);
     }
 }

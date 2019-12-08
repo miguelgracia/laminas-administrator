@@ -1,23 +1,23 @@
 <?php
+
 namespace AmMedia\Service;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\Validator\File\MimeType;
-use Zend\Validator\ValidatorInterface;
 
 class ScanDirService implements FactoryInterface
 {
     protected $filter;
 
-    protected $files = array();
+    protected $files = [];
 
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         return $this;
     }
 
-    public function getFiles($arrayMime = array())
+    public function getFiles($arrayMime = [])
     {
         $files = $this->files;
 
@@ -34,26 +34,26 @@ class ScanDirService implements FactoryInterface
 
     public function scan($currentDirectory)
     {
-        $this->_scan($currentDirectory,$this->files);
+        $this->_scan($currentDirectory, $this->files);
     }
 
-    private function _scan ($currentDirectory, &$files = array()) {
-
+    private function _scan($currentDirectory, &$files = [])
+    {
         if (is_array($currentDirectory)) {
             $dirs = $currentDirectory;
             foreach ($dirs as $dir) {
-                $this->scan($dir,$files);
+                $this->scan($dir, $files);
             }
         } else {
             $dirs = scandir($currentDirectory);
 
             foreach ($dirs as $dir) {
-                if(!in_array($dir,array('.','..')) and strpos($dir,'_') !== 0 ) {
-                    $checkString = $currentDirectory.'/'.$dir;
+                if (!in_array($dir, ['.', '..']) and strpos($dir, '_') !== 0) {
+                    $checkString = $currentDirectory . '/' . $dir;
 
                     if (is_dir($checkString)) {
                         $this->scan($checkString, $files);
-                    } elseif(is_file($checkString)) {
+                    } elseif (is_file($checkString)) {
                         $files[] = $checkString;
                     }
                 }

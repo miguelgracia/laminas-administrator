@@ -3,44 +3,53 @@
 namespace MediaDispatcher;
 
 use MediaDispatcher\Controller\DispatcherController;
+use MediaDispatcher\Service\ImageService;
+use MediaDispatcher\View\Helper\DinamicUrlImage;
+use Zend\Router\Http\Literal;
+use Zend\Router\Http\Segment;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
-return array(
-
-    'router' => array(
-        'routes' => array(
-            'dispatch' => array(
-                'type'    => 'Literal',
-                'options' => array(
-                    'route'    => '/dispatch',
-                ),
+return [
+    'router' => [
+        'routes' => [
+            'dispatch' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/dispatch',
+                ],
                 'may_terminate' => false,
-                'child_routes' => array(
-                    'random' => array(
-                        'type' => 'Segment',
-                        'options' => array(
+                'child_routes' => [
+                    'random' => [
+                        'type' => Segment::class,
+                        'options' => [
                             'route' => '/[:rnd]',
-                            'constraints' => array(
+                            'constraints' => [
                                 'rnd' => '[a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                                '__NAMESPACE__' => 'MediaDispatcher\Controller',
-                                'controller'    => 'Dispatcher',
-                                'action'        => 'dispatch',
-                            ),
-                        ),
-                    )
-                )
-            ),
-        )
-    ),
-    'service_manager' => array(
-        'factories' => array(
-            'dinamicImage' => 'MediaDispatcher\Service\ImageService'
-        )
-    ),
-    'controllers' => array(
-        'invokables' => array(
-            'MediaDispatcher\Controller\Dispatcher' => DispatcherController::class
-        ),
-    ),
-);
+                            ],
+                            'defaults' => [
+                                '__CONTROLLER__' => 'MediaDispatcher',
+                                'controller' => DispatcherController::class,
+                                'action' => 'dispatch',
+                            ],
+                        ],
+                    ]
+                ]
+            ],
+        ]
+    ],
+    'service_manager' => [
+        'factories' => [
+            'dinamicImage' => ImageService::class
+        ]
+    ],
+    'controllers' => [
+        'factories' => [
+            DispatcherController::class => InvokableFactory::class
+        ]
+    ],
+    'view_helpers' => [
+        'factories' => [
+            'dinamicImageHelper' => DinamicUrlImage::class
+        ]
+    ]
+];

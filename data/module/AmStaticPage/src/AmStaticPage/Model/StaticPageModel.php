@@ -6,7 +6,4 @@ use Administrator\Model\AdministratorModel;
 
 class StaticPageModel extends AdministratorModel
 {
-
-
 }
-

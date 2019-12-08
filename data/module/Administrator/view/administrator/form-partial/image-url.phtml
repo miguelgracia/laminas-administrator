@@ -15,28 +15,25 @@ $imagesUrl = $element->getValue();
 $html = '';
 
 $formInput = $this->formInput();
-$element->setName($element->getName());
-$element->setAttribute('data-is-multiple','0');
+$element->setName($element->getName().'[]');
+$element->setAttribute('data-is-multiple','1');
 $row = "<div class = 'form-group'><div class='col-xs-12'>%s</div></div>";
 
 $id = $element->getAttribute('id');
-$element->setAttribute('data-id',$id);
-if (is_array($imagesUrl)) {
+
+if (count($imagesUrl)) {
     foreach ($imagesUrl as $index => $url) {
         $element->setValue($url);
 
         $element->setAttribute('id',$id.$index);
+        $element->setAttribute('data-id',$id);
         $element->setAttribute('data-index',$index);
 
         $html .= sprintf($row,$formInput->render($element));
     }
-} elseif(is_string($imagesUrl)) {
-    $html .= sprintf($row,$formInput->render($element));
 } else {
     $element->setValue('');
-    $element->setAttribute('id',$id."0");
-    $element->setAttribute('data-index',"0");
     $html .= sprintf($row,$formInput->render($element));
 }
 
-echo $html;
+echo $html . '<input type = "button" class="pull-right btn btn-info btn-flat allow_multiple_files" value="Nueva imagen" data-value="'.$id.'" />';

@@ -13,9 +13,9 @@ class AppDataLocaleFieldset extends AdministratorFieldset
     {
         $inputFilter = parent::getInputFilterSpecification();
 
-        $inputFilter['email']['validators'][] = array(
+        $inputFilter['email']['validators'][] = [
             'name' => 'Zend\Validator\EmailAddress'
-        );
+        ];
 
         return  $inputFilter;
     }

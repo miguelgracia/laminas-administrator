@@ -8,5 +8,5 @@ class SectionTable extends AdministratorTable
 {
     protected $table = 'app_routes';
 
-    protected $entityModelName =  SectionModel::class;
+    public const ENTITY_MODEL_CLASS = SectionModel::class;
 }

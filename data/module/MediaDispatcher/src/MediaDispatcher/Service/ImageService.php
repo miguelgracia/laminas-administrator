@@ -2,19 +2,16 @@
 
 namespace MediaDispatcher\Service;
 
-
+use Interop\Container\ContainerInterface;
 use Intervention\Image\ImageManager;
 use Zend\Filter\Dir;
 use Zend\Filter\RealPath;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\Stdlib\StringWrapper\Intl;
 use Zend\Validator\File\IsImage;
 
 class ImageService implements FactoryInterface
 {
-    protected $serviceLocator;
-
     protected $viewHelperManager;
 
     /**
@@ -47,7 +44,6 @@ class ImageService implements FactoryInterface
      */
     protected $isImageValidator;
 
-
     /**
      * @var \Zend\Filter\Dir
      */
@@ -58,28 +54,25 @@ class ImageService implements FactoryInterface
      */
     private $realPathFilter;
 
-
-
     /**
      * Create service
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ContainerInterface $container
+     * @param $requestedName
+     * @param array|null $options
      * @return mixed
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $this->serviceLocator = $serviceLocator;
-
         $this->isImageValidator = new IsImage();
         $this->dirFilter = new Dir();
         $this->realPathFilter = new RealPath(false);
 
-        $this->viewHelperManager = $serviceLocator->get('ViewHelperManager');
+        $this->viewHelperManager = $container->get('ViewHelperManager');
 
-        $this->imageManager = new ImageManager(array('driver' => 'gd'));
+        $this->imageManager = new ImageManager(['driver' => 'gd']);
 
         $this->documentRoot = $this->realPathFilter->filter($_SERVER['DOCUMENT_ROOT']);
-
 
         return $this;
     }
@@ -95,27 +88,26 @@ class ImageService implements FactoryInterface
      * @return $this
      * @throws \Exception
      */
-    public function setImagePath($imagePath, $pathScope = DIRECTORY_SEPARATOR.'media')
+    public function setImagePath($imagePath, $pathScope = DIRECTORY_SEPARATOR . 'media')
     {
         $realPathFilter = new RealPath(false);
 
-        $realImagePath = $realPathFilter->filter($this->documentRoot.$imagePath);
+        $realImagePath = $realPathFilter->filter($this->documentRoot . $imagePath);
 
         $cachePath = str_replace(
-            $this->documentRoot.DIRECTORY_SEPARATOR.'cache_media'.DIRECTORY_SEPARATOR,
+            $this->documentRoot . DIRECTORY_SEPARATOR . 'cache_media' . DIRECTORY_SEPARATOR,
             '',
-            $realPathFilter->filter($this->documentRoot.'/cache_media'.$imagePath)
+            $realPathFilter->filter($this->documentRoot . '/cache_media' . $imagePath)
         );
 
         $imageDir = $this->dirFilter->filter($realImagePath);
 
         $intl = new Intl();
 
-        if ($intl->strpos($imageDir, $this->documentRoot.$pathScope) === 0 ) {
+        if ($intl->strpos($imageDir, $this->documentRoot . $pathScope) === 0) {
+            $docRootCacheImagePath = $this->realPathFilter->filter($this->documentRoot . '/cache_media/');
 
-            $docRootCacheImagePath = $this->realPathFilter->filter($this->documentRoot.'/cache_media/');
-
-            $cacheImagePath = $docRootCacheImagePath.DIRECTORY_SEPARATOR.$cachePath;
+            $cacheImagePath = $docRootCacheImagePath . DIRECTORY_SEPARATOR . $cachePath;
 
             if ($this->isImageValidator->isValid($cacheImagePath) or $this->isImageValidator->isValid($realImagePath)) {
                 $this->cacheImagePath = $cachePath;
@@ -123,10 +115,9 @@ class ImageService implements FactoryInterface
                 return $this;
             }
 
-            throw new \Exception("Imagen no válida");
-
+            throw new \Exception('Imagen no válida');
         } else {
-            throw new \Exception("Ruta de Imagen no válida");
+            throw new \Exception('Ruta de Imagen no válida');
         }
     }
 
@@ -137,9 +128,9 @@ class ImageService implements FactoryInterface
 
     public function createImage($width = null, $height = null, $clearCache = false)
     {
-        $docRootCacheImagePath = $this->realPathFilter->filter($this->documentRoot.'/cache_media/');
+        $docRootCacheImagePath = $this->realPathFilter->filter($this->documentRoot . '/cache_media/');
 
-        $cacheImagePath = $docRootCacheImagePath.DIRECTORY_SEPARATOR.$this->cacheImagePath;
+        $cacheImagePath = $docRootCacheImagePath . DIRECTORY_SEPARATOR . $this->cacheImagePath;
 
         if (!$this->isImageValidator->isValid($cacheImagePath) or $clearCache) {
             $preventUpsize = function ($constraint) {
@@ -155,8 +146,8 @@ class ImageService implements FactoryInterface
                 $height = $image->height();
             }
 
-            $image->fit($width,$height,$preventUpsize);
-            $image->resizeCanvas($width,$height,'center',false, $this->imageBackground);
+            $image->fit($width, $height, $preventUpsize);
+            $image->resizeCanvas($width, $height, 'center', false, $this->imageBackground);
 
             $arrayDirs = explode(DIRECTORY_SEPARATOR, $this->dirFilter->filter($this->cacheImagePath));
 
@@ -166,7 +157,7 @@ class ImageService implements FactoryInterface
 
             $this->createDirs($docRootCacheImagePath, $arrayDirs);
 
-            $image->save($cacheImagePath,80);
+            $image->save($cacheImagePath, 80);
         }
 
         return $this->imageManager->make($cacheImagePath);
@@ -178,11 +169,11 @@ class ImageService implements FactoryInterface
             if (!is_dir($path . DIRECTORY_SEPARATOR . $newPath[0])) {
                 mkdir($path . DIRECTORY_SEPARATOR . $newPath[0]);
             }
-            $path .= DIRECTORY_SEPARATOR.$newPath[0];
+            $path .= DIRECTORY_SEPARATOR . $newPath[0];
             unset($newPath[0]);
             $newPath = array_values($newPath);
 
-            $this->createDirs($path,$newPath);
+            $this->createDirs($path, $newPath);
         }
     }
 }

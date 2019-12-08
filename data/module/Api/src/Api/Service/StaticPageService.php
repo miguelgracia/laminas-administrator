@@ -4,17 +4,15 @@ namespace Api\Service;
 
 use Api\Model\StaticPageLocaleTable;
 use Api\Model\StaticPageTable;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\Stdlib\ArrayObject;
 
-class StaticPageService implements FactoryInterface
+class StaticPageService implements AllowDatabaseAccessInterface
 {
-    use ApiServiceTrait;
+    use AllowDatabaseAccessTrait;
 
-    protected $table = StaticPageTable::class;
-    protected $tableLocale = StaticPageLocaleTable::class;
+    protected $tableName = StaticPageTable::class;
+    protected $tableLocaleName = StaticPageLocaleTable::class;
 
-    protected $cacheData = array();
+    protected $cacheData = [];
 
     public function getData()
     {
@@ -22,13 +20,13 @@ class StaticPageService implements FactoryInterface
             return $this->cacheData[__FUNCTION__];
         }
 
-        $result = array(
-            'rows' => $this->table->all(array(
+        $result = [
+            'rows' => $this->table->all([
                 'active' => '1',
                 'deleted_at' => null
-            ))->setFetchGroupResultSet('id')->toArray(),
-            'locale' => $this->tableLocale->findLocales()->setFetchGroupResultSet('languageCode','urlKey')->toArray()
-        );
+            ])->setFetchGroupResultSet('id')->toArray(),
+            'locale' => $this->tableLocale->findLocales()->setFetchGroupResultSet('languageCode', 'urlKey')->toArray()
+        ];
 
         $this->cacheData[__FUNCTION__] = $result;
 

@@ -15,93 +15,52 @@ class UserFieldset extends AdministratorFieldset
     {
         $hiddenFields = parent::getHiddenFields();
 
-        $hiddenFields = array_merge($hiddenFields, array(
+        $hiddenFields = array_merge($hiddenFields, [
             'lastLogin',
             'validado'
-        ));
+        ]);
 
         return $hiddenFields;
     }
 
-    public function initializers()
+    public function addElements()
     {
-        $serviceLocator = $this->serviceLocator->getServiceLocator();
-
-        return array(
-
-            'fieldModifiers' => array(
-                'adminProfileId' => 'Select',
-                'password' => 'password'
-            ),
-            'fieldValueOptions' => array(
-                'active' => array(
-                    '0' => 'NO',
-                    '1' => 'SI'
-                ),
-                /**
-                 * El campo idPerfil se va a reflejar como un select de perfiles. Debemos indicar los valores
-                 * de dicho select. La funci�n setIdPerfil guarda, para el campo idPerfil, los valores que va
-                 * a tener el <select> de idPerfil
-                 */
-
-                'adminProfileId' => function () use($serviceLocator) {
-
-                    $gestorPerfilTable = $serviceLocator->get('AmProfile\Model\ProfileTable');
-
-                    $gestorPerfil = $gestorPerfilTable->all();
-
-                    return $gestorPerfil->toKeyValueArray('id','name');
-                }
-            )
-        );
-    }
-
-    public function addFields()
-    {
-        //fechaAlta y ultimoLogin nunca deben ser editables. Se marcan como Readonly
-        //$this->get('createdAt')->setAttribute('readonly',true);
-        //$this->get('lastLogin')->setAttribute('readonly',true);
-
-        $this->add(array(
+        $this->add([
             'name' => 'password2',
-            'type'  => 'password',
+            'type' => 'password',
             'label' => 'Repetir password',
-            'options' => array(
+            'options' => [
                 'label' => 'Repetir password',
-                'label_attributes' => array(
+                'label_attributes' => [
                     'class' => 'col-sm-2 control-label'
-                ),
-            ),
-            'attributes' => array(
-                'id' =>'password2',
+                ],
+            ],
+            'attributes' => [
+                'id' => 'password2',
                 'value' => '',
                 'class' => 'form-control',
-            ),
-        ),array(
-            'priority' => -400,
-        ));
+            ],
+        ]);
 
-        if ($this->formActionType == 'edit') {
-
-            $this->add(array(
+        if ($this->get('id')->getValue() !== null) {
+            $this->add([
                 'name' => 'checkPassword',
                 'type' => 'Zend\Form\Element\Checkbox',
                 'label' => 'Change Password',
-                'options' => array(
+                'options' => [
                     'use_hidden_element' => true,
                     'label' => 'Change Password',
                     'checked_value' => '1',
                     'unchecked_value' => '0'
-                ),
-                'attributes' => array(
+                ],
+                'attributes' => [
                     'id' => 'change_password',
                     'value' => '0',
-                )
-            ),array(
+                ]
+            ], [
                 'priority' => -300,
-            ));
+            ]);
         }
-
 
         return $this;
     }
@@ -110,43 +69,42 @@ class UserFieldset extends AdministratorFieldset
     {
         $filter = parent::getInputFilterSpecification();
 
-        $filter['username']['validators'][] = array(
+        $filter['username']['validators'][] = [
             'name' => 'Zend\Validator\Db\NoRecordExists',
-            'options' => array(
+            'options' => [
                 'table' => $this->tableGateway->getTable(),
                 'field' => 'username',
                 'adapter' => $this->tableGateway->getAdapter(),
-                'exclude' => array(
+                'exclude' => [
                     'field' => 'id',
                     'value' => $this->get('id')->getValue()
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
-        $filter['password2'] = array(
+        $filter['password2'] = [
             'name' => 'password2',
-            'validators' => array(
-                array(
+            'validators' => [
+                [
                     'name' => 'Identical',
-                    'options' => array(
+                    'options' => [
                         'token' => 'password'
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             'required' => true
-        );
+        ];
 
-        if ($this->formActionType == 'edit') {
-
-            $filter['checkPassword'] = array(
+        if ($this->get('id')->getValue() !== null) {
+            $filter['checkPassword'] = [
                 'name' => 'checkPassword',
-            );
+            ];
 
             $checkPassword = $this->get('checkPassword')->getValue();
 
             if ($checkPassword == '0') {
-                $filter['password']['required']  = false;
-                $filter['password2']['required']  = false;
+                $filter['password']['required'] = false;
+                $filter['password2']['required'] = false;
             }
         }
 

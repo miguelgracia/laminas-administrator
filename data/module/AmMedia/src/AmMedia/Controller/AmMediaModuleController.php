@@ -1,20 +1,35 @@
 <?php
+
 namespace AmMedia\Controller;
 
 use Administrator\Controller\AuthController;
-use AmMedia\Filter\VideoValidator;
+use AmMedia\FileManager\FileManagerService;
+use AmMedia\Service\InterventionImageService;
+use AmMedia\Service\ScanDirService;
 use Zend\Filter\BaseName;
 use Zend\Filter\Dir;
-use Zend\Filter\RealPath;
+use Zend\Mvc\MvcEvent;
 use Zend\View\Model\JsonModel;
-use Zend\View\Model\ViewModel;
 
 class AmMediaModuleController extends AuthController
 {
-    protected $config;
+    protected $scanDirService;
+    protected $interventionImageService;
+    protected $fileManagerService;
+
+    public function onDispatch(MvcEvent $e)
+    {
+        $serviceLocator = $e->getApplication()->getServiceManager();
+
+        $this->scanDirService = $serviceLocator->get(ScanDirService::class);
+        $this->interventionImageService = $serviceLocator->get(InterventionImageService::class);
+        $this->fileManagerService = $serviceLocator->get(FileManagerService::class);
+
+        return parent::onDispatch($e);
+    }
 
     /**
-     * @return array|\Zend\View\Model\ViewModel
+     * @return void
      */
     public function indexAction()
     {
@@ -27,50 +42,42 @@ class AmMediaModuleController extends AuthController
 
     public function videoPosterAction()
     {
-        $scanDirService = $this->serviceLocator->get('AmMedia\Service\ScanDirService');
+        $this->scanDirService->scan([
+            $_SERVER['DOCUMENT_ROOT'] . '/media',
+        ]);
 
-        $scanDirService->scan(array(
-            $_SERVER['DOCUMENT_ROOT'].'/media',
-        ));
-
-        $videos = $scanDirService->getFiles(array(
+        $videos = $this->scanDirService->getFiles([
             'video/mp4',
             'application/octet-stream'
-        ));
+        ]);
 
         return compact('videos');
     }
 
     public function savePosterAction()
     {
-        $imageManager = $this->serviceLocator->get('AmMedia\Service\InterventionImageService');
-        $dirFilter = new Dir();
-        $baseNameFilter = new BaseName();
-
         $video = $this->params()->fromPost('video');
         $videoPath = $this->params()->fromPost('path');
 
-        $basePath = $dirFilter->filter($videoPath);
-        $baseName = $baseNameFilter->filter($videoPath);
+        $basePath = (new Dir)->filter($videoPath);
+        $baseName = (new BaseName)->filter($videoPath);
 
-        $image = $imageManager->make($video);
+        $imageToSave = $_SERVER['DOCUMENT_ROOT'] . $basePath . '/' . 'video-poster-' . md5($baseName) . '.jpg';
 
-        $imageToSave = $_SERVER['DOCUMENT_ROOT'].$basePath.'/'.'video-poster-'.md5($baseName).'.jpg';
+        $this->interventionImageService
+            ->make($video)
+            ->save($imageToSave, 80);
 
-        $image->save($imageToSave,80);
-
-        return new JsonModel(array(
+        return new JsonModel([
             'result' => true
-        ));
+        ]);
     }
 
     public function connectorAction()
     {
-        $fileManager = $this->serviceLocator->get('AmMedia\FileManager\FileManagerService');
-        $fileManagerResponse = $fileManager->handleRequest();
+        $fileManagerResponse = $this->fileManagerService->handleRequest($this->request);
 
-        $controllerResponse = $this->getResponse();
-        $controllerResponse->setContent($fileManagerResponse->getContent());
+        $controllerResponse = $this->getResponse()->setContent($fileManagerResponse->getContent());
 
         $fileManagerHeaders = $fileManagerResponse->getHeaders()->toArray();
 

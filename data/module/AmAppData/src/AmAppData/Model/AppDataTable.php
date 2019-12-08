@@ -8,5 +8,5 @@ class AppDataTable extends AdministratorTable
 {
     protected $table = 'app_datas';
 
-    protected $entityModelName = AppDataModel::class;
+    public const ENTITY_MODEL_CLASS = AppDataModel::class;
 }

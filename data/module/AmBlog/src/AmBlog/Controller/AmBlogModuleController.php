@@ -13,5 +13,5 @@ class AmBlogModuleController extends AuthController
 {
     use IndexAction, AddAction, EditAction, DeleteAction;
 
-    protected $form = BlogForm::class;
+    public const FORM_CLASS = BlogForm::class;
 }

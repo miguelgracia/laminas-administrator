@@ -8,7 +8,7 @@ class HomeModuleLocaleTable extends AdministratorTable
 {
     protected $table = 'home_modules_locales';
 
-    protected $entityModelName =  HomeModuleLocaleModel::class;
+    public const ENTITY_MODEL_CLASS = HomeModuleLocaleModel::class;
 
     public function save($model, $id = 0, $fieldKey = 'id')
     {

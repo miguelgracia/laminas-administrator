@@ -8,10 +8,10 @@ class PartnerForm extends AdministratorForm
 {
     public function initializers()
     {
-        return array(
-            'fieldsets' => array(
-                PartnerFieldset::class => array(),
-            )
-        );
+        return [
+            'fieldsets' => [
+                PartnerFieldset::class,
+            ]
+        ];
     }
 }

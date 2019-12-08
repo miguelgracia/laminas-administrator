@@ -13,7 +13,6 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
     public function save($data, $id = 0, $fieldKey = 'id')
     {
         if ($data instanceof AdministratorModel) {
-
             $data = $data->prepareToSave();
 
             if (isset($data[$fieldKey])) {
@@ -27,11 +26,11 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
             $id = $this->getLastInsertValue();
         } else {
             if ($this->isTableRow($id, $fieldKey)) {
-                $this->update($data, array($fieldKey => $id));
+                $this->update($data, [$fieldKey => $id]);
             } else {
-                throw new \Exception($this->table . ' ' . $fieldKey .' id does not exist');
+                throw new \Exception($this->table . ' ' . $fieldKey . ' id does not exist');
             }
-            $this->update($data, array($fieldKey => $id));
+            $this->update($data, [$fieldKey => $id]);
         }
         return $id;
     }

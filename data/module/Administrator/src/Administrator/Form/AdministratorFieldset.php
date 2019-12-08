@@ -2,25 +2,20 @@
 
 namespace Administrator\Form;
 
-
 use Administrator\Filter\SlugFilter;
 use Administrator\Filter\MediaUri;
 use Zend\Db\Metadata\Object\ColumnObject;
-use Zend\Db\Metadata\Source\Factory;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Where;
 use Zend\Filter\Word\UnderscoreToCamelCase;
 use Zend\Form\Fieldset;
-use Zend\Hydrator\ArraySerializable;
+use Zend\I18n\Validator\IsInt;
 use Zend\InputFilter\InputFilterProviderInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
+use Zend\Validator\Between;
+use Zend\Validator\Date;
+use Zend\Validator\StringLength;
 
-abstract class AdministratorFieldset extends Fieldset implements InputFilterProviderInterface, ServiceLocatorAwareInterface
+abstract class AdministratorFieldset extends Fieldset implements InputFilterProviderInterface
 {
-    use ServiceLocatorAwareTrait;
-
     protected $tableGateway;
 
     /**
@@ -36,45 +31,39 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
     protected $isPrimaryFieldset = false;
 
     /**
-     * @var \Zend\Db\Metadata\Metadata
-     *
-     * Nos da acceso a métodos para tratamiento de las tablas de base de datos.
-     * Listado de columnas, tipo de dato de las columnas, etc
+     * @var ColumnObject[]
      */
-    protected $metadata;
-
-    protected $table;
     protected $columnsTable;
 
     protected $objectModel;
-
-    protected $formActionType;
 
     /**
      * @var array
      *
      * Contiene el nombre de aquellos campos que no queremos pintar en la vista
      */
-    protected $hiddenFields = array();
+    protected $hiddenFields = [];
 
-    public function __construct()
-    {
-        parent::__construct(get_class($this));
+    /**
+     * @var \Zend\InputFilter\Factory
+     */
+    private $inputFilterFactory;
 
-        $this->setHydrator(new ArraySerializable());
-    }
+    /**
+     * @var \Zend\Filter\FilterPluginManager
+     */
+    private $filterManager;
+
+    /**
+     * @var \Zend\Validator\ValidatorPluginManager
+     */
+    private $validatorManager;
 
     public function init()
     {
-        $serviceLocator       = $this->serviceLocator->getServiceLocator();
-
-        $this->tableGateway   = $serviceLocator->get($this->tableGatewayName);
-
-        $this->table          = $this->tableGateway->getTable();
-
-        $this->metadata       = Factory::createSourceFromAdapter($serviceLocator->get('Zend\Db\Adapter\Adapter'));
-
-        $this->formActionType = $serviceLocator->get('Administrator\Service\AdministratorFormService')->getForm()->getActionType();
+        $this->inputFilterFactory = $this->factory->getInputFilterFactory();
+        $this->validatorManager = $this->inputFilterFactory->getDefaultValidatorChain()->getPluginManager();
+        $this->filterManager = $this->inputFilterFactory->getDefaultFilterChain()->getPluginManager();
     }
 
     public function setObjectModel($objectModel)
@@ -94,69 +83,89 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
         return $this->isPrimaryFieldset;
     }
 
+    public function setTableGateway($tableGateway)
+    {
+        $this->tableGateway = $tableGateway;
+        return $this;
+    }
+
     public function getTableGateway()
     {
         return $this->tableGateway;
     }
 
-    public function getColumns()
+    public function getTableGatewayName()
     {
-        if (!$this->columnsTable) {
-            $this->columnsTable = $this->metadata->getColumns($this->table);
-        }
-        return $this->columnsTable;
+        return $this->tableGatewayName;
     }
 
-    public function getMetadata()
+    public function getColumns($includeHiddenColumns = true)
     {
-        return $this->metadata;
+        $dashToCamel = new UnderscoreToCamelCase();
+
+        $columns = [];
+
+        foreach ($this->columnsTable as $key => $column) {
+            $columnName = lcfirst($dashToCamel->filter($column->getName()));
+            $columns[$columnName] = $column;
+        }
+
+        if ($includeHiddenColumns) {
+            return $columns;
+        }
+
+        $hiddenFields = $this->getHiddenFields();
+
+        foreach ($hiddenFields as $hiddenField) {
+            unset($columns[$hiddenField]);
+        }
+
+        return $columns;
+    }
+
+    public function setColumns($columnsTable)
+    {
+        $this->columnsTable = $columnsTable;
+        return $this;
     }
 
     public function getInputFilterSpecification()
     {
-        $filter = array();
+        $filter = [];
 
-        $dashToCamel = new UnderscoreToCamelCase();
+        $columns = $this->getColumns(false);
 
-        $columns = $this->getColumns();
-
-        $hiddenFields = $this->getHiddenFields();
-
-        foreach ($columns as $column) {
-
-            $columnName = $column->getName();
-
-            $filterParams = array(
-                'filters' => $this->setFilters($column)
-            );
-
-            if (in_array($columnName, array('id', 'related_table_id'))) {
-                $required = false;
-            } else {
-                $required = $column->getIsNullable() ? false : true;
-                //seteamos los validadores en función del tipo de dato
-                $filterParams['validators'] = $this->setValidators($column);
-            }
-
-            $name = lcfirst($dashToCamel->filter($columnName));
-
-            //Los campos seteados como ocultos no se validan
-            if (in_array($name, $hiddenFields)) {
-                continue;
-            }
-
-            $filterParams['name'] = $name;
-            $filterParams['required'] = $required;
-
-            $filter[$name] = $filterParams;
+        foreach ($columns as $columnName => $column) {
+            $filter[$columnName] = [
+                'name' => $columnName,
+                'required' => $this->isColumnRequired($column),
+                'filters' => $this->getFilterSpecs($column),
+                'validators' => $this->getValidatorSpecs($column)
+            ];
         }
 
         return $filter;
     }
 
-    protected function setFilters(ColumnObject $column)
+    private function isColumnRequired($column)
     {
-        $filters = array();
+        return ($this->isRelationalField($column->getName()) or $column->getIsNullable()) ? false : true;
+    }
+
+    /**
+     * Comprueba si el campo hace referencia al id de la tabla principal o al campo related_table_id de la tabla
+     * locale que corresponda
+     * @param $name
+     * @return bool
+     */
+    private function isRelationalField($name)
+    {
+        return in_array($name, ['id', 'related_table_id']);
+    }
+
+    protected function getFilterSpecs(ColumnObject $column)
+    {
+        $filters = [];
 
         $columnName = $column->getName();
         $dataType = $column->getDataType();
@@ -164,70 +173,85 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
         switch ($columnName) {
             case 'url_key':
             case 'key':
-                $filters[] = array(
+                $filters[] = [
                     'name' => SlugFilter::class,
-                    'options' => array()
-                );
+                    'options' => []
+                ];
                 break;
             case 'content':
-                $filters[] = array(
+                $filters[] = [
                     'name' => MediaUri::class,
-                    'options' => array(
+                    'options' => [
                         'relative_path' => '/media/',
-                        'html_tags' => array('img','source'),
-                    )
-                );
+                        'html_tags' => ['img', 'source'],
+                    ]
+                ];
                 break;
         }
 
         switch ($dataType) {
             case 'timestamp':
-                $filters[] = array(
+                $filters[] = [
                     'name' => 'DateSelect'
-                );
+                ];
                 break;
         }
 
         return $filters;
     }
 
-    protected function setValidators(ColumnObject $column)
+    protected function getValidatorSpecs(ColumnObject $column)
     {
-        $validators = array();
+        $validators = [];
+
+        if ($this->isRelationalField($column->getName())) {
+            return $validators;
+        }
 
         $dataType = $column->getDataType();
         $columnName = $column->getName();
 
-        switch ($dataType) {
-            case 'int':
-                $validators[] = array(
-                    'name' => 'Zend\I18n\Validator\IsInt'
-                );
-                break;
-            case 'varchar':
-                $validators[] = array(
-                    'name' => 'StringLength',
-                    'options' => array(
-                        'min' => '1',
-                        'max' => $column->getCharacterMaximumLength()
-                    )
-                );
-                break;
-            case 'timestamp':
-                $validators[] = array(
-                    'name' => 'Zend\Validator\Date',
-                    'options' => array(
-                        'format' => 'Y-m-d'
-                    )
-                );
-                break;
+        $validatorsConfig = [
+            'tinyint' => [
+                'name' => Between::class,
+                'options' => [
+                    'min' => 0,
+                    'max' => 127
+                ]
+            ],
+            'int' => [
+                'name' => IsInt::class
+            ],
+            'char' => [
+                'name' => StringLength::class,
+                'options' => [
+                    'min' => '1',
+                    'max' => $column->getCharacterMaximumLength()
+                ]
+            ],
+            'varchar' => [
+                'name' => StringLength::class,
+                'options' => [
+                    'min' => '1',
+                    'max' => $column->getCharacterMaximumLength()
+                ]
+            ],
+            'timestamp' => [
+                'name' => Date::class,
+                'options' => [
+                    'format' => 'Y-m-d'
+                ]
+            ]
+        ];
+
+        if (isset($validatorsConfig[$dataType])) {
+            $validators[] = $validatorsConfig[$dataType];
         }
 
         /**
          * Los campos que se llamen key o url_key serán tratados como campos únicos.
          */
-        if (in_array($columnName, array('key','url_key'))) {
-
+        if (in_array($columnName, ['key', 'url_key'])) {
             $isLocale = $this->tableGateway->isLocaleTable();
 
             if ($isLocale) {
@@ -242,48 +266,45 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
                 $where
                     ->equalTo($columnName, $this->get($field)->getValue())
                     ->and
-                    ->equalTo('language_id',$this->get('languageId')->getValue())
+                    ->equalTo('language_id', $this->get('languageId')->getValue())
                     ->and
-                    ->notEqualTo('id',$this->get('id')->getValue());
+                    ->notEqualTo('id', $this->get('id')->getValue());
 
                 $exclude = $where;
-
             } else {
-                $exclude = array(
+                $exclude = [
                     'field' => 'id',
                     'value' => $this->get('id')->getValue()
-                );
+                ];
             }
 
-
-            $validators[] = array(
+            $validators[] = [
                 'name' => 'Zend\Validator\Db\NoRecordExists',
-                'options' => array(
+                'options' => [
                     'table' => $this->tableGateway->getTable(),
                     'field' => $columnName,
                     'adapter' => $this->tableGateway->getAdapter(),
                     'exclude' => $exclude
-                )
-            );
+                ]
+            ];
         }
 
         return $validators;
     }
 
     /**
-     * Esta función se busca en la función addFields de AdministratorFormService
+     * Esta función se busca en la función addElements de AdministratorFormService
      * Devuelve un array con los elementos del fieldset que no se deben pintar en el formulario
      *
      * @return array
      */
-
     public function getHiddenFields()
     {
-        $this->hiddenFields = array(
+        $this->hiddenFields = [
             'createdAt', //Cuidado con cambiar el orden de estos elementos!
             'updatedAt',
             'deletedAt'
-        );
+        ];
 
         return $this->hiddenFields;
     }

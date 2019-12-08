@@ -6,5 +6,4 @@ use Administrator\Model\AdministratorModel;
 
 class ModuleModel extends AdministratorModel
 {
-
 }

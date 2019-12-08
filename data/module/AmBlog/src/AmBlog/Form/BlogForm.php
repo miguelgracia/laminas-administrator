@@ -8,11 +8,11 @@ class BlogForm extends AdministratorForm
 {
     public function initializers()
     {
-        return array(
-            'fieldsets' => array(
-                BlogFieldset::class => array(),
-                BlogLocaleFieldset::class => array(),
-            )
-        );
+        return [
+            'fieldsets' => [
+                BlogFieldset::class,
+                BlogLocaleFieldset::class,
+            ]
+        ];
     }
 }

@@ -3,24 +3,23 @@
 namespace AmMenu\Model;
 
 use Administrator\Model\AdministratorTable;
+use Zend\Db\Sql\Select;
 
 class MenuTable extends AdministratorTable
 {
-    protected $table = "admin_menus";
+    protected $table = 'admin_menus';
 
-    protected $entityModelName =  MenuModel::class;
+    public const ENTITY_MODEL_CLASS = MenuModel::class;
 
     public function fetchAllOrdenados()
     {
-        $arrayResult = array();
+        $arrayResult = [];
 
-        $selectParent = $this->sql->select();
-
-        $selectParent->join(
+        $selectParent = $this->sql->select()->join(
             'admin_modules',
             'admin_menus.admin_module_id = admin_modules.id',
             'zend_name',
-            $selectParent::JOIN_LEFT
+            Select::JOIN_LEFT
         )->order('order ASC');
 
         //clonamos la consulta padre porque nos servirá para sacar los hijos ya que son los mismos
@@ -28,22 +27,22 @@ class MenuTable extends AdministratorTable
 
         $selectChildren = clone $selectParent;
 
-        $selectParent->where(array(
+        $selectParent->where([
             'admin_menus.parent' => '0'
-        ));
+        ]);
 
         $result = $this->selectWith($selectParent);
 
         // Sacamos una fila
-        foreach($result as $row) {
+        foreach ($result as $row) {
             // Vamos a sacar sus hijos
             $thisChildren = clone $selectChildren;
 
-            $thisChildren->where(array('admin_menus.parent' => $row->id));
+            $thisChildren->where([
+                'admin_menus.parent' => $row->id
+            ]);
 
-            $resultInf = $this->selectWith($thisChildren);
-
-            $row->hijos = $resultInf->toObjectArray();
+            $row->hijos = $this->selectWith($thisChildren)->toObjectArray();
 
             $arrayResult[] = $row;
         }
@@ -53,6 +52,6 @@ class MenuTable extends AdministratorTable
 
     public function deleteEntradaMenu($id)
     {
-        $this->delete(array('id' => (int) $id));
+        $this->delete(['id' => (int) $id]);
     }
 }

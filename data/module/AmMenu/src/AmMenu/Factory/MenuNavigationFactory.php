@@ -2,17 +2,14 @@
 
 namespace AmMenu\Factory;
 
-
 use AmMenu\Navigation\MenuNavigation;
-
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
 
 class MenuNavigationFactory implements FactoryInterface
 {
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $navigation = new MenuNavigation();
-        return $navigation->createService($serviceLocator);
+        return (new MenuNavigation())->createService($container);
     }
 }
