@@ -35,7 +35,6 @@ return [
     'AmProfile',
     'AmModule',
     'AmMenu',
-    'AmTool',
     'AmBlog',
     'AmBlogCategory',
     'AmMedia',

@@ -11,7 +11,6 @@ return [
     'modules' => require __DIR__ . '/modules.config.php',
     'hidden_modules' => [
         'AmLogin',
-        'AmTool',
     ],
 
     // These are various options for the listeners attached to the ModuleManager
