@@ -13,7 +13,6 @@ use Application\Controller\ContactController;
 use Application\Controller\HomeController;
 use Application\Controller\JobController;
 use Application\Controller\LegalController;
-use Application\Factory\ApplicationHelperFactory;
 use Application\View\Helper\Blog;
 use Application\View\Helper\BlogCategory;
 use Application\View\Helper\CarouselItem;
@@ -33,7 +32,6 @@ use Zend\I18n\View\Helper\Translate;
 use Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
-use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\Session\Storage\SessionArrayStorage;
 
@@ -283,7 +281,7 @@ return [
             'translate' => Translate::class
         ],
         'factories' => [
-            Menu::class => ApplicationHelperFactory::class,
+            Menu::class => InvokableFactory::class,
             SocialIcon::class => InvokableFactory::class,
             LegalLink::class => InvokableFactory::class,
             Megabanner::class => InvokableFactory::class,
