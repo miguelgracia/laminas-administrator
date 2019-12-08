@@ -10,4 +10,3 @@ class BlogLocaleTable extends AdministratorTable
 
     public const ENTITY_MODEL_CLASS = BlogLocaleModel::class;
 }
-

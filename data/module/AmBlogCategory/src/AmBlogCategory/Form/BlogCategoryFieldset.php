@@ -11,4 +11,3 @@ class BlogCategoryFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = BlogCategoryTable::class;
 }
-

@@ -10,4 +10,5 @@
 namespace AmTool\Diagnostics\Exception;
 
 class RuntimeException extends \RuntimeException implements ExceptionInterface
-{}
+{
+}

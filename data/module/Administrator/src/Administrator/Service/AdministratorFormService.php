@@ -30,21 +30,21 @@ class AdministratorFormService implements EventManagerAwareInterface
     /**
      * Constantes de eventos
      */
-    const EVENT_READ        = 'read';
+    const EVENT_READ = 'read';
 
-    const EVENT_CREATE                      = 'create';
-    const EVENT_CREATE_INIT_FORM            = 'create.init.form';
-    const EVENT_CREATE_VALID_FORM_SUCCESS   = 'create.form.valid.success';
-    const EVENT_CREATE_VALID_FORM_FAILED    = 'create.form.valid.failed';
-    const EVENT_CREATE_SAVE_FORM            = 'create.form.save';
+    const EVENT_CREATE = 'create';
+    const EVENT_CREATE_INIT_FORM = 'create.init.form';
+    const EVENT_CREATE_VALID_FORM_SUCCESS = 'create.form.valid.success';
+    const EVENT_CREATE_VALID_FORM_FAILED = 'create.form.valid.failed';
+    const EVENT_CREATE_SAVE_FORM = 'create.form.save';
 
-    const EVENT_UPDATE                      = 'update';
-    const EVENT_UPDATE_INIT_FORM            = 'update.init.form';
-    const EVENT_UPDATE_VALID_FORM_SUCCESS   = 'update.form.valid.success';
-    const EVENT_UPDATE_VALID_FORM_FAILED    = 'update.form.valid.failed';
-    const EVENT_UPDATE_SAVE_FORM            = 'update.form.save';
+    const EVENT_UPDATE = 'update';
+    const EVENT_UPDATE_INIT_FORM = 'update.init.form';
+    const EVENT_UPDATE_VALID_FORM_SUCCESS = 'update.form.valid.success';
+    const EVENT_UPDATE_VALID_FORM_FAILED = 'update.form.valid.failed';
+    const EVENT_UPDATE_SAVE_FORM = 'update.form.save';
 
-    const EVENT_DELETE      = 'delete';
+    const EVENT_DELETE = 'delete';
 
     /**
      * @param $formElementManager
@@ -54,16 +54,15 @@ class AdministratorFormService implements EventManagerAwareInterface
         $this->formElementManager = $formElementManager;
     }
 
-    public function eventTrigger($eventName,  $args = array())
+    public function eventTrigger($eventName, $args = [])
     {
-        $args = array('formService' => $this) + $args;
+        $args = ['formService' => $this] + $args;
         // En result almacenamos el primer resultado de todos los listener que están escuchando
         // el evento $eventName. En principio el único que va a mandar resultado va a ser
         // CrudListener. Si hubiese algún otro Listener definido, sería para aplicar lógica
         // que no interfiera con el guardado en base de datos.
 
-
-        return $this->getEventManager()->trigger($eventName,null,$args)/*->first()*/;
+        return $this->getEventManager()->trigger($eventName, null, $args)/*->first()*/;
     }
 
     public function getBaseFieldset()
@@ -104,7 +103,7 @@ class AdministratorFormService implements EventManagerAwareInterface
 
     public function save()
     {
-        $result = array();
+        $result = [];
 
         $baseFieldset = $this->baseFieldset;
 
@@ -115,9 +114,8 @@ class AdministratorFormService implements EventManagerAwareInterface
         $this->form->remove(get_class($baseFieldset));
 
         foreach ($this->form->getFieldsets() as $fieldset) {
-
-            $tableGateway   = $fieldset->getTableGateway();
-            $model          = $fieldset->getObjectModel();
+            $tableGateway = $fieldset->getTableGateway();
+            $model = $fieldset->getObjectModel();
 
             $isLocaleFieldset = $fieldset->getOption('is_locale');
 

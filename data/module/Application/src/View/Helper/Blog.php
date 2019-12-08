@@ -38,14 +38,12 @@ class Blog extends AbstractHelper
         $html = '';
 
         if ($blogs instanceof Paginator) {
-
             foreach ($blogs as $index => $blog) {
-
                 $blog->imageUrl = json_decode($blog->imageUrl);
-                $linkUrl = $url($lang.'/blog/category/detail',array(
+                $linkUrl = $url($lang . '/blog/category/detail', [
                     'category' => $blog->categoryUrlKey,
                     'detail' => $blog->urlKey
-                ));
+                ]);
 
                 $html .= sprintf(
                     $this->getContentWrapper(),
@@ -53,12 +51,12 @@ class Blog extends AbstractHelper
                     $linkUrl,
                     $blog->title,
                     $blog->content,
-                    $url($lang.'/blog/category',array(
+                    $url($lang . '/blog/category', [
                         'category' => $blog->categoryUrlKey
-                    )),
+                    ]),
                     $blog->categoryTitle,
                     $linkUrl,
-                    $this->translator->translate('Read more','frontend')
+                    $this->translator->translate('Read more', 'frontend')
                 );
             }
         }

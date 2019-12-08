@@ -15,5 +15,4 @@ class Visibility extends Select
             'unlisted' => 'Oculto'
         ]);
     }
-
 }

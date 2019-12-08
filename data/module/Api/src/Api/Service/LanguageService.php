@@ -12,11 +12,11 @@ class LanguageService implements AllowDatabaseAccessInterface
 
     public function getLanguagesAvailable()
     {
-        return $this->table->all(array(
+        return $this->table->all([
             'active' => '1',
             'visible' => '1',
-        ),array(
+        ], [
             'order ASC'
-        ));
+        ]);
     }
 }

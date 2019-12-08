@@ -16,12 +16,10 @@ class HomeModuleService implements AllowDatabaseAccessInterface
     public function getData($lang)
     {
         $rows = new ArrayObject(
-
-            $this->table->all(array(
+            $this->table->all([
                 'active' => '1',
                 'deleted_at' => null
-            ))->setFetchGroupResultSet('id')->toObjectArray(),
-
+            ])->setFetchGroupResultSet('id')->toObjectArray(),
             ArrayObject::ARRAY_AS_PROPS
         );
 

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace AmMenu\Form\Element;
 
 use AmModule\Service\ModuleService;
@@ -17,12 +16,12 @@ class Action extends Select
         $modulesArray = [];
 
         foreach ($modules as $action => $module) {
-            $explode = explode('.',$action);
+            $explode = explode('.', $action);
             if (!isset($modulesArray[$explode[0]])) {
-                $modulesArray[$explode[0]] = array(
+                $modulesArray[$explode[0]] = [
                     'label' => $explode[0],
-                    'options' => array()
-                );
+                    'options' => []
+                ];
             }
             $modulesArray[$explode[0]]['options'][$explode[1]] = $explode[1];
         }
@@ -31,5 +30,4 @@ class Action extends Select
             ['' => 'Selecciona una acción'] + $modulesArray
         );
     }
-
 }

@@ -8,5 +8,5 @@ class JobCategoryTable extends AdministratorTable
 {
     protected $table = 'job_categories';
 
-    public const ENTITY_MODEL_CLASS =  JobCategoryModel::class;
+    public const ENTITY_MODEL_CLASS = JobCategoryModel::class;
 }

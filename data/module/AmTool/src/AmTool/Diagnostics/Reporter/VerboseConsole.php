@@ -1,4 +1,5 @@
 <?php
+
 namespace AmTool\Diagnostics\Reporter;
 
 use ArrayObject;
@@ -95,7 +96,9 @@ class VerboseConsole implements ReporterInterface
      * @param  bool           $alias The alias being targeted by the check
      * @return bool|void      Return false to prevent check from happening
      */
-    public function onBeforeRun(CheckInterface $check, $alias = null) {}
+    public function onBeforeRun(CheckInterface $check, $alias = null)
+    {
+    }
 
     /**
      * This method is called every time a Check has been performed. If this method
@@ -134,7 +137,8 @@ class VerboseConsole implements ReporterInterface
                     $descr,
                     $this->width - 7,
                     '       '
-                ), Color::GREEN
+                ),
+                Color::GREEN
             );
         } elseif ($result instanceof Failure) {
             $this->console->write(' FAIL ', Color::WHITE, Color::RED);
@@ -143,7 +147,8 @@ class VerboseConsole implements ReporterInterface
                     $descr,
                     $this->width - 7,
                     '       '
-                ), Color::RED
+                ),
+                Color::RED
             );
         } elseif ($result instanceof Warning) {
             $this->console->write(' WARN ', Color::NORMAL, Color::YELLOW);
@@ -152,7 +157,8 @@ class VerboseConsole implements ReporterInterface
                     $descr,
                     $this->width - 7,
                     '       '
-                ), Color::YELLOW
+                ),
+                Color::YELLOW
             );
         } elseif ($result instanceof Skip) {
             $this->console->write(' SKIP ', Color::NORMAL, Color::YELLOW);
@@ -161,7 +167,8 @@ class VerboseConsole implements ReporterInterface
                     $descr,
                     $this->width - 7,
                     '       '
-                ), Color::YELLOW
+                ),
+                Color::YELLOW
             );
         } else {
             $this->console->write(' ???? ', Color::NORMAL, Color::YELLOW);
@@ -170,7 +177,8 @@ class VerboseConsole implements ReporterInterface
                     $descr,
                     $this->width - 7,
                     '       '
-                ), Color::YELLOW
+                ),
+                Color::YELLOW
             );
         }
     }
@@ -207,7 +215,8 @@ class VerboseConsole implements ReporterInterface
             $line = 'OK (' . $this->total . ' diagnostic checks)';
             $this->console->writeLine(
                 str_pad($line, $this->width - 1, ' ', STR_PAD_RIGHT),
-                Color::NORMAL, Color::GREEN
+                Color::NORMAL,
+                Color::GREEN
             );
         } elseif ($results->getFailureCount() == 0) {
             $line = $results->getWarningCount() . ' warnings, ';
@@ -225,7 +234,8 @@ class VerboseConsole implements ReporterInterface
 
             $this->console->writeLine(
                 str_pad($line, $this->width - 1, ' ', STR_PAD_RIGHT),
-                Color::NORMAL, Color::YELLOW
+                Color::NORMAL,
+                Color::YELLOW
             );
         } else {
             $line = $results->getFailureCount() . ' failures, ';
@@ -244,12 +254,12 @@ class VerboseConsole implements ReporterInterface
 
             $this->console->writeLine(
                 str_pad($line, $this->width, ' ', STR_PAD_RIGHT),
-                Color::NORMAL, Color::RED
+                Color::NORMAL,
+                Color::RED
             );
         }
 
         $this->console->writeLine();
-
     }
 
     /**

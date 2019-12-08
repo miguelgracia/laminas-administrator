@@ -1,16 +1,15 @@
 <?php
 
-
 namespace Administrator\Form;
 
 use Zend\Form\Form;
 
 class AdministratorForm extends Form
 {
-    const ACTION_DEFAULT    = 'index';
-    const ACTION_ADD        = 'add';
-    const ACTION_EDIT       = 'edit';
-    const ACTION_DELETE     = 'delete';
+    const ACTION_DEFAULT = 'index';
+    const ACTION_ADD = 'add';
+    const ACTION_EDIT = 'edit';
+    const ACTION_DELETE = 'delete';
 
     public function init()
     {
@@ -18,7 +17,7 @@ class AdministratorForm extends Form
         $formInitializers = $this->initializers();
 
         foreach ($formInitializers['fieldsets'] as $fieldsetName) {
-            $isLocale = strpos($fieldsetName, "LocaleFieldset") !== false;
+            $isLocale = strpos($fieldsetName, 'LocaleFieldset') !== false;
 
             if ($isLocale) {
                 $localeFieldsets = $formElemenetManager->build($fieldsetName);

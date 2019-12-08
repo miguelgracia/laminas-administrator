@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Controller;
 
 use Api\Service\PartnerService;
@@ -11,7 +12,6 @@ class CompanyController extends ApplicationController
         $menu = $this->menu;
 
         if (isset($menu->rows->company) and $menu->rows->company->active == 1) {
-
             $menuLang = $menu->locale->{$this->lang};
 
             $menuLangCompany = $menuLang[$menu->rows->company->id];
@@ -22,14 +22,14 @@ class CompanyController extends ApplicationController
             $ogFacebook->title = $this->headTitleHelper->renderTitle();
             $ogFacebook->description = $menuLangCompany->metaDescription;
 
-            $this->layout()->setVariable('og',$ogFacebook);
+            $this->layout()->setVariable('og', $ogFacebook);
 
-            $viewParams = array(
+            $viewParams = [
                 'menu' => $menu,
                 'lang' => $this->lang
-            );
+            ];
 
-            if ($menu->rows->{"company/colaborators"}->active == 1) {
+            if ($menu->rows->{'company/colaborators'}->active == 1) {
                 $viewParams['partners'] = $this->serviceManager->get(PartnerService::class)->getData($this->lang);
             }
 

@@ -16,19 +16,19 @@ class PartnerFieldset extends AdministratorFieldset
         $logo = $this->get('logo');
         $class = $logo->getAttribute('class');
         $class .= ' browsefile';
-        $logo->setAttribute('class',$class);
+        $logo->setAttribute('class', $class);
     }
 
     public function getInputFilterSpecification()
     {
         $inputFilter = parent::getInputFilterSpecification();
 
-        $inputFilter['website']['validators'][] = array(
+        $inputFilter['website']['validators'][] = [
             'name' => 'Zend\Validator\Uri',
-            'options' => array(
+            'options' => [
                 'allowRelative' => false
-            ),
-        );
+            ],
+        ];
 
         return  $inputFilter;
     }

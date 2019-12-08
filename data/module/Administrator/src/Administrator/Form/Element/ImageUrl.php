@@ -6,5 +6,4 @@ use Zend\Form\Element;
 
 class ImageUrl extends Element
 {
-    
 }

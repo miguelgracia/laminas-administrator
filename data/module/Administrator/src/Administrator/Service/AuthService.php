@@ -27,8 +27,13 @@ class AuthService implements FactoryInterface
         //that password hashed with md5
         $dbAdapter = $container->get('Zend\Db\Adapter\Adapter');
 
-        $dbTableAuthAdapter  = new  AuthAdapter($dbAdapter,
-            'admin_users','username','password', "md5(?)");
+        $dbTableAuthAdapter = new  AuthAdapter(
+            $dbAdapter,
+            'admin_users',
+            'username',
+            'password',
+            'md5(?)'
+        );
 
         $storage = $container->get('Administrator\Model\AuthStorage');
 
@@ -57,17 +62,17 @@ class AuthService implements FactoryInterface
 
         $username = $username['user'];
 
-        $rowset = $this->serviceLocator->get('AmUser\Model\UserTable')->select(function (Select $select) use($username) {
+        $rowset = $this->serviceLocator->get('AmUser\Model\UserTable')->select(function (Select $select) use ($username) {
             $select
-                ->columns(array('*'))
+                ->columns(['*'])
                 ->join(
                     'admin_profiles',
                     'admin_profiles.id = admin_users.admin_profile_id',
-                    array('is_admin','permissions','key')
+                    ['is_admin', 'permissions', 'key']
                 )
-                ->where(array(
+                ->where([
                     'username' => $username
-                ));
+                ]);
         });
 
         $row = $rowset->current();

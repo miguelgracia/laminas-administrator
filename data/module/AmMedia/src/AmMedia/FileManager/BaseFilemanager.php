@@ -20,10 +20,10 @@ abstract class BaseFilemanager
 {
     const FILE_TYPE_DIR = 'dir';
 
-    public $config = array();
-    protected $language = array();
-    protected $get = array();
-    protected $post = array();
+    public $config = [];
+    protected $language = [];
+    protected $get = [];
+    protected $post = [];
     protected $logger = false;
     protected $logfile = '';
     protected $fm_path = '';
@@ -32,25 +32,24 @@ abstract class BaseFilemanager
      * Default file information template
      * @var array
      */
-    protected $defaultInfo = array(
-        'Path'      => '',
-        'Filename'  => '',
+    protected $defaultInfo = [
+        'Path' => '',
+        'Filename' => '',
         'File Type' => '',
         'Protected' => 0,
         'Thumbnail' => '',
-        'Preview'   => '',
-        'Error'     => '',
-        'Code'      => 0,
-        'Properties' => array(
-            'Date Created'  => '',
+        'Preview' => '',
+        'Error' => '',
+        'Code' => 0,
+        'Properties' => [
+            'Date Created' => '',
             'Date Modified' => '',
-            'filemtime'     => '',
-            'Height'        => 0,
-            'Width'         => 0,
-            'Size'          => 0
-        ),
-    );
-
+            'filemtime' => '',
+            'Height' => 0,
+            'Width' => 0,
+            'Size' => 0
+        ],
+    ];
 
     public function __construct($extraConfig)
     {
@@ -59,34 +58,34 @@ abstract class BaseFilemanager
             : dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'scripts';
 
         // getting default config file
-        $content = file_get_contents($this->fm_path . DIRECTORY_SEPARATOR . "filemanager.config.default.json");
+        $content = file_get_contents($this->fm_path . DIRECTORY_SEPARATOR . 'filemanager.config.default.json');
         $config_default = json_decode($content, true);
 
         // getting user config file
-        if(isset($_REQUEST['config'])) {
+        if (isset($_REQUEST['config'])) {
             $this->getvar('config');
-            if (file_exists($this->fm_path . "/" . $_REQUEST['config'])) {
-                $content = file_get_contents($this->fm_path . "/" . basename($_REQUEST['config']));
+            if (file_exists($this->fm_path . '/' . $_REQUEST['config'])) {
+                $content = file_get_contents($this->fm_path . '/' . basename($_REQUEST['config']));
             } else {
-                $this->error("Given config file (".basename($this->getvar('config')).") does not exist !");
+                $this->error('Given config file (' . basename($this->getvar('config')) . ') does not exist !');
             }
         } else {
-            $content = file_get_contents($this->fm_path . "/filemanager.config.json");
+            $content = file_get_contents($this->fm_path . '/filemanager.config.json');
         }
 
         $config = json_decode($content, true);
 
         // Prevent following bug https://github.com/simogeo/Filemanager/issues/398
-        $config_default['security']['uploadRestrictions'] = array();
+        $config_default['security']['uploadRestrictions'] = [];
 
-        if(!$config) {
-            $this->error("Error parsing the settings file! Please check your JSON syntax.");
+        if (!$config) {
+            $this->error('Error parsing the settings file! Please check your JSON syntax.');
         }
 
-        $config_default = array_replace_recursive ($config_default, $config);
+        $config_default = array_replace_recursive($config_default, $config);
 
         // override config options if needed
-        if(!empty($extraConfig)) {
+        if (!empty($extraConfig)) {
             $config_default = array_replace_recursive($config_default, $extraConfig);
         }
 
@@ -94,13 +93,13 @@ abstract class BaseFilemanager
 
         // set logfile path according to system if not set into config file
 
-        if(!isset($this->config->options['logfile'])) {
+        if (!isset($this->config->options['logfile'])) {
             $this->config->options['logfile'] = sys_get_temp_dir() . '/filemanager.log';
         }
 
         // Log actions or not?
-        if ($this->config->options['logger'] == true ) {
-            if(isset($this->config->options['logfile'])) {
+        if ($this->config->options['logger'] == true) {
+            if (isset($this->config->options['logfile'])) {
                 $this->logfile = $this->config->options['logfile'];
             }
             $this->enableLog();
@@ -111,67 +110,67 @@ abstract class BaseFilemanager
      * Returns file info - filemanager action
      * @return array
      */
-    abstract function getinfo();
+    abstract public function getinfo();
 
     /**
      * Open specified folder - filemanager action
      * @return array
      */
-    abstract function getfolder();
+    abstract public function getfolder();
 
     /**
      * Open and edit file - filemanager action
      * @return array
      */
-    abstract function editfile();
+    abstract public function editfile();
 
     /**
      * Save data to file after editing - filemanager action
      */
-    abstract function savefile();
+    abstract public function savefile();
 
     /**
      * Rename file or folder - filemanager action
      */
-    abstract function rename();
+    abstract public function rename();
 
     /**
      * Move file or folder - filemanager action
      */
-    abstract function move();
+    abstract public function move();
 
     /**
      * Delete existed file or folder - filemanager action
      */
-    abstract function delete();
+    abstract public function delete();
 
     /**
      * Replace existed file - filemanager action
      */
-    abstract function replace();
+    abstract public function replace();
 
     /**
      * Upload new file - filemanager action
      */
-    abstract function add();
+    abstract public function add();
 
     /**
      * Create new folder - filemanager action
      * @return array
      */
-    abstract function addfolder();
+    abstract public function addfolder();
 
     /**
      * Download file - filemanager action
      * @param bool $force Whether to start download after validation
      */
-    abstract function download($force);
+    abstract public function download($force);
 
     /**
      * Returns image file - filemanager action
      * @param bool $thumbnail Whether to generate image thumbnail
      */
-    abstract function getimage($thumbnail);
+    abstract public function getimage($thumbnail);
 
     /**
      * Read file data - filemanager action
@@ -179,14 +178,13 @@ abstract class BaseFilemanager
      * Initially implemented for viewing audio/video/docs/pdf and other files hosted on AWS S3 remote server.
      * @see S3Filemanager::readfile()
      */
-    abstract function readfile();
+    abstract public function readfile();
 
     /**
      * Retrieves storage summarize info - filemanager action
      * @return array
      */
-    abstract function summarize();
-
+    abstract public function summarize();
 
     /**
      * Invokes filemanager action based on request params and returns response
@@ -203,74 +201,70 @@ abstract class BaseFilemanager
         $this->get = $get;
         $this->post = $post;
 
-        if(isset($get->mode) && $get->mode != '') {
-
-            switch($get->mode) {
-
+        if (isset($get->mode) && $get->mode != '') {
+            switch ($get->mode) {
                 default:
                     $this->error($this->lang('MODE_ERROR'));
                     break;
 
                 case 'getinfo':
-                    if($this->getvar('path')) {
+                    if ($this->getvar('path')) {
                         $response = $this->getinfo();
                     }
                     break;
 
                 case 'getfolder':
-                    if($this->getvar('path')) {
-
+                    if ($this->getvar('path')) {
                         return $this->getfolder();
                     }
                     break;
 
                 case 'rename':
-                    if($this->getvar('old') && $this->getvar('new')) {
+                    if ($this->getvar('old') && $this->getvar('new')) {
                         $response = $this->rename();
                     }
                     break;
 
                 case 'move':
-                    if($this->getvar('old') && $this->getvar('new')) {
+                    if ($this->getvar('old') && $this->getvar('new')) {
                         $response = $this->move();
                     }
                     break;
 
                 case 'editfile':
-                    if($this->getvar('path')) {
+                    if ($this->getvar('path')) {
                         return $this->editfile();
                     }
                     break;
 
                 case 'delete':
-                    if($this->getvar('path')) {
+                    if ($this->getvar('path')) {
                         return $this->delete();
                     }
                     break;
 
                 case 'addfolder':
-                    if($this->getvar('path') && $this->getvar('name')) {
-
+                    if ($this->getvar('path') && $this->getvar('name')) {
                         return $this->addfolder();
                     }
                     break;
 
                 case 'download':
-                    if($this->getvar('path')) {
+                    if ($this->getvar('path')) {
                         $force = isset($get->force);
                         return $this->download($force);
                     }
                     break;
 
                 case 'getimage':
-                    if($this->getvar('path')) {
+                    if ($this->getvar('path')) {
                         $thumbnail = isset($get->thumbnail);
                         return $this->getimage($thumbnail);
                     }
                     break;
 
                 case 'readfile':
-                    if($this->getvar('path')) {
+                    if ($this->getvar('path')) {
                         $this->readfile();
                     }
                     break;
@@ -279,29 +273,26 @@ abstract class BaseFilemanager
                     $response = $this->summarize();
                     break;
             }
-
-        } else if(isset($post->mode) && $post->mode != '') {
-
-            switch($post->mode) {
-
+        } elseif (isset($post->mode) && $post->mode != '') {
+            switch ($post->mode) {
                 default:
                     $this->error($this->lang('MODE_ERROR'));
                     break;
 
                 case 'add':
-                    if($this->postvar('currentpath')) {
+                    if ($this->postvar('currentpath')) {
                         $response = $this->add();
                     }
                     break;
 
                 case 'replace':
-                    if($this->postvar('newfilepath')) {
+                    if ($this->postvar('newfilepath')) {
                         $this->replace();
                     }
                     break;
 
                 case 'savefile':
-                    if($this->postvar('content', false) && $this->postvar('path')) {
+                    if ($this->postvar('content', false) && $this->postvar('path')) {
                         $response = $this->savefile();
                     }
                     break;
@@ -320,11 +311,11 @@ abstract class BaseFilemanager
         $this->__log('error message: "' . $string . '"', 2);
 
         $response = new Response();
-        $json = new JsonModel(array(
+        $json = new JsonModel([
             'Error' => $string,
             'Code' => '-1',
             'Properties' => $this->defaultInfo['Properties'],
-        ));
+        ]);
 
         return $response->setContent($json->serialize());
     }
@@ -336,7 +327,7 @@ abstract class BaseFilemanager
      */
     public function lang($string)
     {
-        if(isset($this->language[$string]) && $this->language[$string] != '') {
+        if (isset($this->language[$string]) && $this->language[$string] != '') {
             return $this->language[$string];
         } else {
             return 'Language string error on ' . $string;
@@ -350,13 +341,13 @@ abstract class BaseFilemanager
      */
     protected function __log($msg, $traceLevel = 1)
     {
-        if($this->logger == true) {
+        if ($this->logger == true) {
             $backtrace = debug_backtrace();
             $entry = $backtrace[$traceLevel];
             $info = "{$entry['class']}::{$entry['function']}()";
 
-            $fp = fopen($this->logfile, "a");
-            $str = "[" . date("d/m/Y h:i:s", time()) . "]#".  $this->get_user_ip() . "#" . $info . " - " . $msg;
+            $fp = fopen($this->logfile, 'a');
+            $str = '[' . date('d/m/Y h:i:s', time()) . ']#' . $this->get_user_ip() . '#' . $info . ' - ' . $msg;
             fwrite($fp, $str . PHP_EOL);
             fclose($fp);
         }
@@ -366,11 +357,11 @@ abstract class BaseFilemanager
     {
         $this->logger = true;
 
-        if($logfile != '') {
+        if ($logfile != '') {
             $this->logfile = $logfile;
         }
 
-        $this->__log(__METHOD__ . ' - Log enabled (in '. $this->logfile. ' file)');
+        $this->__log(__METHOD__ . ' - Log enabled (in ' . $this->logfile . ' file)');
     }
 
     public function disableLog()
@@ -386,9 +377,9 @@ abstract class BaseFilemanager
      */
     protected function get_user_ip()
     {
-        $client  = @$_SERVER['HTTP_CLIENT_IP'];
+        $client = @$_SERVER['HTTP_CLIENT_IP'];
         $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
-        $remote  = $_SERVER['REMOTE_ADDR'];
+        $remote = $_SERVER['REMOTE_ADDR'];
 
         if (filter_var($client, FILTER_VALIDATE_IP)) {
             $ip = $client;
@@ -401,7 +392,6 @@ abstract class BaseFilemanager
         return $ip;
     }
 
-
     /**
      * Retrieve data from $_GET global var
      * @param string $var
@@ -410,10 +400,10 @@ abstract class BaseFilemanager
      */
     public function getvar($var, $sanitize = true)
     {
-        if(!isset($this->get->{$var}) || $this->get->{$var} == '') {
-            $this->error(sprintf($this->lang('INVALID_VAR'),$var));
+        if (!isset($this->get->{$var}) || $this->get->{$var} == '') {
+            $this->error(sprintf($this->lang('INVALID_VAR'), $var));
         } else {
-            if($sanitize) {
+            if ($sanitize) {
                 return $this->sanitize($this->get->{$var});
             } else {
                 return $this->get->{$var};
@@ -429,10 +419,10 @@ abstract class BaseFilemanager
      */
     public function postvar($var, $sanitize = true)
     {
-        if(!isset($_POST[$var]) || ($var != 'content' && $_POST[$var]=='')) {
-            $this->error(sprintf($this->lang('INVALID_VAR'),$var));
+        if (!isset($_POST[$var]) || ($var != 'content' && $_POST[$var] == '')) {
+            $this->error(sprintf($this->lang('INVALID_VAR'), $var));
         } else {
-            if($sanitize) {
+            if ($sanitize) {
                 $this->post[$var] = $this->sanitize($_POST[$var]);
             } else {
                 $this->post[$var] = $_POST[$var];
@@ -477,9 +467,9 @@ abstract class BaseFilemanager
     public static function get_real_filesize($path)
     {
         // This should work for large files on 64bit platforms and for small files everywhere
-        $fp = fopen($path, "rb");
+        $fp = fopen($path, 'rb');
         if (!$fp) {
-            throw new Exception("Cannot open specified file for reading.");
+            throw new Exception('Cannot open specified file for reading.');
         }
         $flockResult = flock($fp, LOCK_SH);
         $seekResult = fseek($fp, 0, SEEK_END);
@@ -487,13 +477,13 @@ abstract class BaseFilemanager
         flock($fp, LOCK_UN);
         fclose($fp);
 
-        if(!($flockResult === false || $seekResult !== 0 || $position === false)) {
-            return sprintf("%u", $position);
+        if (!($flockResult === false || $seekResult !== 0 || $position === false)) {
+            return sprintf('%u', $position);
         }
 
         // Try to define file size via CURL if installed
-        if (function_exists("curl_init")) {
-            $ch = curl_init("file://" . rawurlencode($path));
+        if (function_exists('curl_init')) {
+            $ch = curl_init('file://' . rawurlencode($path));
             curl_setopt($ch, CURLOPT_NOBODY, true);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HEADER, true);
@@ -524,15 +514,15 @@ abstract class BaseFilemanager
 
         $exts = array_map('strtolower', $this->config->security['uploadRestrictions']);
 
-        if($this->config->security['uploadPolicy'] == 'DISALLOW_ALL') {
-
-            if(!in_array(strtolower($path_parts['extension']), $exts))
+        if ($this->config->security['uploadPolicy'] == 'DISALLOW_ALL') {
+            if (!in_array(strtolower($path_parts['extension']), $exts)) {
                 return false;
+            }
         }
-        if($this->config->security['uploadPolicy'] == 'ALLOW_ALL') {
-
-            if(in_array(strtolower($path_parts['extension']), $exts))
+        if ($this->config->security['uploadPolicy'] == 'ALLOW_ALL') {
+            if (in_array(strtolower($path_parts['extension']), $exts)) {
                 return false;
+            }
         }
 
         return true;

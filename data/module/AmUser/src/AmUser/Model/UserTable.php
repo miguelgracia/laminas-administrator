@@ -9,11 +9,11 @@ class UserTable extends AdministratorTable
 {
     public $table = 'admin_users';
 
-    public const ENTITY_MODEL_CLASS =  UserModel::class;
+    public const ENTITY_MODEL_CLASS = UserModel::class;
 
     public function save($model, $id = 0, $fieldKey = 'id')
     {
-        $checkPassword =  (bool) $model->getCheckPassword();
+        $checkPassword = (bool) $model->getCheckPassword();
 
         $model->password = md5($model->password);
 
@@ -24,30 +24,33 @@ class UserTable extends AdministratorTable
         return parent::save($model, $id, $fieldKey);
     }
 
-    public function updateActivo($id,$active)
+    public function updateActivo($id, $active)
     {
-        $this->update(array('active' => $active),
-            array('id' => $id)
+        $this->update(
+            ['active' => $active],
+            ['id' => $id]
         );
     }
 
-    public function updateLogin($id,$username)
+    public function updateLogin($id, $username)
     {
-        $this->update(array('username' => $username),
-            array('id' => $id)
+        $this->update(
+            ['username' => $username],
+            ['id' => $id]
         );
     }
 
-    public function updatePassword($id,$password,$decryptKey)
+    public function updatePassword($id, $password, $decryptKey)
     {
-        $this->update(array('password' => new Expression("AES_ENCRYPT('$password','$decryptKey')")),
-                      array('id' => $id)
+        $this->update(
+            ['password' => new Expression("AES_ENCRYPT('$password','$decryptKey')")],
+            ['id' => $id]
         );
     }
 
     public function deleteGestorUsuarios($id)
     {
-        $this->delete(array('id' => (int) $id));
+        $this->delete(['id' => (int) $id]);
     }
 
     /**
@@ -57,14 +60,13 @@ class UserTable extends AdministratorTable
      * @param $passwordCheck
      * @param $dbAdapter
      */
-
     public function updateLastLogin($userCheck, $passwordCheck)
     {
-        $this->update(array(
+        $this->update([
             'last_login' => date('Y-m-d H:i:s')
-        ),array(
+        ], [
             'username' => $userCheck,
             'password' => $passwordCheck
-        ));
+        ]);
     }
 }

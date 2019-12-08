@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Administrator\Factory;
 
 use Administrator\Service\AdministratorFormService;
@@ -15,5 +14,4 @@ class AdministratorFormServiceFactory implements FactoryInterface
             $container->get('FormElementManager')
         ));
     }
-
 }

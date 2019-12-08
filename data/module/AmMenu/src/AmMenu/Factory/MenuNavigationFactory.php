@@ -3,7 +3,6 @@
 namespace AmMenu\Factory;
 
 use AmMenu\Navigation\MenuNavigation;
-
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 

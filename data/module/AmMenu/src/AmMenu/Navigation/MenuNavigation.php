@@ -21,9 +21,9 @@ class MenuNavigation extends DefaultNavigationFactory
             return $this->pages;
         }
 
-        $mvcEvent =  $container->get('Application')->getMvcEvent();
+        $mvcEvent = $container->get('Application')->getMvcEvent();
 
-        $routeMatch  = $mvcEvent->getRouteMatch();
+        $routeMatch = $mvcEvent->getRouteMatch();
 
         $dataMenu = $container->get(MenuTable::class)->fetchAllOrdenados();
 
@@ -40,25 +40,24 @@ class MenuNavigation extends DefaultNavigationFactory
         $misPermisos->redibujarMenu($dataMenu);
 
         $configuration = [];
-        foreach ($dataMenu as $i => $menu)
-        {
+        foreach ($dataMenu as $i => $menu) {
             // Pintamos las opciones base de menú
-            $label = '<i class="fa fa-circle-thin"></i>'.$menu->title;
+            $label = '<i class="fa fa-circle-thin"></i>' . $menu->title;
 
             if (count($menu->hijos) > 0) {
                 $label .= '<i class="fa fa-angle-left pull-right"></i>';
             }
 
-            $parentMenuSection = array(
+            $parentMenuSection = [
                 'label' => $label
-            );
+            ];
 
             if ($menu->action != '') {
-                $parentMenuSection['route'] = "administrator";
-                $parentMenuSection['params'] = array(
+                $parentMenuSection['route'] = 'administrator';
+                $parentMenuSection['params'] = [
                     'module' => $menu->zendName,
                     'action' => $menu->action,
-                );
+                ];
             } elseif (count($menu->hijos) == 0) {
                 //Si el menú padre no contiene ningún vìnculo y además no tiene hijos, no tiene
                 //sentido pintarlo. Es más, no se debe pintar porque puede dar pistas a usuarios
@@ -66,7 +65,7 @@ class MenuNavigation extends DefaultNavigationFactory
                 continue;
             }
 
-            $parentMenuSection['uri'] = "#";
+            $parentMenuSection['uri'] = '#';
 
             if (count($menu->hijos) == 0) {
                 $configuration['navigation'][$this->getName()]["menu$i"] = $parentMenuSection;
@@ -74,23 +73,22 @@ class MenuNavigation extends DefaultNavigationFactory
             }
 
             // Ahora vamos a pintar sus hijos
-            $parentMenuSection['pages'] = array();
+            $parentMenuSection['pages'] = [];
 
             foreach ($menu->hijos as $hijo) {
-
-                $parentMenuSection['pages'][] = array(
+                $parentMenuSection['pages'][] = [
                     'label' => $hijo->title,
-                    'pagesWrapClass' => "treeview-menu",
+                    'pagesWrapClass' => 'treeview-menu',
                     'route' => 'administrator',
-                    'params' => array(
+                    'params' => [
                         'module' => $hijo->zendName,
                         'action' => $hijo->action,
-                    ),
+                    ],
                     'active' => (
                         $hijo->zendName == $routeMatch->getParam('module') and
                         $hijo->action == $routeMatch->getParam('action')
                     )
-                );
+                ];
             }
             $configuration['navigation'][$this->getName()]["menu$i"] = $parentMenuSection;
         }

@@ -38,7 +38,7 @@ class Module
         //comprobamos que en la url tenemos el segmento de idioma.
         preg_match("/^\/((\w{2})_(\w{2}))\/*/", $uri->getPath(), $langArray);
 
-        if (count($langArray) > 0 and preg_grep("/".$langArray[1]."/i",$hostLanguages)) {
+        if (count($langArray) > 0 and preg_grep('/' . $langArray[1] . '/i', $hostLanguages)) {
             $currentLang = $langArray[2] . '_' . $langArray[2];
         } else {
             $currentLang = $hostLanguages[0];

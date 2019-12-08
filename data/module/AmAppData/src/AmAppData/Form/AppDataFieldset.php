@@ -15,34 +15,34 @@ class AppDataFieldset extends AdministratorFieldset
     public function addElements()
     {
         $key = $this->get('key');
-        $key->setAttribute('readonly','readonly');
+        $key->setAttribute('readonly', 'readonly');
     }
 
     public function getInputFilterSpecification()
     {
         $inputFilter = parent::getInputFilterSpecification();
 
-        $urlValidator = array(
+        $urlValidator = [
             'name' => 'Zend\Validator\Uri',
-            'options' => array(
+            'options' => [
                 'allowRelative' => false
-            ),
-        );
+            ],
+        ];
 
-        $social = array(
+        $social = [
             'facebook',
             'twitter',
             'googlePlus',
             'instagram'
-        );
+        ];
 
-        array_walk($social, function ($value) use(&$inputFilter,$urlValidator) {
+        array_walk($social, function ($value) use (&$inputFilter,$urlValidator) {
             $inputFilter[$value]['validators'][] = $urlValidator;
         });
 
-        $inputFilter['mailInbox']['validators'][] = array(
+        $inputFilter['mailInbox']['validators'][] = [
             'name' => EmailAddress::class
-        );
+        ];
 
         return  $inputFilter;
     }

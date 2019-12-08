@@ -11,7 +11,6 @@ use AmTool\Module;
 
 class InfoController extends AbstractActionController
 {
-
     public function versionAction()
     {
         $console = $this->serviceLocator->get('console');
@@ -35,10 +34,10 @@ class InfoController extends AbstractActionController
         $sm = $this->serviceLocator;
         $config = $sm->get('Configuration');
 
-        if(!is_array($config)){
+        if (!is_array($config)) {
             $config = ArrayUtils::iteratorToArray($config, true);
         }
-        $console->writeLine ('Configuration:', Color::GREEN);
+        $console->writeLine('Configuration:', Color::GREEN);
         print_r($config);
     }
 
@@ -57,5 +56,4 @@ class InfoController extends AbstractActionController
         }
         return false;
     }
-
 }

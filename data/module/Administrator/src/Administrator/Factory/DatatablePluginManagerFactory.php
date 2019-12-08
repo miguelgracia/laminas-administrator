@@ -13,5 +13,4 @@ class DatatablePluginManagerFactory implements FactoryInterface
         $config = $container->get('Config');
         return new DatatablePluginManager($container, $config['datatable'] ?? []);
     }
-
 }

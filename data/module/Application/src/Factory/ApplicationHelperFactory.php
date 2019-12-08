@@ -17,5 +17,4 @@ class ApplicationHelperFactory implements FactoryInterface
     {
         return new $requestedName($container);
     }
-
 }

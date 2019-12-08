@@ -11,8 +11,7 @@ class AdminModuleId extends Select
     {
         parent::__construct($name, $options);
         $this->setValueOptions(
-            ['' => '[Ninguno]'] + $moduleTable->all()->toKeyValueArray('id','zendName')
+            ['' => '[Ninguno]'] + $moduleTable->all()->toKeyValueArray('id', 'zendName')
         );
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace AmMedia\Controller;
 
 use Administrator\Controller\AuthController;
@@ -29,14 +30,14 @@ class AmMediaModuleController extends AuthController
     {
         $scanDirService = $this->serviceLocator->get('AmMedia\Service\ScanDirService');
 
-        $scanDirService->scan(array(
-            $_SERVER['DOCUMENT_ROOT'].'/media',
-        ));
+        $scanDirService->scan([
+            $_SERVER['DOCUMENT_ROOT'] . '/media',
+        ]);
 
-        $videos = $scanDirService->getFiles(array(
+        $videos = $scanDirService->getFiles([
             'video/mp4',
             'application/octet-stream'
-        ));
+        ]);
 
         return compact('videos');
     }
@@ -55,13 +56,13 @@ class AmMediaModuleController extends AuthController
 
         $image = $imageManager->make($video);
 
-        $imageToSave = $_SERVER['DOCUMENT_ROOT'].$basePath.'/'.'video-poster-'.md5($baseName).'.jpg';
+        $imageToSave = $_SERVER['DOCUMENT_ROOT'] . $basePath . '/' . 'video-poster-' . md5($baseName) . '.jpg';
 
-        $image->save($imageToSave,80);
+        $image->save($imageToSave, 80);
 
-        return new JsonModel(array(
+        return new JsonModel([
             'result' => true
-        ));
+        ]);
     }
 
     public function connectorAction()

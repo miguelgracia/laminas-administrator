@@ -13,6 +13,6 @@ class ModuleFieldset extends AdministratorFieldset
 
     public function addElements()
     {
-        $this->get('zendName')->setAttribute('readonly','readonly');
+        $this->get('zendName')->setAttribute('readonly', 'readonly');
     }
 }

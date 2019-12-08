@@ -1,4 +1,5 @@
 <?php
+
 namespace Administrator\Factory;
 
 use Administrator\Service\AdministratorFormService;
@@ -17,11 +18,11 @@ class AdministratorControllerFactory implements FactoryInterface
         $routeMatch = $container->get('Application')->getMvcEvent()->getRouteMatch();
         $module = $routeMatch->getParam('module');
 
-        $module = $module == "" ? "login" : $module;
+        $module = $module == '' ? 'login' : $module;
 
-        $moduleName = 'Am'.((new DashToCamelCase)->filter($module));
+        $moduleName = 'Am' . ((new DashToCamelCase)->filter($module));
 
-        $controllerClassName = sprintf("%s\\Controller\\%sModuleController", $moduleName, $moduleName);
+        $controllerClassName = sprintf('%s\\Controller\\%sModuleController', $moduleName, $moduleName);
 
         $controllerInstance = new $controllerClassName(
             $container->get(SessionService::class),
@@ -31,8 +32,7 @@ class AdministratorControllerFactory implements FactoryInterface
         );
 
         if ($module !== 'login') {
-
-            $datatableConfigServiceName = $moduleName . "\\Service\\DatatableConfigService";
+            $datatableConfigServiceName = $moduleName . '\\Service\\DatatableConfigService';
             $datatablePluginManager = $container->get('DatatablePluginManager');
 
             $controllerInstance->setFormService($container->get(AdministratorFormService::class));
@@ -45,7 +45,7 @@ class AdministratorControllerFactory implements FactoryInterface
 
             $tableGateway = preg_replace(
                 '/^(Am)(\w+)\\\(\w+)\\\(\w+)(ModuleController)$/',
-                "$1$2\\Model\\\\$2Table",
+                '$1$2\\Model\\\$2Table',
                 $controllerClassName
             );
 

@@ -14,9 +14,9 @@ class HomeModuleLocaleFieldset extends AdministratorFieldset
     {
         $inputFilter = parent::getInputFilterSpecification();
 
-        $inputFilter['imageUrl']['filters'][] = array(
+        $inputFilter['imageUrl']['filters'][] = [
             'name' => MediaUri::class
-        );
+        ];
 
         return $inputFilter;
     }

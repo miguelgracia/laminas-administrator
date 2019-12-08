@@ -1,33 +1,31 @@
 <?php
 
-return array(
-
-    'view_manager' => array(
-        'template_path_stack' => array(
+return [
+    'view_manager' => [
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-    ),
+        ],
+    ],
 
-    'controllers' => array(
-        'invokables' => array(
+    'controllers' => [
+        'invokables' => [
             'AmMedia\Controller\AmMediaModuleController' => 'AmMedia\Controller\AmMediaModuleController'
-        )
-    ),
+        ]
+    ],
 
-    'service_manager' => array(
-        'factories' => array(
+    'service_manager' => [
+        'factories' => [
             'AmMedia\FileManager\FileManagerService' => 'AmMedia\FileManager\FileManagerService'
-        ),
-        'invokables' => array(
+        ],
+        'invokables' => [
             'AmMedia\Service\ScanDirService' => 'AmMedia\Service\ScanDirService'
-        )
-    ),
+        ]
+    ],
 
-    'router' => array(
-
-    ),
-    'AmMedia' => array(
-        'FileManager' => array(
+    'router' => [
+    ],
+    'AmMedia' => [
+        'FileManager' => [
             /**
              * Path to the Filemanager folder.
              * Set path in case the PHP connector class was moved or extended.
@@ -48,7 +46,7 @@ return array(
              * - use of "dynamic" folders, like when "publishing" assets from secured location
              * @var string|null
              */
-            'fmUrl' => "/",
+            'fmUrl' => '/',
 
             /**
              * Filemanager plugin to use.
@@ -59,6 +57,6 @@ return array(
              */
             //'plugin'] => 's3'
             'plugin' => null
-        )
-    )
-);
+        ]
+    ]
+];

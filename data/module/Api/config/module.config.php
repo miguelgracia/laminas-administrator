@@ -1,11 +1,11 @@
 <?php
-return array(
-    'view_manager' => array(
-        'template_path_stack' => array(
+return [
+    'view_manager' => [
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-    ),
-    'service_manager' => array(
+        ],
+    ],
+    'service_manager' => [
         'factories' => [
             \Api\Service\AppDataService::class => \Api\Service\ApiServiceFactory::class,
             \Api\Service\BlogService::class => \Api\Service\ApiServiceFactory::class,
@@ -20,5 +20,5 @@ return array(
             \Api\Service\PartnerService::class => \Api\Service\ApiServiceFactory::class,
             \Api\Service\ContactService::class => \Api\Service\ApiServiceFactory::class,
         ],
-    ),
-);
+    ],
+];

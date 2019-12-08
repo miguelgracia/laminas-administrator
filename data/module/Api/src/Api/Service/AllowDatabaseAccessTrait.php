@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Api\Service;
-
 
 use Zend\Db\Adapter\AdapterAwareInterface;
 

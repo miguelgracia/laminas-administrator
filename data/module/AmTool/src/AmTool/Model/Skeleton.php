@@ -1,14 +1,14 @@
 <?php
+
 namespace AmTool\Model;
 
 use Zend\Code\Generator\ValueGenerator;
 
 class Skeleton
 {
-
-    const SKELETON_URL    = 'https://github.com/zendframework/ZendSkeletonApplication/archive/master.zip';
+    const SKELETON_URL = 'https://github.com/zendframework/ZendSkeletonApplication/archive/master.zip';
     const API_LAST_COMMIT = 'https://api.github.com/repos/zendframework/ZendSkeletonApplication/commits?per_page=1';
-    const SKELETON_FILE   = 'ZF2SA';
+    const SKELETON_FILE = 'ZF2SA';
 
     protected static $valueGenerator;
 
@@ -49,9 +49,9 @@ class Skeleton
      */
     public static function getLastZip($dir)
     {
-        $files = glob("$dir/" . self::SKELETON_FILE . "_*.zip");
-        $last  = 0;
-        $file  = '';
+        $files = glob("$dir/" . self::SKELETON_FILE . '_*.zip');
+        $last = 0;
+        $file = '';
         foreach ($files as $f) {
             if (filemtime($f) > $last) {
                 $file = $f;
@@ -168,7 +168,6 @@ EOD;
      */
     public static function getContextProxy()
     {
-
         $proxyURL = getenv('HTTP_PROXY');
 
         if (!$proxyURL) {
@@ -179,13 +178,13 @@ EOD;
 
         $auth = base64_encode(str_replace('http://', '', $config_env[0]));
 
-        $aContext = array(
-            'http' => array(
+        $aContext = [
+            'http' => [
                 'proxy' => 'tcp://' . $config_env[1],
                 'request_fulluri' => true,
                 'header' => "Proxy-Authorization: Basic $auth",
-            ),
-        );
+            ],
+        ];
 
         return stream_context_create($aContext);
     }
@@ -214,7 +213,6 @@ EOD;
     </div>
 </div>
 EOD;
-
     }
 
     public static function getAddView()
@@ -260,6 +258,5 @@ EOD;
     </div>
 </div>
 EOD;
-
     }
 }

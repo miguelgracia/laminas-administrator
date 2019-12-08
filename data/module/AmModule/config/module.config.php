@@ -1,12 +1,11 @@
 <?php
 
-return array(
-
-    'view_manager' => array(
-        'template_path_stack' => array(
+return [
+    'view_manager' => [
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-    ),
+        ],
+    ],
 
     'form_elements' => [
         'factories' => [
@@ -15,9 +14,9 @@ return array(
         ]
     ],
 
-    'service_manager' => array(
-        'factories' => array(
+    'service_manager' => [
+        'factories' => [
             'AmModule\Service\ModuleService' => 'AmModule\Service\ModuleService'
-        )
-    ),
-);
+        ]
+    ],
+];

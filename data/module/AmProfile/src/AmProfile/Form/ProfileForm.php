@@ -4,14 +4,14 @@ namespace AmProfile\Form;
 
 use Administrator\Form\AdministratorForm;
 
-class ProfileForm extends AdministratorForm {
-
+class ProfileForm extends AdministratorForm
+{
     public function initializers()
     {
-        return array(
-            'fieldsets' => array(
+        return [
+            'fieldsets' => [
                 ProfileFieldset::class
-            )
-        );
+            ]
+        ];
     }
 }

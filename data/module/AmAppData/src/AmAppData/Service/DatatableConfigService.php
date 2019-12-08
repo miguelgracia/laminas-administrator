@@ -11,16 +11,16 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
     {
         $controllerPlugin = $this->controllerPluginManager;
 
-        $disallowSearchTo = array (
+        $disallowSearchTo = [
             'app_datas.id' => false,
-        );
+        ];
 
         $disallowOrderTo = $disallowSearchTo;
 
-        $canEdit    = $this->permissions->hasModuleAccess('app-data', 'edit');
-        $canDelete  = $this->permissions->hasModuleAccess('app-data', 'delete');
+        $canEdit = $this->permissions->hasModuleAccess('app-data', 'edit');
+        $canDelete = $this->permissions->hasModuleAccess('app-data', 'delete');
 
-        return array(
+        return [
             'searchable' => $disallowSearchTo,
             'orderable' => $disallowOrderTo,
             'columns' => function ($header) use ($canDelete, $canEdit) {
@@ -28,68 +28,65 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
                 $header['app_datas.id']['options']['visible'] = false;
 
                 //Añadimos las columnas que contendrán los iconos de edición y activar/desactivar
-                $header['edit'] = array(
+                $header['edit'] = [
                     'value' => 'Modificar',
-                    'options' => array(
+                    'options' => [
                         'orderable' => false,
                         'searchable' => false,
                         'visible' => $canEdit
-                    )
-                );
+                    ]
+                ];
 
-                $header['delete'] = array(
+                $header['delete'] = [
                     'value' => 'Eliminar',
-                    'options' => array(
+                    'options' => [
                         'orderable' => false,
                         'searchable' => false,
                         'visible' => $canDelete
-                    )
-                );
+                    ]
+                ];
 
                 return $header;
             },
-            'parse_row_data'=> function ($row) use($controllerPlugin, $canDelete, $canEdit) {
-
+            'parse_row_data' => function ($row) use ($controllerPlugin, $canDelete, $canEdit) {
                 //$row contiene los datos de cada una de las filas que ha generado la consulta.
 
                 $link = "<a href='%s'><i class='col-xs-12 text-center fa %s'></i></a>";
 
                 $controller = $controllerPlugin->getController();
 
-                $editUrl = $controller->goToSection('app-data',array('action' => 'edit', 'id' => $row['id']),true);
-                $deleteUrl = $controller->goToSection('app-data',array('action' => 'delete','id' => $row['id']),true);
+                $editUrl = $controller->goToSection('app-data', ['action' => 'edit', 'id' => $row['id']], true);
+                $deleteUrl = $controller->goToSection('app-data', ['action' => 'delete', 'id' => $row['id']], true);
 
-                $row['edit'] = $canEdit ? sprintf($link,$editUrl, 'fa-edit') : '';
+                $row['edit'] = $canEdit ? sprintf($link, $editUrl, 'fa-edit') : '';
                 $row['delete'] = $canDelete ? sprintf($link, $deleteUrl, 'fa-remove js-eliminar') : '';
 
                 return $row;
             }
-        );
+        ];
     }
 
     public function getQueryConfig()
     {
-        return array(
+        return [
             //En fields solo tenemos que añadir los campos de la tabla indicada en 'from'
-            'fields' => array(
+            'fields' => [
                 'id',
                 'key',
-            ),
+            ],
             'from' => 'app_datas',
-            'join' => array(
-            ),
+            'join' => [
+            ],
             //Los campos que están dentro del 'having_fields' no se verán afectados por la clausula where al
             //filtar, sino por la clausula having. Esto es necesario para aquellos campos cuyo valor dependen
             //de una agrupación y deseamos filtrar por ellos.
-            'having_fields' => array(
-
-            ),
+            'having_fields' => [
+            ],
             /*'where' => array(
 
             ),*/
-            'group' => array(
-
-            )
-        );
+            'group' => [
+            ]
+        ];
     }
 }

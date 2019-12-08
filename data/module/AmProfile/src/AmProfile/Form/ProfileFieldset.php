@@ -15,15 +15,15 @@ class ProfileFieldset extends AdministratorFieldset
     {
         $perm = $this->get('permissions');
 
-        $perm->setOption('partial_view','am-profile/am-profile-module/form-partial/permission');
+        $perm->setOption('partial_view', 'am-profile/am-profile-module/form-partial/permission');
 
-        $perm->setOption('label','permissions');
+        $perm->setOption('label', 'permissions');
         $perm->setAttribute('class', '');
         $perm->setUseHiddenElement(true);
 
-        $perm->setLabelAttributes(array(
+        $perm->setLabelAttributes([
             'class' => 'col-sm-3'
-        ));
+        ]);
 
         //Añadimos la clase no-editor para que no cargue el plugin ckeditor en este campo
         $description = $this->get('description');

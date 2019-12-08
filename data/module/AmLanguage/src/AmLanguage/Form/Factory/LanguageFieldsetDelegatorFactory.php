@@ -22,8 +22,8 @@ class LanguageFieldsetDelegatorFactory implements DelegatorFactoryInterface
             return $fieldset;
         }
 
-        $fieldset->get('name')->setAttribute('readonly','readonly');
-        $fieldset->get('code')->setAttribute('readonly','readonly');
+        $fieldset->get('name')->setAttribute('readonly', 'readonly');
+        $fieldset->get('code')->setAttribute('readonly', 'readonly');
 
         $active = $fieldset->get('active');
 
@@ -33,11 +33,11 @@ class LanguageFieldsetDelegatorFactory implements DelegatorFactoryInterface
 
         $active->setOptions($activeLabelAttributes);
 
-        $activeElemClasses = explode(' ',$active->getAttribute('class'));
+        $activeElemClasses = explode(' ', $active->getAttribute('class'));
 
-        $active->setAttribute('class',implode(' ',array_merge($activeElemClasses,array('hide'))));
+        $active->setAttribute('class', implode(' ', array_merge($activeElemClasses, ['hide'])));
 
-        $fieldset->get('order')->setAttribute('readonly','readonly');
+        $fieldset->get('order')->setAttribute('readonly', 'readonly');
 
         return $fieldset;
     }

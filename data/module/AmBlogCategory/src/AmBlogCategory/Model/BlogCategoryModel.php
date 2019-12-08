@@ -6,7 +6,6 @@ use Administrator\Model\AdministratorModel;
 
 class BlogCategoryModel extends AdministratorModel
 {
-
     public function prepareToSave()
     {
         $toSaveArray = parent::prepareToSave();
@@ -15,6 +14,4 @@ class BlogCategoryModel extends AdministratorModel
 
         return $toSaveArray;
     }
-
 }
-

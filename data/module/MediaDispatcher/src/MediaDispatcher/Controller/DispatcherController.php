@@ -21,17 +21,17 @@ class DispatcherController extends AbstractActionController
 
         try {
             $imageService->setImagePath($path);
-            $image = $imageService->createImage($width,$height, $clearCache);
+            $image = $imageService->createImage($width, $height, $clearCache);
         } catch (\Exception $ex) {
-            $imageService->setImagePath('/img/white-logo.png',DIRECTORY_SEPARATOR);
-            $image = $imageService->createImage($width,$height, $clearCache);
+            $imageService->setImagePath('/img/white-logo.png', DIRECTORY_SEPARATOR);
+            $image = $imageService->createImage($width, $height, $clearCache);
         }
 
         $response = $this->getResponse();
 
         $headers = $response->getHeaders();
 
-        $headers->addHeaderLine('Content-Type',$image->mime());
+        $headers->addHeaderLine('Content-Type', $image->mime());
         //$headers->addHeaderLine('Content-Length',$image->filesize());
         $response->setContent($image->encode());
 

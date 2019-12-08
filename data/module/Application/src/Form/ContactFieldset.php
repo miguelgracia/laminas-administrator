@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Form;
 
 use Zend\Filter\HtmlEntities;
@@ -11,80 +12,78 @@ use Zend\Validator\EmailAddress;
 
 class ContactFieldset extends Fieldset implements InputFilterProviderInterface
 {
-
     public function __construct($name, array $options)
     {
         parent::__construct($name, $options);
 
-        $this->add(array(
+        $this->add([
             'name' => 'name',
             'type' => Text::class,
-            'attributes' => array(
+            'attributes' => [
                 'id' => 'name',
                 'class' => 'form-control'
-            ),
-        ))->add(array(
+            ],
+        ])->add([
             'name' => 'email',
             'type' => Text::class,
-            'attributes' => array(
+            'attributes' => [
                 'id' => 'email',
                 'class' => 'form-control'
-            ),
-        ))->add(array(
+            ],
+        ])->add([
             'name' => 'phone',
             'type' => Text::class,
-            'attributes' => array(
+            'attributes' => [
                 'id' => 'phone',
                 'class' => 'form-control'
-            ),
-        ))->add(array(
+            ],
+        ])->add([
             'name' => 'message',
             'type' => Text::class,
-            'attributes' => array(
+            'attributes' => [
                 'id' => 'message',
                 'class' => 'form-control',
                 'rows' => '10'
-            ),
-        ))->add(array(
+            ],
+        ])->add([
             'name' => 'legal',
             'type' => Checkbox::class,
-            'attributes' => array(
+            'attributes' => [
                 'id' => 'legal'
-            ),
-            'options' => array(
+            ],
+            'options' => [
                 'use_hidden_element' => false
-            )
-        ));
+            ]
+        ]);
     }
 
     public function getInputFilterSpecification()
     {
-        return array(
-            'email' => array(
+        return [
+            'email' => [
                 'required' => true,
-                'filters' => array(
-                    array(
+                'filters' => [
+                    [
                         'name' => StringTrim::class
-                    )
-                ),
-                'validators' => array(
-                    array(
+                    ]
+                ],
+                'validators' => [
+                    [
                         'name' => EmailAddress::class
-                    )
-                )
-            ),
-            'message' => array(
+                    ]
+                ]
+            ],
+            'message' => [
                 'required' => true,
-                'filters' => array(
-                    array(
+                'filters' => [
+                    [
                         'name' => StringTrim::class
-                    ),
-                )
-            ),
-            'legal' => array(
+                    ],
+                ]
+            ],
+            'legal' => [
                 'required' => true
-            )
-        );
+            ]
+        ];
     }
-
 }

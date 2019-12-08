@@ -1,4 +1,5 @@
 <?php
+
 namespace Administrator\EventManager;
 
 use Traversable;
@@ -12,6 +13,7 @@ abstract class EventProvider implements EventManagerAwareInterface
      * @var EventManagerInterface
      */
     protected $events;
+
     /**
      * Set the event manager instance used by this context
      *
@@ -20,7 +22,7 @@ abstract class EventProvider implements EventManagerAwareInterface
      */
     public function setEventManager(EventManagerInterface $events)
     {
-        $identifiers = array(__CLASS__, get_called_class());
+        $identifiers = [__CLASS__, get_called_class()];
         if (isset($this->eventIdentifier)) {
             if ((is_string($this->eventIdentifier))
                 || (is_array($this->eventIdentifier))
@@ -36,6 +38,7 @@ abstract class EventProvider implements EventManagerAwareInterface
         $this->events = $events;
         return $this;
     }
+
     /**
      * Retrieve the event manager
      *

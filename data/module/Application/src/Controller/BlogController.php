@@ -11,7 +11,6 @@ class BlogController extends ApplicationController
         $menu = $this->menu;
 
         if (isset($menu->rows->blog) and $menu->rows->blog->active == 1) {
-
             $menuLang = $menu->locale->{$this->lang};
 
             $menuLangBlog = $menuLang[$menu->rows->blog->id];
@@ -21,21 +20,21 @@ class BlogController extends ApplicationController
             $ogFacebook = $this->openGraph->facebook();
             $ogFacebook->title = $this->headTitleHelper->renderTitle();
             $ogFacebook->description = $menuLangBlog->metaDescription;
-            $this->layout()->setVariable('og',$ogFacebook);
+            $this->layout()->setVariable('og', $ogFacebook);
 
             $page = $this->params()->fromQuery('page');
 
             $blogs = $this->api->blog->getData($this->lang, false, $page);
             $blogCategories = $this->api->blogCategory->getData($this->lang);
 
-            return new ViewModel(array(
-                'menu'            => $this->menu,
-                'lang'            => $this->lang,
-                'blogs'            => $blogs,
-                'blogCategories'   => $blogCategories,
-                'routePagination' => $this->lang .'/blog',
-                'routeParams'     => array()
-            ));
+            return new ViewModel([
+                'menu' => $this->menu,
+                'lang' => $this->lang,
+                'blogs' => $blogs,
+                'blogCategories' => $blogCategories,
+                'routePagination' => $this->lang . '/blog',
+                'routeParams' => []
+            ]);
         }
 
         $this->getResponse()->setStatusCode(404);
@@ -54,7 +53,6 @@ class BlogController extends ApplicationController
         $uriCategories = array_column($blogCategories['locale'][$this->lang], 'relatedTableId', 'urlKey');
 
         if (isset($uriCategories[$category]) and $blogCategories['rows'][$uriCategories[$category]]['active'] == '1') {
-
             $menuLang = $menu->locale->{$this->lang};
 
             $currentCategory = $blogCategories['locale'][$this->lang][$uriCategories[$category]];
@@ -67,21 +65,21 @@ class BlogController extends ApplicationController
             $ogFacebook = $this->openGraph->facebook();
             $ogFacebook->title = $this->headTitleHelper->renderTitle();
             $ogFacebook->description = $menuLangBlog->metaDescription;
-            $this->layout()->setVariable('og',$ogFacebook);
+            $this->layout()->setVariable('og', $ogFacebook);
 
             $blogs = $this->api->blog->getData($this->lang, $category, $page);
 
-            $viewModel = new ViewModel(array(
-                'menu'              => $this->menu,
-                'lang'              => $this->lang,
-                'blogs'              => $blogs,
-                'currentCategory'   => $currentCategory,
-                'blogCategories'     => $blogCategories,
-                'routePagination'   => $this->lang .'/blog/category',
-                'routeParams'       => array(
+            $viewModel = new ViewModel([
+                'menu' => $this->menu,
+                'lang' => $this->lang,
+                'blogs' => $blogs,
+                'currentCategory' => $currentCategory,
+                'blogCategories' => $blogCategories,
+                'routePagination' => $this->lang . '/blog/category',
+                'routeParams' => [
                     'category' => $category
-                )
-            ));
+                ]
+            ]);
 
             $viewModel->setTemplate('application/blog/index');
 
@@ -101,11 +99,9 @@ class BlogController extends ApplicationController
         $uriCategories = array_column($blogCategories['locale'][$this->lang], 'relatedTableId', 'urlKey');
 
         if (isset($uriCategories[$category]) and $blogCategories['rows'][$uriCategories[$category]]['active'] == '1') {
-
             $blog = $this->api->blog->getDetail($this->lang, $blogUri);
 
             if ($blog->count()) {
-
                 $blog = $blog->current();
 
                 $menuLang = $this->menu->locale->{$this->lang};
@@ -124,15 +120,15 @@ class BlogController extends ApplicationController
 
                 $ogFacebook->image = json_decode($blog->getImageUrl());
 
-                $this->layout()->setVariable('og',$ogFacebook);
+                $this->layout()->setVariable('og', $ogFacebook);
 
-                $viewModel = new ViewModel(array(
-                    'menu'              => $this->menu,
-                    'lang'              => $this->lang,
-                    'blog'               => $blog,
-                    'currentCategory'   => $currentCategory,
-                    'blogCategories'     => $blogCategories
-                ));
+                $viewModel = new ViewModel([
+                    'menu' => $this->menu,
+                    'lang' => $this->lang,
+                    'blog' => $blog,
+                    'currentCategory' => $currentCategory,
+                    'blogCategories' => $blogCategories
+                ]);
 
                 return $viewModel;
             }

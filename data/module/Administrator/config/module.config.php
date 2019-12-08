@@ -10,55 +10,53 @@ use Administrator\Service\AuthService;
 use Administrator\Service\DatatableService;
 use Administrator\Service\SessionService;
 
-return array(
-
-    'view_manager' => array(
+return [
+    'view_manager' => [
         'display_not_found_reason' => true,
-        'display_exceptions'       => true,
-        'doctype'                  => 'HTML5',
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
-        'template_map' => array(
-            'layout/admin-layout'       => __DIR__ . '/../view/layout/admin-layout.phtml',
+        'display_exceptions' => true,
+        'doctype' => 'HTML5',
+        'not_found_template' => 'error/404',
+        'exception_template' => 'error/index',
+        'template_map' => [
+            'layout/admin-layout' => __DIR__ . '/../view/layout/admin-layout.phtml',
             'layout/admin-login-layout' => __DIR__ . '/../view/layout/admin-login-layout.phtml',
-            'error/index'               => __DIR__ . '/../view/layout/error.phtml',
+            'error/index' => __DIR__ . '/../view/layout/error.phtml',
             //'error/404'               => __DIR__ . '/../view/error/404.phtml',
             //'error/index'             => __DIR__ . '/../view/error/index.phtml',
-        ),
-        'template_path_stack' => array(
+        ],
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-    ),
-    'translator' => array(
+        ],
+    ],
+    'translator' => [
         'locale' => 'es_ES',
-        'translation_file_patterns' => array(
-            array(
-                'type'     => 'gettext',
+        'translation_file_patterns' => [
+            [
+                'type' => 'gettext',
                 'base_dir' => __DIR__ . '/../language',
-                'pattern'  => '%s.mo',
-            ),
-        ),
-    ),
-    'router' => array(
-
-        'routes' => array(
-            'administrator' => array(
+                'pattern' => '%s.mo',
+            ],
+        ],
+    ],
+    'router' => [
+        'routes' => [
+            'administrator' => [
                 'type' => \Zend\Router\Http\Segment::class,
-                'options' => array(
+                'options' => [
                     'route' => '/admin[/[:module[/[:action[/[:id]]]]]]',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => AdministratorControllerFactory::class,
                         'action' => 'index'
-                    )
-                )
-            )
-        ),
-    ),
+                    ]
+                ]
+            ]
+        ],
+    ],
 
     'controllers' => [
-        'factories' => array(
-            AdministratorControllerFactory::class =>  AdministratorControllerFactory::class,
-        ),
+        'factories' => [
+            AdministratorControllerFactory::class => AdministratorControllerFactory::class,
+        ],
     ],
     'datatable' => [
         'factories' => [
@@ -115,16 +113,16 @@ return array(
         ],
     ],
     'service_manager' => [
-        'initializers' => array(
+        'initializers' => [
             \Administrator\Initializer\DatabaseInitializer::class,
-        ),
+        ],
         'aliases' => [
             'DatatablePluginManager' => \Administrator\Service\DatatablePluginManager::class,
         ],
-        'abstract_factories' => array(
+        'abstract_factories' => [
             AdministratorTableAbstractFactory::class,
             AdministratorModelAbstractFactory::class,
-        ),
+        ],
         'factories' => [
             AuthStorage::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
             \Administrator\Service\ConfigureFieldsetService::class => \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class,
@@ -140,12 +138,12 @@ return array(
         'aliases' => [
             'AdministratorMenu' => \Administrator\View\Helper\AdministratorMenu::class,
         ],
-        'factories' => array(
+        'factories' => [
             \Administrator\View\Helper\AdministratorMenu::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
             'administrator_form_row' => function () {
                 return new \Administrator\View\Helper\AdministratorFormRow;
             }
-        )
+        ]
     ],
     \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class => [
         \Administrator\Service\ConfigureFieldsetService::class => [
@@ -153,5 +151,4 @@ return array(
             \Administrator\Service\CheckIdService::class
         ]
     ]
-
-);
+];

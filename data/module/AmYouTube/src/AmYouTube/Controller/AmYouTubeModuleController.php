@@ -21,9 +21,9 @@ class AmYouTubeModuleController extends AuthController
         $channelsResponse = false;
         $checkAuth = false;
 
-        $viewParams = array(
+        $viewParams = [
             'title' => 'Sincronizar'
-        );
+        ];
 
         $youtubeService = $this->serviceLocator->get(\AmYouTube\Service\YoutubeService::class);
 
@@ -42,7 +42,7 @@ class AmYouTubeModuleController extends AuthController
             return $this->redirect()->toUrl($client->getRedirectUri());
         }
 
-        if ( isset($this->sessionService->token)) {
+        if (isset($this->sessionService->token)) {
             $client->setAccessToken($this->sessionService->token);
         }
 
@@ -50,35 +50,31 @@ class AmYouTubeModuleController extends AuthController
         $token = $client->getAccessToken();
 
         if ($token and !$client->isAccessTokenExpired()) {
-
             try {
                 // Call the channels.list method to retrieve information about the
                 // currently authenticated user's channel.
-                $youtubeVideos = array();
+                $youtubeVideos = [];
 
-                $channelsResponse = $youtube->channels->listChannels('contentDetails', array(
+                $channelsResponse = $youtube->channels->listChannels('contentDetails', [
                     'mine' => 'true',
-                ));
+                ]);
 
                 foreach ($channelsResponse['items'] as $channel) {
-
-                    $dbVideos = $this->tableGateway->select(array(
+                    $dbVideos = $this->tableGateway->select([
                         'channel_id' => $channel->id
-                    ));
+                    ]);
 
                     $dbVideos = $dbVideos->count()
                         ? $dbVideos->setFetchGroupResultSet('code')->toObjectArray()
-                        : array();
+                        : [];
 
                     $uploadsListId = $channel['contentDetails']['relatedPlaylists']['uploads'];
-                    $playlistItemsResponse = $youtube->playlistItems->listPlaylistItems('snippet,status', array(
+                    $playlistItemsResponse = $youtube->playlistItems->listPlaylistItems('snippet,status', [
                         'playlistId' => $uploadsListId,
                         'maxResults' => 50
-                    ));
-
+                    ]);
 
                     foreach ($playlistItemsResponse['items'] as $playlistItem) {
-
                         $snippet = $playlistItem['snippet'];
 
                         $status = $playlistItem['status'];
@@ -102,32 +98,31 @@ class AmYouTubeModuleController extends AuthController
 
                     foreach ($dbVideos as $codeId => $vid) {
                         if (isset($vid->updated) and $vid->updated == 1) {
-                            $this->tableGateway->update(array(
+                            $this->tableGateway->update([
                                 'title' => $vid->title,
                                 'description' => $vid->description,
                                 'visibility' => $vid->visibility
-                            ),array(
+                            ], [
                                 'code' => $codeId
-                            ));
-                        } elseif(isset($vid->insert) and $vid->insert == 1) {
-                            $this->tableGateway->insert(array(
+                            ]);
+                        } elseif (isset($vid->insert) and $vid->insert == 1) {
+                            $this->tableGateway->insert([
                                 'title' => $vid->title,
                                 'description' => $vid->description,
                                 'visibility' => $vid->visibility,
                                 'channel_id' => $vid->channelId,
                                 'channel_title' => $vid->channelTitle,
                                 'code' => $codeId
-                            ));
+                            ]);
                         } else {
-                            $this->tableGateway->delete(array(
+                            $this->tableGateway->delete([
                                 'code' => $codeId
-                            ));
+                            ]);
                         }
                     }
                 }
 
                 $this->sessionService->token = $client->getAccessToken();
-
             } catch (\Google_Service_Exception $e) {
                 $client->revokeToken();
                 $checkAuth = true;
@@ -153,10 +148,10 @@ class AmYouTubeModuleController extends AuthController
 
             return $viewParams;
         } else {
-            return $this->redirect()->toRoute('administrator', array(
+            return $this->redirect()->toRoute('administrator', [
                 'module' => 'you-tube',
                 'action' => 'index'
-            ));
+            ]);
         }
     }
 
@@ -178,7 +173,7 @@ class AmYouTubeModuleController extends AuthController
         $client = $youtubeService->getClient();
         $youtube = $youtubeService->getYoutubeService();
         $checkAuth = false;
-        $authErrors = array();
+        $authErrors = [];
 
         $this->sessionService->action = 'add';
 
@@ -195,36 +190,33 @@ class AmYouTubeModuleController extends AuthController
             return $this->redirect()->toUrl($client->getRedirectUri());
         }
 
-        if ( isset($this->sessionService->token)) {
+        if (isset($this->sessionService->token)) {
             $client->setAccessToken($this->sessionService->token);
         }
 
         // Check to ensure that the access token was successfully acquired.
         $token = $client->getAccessToken();
 
-        $viewParams = array(
+        $viewParams = [
             'title' => 'Nuevo'
-        );
+        ];
 
         if ($token and !$client->isAccessTokenExpired()) {
-
             $form = $formService->prepareForm($this::FORM_CLASS);
 
             $request = $this->getRequest();
 
             if ($request->isPost()) {
-
                 $post = $request->getPost();
 
                 $isValid = $formService->resolveForm($post);
 
                 if ($isValid) {
-
                     $baseFieldSet = $formService->getBaseFieldset();
 
                     $model = $baseFieldSet->getObjectModel();
 
-                    $videoPath = $_SERVER['DOCUMENT_ROOT'].$model->getUpload();
+                    $videoPath = $_SERVER['DOCUMENT_ROOT'] . $model->getUpload();
 
                     try {
                         // Create a snippet with title, description, tags and category ID
@@ -255,7 +247,7 @@ class AmYouTubeModuleController extends AuthController
                         $client->setDefer(true);
 
                         // Create a request for the API's videos.insert method to create and upload the video.
-                        $insertRequest = $youtube->videos->insert("status,snippet", $video);
+                        $insertRequest = $youtube->videos->insert('status,snippet', $video);
 
                         // Create a MediaFileUpload object for resumable uploads.
                         $media = new \Google_Http_MediaFileUpload(
@@ -268,10 +260,9 @@ class AmYouTubeModuleController extends AuthController
                         );
                         $media->setFileSize(filesize($videoPath));
 
-
                         // Read the media file and upload it chunk by chunk.
                         $status = false;
-                        $handle = fopen($videoPath, "rb");
+                        $handle = fopen($videoPath, 'rb');
                         while (!$status && !feof($handle)) {
                             $chunk = fread($handle, $chunkSizeBytes);
                             $status = $media->nextChunk($chunk);
@@ -295,13 +286,12 @@ class AmYouTubeModuleController extends AuthController
 
                         $videoTableGateway = $baseFieldSet->getTableGateWay();
 
-                        $videoTableGateway->save($videoModel,$insertId[0]);
+                        $videoTableGateway->save($videoModel, $insertId[0]);
 
-                        return $this->goToSection($this->event->getRouteMatch()->getParam('module'), array(
-                            'action'  => 'edit',
-                            'id'      => $insertId[0]
-                        ));
-
+                        return $this->goToSection($this->event->getRouteMatch()->getParam('module'), [
+                            'action' => 'edit',
+                            'id' => $insertId[0]
+                        ]);
                     } catch (\Google_Service_Exception $e) {
                         $this->manageErrors(json_decode($e->getMessage()));
                         $client->revokeToken();
@@ -314,14 +304,13 @@ class AmYouTubeModuleController extends AuthController
                 }
             }
 
-            $title = "Nuevo";
+            $title = 'Nuevo';
 
             $blocks = $this->parseTriggers();
 
             $viewParams['form'] = $form;
             $viewParams['title'] = $title;
             $viewParams['blocks'] = $blocks;
-
         } else {
             $state = mt_rand();
             $client->setState($state);
@@ -332,7 +321,8 @@ class AmYouTubeModuleController extends AuthController
 
         $viewParams['authUrl'] = $client->createAuthUrl();
         $viewParams['checkAuth'] = $checkAuth;
-        $viewParams['blocks'] = $this->parseTriggers();;
+        $viewParams['blocks'] = $this->parseTriggers();
+        ;
 
         return $viewParams;
     }
@@ -344,9 +334,9 @@ class AmYouTubeModuleController extends AuthController
         $formService = $serviceLocator->get('Administrator\Service\AdministratorFormService');
 
         $application = $serviceLocator->get('Application');
-        $routeMatch  = $application->getMvcEvent()->getRouteMatch();
+        $routeMatch = $application->getMvcEvent()->getRouteMatch();
 
-        $thisModule =  $routeMatch->getParam('module');
+        $thisModule = $routeMatch->getParam('module');
 
         $id = (int) $this->params()->fromRoute('id', 0);
 
@@ -360,12 +350,12 @@ class AmYouTubeModuleController extends AuthController
 
         try {
             $this->model = $this->tableGateway->find($id);
-        }catch (\Exception $ex) {
+        } catch (\Exception $ex) {
             return $this->goToSection($thisModule);
         }
 
         $checkAuth = false;
-        $authErrors = array();
+        $authErrors = [];
 
         $this->sessionService->action = 'edit';
         $this->sessionService->id = $id;
@@ -383,34 +373,31 @@ class AmYouTubeModuleController extends AuthController
             return $this->redirect()->toUrl($client->getRedirectUri());
         }
 
-        if ( isset($this->sessionService->token)) {
+        if (isset($this->sessionService->token)) {
             $client->setAccessToken($this->sessionService->token);
         }
 
         // Check to ensure that the access token was successfully acquired.
         $token = $client->getAccessToken();
 
-        $viewParams = array(
+        $viewParams = [
             'title' => 'Editar'
-        );
+        ];
 
         if ($token and !$client->isAccessTokenExpired()) {
-
             $form = $formService->prepareForm($this::FORM_CLASS);
 
             $request = $this->getRequest();
 
             if ($request->isPost()) {
-
                 $isValid = $formService->resolveForm($request->getPost());
 
                 if ($isValid) {
-
                     try {
                         $formService->save();
                         $baseModel = $formService->getBaseFieldset()->getObjectModel();
 
-                        $videos = $youtube->videos->listVideos('snippet,status', array('id' => $baseModel->getCode()));
+                        $videos = $youtube->videos->listVideos('snippet,status', ['id' => $baseModel->getCode()]);
                         $video = $videos[0];
 
                         $videoSnippet = $video['snippet'];
@@ -423,8 +410,7 @@ class AmYouTubeModuleController extends AuthController
 
                         $video->setStatus($status);
 
-                        $updateResponse = $youtube->videos->update('snippet,status',$video);
-
+                        $updateResponse = $youtube->videos->update('snippet,status', $video);
                     } catch (\Google_Service_Exception $e) {
                         $this->manageErrors(json_decode($e->getMessage()));
                         $client->revokeToken();
@@ -454,8 +440,8 @@ class AmYouTubeModuleController extends AuthController
             if ($permissions->hasModuleAccess($module, $addAction)) {
                 $controller = $this->getPluginManager()->getController();
 
-                if (method_exists($controller, $addAction .'Action')) {
-                    $viewParams['add_action'] = $controller->goToSection($module, array('action' => $addAction), true);
+                if (method_exists($controller, $addAction . 'Action')) {
+                    $viewParams['add_action'] = $controller->goToSection($module, ['action' => $addAction], true);
                 }
             }
         } else {
@@ -466,10 +452,10 @@ class AmYouTubeModuleController extends AuthController
             $checkAuth = true;
         }
 
-
         $viewParams['authUrl'] = $client->createAuthUrl();
         $viewParams['checkAuth'] = $checkAuth;
-        $viewParams['blocks'] = $this->parseTriggers();;
+        $viewParams['blocks'] = $this->parseTriggers();
+        ;
 
         return $viewParams;
     }
@@ -488,7 +474,7 @@ class AmYouTubeModuleController extends AuthController
 
         $this->sessionService->action = 'index';
 
-        if ( isset($this->sessionService->token)) {
+        if (isset($this->sessionService->token)) {
             $client->setAccessToken($this->sessionService->token);
         }
 
@@ -498,18 +484,18 @@ class AmYouTubeModuleController extends AuthController
         $response = $this->getResponse();
 
         if (!$token or $client->isAccessTokenExpired()) {
-            $response->setContent(json_encode(array(
+            $response->setContent(json_encode([
                 'status' => 'ko',
-                'error' => array(
-                    'errors' => array(
-                        array(
-                            "reason" => "cannot.access", //Este error no lo devuelve la api.
-                            "message" => "No ha sido posible acceder a la cuenta de google. Pulse en el botón \"sincronizar\" situado en la cabecera de este listado e inténtelo de nuevo.",
-                        )
-                    )
-                ),
+                'error' => [
+                    'errors' => [
+                        [
+                            'reason' => 'cannot.access', //Este error no lo devuelve la api.
+                            'message' => 'No ha sido posible acceder a la cuenta de google. Pulse en el botón "sincronizar" situado en la cabecera de este listado e inténtelo de nuevo.',
+                        ]
+                    ]
+                ],
                 'message' => 'No ha sido posible acceder a la cuenta de google. Pulse en el botón "sincronizar" situado en la cabecera de este listado e inténtelo de nuevo.'
-            )));
+            ]));
             return $response;
         }
 
@@ -518,61 +504,59 @@ class AmYouTubeModuleController extends AuthController
         $codeVideo = $rowVideo->code;
 
         try {
-            $videos = $youtube->videos->listVideos('snippet,status', array('id' => $codeVideo));
+            $videos = $youtube->videos->listVideos('snippet,status', ['id' => $codeVideo]);
             if (isset($videos[0])) {
-
                 $youtube->videos->delete($codeVideo);
 
-                $this->tableGateway->delete(array('id' => $videoId));
+                $this->tableGateway->delete(['id' => $videoId]);
 
-                $response->setContent(json_encode(array(
+                $response->setContent(json_encode([
                     'status' => 'ok',
                     'message' => 'El video ha sido eliminado'
-                )));
+                ]));
 
                 return $response;
             } else {
-                $response->setContent(json_encode(array(
+                $response->setContent(json_encode([
                     'status' => 'ko',
-                    'error' => array(
-                        'errors' => array(
-                            array(
-                                "reason" => "fail.delete", //Este error no lo devuelve la api.
+                    'error' => [
+                        'errors' => [
+                            [
+                                'reason' => 'fail.delete', //Este error no lo devuelve la api.
                                 'message' => 'El video no existe, ha sido borrado o no tiene permisos para eliminarlo  debido a que pertenece a otro canal de YouTube.'
-                            )
-                        )
-                    ),
+                            ]
+                        ]
+                    ],
                     'message' => 'El video no existe, ha sido borrado o no tiene permisos para eliminarlo  debido a que pertenece a otro canal de YouTube.'
-                )));
+                ]));
 
                 return $response;
             }
-
         } catch (\Google_Service_Exception $e) {
             $errorMessage = $this->translateMessages(json_decode($e->getMessage()));
-            $arrayError = array(
+            $arrayError = [
                 'status' => 'ko',
                 'message' => json_decode($e->getMessage()),
                 'error' => $errorMessage->error
-            );
+            ];
             $response->setContent(json_encode($arrayError));
             return $response;
         } catch (\Google_Exception $e) {
             $errorMessage = $this->translateMessages(json_decode($e->getMessage()));
-            $arrayError = array(
+            $arrayError = [
                 'status' => 'ko',
                 'message' => json_decode($e->getMessage()),
                 'error' => $errorMessage->error
-            );
+            ];
             $response->setContent(json_encode($arrayError));
             return $response;
         } catch (\Exception $e) {
             $errorMessage = $this->translateMessages(json_decode($e->getMessage()));
-            $arrayError = array(
+            $arrayError = [
                 'status' => 'ko',
                 'message' => json_decode($e->getMessage()),
                 'error' => $errorMessage->error
-            );
+            ];
             $response->setContent(json_encode($arrayError));
             return $response;
         }
@@ -580,7 +564,6 @@ class AmYouTubeModuleController extends AuthController
 
     private function translateMessages($messages)
     {
-
         foreach ($messages->error->errors as &$error) {
             $error->message = $this->serviceLocator->get('translator')->translate($error->reason . ' description');
         }
@@ -595,22 +578,22 @@ class AmYouTubeModuleController extends AuthController
         $redirect = $this->redirect();
         $params = $this->params();
 
-        $routeParams = array(
+        $routeParams = [
             'module' => 'you-tube',
             'action' => $action
-        );
+        ];
 
         if (is_numeric($id)) {
             $routeParams['id'] = $id;
         }
 
-        $queryParams = array(
+        $queryParams = [
             'state' => $params->fromQuery('state'),
             'code' => $params->fromQuery('code')
-        );
+        ];
 
-        return $redirect->toRoute('administrator',$routeParams,array(
+        return $redirect->toRoute('administrator', $routeParams, [
             'query' => $queryParams
-        ));
+        ]);
     }
 }

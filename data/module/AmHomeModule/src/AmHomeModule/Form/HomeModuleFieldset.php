@@ -11,4 +11,3 @@ class HomeModuleFieldset extends AdministratorFieldset
 
     protected $tableGatewayName = HomeModuleTable::class;
 }
-

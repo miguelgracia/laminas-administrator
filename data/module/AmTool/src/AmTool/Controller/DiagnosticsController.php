@@ -26,19 +26,19 @@ class DiagnosticsController extends AbstractActionController
         $config = $sm->get('Configuration');
         $mm = $sm->get('ModuleManager');
 
-        $verbose        = $this->params()->fromRoute('verbose', false);
-        $debug          = $this->params()->fromRoute('debug', false);
-        $quiet          = !$verbose && !$debug && $this->params()->fromRoute('quiet', false);
+        $verbose = $this->params()->fromRoute('verbose', false);
+        $debug = $this->params()->fromRoute('debug', false);
+        $quiet = !$verbose && !$debug && $this->params()->fromRoute('quiet', false);
         $breakOnFailure = $this->params()->fromRoute('break', false);
         $checkGroupName = $this->params()->fromRoute('filter', false);
 
         // Get basic diag configuration
-        $config = isset($config['diagnostics']) ? $config['diagnostics'] : array();
+        $config = isset($config['diagnostics']) ? $config['diagnostics'] : [];
 
         // Collect diag tests from modules
         $modules = $mm->getLoadedModules(false);
         foreach ($modules as $moduleName => $module) {
-            if (is_callable(array($module, 'getDiagnostics'))) {
+            if (is_callable([$module, 'getDiagnostics'])) {
                 $checks = $module->getDiagnostics();
                 if (is_array($checks)) {
                     $config[$moduleName] = $checks;
@@ -54,7 +54,7 @@ class DiagnosticsController extends AbstractActionController
 
         // Filter array if a check group name has been provided
         if ($checkGroupName) {
-            $config = array_intersect_ukey($config, array($checkGroupName => 1), 'strcasecmp');
+            $config = array_intersect_ukey($config, [$checkGroupName => 1], 'strcasecmp');
 
             if (empty($config)) {
                 $m = new ConsoleModel();
@@ -74,11 +74,12 @@ class DiagnosticsController extends AbstractActionController
             $m = new ConsoleModel();
             $m->setResult(
                 $console->colorize(
-                    "There are no diagnostic checks currently enabled for this application - please add one or more " .
-                    "entries into config \"diagnostics\" array or add getDiagnostics() method to your Module class. " .
+                    'There are no diagnostic checks currently enabled for this application - please add one or more ' .
+                    'entries into config "diagnostics" array or add getDiagnostics() method to your Module class. ' .
                     "\n\nMore info: https://github.com/zendframework/AmTool/blob/master/docs/" .
-                    "DIAGNOSTICS.md#adding-checks-to-your-module\n"
-                , ColorInterface::YELLOW)
+                    "DIAGNOSTICS.md#adding-checks-to-your-module\n",
+                    ColorInterface::YELLOW
+                )
             );
             $m->setErrorLevel(1);
 
@@ -86,7 +87,7 @@ class DiagnosticsController extends AbstractActionController
         }
 
         // Analyze check definitions and construct check instances
-        $checkCollection = array();
+        $checkCollection = [];
         foreach ($config as $checkGroupName => $checks) {
             foreach ($checks as $checkLabel => $check) {
                 // Do not use numeric labels.
@@ -109,14 +110,13 @@ class DiagnosticsController extends AbstractActionController
                 if (is_object($check)) {
                     if (!$check instanceof CheckInterface) {
                         throw new RuntimeException(
-                            'Cannot use object of class "' . get_class($check). '" as check. '.
+                            'Cannot use object of class "' . get_class($check) . '" as check. ' .
                             'Expected instance of ZendDiagnostics\Check\CheckInterface'
                         );
-
                     }
 
                     // Use duck-typing for determining if the check allows for setting custom label
-                    if ($checkLabel && is_callable(array($check, 'setLabel'))) {
+                    if ($checkLabel && is_callable([$check, 'setLabel'])) {
                         $check->setLabel($checkGroupName . ': ' . $checkLabel);
                     }
                     $checkCollection[] = $check;
@@ -127,21 +127,19 @@ class DiagnosticsController extends AbstractActionController
                 if (is_array($check)) {
                     if (!count($check)) {
                         throw new RuntimeException(
-                            'Cannot use an empty array() as check definition in "'.$checkGroupName.'"'
+                            'Cannot use an empty array() as check definition in "' . $checkGroupName . '"'
                         );
                     }
 
                     // extract check identifier and store the remainder of array as parameters
                     $testName = array_shift($check);
                     $params = $check;
-
                 } elseif (is_scalar($check)) {
                     $testName = $check;
-                    $params = array();
-
+                    $params = [];
                 } else {
                     throw new RuntimeException(
-                        'Cannot understand diagnostic check definition "' . gettype($check). '" in "'.$checkGroupName.'"'
+                        'Cannot understand diagnostic check definition "' . gettype($check) . '" in "' . $checkGroupName . '"'
                     );
                 }
 
@@ -173,23 +171,22 @@ class DiagnosticsController extends AbstractActionController
                 } elseif (is_string($testName) && class_exists($testName)) {
                     $class = new \ReflectionClass($testName);
                     $check = $class->newInstanceArgs($params);
-
                 } else {
                     throw new RuntimeException(
-                        'Cannot find check class or service with the name of "' . $testName . '" ('.$checkGroupName.')'
+                        'Cannot find check class or service with the name of "' . $testName . '" (' . $checkGroupName . ')'
                     );
                 }
 
                 if (!$check instanceof CheckInterface) {
                     // not a real check
                     throw new RuntimeException(
-                        'The check object of class '.get_class($check).' does not implement '.
+                        'The check object of class ' . get_class($check) . ' does not implement ' .
                         'ZendDiagnostics\Check\CheckInterface'
                     );
                 }
 
                 // Use duck-typing for determining if the check allows for setting custom label
-                if ($checkLabel && is_callable(array($check, 'setLabel'))) {
+                if ($checkLabel && is_callable([$check, 'setLabel'])) {
                     $check->setLabel($checkGroupName . ': ' . $checkLabel);
                 }
 
@@ -232,5 +229,4 @@ class DiagnosticsController extends AbstractActionController
 
         return $model;
     }
-
 }

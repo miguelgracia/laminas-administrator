@@ -264,22 +264,22 @@ return [
         ],
     ],
     'view_helpers' => [
-        'aliases' => array(
+        'aliases' => [
             'applicationMenuHelper' => Menu::class,
-            'socialIconHelper'      => SocialIcon::class,
-            'legalLinkHelper'       => LegalLink::class,
-            'megabannerHelper'      => Megabanner::class,
-            'homeModuleHelper'      => HomeModule::class,
-            'partnerHelper'         => Partner::class,
-            'jobHelper'             => Job::class,
-            'jobCategoryHelper'     => JobCategory::class,
-            'blogHelper'            => Blog::class,
-            'blogCategoryHelper'    => BlogCategory::class,
-            'contactFormHelper'     => ContactForm::class,
-            'carouselItemHelper'    => CarouselItem::class,
-            'facebookShareHelper'   => FacebookShare::class,
-            'translate'             => Translate::class
-        ),
+            'socialIconHelper' => SocialIcon::class,
+            'legalLinkHelper' => LegalLink::class,
+            'megabannerHelper' => Megabanner::class,
+            'homeModuleHelper' => HomeModule::class,
+            'partnerHelper' => Partner::class,
+            'jobHelper' => Job::class,
+            'jobCategoryHelper' => JobCategory::class,
+            'blogHelper' => Blog::class,
+            'blogCategoryHelper' => BlogCategory::class,
+            'contactFormHelper' => ContactForm::class,
+            'carouselItemHelper' => CarouselItem::class,
+            'facebookShareHelper' => FacebookShare::class,
+            'translate' => Translate::class
+        ],
         'factories' => [
             Menu::class => ApplicationHelperFactory::class,
             SocialIcon::class => InvokableFactory::class,

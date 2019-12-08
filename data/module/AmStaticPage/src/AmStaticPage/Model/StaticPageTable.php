@@ -8,5 +8,5 @@ class StaticPageTable extends AdministratorTable
 {
     protected $table = 'static_pages';
 
-    public const ENTITY_MODEL_CLASS =  StaticPageModel::class;
+    public const ENTITY_MODEL_CLASS = StaticPageModel::class;
 }

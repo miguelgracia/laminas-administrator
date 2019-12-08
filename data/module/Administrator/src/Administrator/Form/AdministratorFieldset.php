@@ -35,7 +35,6 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
      */
     protected $columnsTable;
 
-
     protected $objectModel;
 
     /**
@@ -43,7 +42,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
      *
      * Contiene el nombre de aquellos campos que no queremos pintar en la vista
      */
-    protected $hiddenFields = array();
+    protected $hiddenFields = [];
 
     /**
      * @var \Zend\InputFilter\Factory
@@ -132,12 +131,11 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
     public function getInputFilterSpecification()
     {
-        $filter = array();
+        $filter = [];
 
         $columns = $this->getColumns(false);
 
         foreach ($columns as $columnName => $column) {
-
             $filter[$columnName] = [
                 'name' => $columnName,
                 'required' => $this->isColumnRequired($column),
@@ -162,12 +160,12 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
      */
     private function isRelationalField($name)
     {
-        return in_array($name, array('id', 'related_table_id'));
+        return in_array($name, ['id', 'related_table_id']);
     }
 
     protected function getFilterSpecs(ColumnObject $column)
     {
-        $filters = array();
+        $filters = [];
 
         $columnName = $column->getName();
         $dataType = $column->getDataType();
@@ -175,27 +173,27 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
         switch ($columnName) {
             case 'url_key':
             case 'key':
-                $filters[] = array(
+                $filters[] = [
                     'name' => SlugFilter::class,
-                    'options' => array()
-                );
+                    'options' => []
+                ];
                 break;
             case 'content':
-                $filters[] = array(
+                $filters[] = [
                     'name' => MediaUri::class,
-                    'options' => array(
+                    'options' => [
                         'relative_path' => '/media/',
-                        'html_tags' => array('img','source'),
-                    )
-                );
+                        'html_tags' => ['img', 'source'],
+                    ]
+                ];
                 break;
         }
 
         switch ($dataType) {
             case 'timestamp':
-                $filters[] = array(
+                $filters[] = [
                     'name' => 'DateSelect'
-                );
+                ];
                 break;
         }
 
@@ -204,7 +202,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
 
     protected function getValidatorSpecs(ColumnObject $column)
     {
-        $validators = array();
+        $validators = [];
 
         if ($this->isRelationalField($column->getName())) {
             return $validators;
@@ -226,23 +224,23 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
             ],
             'char' => [
                 'name' => StringLength::class,
-                'options' => array(
+                'options' => [
                     'min' => '1',
                     'max' => $column->getCharacterMaximumLength()
-                )
+                ]
             ],
             'varchar' => [
                 'name' => StringLength::class,
-                'options' => array(
+                'options' => [
                     'min' => '1',
                     'max' => $column->getCharacterMaximumLength()
-                )
+                ]
             ],
             'timestamp' => [
                 'name' => Date::class,
-                'options' => array(
+                'options' => [
                     'format' => 'Y-m-d'
-                )
+                ]
             ]
         ];
 
@@ -253,8 +251,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
         /**
          * Los campos que se llamen key o url_key serán tratados como campos únicos.
          */
-        if (in_array($columnName, array('key','url_key'))) {
-
+        if (in_array($columnName, ['key', 'url_key'])) {
             $isLocale = $this->tableGateway->isLocaleTable();
 
             if ($isLocale) {
@@ -269,28 +266,27 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
                 $where
                     ->equalTo($columnName, $this->get($field)->getValue())
                     ->and
-                    ->equalTo('language_id',$this->get('languageId')->getValue())
+                    ->equalTo('language_id', $this->get('languageId')->getValue())
                     ->and
-                    ->notEqualTo('id',$this->get('id')->getValue());
+                    ->notEqualTo('id', $this->get('id')->getValue());
 
                 $exclude = $where;
-
             } else {
-                $exclude = array(
+                $exclude = [
                     'field' => 'id',
                     'value' => $this->get('id')->getValue()
-                );
+                ];
             }
 
-            $validators[] = array(
+            $validators[] = [
                 'name' => 'Zend\Validator\Db\NoRecordExists',
-                'options' => array(
+                'options' => [
                     'table' => $this->tableGateway->getTable(),
                     'field' => $columnName,
                     'adapter' => $this->tableGateway->getAdapter(),
                     'exclude' => $exclude
-                )
-            );
+                ]
+            ];
         }
 
         return $validators;
@@ -302,14 +298,13 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
      *
      * @return array
      */
-
     public function getHiddenFields()
     {
-        $this->hiddenFields = array(
+        $this->hiddenFields = [
             'createdAt', //Cuidado con cambiar el orden de estos elementos!
             'updatedAt',
             'deletedAt'
-        );
+        ];
 
         return $this->hiddenFields;
     }

@@ -6,5 +6,4 @@ use Zend\Form\Element\Select;
 
 class BlogCategoriesId extends Select
 {
-
 }

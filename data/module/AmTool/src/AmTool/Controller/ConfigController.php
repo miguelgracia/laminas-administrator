@@ -12,7 +12,6 @@ use AmTool\Module;
 
 class ConfigController extends AbstractActionController
 {
-
     public function listAction()
     {
         $console = $this->serviceLocator->get('console');
@@ -27,13 +26,13 @@ class ConfigController extends AbstractActionController
                 $config = include $appdir . '/config/autoload/local.php';
             } else {
                 echo 'FILE NO EXIST' . PHP_EOL;
-                $config = array();
+                $config = [];
             }
         } else {
             $config = $sm->get('Configuration');
         }
 
-        if (!is_array($config)){
+        if (!is_array($config)) {
             $config = ArrayUtils::iteratorToArray($config, true);
         }
 
@@ -64,7 +63,7 @@ class ConfigController extends AbstractActionController
         } else {
             $config = $sm->get('Configuration');
             echo $name;
-            $value =  Config::findValueInArray($name, $config);
+            $value = Config::findValueInArray($name, $config);
             if (is_scalar($value)) {
                 echo ' = ' . $value;
             } else {
@@ -110,5 +109,4 @@ class ConfigController extends AbstractActionController
         }
         return false;
     }
-
 }

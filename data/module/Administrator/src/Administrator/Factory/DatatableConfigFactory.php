@@ -24,5 +24,4 @@ class DatatableConfigFactory implements FactoryInterface
             $container->get('Translator')
         );
     }
-
 }

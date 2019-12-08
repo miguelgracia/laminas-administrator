@@ -2,7 +2,6 @@
 
 namespace Administrator\Filter;
 
-
 use Cocur\Slugify\Slugify;
 use Zend\Filter\AbstractFilter;
 use Zend\Filter\Exception;
@@ -12,6 +11,7 @@ class SlugFilter extends AbstractFilter
     protected $slugify = null;
 
     protected $separator = '-';
+
     /**
      * Sets filter options
      *
@@ -59,7 +59,6 @@ class SlugFilter extends AbstractFilter
      */
     public function filter($value)
     {
-        return $this->slugify->slugify($value,$this->separator);
+        return $this->slugify->slugify($value, $this->separator);
     }
-
 }

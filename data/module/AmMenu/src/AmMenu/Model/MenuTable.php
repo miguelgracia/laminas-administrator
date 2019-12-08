@@ -7,13 +7,13 @@ use Zend\Db\Sql\Select;
 
 class MenuTable extends AdministratorTable
 {
-    protected $table = "admin_menus";
+    protected $table = 'admin_menus';
 
-    public const ENTITY_MODEL_CLASS =  MenuModel::class;
+    public const ENTITY_MODEL_CLASS = MenuModel::class;
 
     public function fetchAllOrdenados()
     {
-        $arrayResult = array();
+        $arrayResult = [];
 
         $selectParent = $this->sql->select()->join(
             'admin_modules',
@@ -27,20 +27,20 @@ class MenuTable extends AdministratorTable
 
         $selectChildren = clone $selectParent;
 
-        $selectParent->where(array(
+        $selectParent->where([
             'admin_menus.parent' => '0'
-        ));
+        ]);
 
         $result = $this->selectWith($selectParent);
 
         // Sacamos una fila
-        foreach($result as $row) {
+        foreach ($result as $row) {
             // Vamos a sacar sus hijos
             $thisChildren = clone $selectChildren;
 
-            $thisChildren->where(array(
+            $thisChildren->where([
                 'admin_menus.parent' => $row->id
-            ));
+            ]);
 
             $row->hijos = $this->selectWith($thisChildren)->toObjectArray();
 
@@ -52,6 +52,6 @@ class MenuTable extends AdministratorTable
 
     public function deleteEntradaMenu($id)
     {
-        $this->delete(array('id' => (int) $id));
+        $this->delete(['id' => (int) $id]);
     }
 }

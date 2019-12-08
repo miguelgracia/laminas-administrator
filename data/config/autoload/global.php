@@ -13,17 +13,17 @@
 
 return [
     'db' => [
-        'driver'         => 'Pdo',
-        'dsn'            => 'mysql:dbname=bravo_consultoria;host=mysql',
-        'driver_options' => array(
+        'driver' => 'Pdo',
+        'dsn' => 'mysql:dbname=bravo_consultoria;host=mysql',
+        'driver_options' => [
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
-        ),
+        ],
         'username' => 'root',
         'password' => '123456',
     ],
-    'service_manager' => array(
-        'factories' => array(
+    'service_manager' => [
+        'factories' => [
             'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
-        ),
-    ),
+        ],
+    ],
 ];

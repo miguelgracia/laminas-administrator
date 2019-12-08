@@ -8,11 +8,11 @@ class AppDataForm extends AdministratorForm
 {
     public function initializers()
     {
-        return array(
-            'fieldsets' => array(
+        return [
+            'fieldsets' => [
                 AppDataFieldset::class,
                 AppDataLocaleFieldset::class,
-            )
-        );
+            ]
+        ];
     }
 }

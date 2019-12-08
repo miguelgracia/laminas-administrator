@@ -1,4 +1,5 @@
 <?php
+
 namespace Administrator\Factory;
 
 use Interop\Container\ContainerInterface;
@@ -16,7 +17,7 @@ class AdministratorFormFactory implements FactoryInterface
          * Como el nombre del formulario lo seteamos con el nombre de la clase,
          * convertimos el separador de namespace en guiones bajos;
          */
-        $formName = (new SeparatorToSeparator('\\','_'))->filter($requestedName);
+        $formName = (new SeparatorToSeparator('\\', '_'))->filter($requestedName);
         $form = (new $requestedName($formName))
             ->setAttribute('class', 'form-horizontal')
             ->setAttribute('action', $urlHelper('administrator', $routeParams));
@@ -37,19 +38,19 @@ class AdministratorFormFactory implements FactoryInterface
     {
         $actionType = $actionType == $form::ACTION_ADD ? 'Add' : 'Edit';
 
-        $form->add(array(
+        $form->add([
             'name' => 'submit',
             'type' => 'Submit',
-            'attributes' => array(
+            'attributes' => [
                 'value' => $actionType,
                 'id' => 'submitbutton',
                 'class' => 'btn btn-primary',
-            ),
-            'options' => array(
+            ],
+            'options' => [
                 'label' => $actionType,
-            )
-        ),array(
+            ]
+        ], [
             'priority' => '-9999'
-        ));
+        ]);
     }
 }

@@ -38,15 +38,13 @@ class Job extends AbstractHelper
         $html = '';
 
         if ($jobs instanceof Paginator) {
-
             foreach ($jobs as $index => $job) {
-
                 $job->imageUrl = json_decode($job->imageUrl);
-                $linkUrl = $url('locale/jobs/category/detail', array(
+                $linkUrl = $url('locale/jobs/category/detail', [
                     'locale' => $lang,
                     'category' => $job->categoryUrlKey,
                     'detail' => $job->urlKey
-                ));
+                ]);
 
                 $html .= sprintf(
                     $this->getContentWrapper(),
@@ -54,13 +52,13 @@ class Job extends AbstractHelper
                     $linkUrl,
                     $job->title,
                     $job->content,
-                    $url('locale/jobs/category',array(
+                    $url('locale/jobs/category', [
                         'locale' => $lang,
                         'category' => $job->categoryUrlKey
-                    )),
+                    ]),
                     $job->categoryTitle,
                     $linkUrl,
-                    $this->translator->translate('Show work','frontend')
+                    $this->translator->translate('Show work', 'frontend')
                 );
             }
         }

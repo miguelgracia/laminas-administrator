@@ -1,10 +1,10 @@
 <?php
-return array(
-    'view_manager' => array(
-        'template_path_stack' => array(
+return [
+    'view_manager' => [
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-    ),
+        ],
+    ],
 
     'form_elements' => [
         'aliases' => [
@@ -16,4 +16,4 @@ return array(
             \AmBlogCategory\Form\BlogCategoryLocaleFieldset::class => \Administrator\Factory\AdministratorLocaleFieldsetFactory::class,
         ]
     ],
-);
+];

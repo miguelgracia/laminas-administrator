@@ -28,12 +28,12 @@ trait ModuleConfigTrait
         $namespace = $reflectionClass->getNamespaceName();
         $this->__dir = dirname($reflectionClass->getFileName());
 
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
+        return [
+            'Zend\Loader\StandardAutoloader' => [
+                'namespaces' => [
                     $namespace => $this->__dir . '/src/' . $namespace,
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

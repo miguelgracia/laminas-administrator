@@ -8,5 +8,5 @@ class MegabannerTable extends AdministratorTable
 {
     protected $table = 'megabanners';
 
-    public const ENTITY_MODEL_CLASS =  MegabannerModel::class;
+    public const ENTITY_MODEL_CLASS = MegabannerModel::class;
 }

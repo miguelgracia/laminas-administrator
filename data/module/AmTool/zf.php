@@ -31,20 +31,20 @@ if (file_exists("$basePath/config/application.config.php")) {
         $appConfig['module_listener_options']['module_paths']['AmTool'] = __DIR__;
     }
 } else {
-    $appConfig = array(
-        'modules' => array(
+    $appConfig = [
+        'modules' => [
             'AmTool',
-        ),
-        'module_listener_options' => array(
-            'config_glob_paths'    => array(
+        ],
+        'module_listener_options' => [
+            'config_glob_paths' => [
                 'config/autoload/{,*.}{global,local}.php',
-            ),
-            'module_paths' => array(
+            ],
+            'module_paths' => [
                 '.',
                 './vendor',
-            ),
-        ),
-    );
+            ],
+        ],
+    ];
 }
 
 Zend\Mvc\Application::init($appConfig)->run();

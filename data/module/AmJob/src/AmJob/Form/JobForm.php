@@ -8,13 +8,11 @@ class JobForm extends AdministratorForm
 {
     public function initializers()
     {
-        return array(
-            'fieldsets' => array(
+        return [
+            'fieldsets' => [
                 JobFieldset::class,
                 JobLocaleFieldset::class,
-            )
-        );
+            ]
+        ];
     }
-
 }
-

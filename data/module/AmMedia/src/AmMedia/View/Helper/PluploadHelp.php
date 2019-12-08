@@ -1,11 +1,11 @@
 <?php
+
 namespace AmMedia\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
 
 class PluploadHelp extends AbstractHelper
 {
-
     /**
      * @var
      */
@@ -24,18 +24,15 @@ class PluploadHelp extends AbstractHelper
      * @param int $id
      * @param $model
      */
-    public function __invoke($name,$id = 0,$model)
+    public function __invoke($name, $id = 0, $model)
     {
-
         $this->view->inlineScript()
         ->prependFile($this->view->basePath($this->Config['DirJs']) . '/js/i18n/es.js', 'text/javascript')
         ->prependFile($this->view->basePath($this->Config['DirJs']) . '/js/jquery.plupload.queue/jquery.plupload.queue.js', 'text/javascript')
         ->prependFile($this->view->basePath($this->Config['DirJs']) . '/js/plupload.html5.js', 'text/javascript')
         ->prependFile($this->view->basePath($this->Config['DirJs']) . '/js/plupload.html4.js', 'text/javascript')
         ->prependFile($this->view->basePath($this->Config['DirJs']) . '/js/plupload.browserplus.js', 'text/javascript')
-        ->prependFile($this->view->basePath($this->Config['DirJs']) . '/js/plupload.js', 'text/javascript')
-         ;
-        ?> <script type="text/javascript">
+        ->prependFile($this->view->basePath($this->Config['DirJs']) . '/js/plupload.js', 'text/javascript'); ?> <script type="text/javascript">
             $(function() {
                 $("#<?=$name?>").pluploadQueue({
 
@@ -76,6 +73,5 @@ class PluploadHelp extends AbstractHelper
              * @package unfinished
              * @todo finish config parameters Plupload
              */
-
-        }
     }
+}

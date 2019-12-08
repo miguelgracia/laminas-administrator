@@ -30,16 +30,14 @@ class Menu extends AbstractHelper
         $url = $viewHelperManager->get('Url');
 
         foreach ($menu->rows as $routeKey => $m) {
-
             if ((bool) $m->active and (bool)$m->visible) {
-
-                $route = array($routeKey);
+                $route = [$routeKey];
 
                 $routeName = implode('/', $route);
 
-                $link = $url('locale/'.$routeName, array(
+                $link = $url('locale/' . $routeName, [
                     'locale' => strtolower($lang),
-                ));
+                ]);
 
                 $attributes = '';
 

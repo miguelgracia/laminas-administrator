@@ -1,4 +1,5 @@
 <?php
+
 namespace Administrator\Factory;
 
 use Administrator\Service\AdministratorFormService;
@@ -40,7 +41,7 @@ class AdministratorFieldsetFactory implements FactoryInterface
         $fieldset->setTableGateway($tableGateway)
             ->setColumns($columns)
             ->setObjectModel($controllerPluginManager->getController()->getModel())
-            ->setOption('is_locale',false);
+            ->setOption('is_locale', false);
 
         $this->configureFieldsetService->configure($fieldset);
 

@@ -39,16 +39,15 @@ class ConfigureFieldsetService
         $columns = $fieldset->getColumns(false);
 
         foreach ($columns as $columnName => $column) {
-
-            $flags = array(
+            $flags = [
                 'priority' => -($column->getOrdinalPosition() * 100),
-            );
+            ];
 
-            if (in_array($column->getName(), array(
+            if (in_array($column->getName(), [
                 $this->hiddenPrimaryKey,
                 $this->hiddenRelatedKey,
                 'language_id'
-            ))) {
+            ])) {
                 $element = $this->formElementManager->build(Hidden::class);
                 $this->setElementConfig($column, $element);
                 $fieldset->add($element, $flags);
@@ -63,7 +62,7 @@ class ConfigureFieldsetService
 
             if ($this->formElementManager->has($formElement)) {
                 $elementName = $formElement;
-            } elseif($this->formElementManager->has($columnName)) {
+            } elseif ($this->formElementManager->has($columnName)) {
                 $elementName = $columnName;
             } else {
                 $elementName = $dataType;
@@ -90,10 +89,10 @@ class ConfigureFieldsetService
 
         $dataType = $column->getDataType();
 
-        $fieldClasses =  array(
+        $fieldClasses = [
             'form-control',
-            'js-'.$columnName
-        );
+            'js-' . $columnName
+        ];
 
         $classes = $element->getAttribute('class');
         $options = $element->getOptions();
@@ -102,38 +101,37 @@ class ConfigureFieldsetService
             $fieldClasses[] = $classes;
         }
 
-        $options += array(
+        $options += [
             'data_type' => $dataType,
-            'label'     => $columnName,
-            'label_attributes' => array(
+            'label' => $columnName,
+            'label_attributes' => [
                 'class' => 'col-sm-2 control-label'
-            ),
+            ],
             'priority' => -($column->getOrdinalPosition() * 100),
-        );
+        ];
 
-        $attributes = array(
-            'id'    => $this->checkIdService->checkId($columnName),
-            'class' => implode(' ',$fieldClasses),
-        );
+        $attributes = [
+            'id' => $this->checkIdService->checkId($columnName),
+            'class' => implode(' ', $fieldClasses),
+        ];
 
         if ($dataType === 'timestamp') {
             $class = 'form-control select-timestamp';
-            $options['day_attributes'] = array(
+            $options['day_attributes'] = [
                 'class' => $class . ' day'
-            );
-            $options['month_attributes'] = array(
+            ];
+            $options['month_attributes'] = [
                 'class' => $class . ' month'
-            );
-            $options['year_attributes'] = array(
+            ];
+            $options['year_attributes'] = [
                 'class' => $class . ' year'
-            );
+            ];
         }
 
         $element
             ->setName($columnName)
             ->setLabel($columnName)
             ->setOptions($options)
-            ->setAttributes($attributes)
-        ;
+            ->setAttributes($attributes);
     }
 }

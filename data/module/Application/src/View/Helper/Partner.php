@@ -8,7 +8,7 @@ class Partner extends AbstractHelper
 {
     protected $lang;
 
-    function __invoke($lang)
+    public function __invoke($lang)
     {
         $this->lang = $lang;
 
@@ -27,13 +27,11 @@ class Partner extends AbstractHelper
         $html = '';
 
         foreach ($partners as $index => $partner) {
-
             if ($partner->logo != '') {
-
                 $html .= sprintf(
                     $this->getElementCarousel(),
                     $partner->website,
-                    '/media'.$partner->logo,
+                    '/media' . $partner->logo,
                     $partner->name
                 );
             }

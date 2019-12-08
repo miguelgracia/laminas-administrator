@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Administrator\Service;
-
 
 class CheckIdService
 {
@@ -23,12 +21,11 @@ class CheckIdService
      * Si encontramos un caso en el que sí este, añadimos un prefijo al id
      * @return string
      */
-
     public function checkId($id)
     {
         if (array_key_exists($id, $this->elementsId)) {
             $this->elementsId[$id]++;
-            $id = $id . "_" . $this->elementsId[$id];
+            $id = $id . '_' . $this->elementsId[$id];
         } else {
             $this->elementsId[$id] = 0;
         }
