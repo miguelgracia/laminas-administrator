@@ -4,7 +4,7 @@ namespace Administrator\Form\Element;
 
 use Zend\Form\Element\Textarea;
 
-class MetaDescription extends Textarea
+class SimpleTextarea extends Textarea
 {
     public function init()
     {

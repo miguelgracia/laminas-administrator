@@ -552,11 +552,10 @@ echo $this->doctype(); ?>
                     <ul class="abstpl-contact-info">
                         <li class="abstpl-contact-address ">
                             <i class="icon-home"></i>
-                            Parque Empresarial Neinor Henares, Edificio 2 Nave 1 <br>
-                            28880 Meco (Madrid)
+                            <?=$this->appData->locale->{$this->lang}->address;?>
                         </li>
-                        <li><i class="icon-phone"></i>91 827 99 80</li>
-                        <li><i class="icon-envelope"></i>info@absconsultor.es</li>
+                        <li><i class="icon-phone"></i><a class="phone" href="tel:<?=$this->appData->locale->{$this->lang}->phone?>"><?=$this->appData->locale->{$this->lang}->phone?></a></li>
+                        <li><i class="icon-envelope"></i><a class="mail" href="mailto:<?=$this->appData->locale->{$this->lang}->email?>"><?=$this->appData->locale->{$this->lang}->email?></a></li>
                     </ul>
                 </div>
 
@@ -592,7 +591,7 @@ echo $this->doctype(); ?>
         <div class="container">
             <div class="">
                 <div class="col-md-12 text-center">
-                    <p>&copy; Bravo Silva Consultoría Técnica S.L.</p>
+                    <p>&copy; <?=$this->appData->row->companyName;?></p>
                 </div>
             </div>
             <div class="row">

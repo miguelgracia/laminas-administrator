@@ -88,7 +88,7 @@ return [
             'active' => \Administrator\Form\Element\YesNoSelect::class,
             'visible' => \Administrator\Form\Element\YesNoSelect::class,
             'targetLink' => \Administrator\Form\Element\TargetLink::class,
-            'metaDescription' => \Administrator\Form\Element\MetaDescription::class,
+            'metaDescription' => \Administrator\Form\Element\SimpleTextarea::class,
             'content' => \Zend\Form\Element\Textarea::class,
             'password' => \Zend\Form\Element\Password::class,
             'imageUrl' => \Administrator\Form\Element\ImageUrl::class,
@@ -102,12 +102,15 @@ return [
             'char' => \Zend\Form\Element\Text::class,
             'tinyint' => \Zend\Form\Element\Text::class,
             'enum' => \Zend\Form\Element\Select::class,
-            'timestamp' => \Zend\Form\Element\DateSelect::class
+            'timestamp' => \Zend\Form\Element\DateSelect::class,
+            'tinytext' => \Zend\Form\Element\Textarea::class,
+            'mediumtext' => \Zend\Form\Element\Textarea::class,
+            'longtext' => \Zend\Form\Element\Textarea::class,
         ],
         'factories' => [
             \Administrator\Form\Element\YesNoSelect::class => \Zend\Form\ElementFactory::class,
             \Administrator\Form\Element\TargetLink::class => \Zend\Form\ElementFactory::class,
-            \Administrator\Form\Element\MetaDescription::class => \Zend\Form\ElementFactory::class,
+            \Administrator\Form\Element\SimpleTextarea::class => \Zend\Form\ElementFactory::class,
             \Administrator\Form\Element\ImageUrl::class => \Administrator\Form\Element\ImageUrlFactory::class
         ],
     ],

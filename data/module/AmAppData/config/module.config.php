@@ -7,6 +7,9 @@ return [
     ],
 
     'form_elements' => [
+        'aliases' => [
+            'address' => \Administrator\Form\Element\SimpleTextarea::class,
+        ],
         'factories' => [
             \AmAppData\Form\AppDataForm::class => \Administrator\Factory\AdministratorFormFactory::class,
             \AmAppData\Form\AppDataFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
