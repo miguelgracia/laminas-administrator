@@ -25,7 +25,7 @@ class Menu extends AbstractHelper
 
         foreach ($menu->rows as $routeKey => $m) {
 
-            if (((bool) $m->active) === false or ((bool)$m->visible) === false) {
+            if (((bool) $m->active) === false) {
                 continue;
             }
 
@@ -33,19 +33,27 @@ class Menu extends AbstractHelper
 
             $routeName = implode('/', $route);
 
-            $link = $url('locale/' . $routeName, [
-                'locale' => strtolower($lang),
-            ]);
+            $link = (boolean)$m->isAnchor
+                ? '#' . $routeName
+                : $url('locale/' . $routeName, ['locale' => strtolower($lang)]);
 
-            $attributes = '';
+            $attributes =  '';
+            $class = [];
 
             if (strpos($this->activeRouteName, 'locale/' . $routeName)  === 0) {
-                $attributes .= 'class = "active" ';
+                $class[] = 'active';
             }
+
+            if((bool)$m->visible === false) {
+                $class[] = 'hide';
+            }
+
+            $attributes .= 'class = "'.implode(' ', $class).'" ';
 
             echo sprintf(
                 $this->getHtmlRow(),
                 $attributes,
+                $routeKey,
                 $link,
                 $menu->locale->{$lang}[$m->id]->name
             );
@@ -54,6 +62,6 @@ class Menu extends AbstractHelper
 
     private function getHtmlRow()
     {
-        return "<li %s><a href='%s'>%s</a></li>";
+        return "<li %s><a data-nav-section='%s' href='%s'><span>%s</span></a></li>";
     }
 }

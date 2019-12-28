@@ -76,32 +76,6 @@ return [
                 ],
                 'may_terminate' => true,
                 'child_routes' => [
-                    'company' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/{company}', // '/company'
-                            'defaults' => [
-                                '__CONTROLLER__' => 'Company',
-                                'controller' => CompanyController::class,
-                                'action' => 'index',
-                            ],
-                        ],
-                        'may_terminate' => true,
-                        'child_routes' => [
-                            'colaborators' => [
-                                'type' => Literal::class,
-                                'options' => [
-                                    'route' => '/colaboradores', // '/colaborators'
-                                    'defaults' => [
-                                        '__CONTROLLER__' => 'Company',
-                                        'controller' => CompanyController::class,
-                                        'action' => 'collaborators',
-                                    ],
-                                ],
-                                'may_terminate' => true,
-                            ],
-                        ],
-                    ],
                     'jobs' => [
                         'type' => Segment::class,
                         'options' => [
@@ -139,51 +113,6 @@ return [
                                             'defaults' => [
                                                 '__CONTROLLER__' => 'Job',
                                                 'controller' => JobController::class,
-                                                'action' => 'detail',
-                                            ],
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                    'blog' => [
-                        'type' => Literal::class,
-                        'options' => [
-                            'route' => '/blog',
-                            'defaults' => [
-                                '__CONTROLLER__' => 'Blog',
-                                'controller' => BlogController::class,
-                                'action' => 'index',
-                            ],
-                        ],
-                        'may_terminate' => true,
-                        'child_routes' => [
-                            'category' => [
-                                'type' => 'Segment',
-                                'may_terminate' => true,
-                                'options' => [
-                                    'route' => '/[:category]',
-                                    'constraints' => [
-                                        'category' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                    ],
-                                    'defaults' => [
-                                        '__CONTROLLER__' => 'Blog',
-                                        'controller' => BlogController::class,
-                                        'action' => 'category',
-                                    ],
-                                ],
-                                'child_routes' => [
-                                    'detail' => [
-                                        'type' => 'Segment',
-                                        'options' => [
-                                            'route' => '/[:detail]',
-                                            'constraints' => [
-                                                'detail' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                            ],
-                                            'defaults' => [
-                                                '__CONTROLLER__' => 'Blog',
-                                                'controller' => BlogController::class,
                                                 'action' => 'detail',
                                             ],
                                         ],

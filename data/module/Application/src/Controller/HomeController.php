@@ -31,8 +31,6 @@ class HomeController extends ApplicationController
         $this->layout()->setVariable('og', $ogFacebook);
 
         return new ViewModel([
-            'homeModules' => $this->serviceManager->get(HomeModuleService::class)->getData($this->lang),
-            'megabanners' => $this->serviceManager->get(MegabannerService::class)->getData($this->lang),
             'lang' => $this->lang,
             'menu' => $this->menu
         ]);
