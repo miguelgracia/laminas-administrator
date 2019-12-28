@@ -7,6 +7,9 @@ return [
     ],
 
     'form_elements' => [
+        'aliases' => [
+            'isAnchor' => \Administrator\Form\Element\YesNoSelect::class,
+        ],
         'factories' => [
             \AmSection\Form\SectionForm::class => \Administrator\Factory\AdministratorFormFactory::class,
             \AmSection\Form\SectionFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
