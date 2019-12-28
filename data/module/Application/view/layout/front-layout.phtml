@@ -4,6 +4,7 @@ if (is_null($this->menu)) {
     die;
 }
 
+$basePath = 'bravo-silva';
 $menuHelper       = $this->applicationMenuHelper();
 $socialIconHelper = $this->socialIconHelper();
 $legalLinkHelper  = $this->legalLinkHelper();
@@ -23,31 +24,40 @@ echo $this->doctype(); ?>
 
         <!-- Le styles -->
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.jpg'))
-                        ->prependStylesheet($this->basePath('absconsultor/dist/css/css-dist.css?t='.microtime()))
-                        ->prependStylesheet('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans')
+            ->prependStylesheet($this->basePath($basePath . '/css/style.css?t=' . microtime()))
+            ->prependStylesheet($this->basePath($basePath . '/css/bootstrap.css'))
+            ->prependStylesheet($this->basePath($basePath . '/css/magnific-popup.css'))
+            ->prependStylesheet($this->basePath($basePath . '/css/simple-line-icons.css'))
+            ->prependStylesheet($this->basePath($basePath . '/css/icomoon.css'))
+            ->prependStylesheet($this->basePath($basePath . '/css/animate.css'))
+            ->prependStylesheet('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,400italic,700');
         ?>
+
         <meta name="theme-color" content="#00344F">
 
         <?php if (isset($this->og)) {
             $this->OpenGraphTag()->render($this->og);
         }?>
+
+        <script src="<?=$this->basePath($basePath . '/js/modernizr-2.6.2.min.js');?>"></script>
     </head>
     <body>
-        <nav class="navbar navbar-fixed-top transition not-visible" role="navigation">
-            <div class="container">
+
+
+    <header role="banner" id="abstpl-header">
+        <div class="container">
+            <nav class="navbar navbar-default">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="<?php echo $this->url('locale', array('locale' => $this->lang)) ?>">
-                        <img class="hidden-xs" width="100" src="<?php echo $this->basePath('img/white-logo.png') ?>" alt="Logo ABS Consultor"/>
-                        <img class="visible-xs" width="169" src="<?php echo $this->basePath('img/white-logo-horizontal.png') ?>" alt="Logo ABS Consultor"/>
+                    <!-- Mobile Toggle Menu Button -->
+                    <a href="#" class="js-abstpl-nav-toggle abstpl-nav-toggle" data-toggle="collapse" data-target="#navbar"
+                       aria-expanded="false" aria-controls="navbar"><i></i></a>
+                    <a class="navbar-brand" href="index.html">
+                        <img src="<?=$this->basePath($basePath . '/images/logo.png');?>" alt="company-logo" class="main-logo">
+                        <img src="<?=$this->basePath($basePath . '/images/logo2.png');?>" alt="company-logo" class="secondary-logo">
                     </a>
                 </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
                         <?php if(!is_null($this->menu)):?>
                             <?=$menuHelper->render($this->menu,$this->lang);?>
                             <?php foreach($this->languages as $langForFlag):?>
@@ -56,48 +66,571 @@ echo $this->doctype(); ?>
                         <?php endif;?>
                     </ul>
                 </div>
-            </div>
-        </nav>
-        <div class="container-fluid abs">
+            </nav>
+        </div>
+    </header>
 
-            <?php echo $this->content; ?>
-
-        </div> <!-- /container -->
-
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 text-right contact-info">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <p><?=$this->translate('Follow us','frontend');?></p>
-                                <div class="contact-icons">
-                                    <?php if(!is_null($this->appData)):?>
-                                    <?=$socialIconHelper->render($this->appData->row);?>
-                                    <?php endif;?>
-                                </div>
-                            </div>
+    <section id="abstpl-home" data-section="home" style="background-image: url(<?=$this->basePath($basePath . '/images/full_image_2.jpg');?>);"
+             data-stellar-background-ratio="0.5">
+        <div class="gradient"></div>
+        <div class="container">
+            <div class="text-wrap">
+                <div class="text-inner">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <h1 class="to-animate">"Si no sabes hacia qué puerto zarpa tu barco, ningún viento te será
+                                favorable"</h1>
+                            <h2 class="to-animate">Ignoranti quem portum petat nullus suus ventus est. Séneca.</h2>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <p><?=$this->translate('Contact us','frontend');?></p>
-                                <div class="contact-icons">
-                                    <a class="phone" href="tel:<?=$this->appData->locale->{$this->lang}->phone?>"><?=$this->appData->locale->{$this->lang}->phone?> <i class="social-icon fa fa-phone"></i></a>
-                                    <a class="mail" href="mailto:<?=$this->appData->locale->{$this->lang}->email?>"><?=$this->appData->locale->{$this->lang}->email?> <i class="social-icon fa fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slant"></div>
+    </section>
+
+    <section id="abstpl-intro">
+        <div class="container">
+            <div class="row row-bottom-padded-lg">
+                <div class="abstpl-block to-animate" style="background-image: url(images/img_7.jpg);">
+                    <div class="overlay-darker"></div>
+                    <div class="overlay"></div>
+                    <div class="abstpl-text">
+                        <i class="abstpl-intro-icon icon-bulb"></i>
+                        <h2>Supervisión y Asesoría</h2>
+                        <p>Asesoramiento completo en proyectos complejos e inspecciones, en relación a grúas portuarias.</p>
+                        <p><a href="#" class="btn btn-primary more-info">Más Información</a></p>
+                    </div>
+                </div>
+                <div class="abstpl-block to-animate" style="background-image: url(images/img_8.jpg);">
+                    <div class="overlay-darker"></div>
+                    <div class="overlay"></div>
+                    <div class="abstpl-text">
+                        <i class="abstpl-intro-icon icon-wrench"></i>
+                        <h2>Reparaciones y Montajes</h2>
+                        <p>Realizamos montajes completos de cualquier grúa y todo tipo de reparaciones con los mejores
+                            equipos y garantías.</p>
+                        <p><a href="#" class="btn btn-primary more-info">Más Información</a></p>
+                    </div>
+                </div>
+                <div class="abstpl-block to-animate" style="background-image: url(images/img_10.jpg);">
+                    <div class="overlay-darker"></div>
+                    <div class="overlay"></div>
+                    <div class="abstpl-text">
+                        <i class="abstpl-intro-icon icon-rocket"></i>
+                        <h2>Repuestos y Fabricación</h2>
+                        <p>Suministro de repuestos de grúas de cualquier marca. Mejoramos la calidad tanto en materiales
+                            como en diseño.</p>
+                        <p><a href="#" class="btn btn-primary more-info">Más Información</a></p>
+                    </div>
+                </div>
+            </div>
+            <section class="row text-center to-animate" id="abstpl-company" data-section="company">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 section-heading text-center">
+                            <h2 class="to-animate">Empresa</h2>
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                                    <p>
+                                        ABS Consultor nace formalmente en el año 2015 y es la heredera de la experiencia y
+                                        actividad desarrollada de su fundador, Antonio Bravo Silva, desde 1991. La compañía
+                                        se sustenta en un experimentado personal que defiende una filosofía de trabajo muy
+                                        ligada al progreso, la investigación y la aplicación generalizada de nuevos
+                                        protocolos y procesos.
+                                    </p>
+
+                                    <p>
+                                        Nuestra actividad abarca todos los campos relacionados con el control técnico y de
+                                        calidad en las actividades que giran en torno al montaje mecánico. Nuestra sede
+                                        social se encuentra en el municipio de Camarma de Esteruelas (Madrid) aunque, debido
+                                        a que los principales trabajos se realizan en puertos marítimos, nuestro equipo se
+                                        encuentra desplazado para poder dar un servicio prácticamente inmediato.
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </section>
+        </div>
+    </section>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <?php $legalLinkHelper->render($this->legal,$this->lang);?>
+    <section id="abstpl-work" data-section="work">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 section-heading text-center">
+                    <h2 class="to-animate">Trabajos</h2>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                            <h3>Nuestra actividad abarca todos los campos relacionados con el control técnico y de calidad
+                                en las actividades que giran en torno al montaje mecánico.
+                                También damos apoyo eléctrico y de ingeniería.
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-bottom-padded-sm">
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_1.jpg" class="abstpl-project-item image-popup to-animate">
+                        <img src="images/work_1.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 1</h2>
+                            <span>Branding</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_2.jpg" class="abstpl-project-item image-popup to-animate">
+                        <img src="images/work_2.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 2</h2>
+                            <span>Web</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="clearfix visible-sm-block"></div>
+
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_3.jpg" class="abstpl-project-item image-popup to-animate">
+                        <img src="images/work_3.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 3</h2>
+                            <span>Web</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_4.jpg" class="abstpl-project-item image-popup to-animate">
+                        <img src="images/work_4.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 4</h2>
+                            <span>UI/UX</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="clearfix visible-sm-block"></div>
+
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_5.jpg" class="abstpl-project-item image-popup to-animate">
+                        <img src="images/work_5.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 1</h2>
+                            <span>Photography</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_6.jpg" class="abstpl-project-item image-popup to-animate">
+                        <img src="images/work_6.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 2</h2>
+                            <span>Illustration</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="clearfix visible-sm-block"></div>
+
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_7.jpg" class="abstpl-project-item image-popup to-animate">
+                        <img src="images/work_7.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 3</h2>
+                            <span>Web</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_8.jpg" class="abstpl-project-item image-popup to-animate">
+                        <img src="images/work_8.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 4</h2>
+                            <span>Sketch</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="clearfix visible-sm-block"></div>
+
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_1.jpg" class="abstpl-project-item image-popup to-animate">
+                        <img src="images/work_1.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 2</h2>
+                            <span>Illustration</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <a href="#" class="btn btn-primary">Ver más trabajos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="abstpl-technical-question" data-section="technical-question">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 section-heading text-center">
+                    <h2 class="to-animate">Pregúntanos</h2>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                            <h3>Haz tu consulta técnica de forma gratuita y sin compromiso en el siguiente formulario. </h3>
+                        </div>
                     </div>
                 </div>
             </div>
 
-        </footer>
+
+            <div class="col-md-6 to-animate">
+                <h3>Consulta Técnica</h3>
+                <div class="form-group">
+                    <label for="question_name" class="sr-only">Nombre</label>
+                    <input id="question_name" class="form-control" placeholder="Nombre" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="question_email" class="sr-only">Email</label>
+                    <input id="question_email" class="form-control" placeholder="Email" type="email">
+                </div>
+                <div class="form-group">
+                    <label for="question_customer_code" class="sr-only">Código de cliente</label>
+                    <input id="question_customer_code" class="form-control" placeholder="Código de cliente" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="question_topic" class="sr-only">Temática de la pregunta</label>
+                    <select name="question_topic" id="question_topic" class="form-control">
+                        <option value="">Temática de la pregunta</option>
+                        <option value="topic_1">Tematica 1</option>
+                        <option value="topic_2">Tematica 2</option>
+                        <option value="topic_3">Tematica 3</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="question_message" class="sr-only">Mensaje</label>
+                    <textarea name="" id="question_message" cols="30" rows="5" class="form-control"
+                              placeholder="Mensaje"></textarea>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-primary btn-lg" value="Enviar" type="submit">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="abstpl-services" data-section="services">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 section-heading text-center">
+                    <h2 class="to-animate">Servicios</h2>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                            <h3>Nuestro equipo le garantiza un asesoramiento completo en proyectos complejos e inspecciones,
+                                en relación a grúas portuarias</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-6 abstpl-service to-animate">
+                    <i class="icon to-animate-2 icon-bulb"></i>
+                    <h3>Ingeniería mecánica y electrónica</h3>
+                    <p>Contamos con un equipo de ingenieros con gran experiencia en el mundo de las grúas portuarias.</p>
+                    <ul>
+                        <li>Equipo con gran experiencia en grúas, tanto en diseño como en fabricación.</li>
+                        <li>Programas de diseño y cálculo estructural de última generación.</li>
+                        <li>Trabajos en terminales de todo el mundo.</li>
+                    </ul>
+                </div>
+                <div class="col-md-6 col-sm-6 abstpl-service to-animate">
+                    <i class="icon to-animate-2 icon-wrench"></i>
+                    <h3>Reparaciones</h3>
+                    <p>Realizamos todo tipo de reparaciones con los mejores equipos y garantías.</p>
+                    <ul>
+                        <li>Railes: reparación y cambio.</li>
+                        <li>Estructurales: golpes de grúa, recrecidos y daños por fatiga.</li>
+                        <li>Reparaciones de mecanismos.</li>
+                        <li>Modificaciones eléctricas.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="clearfix visible-sm-block"></div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-6 abstpl-service to-animate">
+                    <i class="icon to-animate-2 icon-briefcase"></i>
+                    <h3>Repuestos</h3>
+                    <p>Suministramos cualquier repuesto de grúas de cualquier marca. Mejoramos la calidad de los repuestos
+                        tanto en materiales como en diseño</p>
+                    <ul>
+                        <li>Diseño y fabricación: Diseñamos cualquier tipo de eje, polea, rueda y twist-lock mejorando la
+                            durabilidad, adaptado a cualquier grúa.
+                        </li>
+                        <li>Twistlock: Diseñamos Twist-Lock mejorando la durabilidad adaptado a cualquier grúa.</li>
+                        <li>Elementos comerciales: Suministro de cualquier elemento comercial para grúas, disponiendo de un
+                            departamento dedicado a trabajar con los mejores proveedores.
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 col-sm-6 abstpl-service to-animate">
+                    <i class="icon to-animate-2 icon-globe"></i>
+                    <h3>Montajes</h3>
+                    <p>Realizamos montajes completos, recolocaciones y transporte de cualquier grúa</p>
+                    <ul>
+                        <li>Montaje mecánico y eléctrico de cualquier grúa Portainers, trastainers, etc...</li>
+                        <li>Trabajos realizados desde el transporte hasta la puesta en marcha.</li>
+                        <li>Traslado de grúas, dentro de una misma terminal o desplazándola de otra terminal.</li>
+                        <li>Las recolocaciones las realizamos desde, el diseño de los refuerzos necesarios, hasta la puesta
+                            en marcha.
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="abstpl-accessories" data-section="accessories">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-12 section-heading text-center">
+                    <h2 class="to-animate">ACCESORIOS</h2>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                            <h3>Nuestra actividad abarca todos los campos relacionados con el control técnico y de calidad
+                                en las actividades que giran en torno al montaje mecánico.
+                                También damos apoyo eléctrico y de ingeniería.
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-bottom-padded-sm">
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_1.jpg" class="abstpl-project-item with-border image-popup to-animate">
+                        <img src="images/work_1.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 1</h2>
+                            <span>Branding</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_2.jpg" class="abstpl-project-item with-border image-popup to-animate">
+                        <img src="images/work_2.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 2</h2>
+                            <span>Web</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="clearfix visible-sm-block"></div>
+
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_3.jpg" class="abstpl-project-item with-border image-popup to-animate">
+                        <img src="images/work_3.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 3</h2>
+                            <span>Web</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_4.jpg" class="abstpl-project-item with-border image-popup to-animate">
+                        <img src="images/work_4.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 4</h2>
+                            <span>UI/UX</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="clearfix visible-sm-block"></div>
+
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_5.jpg" class="abstpl-project-item with-border image-popup to-animate">
+                        <img src="images/work_5.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 1</h2>
+                            <span>Photography</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_6.jpg" class="abstpl-project-item with-border image-popup to-animate">
+                        <img src="images/work_6.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 2</h2>
+                            <span>Illustration</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="clearfix visible-sm-block"></div>
+
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_7.jpg" class="abstpl-project-item with-border image-popup to-animate">
+                        <img src="images/work_7.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 3</h2>
+                            <span>Web</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_8.jpg" class="abstpl-project-item with-border image-popup to-animate">
+                        <img src="images/work_8.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 4</h2>
+                            <span>Sketch</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="clearfix visible-sm-block"></div>
+
+                <div class="col-md-4 col-sm-6 col-xxs-12">
+                    <a href="images/work_1.jpg" class="abstpl-project-item with-border image-popup to-animate">
+                        <img src="images/work_1.jpg" alt="Image" class="img-responsive">
+                        <div class="abstpl-text">
+                            <h2>Project 2</h2>
+                            <span>Illustration</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <a href="#" class="btn btn-primary">Ver más accesorios</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="abstpl-counters" data-section="clients" style="background-image: url(<?=$this->basePath($basePath . '/images/full_image_1.jpg');?>);"
+             data-stellar-background-ratio="0.5">
+        <div class="abstpl-overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 section-heading text-center">
+                    <h2 class="to-animate">Clientes</h2>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                            <!--<h3>Our weary eyes still stray to the horizon. Though down this road we've been so many
+                                times.</h3>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="abstpl-person text-center to-animate">
+                        <figure><img src="images/person2.jpg" alt="Image"></figure>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="abstpl-person text-center to-animate">
+                        <figure><img src="images/person1.jpg" alt="Image"></figure>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="abstpl-person text-center to-animate">
+                        <figure><img src="images/person3.jpg" alt="Image"></figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="abstpl-contact" data-section="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 section-heading text-center">
+                    <h2 class="to-animate">Contacto</h2>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                            <h3>
+                                ¿Alguna duda o sugerencia? No dudes en contactar con nosotros por cualquiera de los
+                                canales disponibles.
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-bottom-padded-md">
+                <div class="col-md-6 to-animate">
+                    <h3>Información</h3>
+                    <ul class="abstpl-contact-info">
+                        <li class="abstpl-contact-address ">
+                            <i class="icon-home"></i>
+                            Parque Empresarial Neinor Henares, Edificio 2 Nave 1 <br>
+                            28880 Meco (Madrid)
+                        </li>
+                        <li><i class="icon-phone"></i>91 827 99 80</li>
+                        <li><i class="icon-envelope"></i>info@absconsultor.es</li>
+                    </ul>
+                </div>
+
+                <div class="col-md-6 to-animate">
+                    <div class="form-group">
+                        <label for="name" class="sr-only">Nombre</label>
+                        <input id="name" name="name" class="form-control" placeholder="Nombre" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="sr-only">Email</label>
+                        <input id="email" name="email" class="form-control" placeholder="Email" type="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="sr-only">Teléfono</label>
+                        <input id="phone" name="phone" class="form-control" placeholder="Teléfono" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="sr-only">Mensaje</label>
+                        <textarea name="message" id="message" cols="30" rows="5" class="form-control"
+                                  placeholder="Mensaje"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-primary btn-lg" value="Enviar" type="submit">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer id="footer" role="contentinfo">
+        <a href="#" class="gotop js-gotop"><i class="icon-arrow-up2"></i></a>
+        <div class="container">
+            <div class="">
+                <div class="col-md-12 text-center">
+                    <p>&copy; Bravo Silva Consultoría Técnica S.L.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <ul class="social social-circle">
+                        <?php if(!is_null($this->appData)):?>
+                            <?php echo $socialIconHelper->render($this->appData->row);?>
+                        <?php endif;?>
+                    </ul>
+                </div>
+
+                <?php /*$legalLinkHelper->render($this->legal,$this->lang);*/?>
+            </div>
+        </div>
+    </footer>
+
+
+
         <?php if ($this->showCookieAlert) :?>
             <div id="cookie_alert" class="hide container-fluid">
                 <div class="col-md-12">
@@ -108,12 +641,19 @@ echo $this->doctype(); ?>
                 </div>
             </div>
         <?php endif; ?>
-        <input type="hidden" id="simple-routing-manager" name="<?=$this->srmController;?>" value="<?=$this->controllerAction;?>" />
-        <!-- Scripts -->
-        <?php echo $this->headScript()
-            ->appendFile($this->basePath('absconsultor/dist/vendor-dist.js'))
-            ->appendFile($this->basePath('absconsultor/dist/dist.js'))
 
+        <input type="hidden" id="simple-routing-manager" name="<?=$this->srmController;?>" value="<?=$this->controllerAction;?>" />
+
+    <!-- Scripts -->
+        <?php echo $this->headScript()
+            ->appendFile($this->basePath($basePath. '/js/jquery.min.js'))
+            ->appendFile($this->basePath($basePath. '/js/jquery.easing.1.3.js'))
+            ->appendFile($this->basePath($basePath. '/js/bootstrap.min.js'))
+            ->appendFile($this->basePath($basePath. '/js/jquery.waypoints.min.js'))
+            ->appendFile($this->basePath($basePath. '/js/jquery.stellar.min.js'))
+            ->appendFile($this->basePath($basePath. '/js/jquery.magnific-popup.min.js'))
+            ->appendFile($this->basePath($basePath. '/js/magnific-popup-options.js'))
+            ->appendFile($this->basePath($basePath. '/js/main.js'))
         ; ?>
         <?php echo $this->inlineScript() ?>
     </body>

@@ -37,7 +37,6 @@ class SocialIcon extends AbstractHelper
 
     public function render($data = [])
     {
-        var_dump($data);
         foreach ($this->socialIcons as $name => $socialInfo) {
             if (property_exists($data, $name) and trim($data->{$name}) != '') {
                 echo sprintf(
