@@ -35,7 +35,7 @@ abstract class ApplicationController extends AbstractActionController
 
         $this->headTitleHelper->setSeparator(' - ');
 
-        $this->headTitleHelper->append('ABS Consultor');
+        $this->headTitleHelper->append('Bravo Silva Consultoría Técnica');
 
         $cookie = $this->getRequest()->getHeaders()->get('Cookie');
 

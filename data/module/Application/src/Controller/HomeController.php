@@ -11,16 +11,16 @@ namespace Application\Controller;
 
 use Api\Service\HomeModuleService;
 use Api\Service\MegabannerService;
+use Api\Service\PartnerService;
 use Zend\View\Model\ViewModel;
 
 class HomeController extends ApplicationController
 {
     public function indexAction()
     {
-        $menu = $this->menu;
-        $menuLang = $menu->locale->{$this->lang};
+        $menuLang = $this->menu->locale->{$this->lang};
 
-        $menuLangHome = $menuLang[$menu->rows->home->id];
+        $menuLangHome = $menuLang[$this->menu->rows->home->id];
 
         $this->headTitleHelper->append('Home');
 
@@ -28,11 +28,15 @@ class HomeController extends ApplicationController
         $ogFacebook->title = $this->headTitleHelper->renderTitle();
         $ogFacebook->description = $menuLangHome->metaDescription;
 
-        $this->layout()->setVariable('og', $ogFacebook);
-
-        return new ViewModel([
-            'lang' => $this->lang,
-            'menu' => $this->menu
+        $this->layout()->setVariables([
+            'og' => $ogFacebook,
         ]);
+
+        $vars = [
+                'partners' => $this->serviceManager->get(PartnerService::class)->getData($this->lang)
+            ] + $this->layout()->getVariables()->getArrayCopy();
+
+
+        return new ViewModel($vars);
     }
 }

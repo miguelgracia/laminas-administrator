@@ -7,7 +7,6 @@
 
 namespace Application;
 
-use Application\Controller\BlogController;
 use Application\Controller\CompanyController;
 use Application\Controller\ContactController;
 use Application\Controller\HomeController;
@@ -18,11 +17,9 @@ use Application\View\Helper\BlogCategory;
 use Application\View\Helper\CarouselItem;
 use Application\View\Helper\ContactForm;
 use Application\View\Helper\FacebookShare;
-use Application\View\Helper\HomeModule;
 use Application\View\Helper\Job;
 use Application\View\Helper\JobCategory;
 use Application\View\Helper\LegalLink;
-use Application\View\Helper\Megabanner;
 use Application\View\Helper\Menu;
 use Application\View\Helper\MenuDelegator;
 use Application\View\Helper\Partner;
@@ -164,7 +161,6 @@ return [
         'invokables' => [
             'Application\Controller\Home' => Controller\HomeController::class,
             'Application\Controller\Job' => Controller\JobController::class,
-            'Application\Controller\Blog' => Controller\BlogController::class,
             'Application\Controller\Contact' => Controller\ContactController::class,
             'Application\Controller\Company' => Controller\CompanyController::class,
             'Application\Controller\Legal' => Controller\LegalController::class,
@@ -197,8 +193,6 @@ return [
             'applicationMenuHelper' => Menu::class,
             'socialIconHelper' => SocialIcon::class,
             'legalLinkHelper' => LegalLink::class,
-            'megabannerHelper' => Megabanner::class,
-            'homeModuleHelper' => HomeModule::class,
             'partnerHelper' => Partner::class,
             'jobHelper' => Job::class,
             'jobCategoryHelper' => JobCategory::class,
@@ -213,8 +207,6 @@ return [
             Menu::class => InvokableFactory::class,
             SocialIcon::class => InvokableFactory::class,
             LegalLink::class => InvokableFactory::class,
-            Megabanner::class => InvokableFactory::class,
-            HomeModule::class => InvokableFactory::class,
             Partner::class => InvokableFactory::class,
             Job::class => InvokableFactory::class,
             JobCategory::class => InvokableFactory::class,
@@ -249,6 +241,7 @@ return [
         ],
     ],
     'view_manager' => [
+        'base_path' => 'http://absconsultor.es/',
         'display_not_found_reason' => true,
         'display_exceptions' => true,
         'doctype' => 'HTML5',
