@@ -1,5 +1,6 @@
 <?php
 $menuHelper = $this->applicationMenuHelper();
+$jobHelper = $this->jobHelper();
 
 $assetPath = $this->basePath('bravo-silva');
 $mediaPath = $this->basePath('media');
@@ -68,21 +69,7 @@ $mediaPath = $this->basePath('media');
                         <h2 class="to-animate">Empresa</h2>
                         <div class="row">
                             <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                                <p>
-                                    ABS Consultor nace formalmente en el año 2015 y es la heredera de la experiencia y
-                                    actividad desarrollada de su fundador, Antonio Bravo Silva, desde 1991. La compañía
-                                    se sustenta en un experimentado personal que defiende una filosofía de trabajo muy
-                                    ligada al progreso, la investigación y la aplicación generalizada de nuevos
-                                    protocolos y procesos.
-                                </p>
-
-                                <p>
-                                    Nuestra actividad abarca todos los campos relacionados con el control técnico y de
-                                    calidad en las actividades que giran en torno al montaje mecánico. Nuestra sede
-                                    social se encuentra en el municipio de Camarma de Esteruelas (Madrid) aunque, debido
-                                    a que los principales trabajos se realizan en puertos marítimos, nuestro equipo se
-                                    encuentra desplazado para poder dar un servicio prácticamente inmediato.
-                                </p>
+                                <?= $this->companyIntro;?>
                             </div>
                         </div>
                     </div>
@@ -99,99 +86,13 @@ $mediaPath = $this->basePath('media');
                 <h2 class="to-animate">Trabajos</h2>
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                        <h3>Nuestra actividad abarca todos los campos relacionados con el control técnico y de calidad
-                            en las actividades que giran en torno al montaje mecánico.
-                            También damos apoyo eléctrico y de ingeniería.
-                        </h3>
+                        <h3><?=$this->workIntro;?></h3>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row row-bottom-padded-sm">
-            <div class="col-md-4 col-sm-6 col-xxs-12">
-                <a href="<?= $assetPath . '/images/work_1.jpg';?>" class="abstpl-project-item image-popup to-animate">
-                    <img src="<?= $assetPath . '/images/work_1.jpg';?>" alt="Image" class="img-responsive">
-                    <div class="abstpl-text">
-                        <h2>Project 1</h2>
-                        <span>Branding</span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6 col-xxs-12">
-                <a href="<?= $assetPath . '/images/work_2.jpg';?>" class="abstpl-project-item image-popup to-animate">
-                    <img src="<?= $assetPath . '/images/work_2.jpg';?>" alt="Image" class="img-responsive">
-                    <div class="abstpl-text">
-                        <h2>Project 2</h2>
-                        <span>Web</span>
-                    </div>
-                </a>
-            </div>
-
-            <div class="clearfix visible-sm-block"></div>
-
-            <div class="col-md-4 col-sm-6 col-xxs-12">
-                <a href="<?= $assetPath . '/images/work_3.jpg';?>" class="abstpl-project-item image-popup to-animate">
-                    <img src="<?= $assetPath . '/images/work_3.jpg';?>" alt="Image" class="img-responsive">
-                    <div class="abstpl-text">
-                        <h2>Project 3</h2>
-                        <span>Web</span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6 col-xxs-12">
-                <a href="<?= $assetPath . '/images/work_4.jpg';?>" class="abstpl-project-item image-popup to-animate">
-                    <img src="<?= $assetPath . '/images/work_4.jpg';?>" alt="Image" class="img-responsive">
-                    <div class="abstpl-text">
-                        <h2>Project 4</h2>
-                        <span>UI/UX</span>
-                    </div>
-                </a>
-            </div>
-
-            <div class="clearfix visible-sm-block"></div>
-
-            <div class="col-md-4 col-sm-6 col-xxs-12">
-                <a href="<?= $assetPath . '/images/work_5.jpg';?>" class="abstpl-project-item image-popup to-animate">
-                    <img src="<?= $assetPath . '/images/work_5.jpg';?>" alt="Image" class="img-responsive">
-                    <div class="abstpl-text">
-                        <h2>Project 1</h2>
-                        <span>Photography</span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6 col-xxs-12">
-                <a href="<?= $assetPath . '/images/work_6.jpg';?>" class="abstpl-project-item image-popup to-animate">
-                    <img src="<?= $assetPath . '/images/work_6.jpg';?>" alt="Image" class="img-responsive">
-                    <div class="abstpl-text">
-                        <h2>Project 2</h2>
-                        <span>Illustration</span>
-                    </div>
-                </a>
-            </div>
-
-            <div class="clearfix visible-sm-block"></div>
-
-            <div class="col-md-4 col-sm-6 col-xxs-12">
-                <a href="<?= $assetPath . '/images/work_7.jpg';?>" class="abstpl-project-item image-popup to-animate">
-                    <img src="<?= $assetPath . '/images/work_7.jpg';?>" alt="Image" class="img-responsive">
-                    <div class="abstpl-text">
-                        <h2>Project 3</h2>
-                        <span>Web</span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-6 col-xxs-12">
-                <a href="<?= $assetPath . '/images/work_8.jpg';?>" class="abstpl-project-item image-popup to-animate">
-                    <img src="<?= $assetPath . '/images/work_8.jpg';?>" alt="Image" class="img-responsive">
-                    <div class="abstpl-text">
-                        <h2>Project 4</h2>
-                        <span>Sketch</span>
-                    </div>
-                </a>
-            </div>
-
-            <div class="clearfix visible-sm-block"></div>
-
+            <?= $jobHelper->renderFeatured($this->lang, $this->featuredJobs);?>
         </div>
         <div class="row">
             <div class="col-xs-12 text-center">
@@ -201,14 +102,14 @@ $mediaPath = $this->basePath('media');
     </div>
 </section>
 
-<section id="abstpl-technical-question" data-section="technical-question">
+<section id="abstpl-technical-question" data-section="technicalquestion">
     <div class="container">
         <div class="row">
             <div class="col-md-12 section-heading text-center">
                 <h2 class="to-animate">Pregúntanos</h2>
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                        <h3>Haz tu consulta técnica de forma gratuita y sin compromiso en el siguiente formulario. </h3>
+                        <h3><?= $this->questionIntro;?></h3>
                     </div>
                 </div>
             </div>
@@ -257,8 +158,7 @@ $mediaPath = $this->basePath('media');
                 <h2 class="to-animate">Servicios</h2>
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                        <h3>Nuestro equipo le garantiza un asesoramiento completo en proyectos complejos e inspecciones,
-                            en relación a grúas portuarias</h3>
+                        <h3><?=$this->servicesIntro?></h3>
                     </div>
                 </div>
             </div>

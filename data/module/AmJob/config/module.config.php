@@ -7,6 +7,9 @@ return [
     ],
 
     'form_elements' => [
+        'aliases' => [
+            'showInHome' => \Administrator\Form\Element\YesNoSelect::class
+        ],
         'factories' => [
             \AmJob\Form\Element\JobCategoriesId::class => \AmJob\Form\Element\JobCategoriesIdFactory::class,
             \AmJob\Form\JobForm::class => \Administrator\Factory\AdministratorFormFactory::class,
