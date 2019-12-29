@@ -26,6 +26,8 @@ class HomeController extends ApplicationController
         ]);
 
         $vars = $this->layout()->getVariables()->getArrayCopy() + [
+            'contactIntro' => $menuLang[$this->menu->rows->contact->id]->content,
+            'accessoriesIntro' => $menuLang[$this->menu->rows->accessories->id]->content,
             'questionIntro' => $menuLang[$this->menu->rows->technicalquestion->id]->content,
             'companyIntro' => $menuLang[$this->menu->rows->company->id]->content,
             'servicesIntro' => $menuLang[$this->menu->rows->services->id]->content,
