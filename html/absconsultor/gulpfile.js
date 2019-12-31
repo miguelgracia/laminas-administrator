@@ -42,14 +42,14 @@ gulp.task('default', async function() {
     var vendorEntries = [
         'node_modules/jquery/dist/jquery.min.js',
         'node_modules/jquery.easing/jquery.easing.min.js',
-        'node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js',
         'node_modules/waypoints/lib/jquery.waypoints.min.js',
+        'node_modules/bootstrap.native/dist/bootstrap-native.js',
         'node_modules/js-cookie/src/js.cookie.js',
     ];
 
     gulp.src(vendorEntries)
         .pipe(concat('vendor-dist.js'))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(gulp.dest('./dist'));
 
     var css = [
