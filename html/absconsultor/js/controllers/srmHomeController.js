@@ -3,121 +3,268 @@ import simpleJSRoutingManager from './../simple-js-routing-manager';
 function srmHomeController() {
 
     this.indexAction = function() {
+        ;(function () {
 
-        var players = {}, youtubePlayerAvailable = false;
+            'use strict';
 
-        var $slides = $('.bxslider');
+            // iPad and iPod detection
+            const isiPad = function () {
+                return (navigator.platform.indexOf("iPad") != -1);
+            };
 
-        var bxSlider = $slides.bxSlider({
-            mode: 'fade',
-            adaptiveHeight: true,
-            pager: false,
-            preloadImages: 'all',
-            auto: true,
-            pause: 5000
-        });
+            const isiPhone = function () {
+                return (
+                    (navigator.platform.indexOf("iPhone") != -1) ||
+                    (navigator.platform.indexOf("iPod") != -1)
+                );
+            };
 
-        var $nav = $('nav');
+            // Burger Menu
+            const burgerMenu = function () {
+                $('body').on('click', '.js-abstpl-nav-toggle', function (event) {
+                    event.preventDefault();
+                    $(this)[$('#navbar').is(':visible') ? 'removeClass' : 'addClass']('active');
+                });
+            };
 
-        var $homeBrandLogo = $('#home_brand_logo'),
-            $homeNav = $(".home-navbar.nav"),
-            $chevronDown = $(".fa.fa-chevron-down");
 
-        $(window).scroll(function (e) {
-            if($(this).scrollTop() < 50) {
-                $homeBrandLogo.removeClass('header');
-                $homeNav.removeClass('header');
-                $chevronDown.removeClass('header');
-                $nav.addClass('not-visible').removeClass('visible');
-            } else {
-                $homeBrandLogo.addClass('header');
-                $homeNav.addClass('header');
-                $chevronDown.addClass('header');
-                $nav.removeClass('not-visible').addClass('visible');
-            }
-        });
+            const goToTop = function () {
 
-        $(".owl-carousel-home").owlCarousel({
-            items : 1,
-            itemsDesktop : [1199,1],
-            itemsDesktopSmall : [979,1],
-            itemsTablet: [768, 1],
-            autoHeight: true,
-            afterInit: function() {
+                $('#js-gotop').on('click', function (event) {
+                    event.preventDefault();
+                    $('html, body').animate({
+                        scrollTop: $('html').offset().top
+                    }, 500);
 
-                var itemsCount = this.$owlItems.length,
-                    currentItem;
+                    return false;
+                });
 
-                var setPlayVideoEvent = function(playerIndex, item) {
+            };
 
-                    return function(e) {
-                        e.preventDefault();
-                        this.style.opacity = '0';
+            // Page Nav
+            const clickMenu = function () {
 
-                        if(players[playerIndex].youtubePlayer != false) {
+                $('#navbar a:not([class="external"])').click(function (event) {
+                    let section = $(this).data('nav-section');
+                    let navbar = $('#navbar');
 
-                            if(players[playerIndex].youtubePlayer.getPlayerState() == '1') {
-                                players[playerIndex].youtubePlayer.pauseVideo();
-                            } else {
-                                players[playerIndex].youtubePlayer.playVideo();
-                            }
-                            return;
-                        }
-
-                        var playerData = players[playerIndex].data;
-
-                        var videoId = playerData.item.firstChild.dataset.src;
-
-                        playerData.videoWrapper.insertBefore(playerData.videoContainer, playerData.videoWrapper.firstChild);
-
-                        players[playerIndex].youtubePlayer = new YT.Player(playerData.videoContainer, {
-                            events: {
-                                'onReady': function(e) {
-                                    //e.target.playVideo();
-                                },
-                                'onStateChange': function() {
-
-                                }
-                            }
-                        });
-                    };
-                };
-
-                for (var i = 0; i < itemsCount; i++) {
-                    currentItem = this.$owlItems[i];
-                    var playerData = {};
-
-                    if(currentItem.firstChild.classList.contains('video')) {
-
-                        playerData.item = this.$owlItems[i];
-                        players[i] = {
-                            data: playerData,
-                            youtubePlayer: false
-                        };
+                    if ($('[data-section="' + section + '"]').length) {
+                        $('html, body').animate({
+                            scrollTop: $('[data-section="' + section + '"]').offset().top
+                        }, 500);
                     }
-                }
-            },
-            afterMove: function() {
 
-                if(typeof players[this.prevItem] == 'undefined') {
+                    if (navbar.is(':visible')) {
+                        navbar.removeClass('in');
+                        navbar.attr('aria-expanded', 'false');
+                        $('.js-abstpl-nav-toggle').removeClass('active');
+                    }
+
+                    event.preventDefault();
+                    return false;
+                });
+
+                $('.more-info').click(function (event) {
+                    event.preventDefault();
+                    $('a[data-nav-section="services"]').trigger('click');
+                });
+            };
+
+            // Reflect scrolling in navigation
+            const navActive = function (section) {
+
+                let $el = $('#navbar > ul');
+                $el.find('li').removeClass('active');
+                $el.each(function () {
+                    $(this).find('a[data-nav-section="' + section + '"]').closest('li').addClass('active');
+                });
+            };
+
+            const navigationSection = function () {
+
+                let $section = $('section[data-section]');
+
+                console.log($section);
+
+                $section.waypoint(function (direction) {
+                    if (direction === 'down') {
+                        navActive(this.element.dataset.section);
+                    }
+                }, {offset: '150px'});
+
+                $section.waypoint(function (direction) {
+                    if (direction === 'up') {
+                        navActive(this.element.dataset.section);
+                    }
+                }, {
+                    offset: function () {
+                        const height = - (parseFloat(getComputedStyle(this.element, null).height.replace("px", "")));
+                        return height + 155;
+                    }
+                });
+            };
+
+            const checkScroll = function () {
+                let header = document.getElementById('abstpl-header');
+                let scrlTop = window.scrollY;
+
+                if (scrlTop > 500) {
+                    header.classList.add('navbar-fixed-top', 'abstpl-animated',  'slideInDown');
                     return;
                 }
 
-                if(players[this.prevItem].youtubePlayer != false) {
-                    players[this.prevItem].youtubePlayer.pauseVideo();
+                if (scrlTop <= 500 && header.classList.contains('navbar-fixed-top')) {
+                    header.classList.add('navbar-fixed-top', 'abstpl-animated', 'slideOutUp');
+                    setTimeout(function () {
+                        header.classList.remove('navbar-fixed-top', 'abstpl-animated', 'slideInDown', 'slideOutUp');
+                    }, 100);
+                }
+            };
+
+            // Window Scroll
+            const windowScroll = function () {
+                window.onscroll = function () {
+                    checkScroll();
+                };
+            };
+
+            const timeoutAnimationCallback = function (elements, cssClasses, animationType ) {
+                return function () {
+                    [].forEach.call(elements, function (el, k) {
+                        setTimeout(function () {
+                            el.classList.add(...cssClasses);
+                        }, k * 200, animationType);
+                    });
+                }
+            };
+
+
+            // Animations
+            // Home
+
+            const homeAnimate = function () {
+                let elem = document.getElementById('abstpl-home');
+                if (elem === null) {
+                    return;
+                }
+
+                $(elem).waypoint(function (direction) {
+
+                    if (direction === 'down' && !this.element.classList.contains('animated')) {
+
+                        setTimeout(timeoutAnimationCallback(
+                            this.element.querySelectorAll('.to-animate'),
+                            ['fadeInUp', 'animated'],
+                            'easeInOutExpo'
+                        ), 200);
+
+                        this.element.classList.add('animated');
+                    }
+                }, {offset: '80%'});
+            };
+
+            const introAnimate = function () {
+                let elem = document.getElementById('abstpl-intro');
+                if (elem === null) {
+                    return;
+                }
+
+                $(elem).waypoint(function (direction) {
+
+                    if (direction === 'down' && !this.element.classList.contains('animated')) {
+                        setTimeout(timeoutAnimationCallback(
+                            this.element.querySelectorAll('.to-animate'),
+                            ['fadeInRight', 'animated'],
+                            'easeInOutExpo'
+                        ), 1000);
+
+                        this.element.classList.add('animated');
+                    }
+                }, {offset: '80%'});
+            };
+
+            const waypointDefaultAnimationCallback = function () {
+                return function (direction) {
+                    if (direction === 'down' && !this.element.classList.contains('animated')) {
+
+                        setTimeout(timeoutAnimationCallback(
+                            this.element.querySelectorAll('.to-animate'),
+                            ['fadeInUp', 'animated'],
+                            'easeInOutExpo'
+                        ), 200);
+
+                        this.element.classList.add('animated');
+                    }
+                };
+            };
+
+            const waypointMultipleAnimateCallback = function() {
+                return function (direction) {
+
+                    if (direction === 'down' && !this.element.classList.contains('animated')) {
+
+                        let sec = this.element.querySelectorAll('.to-animate').length;
+
+                        sec = parseInt((sec * 200) + 400);
+
+                        setTimeout(timeoutAnimationCallback(
+                            this.element.querySelectorAll('.to-animate'),
+                            ['fadeInUp', 'animated'],
+                            'easeInOutExpo'
+                        ), 200);
+
+                        setTimeout(timeoutAnimationCallback(
+                            this.element.querySelectorAll('.to-animate-2'),
+                            ['bounceIn', 'animated'],
+                            'easeInOutExpo'
+                        ), sec);
+
+                        this.element.classList.add('animated');
+                    }
                 }
             }
-        });
 
-        var youtubeScript = document.createElement('script');
-        youtubeScript.src = 'https://www.youtube.com/iframe_api';
+            const animation = function (sectionId, isMultiple) {
+                const elem = document.getElementById(sectionId);
+                if (elem === null) {
+                    return;
+                }
 
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(youtubeScript, firstScriptTag);
+                $(elem).waypoint(
+                    isMultiple ? waypointMultipleAnimateCallback() : waypointDefaultAnimationCallback(),
+                    {offset: '80%'}
+                );
+            };
 
-        window.onYouTubeIframeAPIReady = function() {
-            youtubePlayerAvailable = true;
-        }
+            // Document on load.
+            $(function () {
+
+                burgerMenu();
+                clickMenu();
+                windowScroll();
+                navigationSection();
+                goToTop();
+
+                // Animations
+                homeAnimate();
+                introAnimate();
+
+                [
+                    'abstpl-company',
+                    'abstpl-work',
+                    'abstpl-accessories',
+                    'abstpl-contact',
+                    'abstpl-technical-question'
+                ].map((sectionId) => animation(sectionId, false));
+
+                [
+                    'abstpl-services',
+                    'abstpl-counters'
+                ].map((sectionId) => animation(sectionId, true));
+
+                checkScroll();
+            });
+        }());
     };
 }
 simpleJSRoutingManager.srmController(srmHomeController);

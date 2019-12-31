@@ -4,7 +4,7 @@ if (is_null($this->menu)) {
     die;
 }
 
-$assetPath = $this->basePath('bravo-silva');
+$assetPath = $this->basePath('absconsultor');
 $menuHelper       = $this->applicationMenuHelper();
 $socialIconHelper = $this->socialIconHelper();
 $legalLinkHelper  = $this->legalLinkHelper();
@@ -25,7 +25,7 @@ echo $this->doctype(); ?>
         <!-- Le styles -->
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.jpg'))
             ->prependStylesheet($assetPath . '/css/style.css?t=' . microtime())
-            ->prependStylesheet($assetPath . '/css/bootstrap.css')
+            //->prependStylesheet($assetPath . '/css/bootstrap.css')
             ->prependStylesheet($assetPath . '/css/magnific-popup.css')
             ->prependStylesheet($assetPath . '/css/simple-line-icons.css')
             ->prependStylesheet($assetPath . '/css/icomoon.css')
@@ -109,13 +109,8 @@ echo $this->doctype(); ?>
 
     <!-- Scripts -->
         <?php echo $this->headScript()
-            ->appendFile($assetPath. '/js/jquery.min.js')
-            ->appendFile($assetPath. '/js/jquery.easing.1.3.js')
-            ->appendFile($assetPath. '/js/bootstrap.min.js')
-            ->appendFile($assetPath. '/js/jquery.waypoints.min.js')
-            //->appendFile($assetPath. '/js/jquery.magnific-popup.min.js')
-            //->appendFile($assetPath. '/js/magnific-popup-options.js')
-            ->appendFile($assetPath. '/js/main.js')
+            ->appendFile($assetPath. '/dist/vendor-dist.js')
+            ->appendFile($assetPath. '/dist/dist.js')
         ; ?>
         <?php echo $this->inlineScript() ?>
     </body>
