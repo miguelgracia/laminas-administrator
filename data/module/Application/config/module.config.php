@@ -35,6 +35,7 @@ use Zend\Session\Storage\SessionArrayStorage;
 return [
     'languages_by_host' => [
         'bravo-consultoria.local' => ['es_es', 'en_en'],
+        'bravo-silva.ngrok.io' => ['es_es', 'en_en'],
         'absconsultor.es' => ['es_es', 'en_en'],
         'absconsultor.local' => ['es_es', 'en_en'],
     ],
