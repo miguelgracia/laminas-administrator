@@ -37,6 +37,8 @@ return [
     'AmMenu',
     'AmMedia',
     'AmStaticPage',
+    'AmAccessory',
+    'AmAccessoryCategory',
     'AmJob',
     'AmJobCategory',
     'AmSection',

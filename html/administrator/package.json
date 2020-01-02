@@ -4,12 +4,14 @@
   "description": "Gestion de js y css",
   "main": "index.js",
   "scripts": {
+    "gulp-build": "./node_modules/gulp/bin/gulp.js build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Miguel Gracia",
   "license": "ISC",
   "devDependencies": {
     "capture-video-frame": "^0.1.1",
+    "gulp": "^4.0.2",
     "gulp-concat": "^2.6.0",
     "gulp-uglify": "^1.5.3"
   }

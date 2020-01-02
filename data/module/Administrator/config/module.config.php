@@ -60,13 +60,9 @@ return [
     'datatable' => [
         'factories' => [
             \AmAppData\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmBlog\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmBlogCategory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmHomeModule\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
             \AmJob\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
             \AmJobCategory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
             \AmLanguage\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmMegabanner\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
             \AmModule\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
             \AmPartner\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
             \AmProfile\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
@@ -74,6 +70,8 @@ return [
             \AmStaticPage\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
             \AmUser\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
             \AmYouTube\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmAccessory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmAccessoryCategory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class
         ]
     ],
     'form_elements' => [

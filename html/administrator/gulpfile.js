@@ -2,7 +2,7 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify');
 
-gulp.task('build', function () {
+gulp.task('build', async function () {
     gulp.src([
         'node_modules/capture-video-frame/capture-video-frame.js',
         'js/app.js',
@@ -13,5 +13,5 @@ gulp.task('build', function () {
     ])
         .pipe(concat('administrator.min.js'))
         //.pipe(uglify())
-        .pipe(gulp.dest('js/build/'))
+        .pipe(gulp.dest('js/build/'));
 });

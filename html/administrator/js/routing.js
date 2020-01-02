@@ -61,10 +61,10 @@
                     if(typeof _this.oController[method] == 'function') {
                         _this.oController[method].apply(_this);
                     } else {
-                        throw new _DsMethodControllerException('The method controller "' + controllerMethod + '" does not exists');
+                        throw new _DsMethodControllerException('The method controller "' + method + '" does not exists');
                     }
                 } else {
-                    throw new _DsInstanceControllerException('The controller "' + controllerName + '" does not exists');
+                    throw new _DsInstanceControllerException('The controller "' + name + '" does not exists');
                 }
             },
 

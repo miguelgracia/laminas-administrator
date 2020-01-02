@@ -89,3 +89,4 @@ crashlytics-build.properties
 
 /data/.php_cs.cache
 /html/absconsultor/package-lock.json
+/html/administrator/package-lock.json
