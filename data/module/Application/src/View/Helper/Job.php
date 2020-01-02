@@ -7,10 +7,10 @@ use Zend\Paginator\Paginator;
 
 class Job extends AbstractHelper
 {
-    public function getContentWrapper()
+    public function getContentWrapper($type = 'job')
     {
         return
-            "<div class='col-md-12 list-item job'>
+            "<div class='col-md-12 list-item '. $type>
                 <div class='row'>
                     <div class='col-md-7'><img class='img-responsive' src='%s' /></div>
                     <div class='col-md-5'>
@@ -40,7 +40,7 @@ class Job extends AbstractHelper
     private function getFeaturedWrapper()
     {
         return "<div class='col-md-4 col-sm-6 col-xxs-12'>
-                <a href='%s' class='abstpl-project-item image-popup to-animate'>
+                <a href='%s' class='abstpl-project-item image-popup to-animate %s'>
                     <img src='%s' alt='Image' class='img-responsive'>
                     <div class='abstpl-text'>
                         <h2>%s</h2>
@@ -50,11 +50,11 @@ class Job extends AbstractHelper
             </div>";
     }
 
-    public function renderFeatured($lang, $jobs)
+    public function renderFeatured($lang, $elements, $withBorder = false)
     {
         $html = '';
 
-        foreach ($jobs as $index => $job) {
+        foreach ($elements as $index => $job) {
             $job->imageUrl = json_decode($job->imageUrl);
 
             $imageUrl = (is_array($job->imageUrl) ? $job->imageUrl[0] : $job->imageUrl);
@@ -62,6 +62,7 @@ class Job extends AbstractHelper
             $html .= sprintf(
                 $this->getFeaturedWrapper(),
                 $imageUrl,
+                $withBorder ? 'with-border' : '',
                 $imageUrl,
                 $job->title,
                 $job->categoryTitle

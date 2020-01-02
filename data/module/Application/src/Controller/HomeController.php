@@ -2,9 +2,8 @@
 
 namespace Application\Controller;
 
-use Api\Service\HomeModuleService;
+use Api\Service\AccessoryService;
 use Api\Service\JobService;
-use Api\Service\MegabannerService;
 use Api\Service\PartnerService;
 use Zend\View\Model\ViewModel;
 
@@ -25,7 +24,7 @@ class HomeController extends ApplicationController
             'og' => $ogFacebook,
         ]);
 
-        $vars = $this->layout()->getVariables()->getArrayCopy() + [
+        $vars = [
             'contactIntro' => $menuLang[$this->menu->rows->contact->id]->content,
             'accessoriesIntro' => $menuLang[$this->menu->rows->accessories->id]->content,
             'questionIntro' => $menuLang[$this->menu->rows->technicalquestion->id]->content,
@@ -33,9 +32,10 @@ class HomeController extends ApplicationController
             'servicesIntro' => $menuLang[$this->menu->rows->services->id]->content,
             'workIntro' => $menuLang[$this->menu->rows->work->id]->content,
             'partners' => $this->serviceManager->get(PartnerService::class)->getData($this->lang),
-            'featuredJobs' => $this->serviceManager->get(JobService::class)->getFeaturedJobs($this->lang)
+            'featuredJobs' => $this->serviceManager->get(JobService::class)->getFeaturedJobs($this->lang),
+            'featuredAccessories' => $this->serviceManager->get(AccessoryService::class)->getFeaturedAccessories($this->lang),
         ];
 
-        return new ViewModel($vars);
+        return new ViewModel($this->layout()->getVariables()->getArrayCopy() + $vars);
     }
 }

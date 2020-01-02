@@ -1,14 +1,15 @@
 $(function () {
-    $.AdminLTE.srController('megabanner', function () {
+
+    $.AdminLTE.srController('accessory_category', function () {
         this.index = function() {
 
             var oDatatable = $.AdminLTE.simpleRouting.dsDatatable;
-            oDatatable.run('#megabannerTable',function (dataTable){
+            oDatatable.run('#accessoryCategoryTable',function (dataTable){
 
                 var clickDelete = function(e) {
                     e.preventDefault();
                     var $this = $(this);
-                    var isConfirm = $.AdminLTE.simpleRouting.confirm.show('¿Seguro que deseas eliminar este megabanner?');
+                    var isConfirm = $.AdminLTE.simpleRouting.confirm.show('¿Seguro que deseas eliminar esta categoría?');
 
                     var ajaxSuccessEliminar = function(data) {
                         if(data.status == 'ok') {

@@ -1,14 +1,15 @@
 $(function () {
-    $.AdminLTE.srController('blog', function () {
+
+    $.AdminLTE.srController('accessory', function () {
         this.index = function() {
 
             var oDatatable = $.AdminLTE.simpleRouting.dsDatatable;
-            oDatatable.run('#blogTable',function (dataTable){
+            oDatatable.run('#accessoryTable',function (dataTable){
 
                 var clickDelete = function(e) {
                     e.preventDefault();
                     var $this = $(this);
-                    var isConfirm = $.AdminLTE.simpleRouting.confirm.show('¿Seguro que deseas eliminar esta entrada de blog?');
+                    var isConfirm = $.AdminLTE.simpleRouting.confirm.show('¿Seguro que deseas eliminar este accesorio?');
 
                     var ajaxSuccessEliminar = function(data) {
                         if(data.status == 'ok') {
