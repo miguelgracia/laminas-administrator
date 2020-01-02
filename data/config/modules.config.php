@@ -45,6 +45,7 @@ return [
     'AmJobVideo',
     'AmLanguage',
     'AmAppData',
+    'AmCustomer',
     'Api',
     'AmPartner',
     'AmYouTube',
