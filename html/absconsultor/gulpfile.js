@@ -40,8 +40,8 @@ gulp.task('default', async function() {
 
 
     var vendorEntries = [
-        'node_modules/jquery/dist/jquery.min.js',
-        'node_modules/jquery.easing/jquery.easing.min.js',
+        /*'node_modules/jquery/dist/jquery.min.js',
+        'node_modules/jquery.easing/jquery.easing.min.js',*/
         'node_modules/bootstrap.native/dist/bootstrap-native.js',
         'node_modules/js-cookie/src/js.cookie.js',
         'node_modules/waypoints/lib/noframework.waypoints.js'

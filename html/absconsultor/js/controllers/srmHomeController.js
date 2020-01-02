@@ -1,4 +1,5 @@
 import simpleJSRoutingManager from './../simple-js-routing-manager';
+import animateScrollTo from 'animated-scroll-to';
 
 function srmHomeController() {
 
@@ -19,15 +20,11 @@ function srmHomeController() {
 
         const goToTop = function () {
 
-            $('#js-gotop').on('click', function (event) {
+            document.getElementById('js-gotop').addEventListener('click', function (event) {
                 event.preventDefault();
-                $('html, body').animate({
-                    scrollTop: $('html').offset().top
-                }, 500);
-
+                animateScrollTo(0);
                 return false;
             });
-
         };
 
         // Page Nav
@@ -38,18 +35,24 @@ function srmHomeController() {
             [].forEach.call(navbarLinks, function (link) {
                 link.addEventListener('click', function (event) {
 
-                    let section = this.dataset.navSection;
+                    const section = this.dataset.navSection;
+                    const sectionElement = document.querySelector('[data-section="' + section + '"]');
                     let navbar = document.getElementById('navbar');
 
-                    if ($('[data-section="' + section + '"]').length) {
-                        $('html, body').animate({
-                            scrollTop: $('[data-section="' + section + '"]').offset().top
-                        }, 500);
+                    if (sectionElement !== null) {
+                        var rect = sectionElement.getBoundingClientRect();
+
+                        const offset = {
+                            top: rect.top + window.scrollY,
+                            left: rect.left + window.scrollX
+                        };
+
+                        animateScrollTo(offset.top);
                     }
 
-                    if (navbar.is(':visible')) {
-                        navbar.removeClass('in');
-                        navbar.attr('aria-expanded', 'false');
+                    if (navbar.offsetWidth > 0 && navbar.offsetHeight > 0) {
+                        navbar.classList.remove('in');
+                        navbar.setAttribute('aria-expanded', 'false');
                         document.getElementById('js-abstpl-nav-toggle').classList.remove('active');
                     }
 
@@ -58,20 +61,26 @@ function srmHomeController() {
                 });
             });
 
-            $('.more-info').click(function (event) {
-                event.preventDefault();
-                $('a[data-nav-section="services"]').trigger('click');
+            let moreInfoLinks = document.querySelectorAll('.more-info');
+
+            [].forEach.call(moreInfoLinks, function (link) {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    document.querySelector('a[data-nav-section="services"]').click();
+                });
             });
         };
 
         // Reflect scrolling in navigation
         const navActive = function (section) {
 
-            let $el = $('#navbar > ul');
-            $el.find('li').removeClass('active');
-            $el.each(function () {
-                $(this).find('a[data-nav-section="' + section + '"]').closest('li').addClass('active');
-            });
+            let activeLi = document.querySelector('#navbar > ul > li.active');
+            if (activeLi !== null) {
+                activeLi.classList.remove('active');
+            }
+
+            let selectedLink = document.querySelector('a[data-nav-section="' + section + '"]');
+            selectedLink.parentNode.classList.add('active');
         };
 
         const navigationSection = function () {
