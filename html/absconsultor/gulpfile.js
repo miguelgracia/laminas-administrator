@@ -1,6 +1,5 @@
 var gulp = require("gulp");
 var sourcemaps = require("gulp-sourcemaps");
-var babel = require("gulp-babel");
 var concat = require("gulp-concat");
 var uglify = require("gulp-uglify");
 var browserify = require("browserify");
@@ -12,17 +11,52 @@ var sass = require('gulp-sass');
 var buffer = require('vinyl-buffer');
 var log = require('gulplog');
 
-gulp.task('sass', async function () {
-    return gulp.src('./sass/**/*.scss')
-        .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('./css'));
-});
 
-gulp.task('default', async function() {
+function buildSass() {
+    return (gulp.src('./sass/**/*.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('./css')));
+}
+
+function moveCss() {
+    const css = [
+        'css/animate.css',
+        'css/icomoon.css',
+        'css/simple-line-icons.css',
+        'css/style.css',
+    ];
+
+    return (gulp.src(css)
+        .pipe(concat('css-dist.css'))
+        .pipe(cleanCSS({compatibility: 'ie8'}))
+        .pipe(gulp.dest('./dist/css')));
+}
+
+function moveImages() {
+    return (gulp.src([
+        '../img/flags/flags-sprite.png',
+        '../img/footer-background-logo.png'
+    ]).pipe(gulp.dest('./dist/img')));
+}
+
+function vendor() {
+    const vendorEntries = [
+        'node_modules/bootstrap.native/dist/bootstrap-native.js',
+        'node_modules/js-cookie/src/js.cookie.js',
+        'node_modules/waypoints/lib/noframework.waypoints.js'
+    ];
+
+    return (gulp.src(vendorEntries)
+        .pipe(concat('vendor-dist.js'))
+        //.pipe(uglify())
+        .pipe(gulp.dest('./dist')));
+}
+
+function buildJs() {
     let myEntries = glob.sync('js/@(classes|controllers)**/srm*.js');
     myEntries.push('js/ready.js');
 
-    browserify({
+    return browserify({
         entries: myEntries,
         extensions: ['.js'],
         debug: false
@@ -37,36 +71,21 @@ gulp.task('default', async function() {
         .on('error', log.error)
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('./dist'));
+}
 
+const css = gulp.series(buildSass, moveCss, moveImages);
+const js = gulp.series(vendor, buildJs);
 
-    var vendorEntries = [
-        /*'node_modules/jquery/dist/jquery.min.js',
-        'node_modules/jquery.easing/jquery.easing.min.js',*/
-        'node_modules/bootstrap.native/dist/bootstrap-native.js',
-        'node_modules/js-cookie/src/js.cookie.js',
-        'node_modules/waypoints/lib/noframework.waypoints.js'
-    ];
-
-    gulp.src(vendorEntries)
-        .pipe(concat('vendor-dist.js'))
-        //.pipe(uglify())
-        .pipe(gulp.dest('./dist'));
-
-    var css = [
-        'css/animate.css',
-        'css/icomoon.css',
-        'css/simple-line-icons.css',
-        'css/style.css',
-    ];
-
-    gulp.src(css)
-        .pipe(concat('css-dist.css'))
-        .pipe(cleanCSS({compatibility: 'ie8'}))
-        .pipe(gulp.dest('./dist/css'));
-
-    gulp.src([
-        '../img/flags/flags-sprite.png',
-        '../img/footer-background-logo.png'
-    ]).pipe(gulp.dest('./dist/img'));
-
+const watch = gulp.parallel(function watcher() {
+    gulp.watch('./sass/**/*.scss', gulp.series(css));
+    gulp.watch('./js/**/*.js', gulp.series(js));
 });
+
+exports.sass = buildSass;
+exports.moveCss = moveCss;
+exports.moveImages = moveImages;
+exports.vendor = vendor;
+exports.buildJs = buildJs;
+exports.css = css;
+exports.js = js;
+exports.watch = watch;

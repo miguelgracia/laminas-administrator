@@ -4,6 +4,7 @@
   "description": "Assets from absconsultor frontend",
   "main": "index.js",
   "scripts": {
+    "watch": "./node_modules/gulp/bin/gulp.js watch",
     "gulp": "./node_modules/gulp/bin/gulp.js sass && ./node_modules/gulp/bin/gulp.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,7 +23,6 @@
     "flag-icon-css": "^3.4.5",
     "fslightbox": "^3.0.9",
     "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4.2.0",
     "gulp-concat": "^2.6.1",
     "gulp-local-screenshots": "^2.2.0",
