@@ -5,8 +5,30 @@ namespace Application\View\Helper;
 use Zend\Form\View\Helper\AbstractHelper;
 use Zend\Paginator\Paginator;
 
-class Job extends AbstractHelper
+class Gallery extends AbstractHelper
 {
+    protected $lang;
+
+    protected $withBorder = false;
+
+    public function withBorder()
+    {
+        $this->withBorder = true;
+        return $this;
+    }
+
+    public function withoutBorder()
+    {
+        $this->withBorder = false;
+        return $this;
+    }
+
+    public function setLang($lang)
+    {
+        $this->lang = $lang;
+        return $this;
+    }
+
     public function getContentWrapper($type = 'job')
     {
         return
@@ -37,43 +59,59 @@ class Job extends AbstractHelper
         return "<div class='clearfix visible-sm-block'></div>";
     }
 
-    private function getFeaturedWrapper()
+    private function getGalleryWrapper()
     {
-        return "<div class='col-md-4 col-sm-6 col-xxs-12'>
-                <a href='%s' class='abstpl-project-item image-popup to-animate %s'>
+        return "<div class='col-md-4 col-sm-6 col-xxs-12'>%s</div>";
+    }
+
+    private function getImageWrapper()
+    {
+        return "<a data-fslightbox='%s' href='%s' class='abstpl-project-item %s'>
                     <img src='%s' alt='Image' class='img-responsive'>
                     <div class='abstpl-text'>
                         <h2>%s</h2>
                         <span>%s</span>
                     </div>
-                </a>
-            </div>";
+                </a>";
     }
 
-    public function renderFeatured($lang, $elements, $withBorder = false)
+    public function renderFeatured($elements, $galleryPrefix = 'gallery')
     {
-        $html = '';
+        $galleryHtml = '';
 
-        foreach ($elements as $index => $job) {
-            $job->imageUrl = json_decode($job->imageUrl);
+        foreach ($elements as $index => $element) {
+            $imagesHtml = '';
 
-            $imageUrl = (is_array($job->imageUrl) ? $job->imageUrl[0] : $job->imageUrl);
+            $images = json_decode($element->imageUrl);
 
-            $html .= sprintf(
-                $this->getFeaturedWrapper(),
-                $imageUrl,
-                $withBorder ? 'with-border' : '',
-                $imageUrl,
-                $job->title,
-                $job->categoryTitle
-            );
+            $galleryWrapper = $this->getGalleryWrapper();
+
+            foreach ($images as $indexImg => $img) {
+                $classes = $this->withBorder ? 'with-border' : '';
+                if ($indexImg > 0) {
+                    $classes .= ' hide';
+                }
+                $imagesHtml .= sprintf(
+                    $this->getImageWrapper(),
+                    $galleryPrefix . $index,
+                    $img,
+                    $classes,
+                    $img,
+                    $element->title,
+                    $element->categoryTitle
+                );
+            }
+
+            $galleryHtml .= sprintf($galleryWrapper, $imagesHtml);
 
             if (($index + 1) % 2 === 0) {
-                $html .= $this->getSeparator();
+                $galleryHtml .= $this->getSeparator();
             }
         }
 
-        echo $html;
+        echo $galleryHtml;
+
+        $this->withBorder = false;
     }
 
     public function render($lang, $jobs)

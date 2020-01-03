@@ -1,6 +1,6 @@
 <?php
 $jobMenuId         = $this->menu->rows['jobs']->id;
-$jobHelper         = $this->jobHelper();
+$galleryHelper         = $this->galleryHelper();
 $jobCategoryHelper = $this->jobCategoryHelper();
 ?>
 <div class="row nav-breadcrumb hidden-xs">
@@ -42,7 +42,7 @@ $jobCategoryHelper = $this->jobCategoryHelper();
                 </div>
 
                 <div class="row">
-                    <?php $jobHelper->render($this->lang, $this->jobs);?>
+                    <?php $galleryHelper->render($this->lang, $this->jobs);?>
                 </div>
             </div>
             <aside class="col-md-3">

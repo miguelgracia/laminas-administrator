@@ -1,6 +1,6 @@
 <?php
 $menuHelper = $this->applicationMenuHelper();
-$jobHelper = $this->jobHelper();
+$galleryHelper = $this->galleryHelper()->setLang($this->lang);
 
 $assetPath = $this->basePath('absconsultor');
 $mediaPath = $this->basePath('media');
@@ -91,7 +91,7 @@ $mediaPath = $this->basePath('media');
             </div>
         </div>
         <div class="row row-bottom-padded-sm">
-            <?= $jobHelper->renderFeatured($this->lang, $this->featuredJobs);?>
+            <?= $galleryHelper->renderFeatured($this->featuredJobs, 'jobs-gallery');?>
         </div>
         <div class="row">
             <div class="col-xs-12 text-center">
@@ -236,7 +236,7 @@ $mediaPath = $this->basePath('media');
             </div>
         </div>
         <div class="row row-bottom-padded-sm">
-            <?= $jobHelper->renderFeatured($this->lang, $this->featuredAccessories, true);?>
+            <?= $galleryHelper->withBorder()->renderFeatured($this->featuredAccessories, 'accessories-gallery');?>
         </div>
         <div class="row">
             <div class="col-xs-12 text-center">

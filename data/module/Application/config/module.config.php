@@ -17,7 +17,7 @@ use Application\View\Helper\BlogCategory;
 use Application\View\Helper\CarouselItem;
 use Application\View\Helper\ContactForm;
 use Application\View\Helper\FacebookShare;
-use Application\View\Helper\Job;
+use Application\View\Helper\Gallery;
 use Application\View\Helper\JobCategory;
 use Application\View\Helper\LegalLink;
 use Application\View\Helper\Menu;
@@ -195,7 +195,7 @@ return [
             'socialIconHelper' => SocialIcon::class,
             'legalLinkHelper' => LegalLink::class,
             'partnerHelper' => Partner::class,
-            'jobHelper' => Job::class,
+            'galleryHelper' => Gallery::class,
             'jobCategoryHelper' => JobCategory::class,
             'contactFormHelper' => ContactForm::class,
             'carouselItemHelper' => CarouselItem::class,
@@ -207,7 +207,7 @@ return [
             SocialIcon::class => InvokableFactory::class,
             LegalLink::class => InvokableFactory::class,
             Partner::class => InvokableFactory::class,
-            Job::class => InvokableFactory::class,
+            Gallery::class => InvokableFactory::class,
             JobCategory::class => InvokableFactory::class,
             ContactForm::class => ContactForm::class,
             CarouselItem::class => CarouselItem::class,
