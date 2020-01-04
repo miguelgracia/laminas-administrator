@@ -7,7 +7,8 @@ $mediaPath = $this->basePath('media');
 
 ?>
 
-<section id="abstpl-home" data-section="home" style="background-image: url(<?=$assetPath?>/images/home/full_image_2.jpg);">
+<section id="abstpl-home" data-section="home"
+         style="background-image: url(<?= $assetPath ?>/images/home/full_image_2.jpg);">
     <div class="gradient"></div>
     <div class="container">
         <div class="text-wrap">
@@ -28,7 +29,8 @@ $mediaPath = $this->basePath('media');
 <section id="abstpl-intro">
     <div class="container">
         <div class="row row-bottom-padded-lg">
-            <div class="abstpl-block to-animate" style="background-image: url(<?=$assetPath?>/images/home/img_7.jpg);">
+            <div class="abstpl-block to-animate"
+                 style="background-image: url(<?= $assetPath ?>/images/home/img_7.jpg);">
                 <div class="overlay-darker"></div>
                 <div class="overlay"></div>
                 <div class="abstpl-text">
@@ -38,7 +40,8 @@ $mediaPath = $this->basePath('media');
                     <p><a href="#" class="btn btn-primary more-info">Más Información</a></p>
                 </div>
             </div>
-            <div class="abstpl-block to-animate" style="background-image: url(<?=$assetPath?>/images/home/img_8.jpg);">
+            <div class="abstpl-block to-animate"
+                 style="background-image: url(<?= $assetPath ?>/images/home/img_8.jpg);">
                 <div class="overlay-darker"></div>
                 <div class="overlay"></div>
                 <div class="abstpl-text">
@@ -49,7 +52,8 @@ $mediaPath = $this->basePath('media');
                     <p><a href="#" class="btn btn-primary more-info">Más Información</a></p>
                 </div>
             </div>
-            <div class="abstpl-block to-animate" style="background-image: url(<?=$assetPath?>/images/home/img_10.jpg);">
+            <div class="abstpl-block to-animate"
+                 style="background-image: url(<?= $assetPath ?>/images/home/img_10.jpg);">
                 <div class="overlay-darker"></div>
                 <div class="overlay"></div>
                 <div class="abstpl-text">
@@ -68,7 +72,7 @@ $mediaPath = $this->basePath('media');
                         <h2 class="to-animate">Empresa</h2>
                         <div class="row">
                             <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                                <?= $this->companyIntro;?>
+                                <?= $this->companyIntro; ?>
                             </div>
                         </div>
                     </div>
@@ -85,13 +89,13 @@ $mediaPath = $this->basePath('media');
                 <h2 class="to-animate">Trabajos</h2>
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                        <h3><?=$this->workIntro;?></h3>
+                        <h3><?= $this->workIntro; ?></h3>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row row-bottom-padded-sm">
-            <?= $galleryHelper->renderFeatured($this->featuredJobs, 'jobs-gallery');?>
+            <?= $galleryHelper->renderFeatured($this->featuredJobs, 'jobs-gallery'); ?>
         </div>
         <div class="row">
             <div class="col-xs-12 text-center">
@@ -108,44 +112,74 @@ $mediaPath = $this->basePath('media');
                 <h2 class="to-animate">Pregúntanos</h2>
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                        <h3><?= $this->questionIntro;?></h3>
+                        <h3><?= $this->questionIntro; ?></h3>
                     </div>
                 </div>
             </div>
         </div>
 
 
-        <div class="col-md-6 to-animate">
-            <h3>Consulta Técnica</h3>
-            <div class="form-group">
-                <label for="question_name" class="sr-only">Nombre</label>
-                <input id="question_name" class="form-control" placeholder="Nombre" type="text">
-            </div>
-            <div class="form-group">
-                <label for="question_email" class="sr-only">Email</label>
-                <input id="question_email" class="form-control" placeholder="Email" type="email">
-            </div>
-            <div class="form-group">
-                <label for="question_customer_code" class="sr-only">Código de cliente</label>
-                <input id="question_customer_code" class="form-control" placeholder="Código de cliente" type="text">
-            </div>
-            <div class="form-group">
-                <label for="question_topic" class="sr-only">Temática de la pregunta</label>
-                <select name="question_topic" id="question_topic" class="form-control">
-                    <option value="">Temática de la pregunta</option>
-                    <option value="topic_1">Tematica 1</option>
-                    <option value="topic_2">Tematica 2</option>
-                    <option value="topic_3">Tematica 3</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="question_message" class="sr-only">Mensaje</label>
-                <textarea name="" id="question_message" cols="30" rows="5" class="form-control"
-                          placeholder="Mensaje"></textarea>
-            </div>
-            <div class="form-group">
-                <input class="btn btn-primary btn-lg" value="Enviar" type="submit">
-            </div>
+        <div class="col-md-12 to-animate">
+            <form id="question_form" class="form-horizontal" action="/example" method="post">
+                <h3>Consulta Técnica</h3>
+                <div class="form-group">
+                    <label for="question_name" class="sr-only">Nombre</label>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input id="question_name" name="question_name" class="form-control" placeholder="Nombre"
+                                   type="text">
+                        </div>
+                        <div class="col-sm-6 messages"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="question_email" class="sr-only">Email</label>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input id="question_email" name="question_email" class="form-control" placeholder="Email"
+                                   type="email">
+                        </div>
+                        <div class="col-sm-6 messages"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="question_customer_code" class="sr-only">Código de cliente</label>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input id="question_customer_code" name="question_customer_code" class="form-control"
+                                   placeholder="Código de cliente" type="text">
+                        </div>
+                        <div class="col-sm-6 messages"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="question_topic" class="sr-only">Temática de la pregunta</label>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <select name="question_topic" id="question_topic" class="form-control">
+                                <option value="">Temática de la pregunta</option>
+                                <option value="topic_1">Tematica 1</option>
+                                <option value="topic_2">Tematica 2</option>
+                                <option value="topic_3">Tematica 3</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6 messages"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="question_message" class="sr-only">Mensaje</label>
+                    <div class="row">
+                        <div class="col-sm-6">
+                        <textarea name="question_message" id="question_message" cols="30" rows="5" class="form-control"
+                                  placeholder="Mensaje"></textarea>
+                        </div>
+                        <div class="col-sm-6 messages"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-primary btn-lg" value="Enviar" type="submit">
+                </div>
+            </form>
         </div>
     </div>
 </section>
@@ -157,7 +191,7 @@ $mediaPath = $this->basePath('media');
                 <h2 class="to-animate">Servicios</h2>
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                        <h3><?=$this->servicesIntro?></h3>
+                        <h3><?= $this->servicesIntro ?></h3>
                     </div>
                 </div>
             </div>
@@ -230,13 +264,13 @@ $mediaPath = $this->basePath('media');
                 <h2 class="to-animate">ACCESORIOS</h2>
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                        <h3><?= $this->accessoriesIntro;?></h3>
+                        <h3><?= $this->accessoriesIntro; ?></h3>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row row-bottom-padded-sm">
-            <?= $galleryHelper->withBorder()->renderFeatured($this->featuredAccessories, 'accessories-gallery');?>
+            <?= $galleryHelper->withBorder()->renderFeatured($this->featuredAccessories, 'accessories-gallery'); ?>
         </div>
         <div class="row">
             <div class="col-xs-12 text-center">
@@ -247,7 +281,8 @@ $mediaPath = $this->basePath('media');
     </div>
 </section>
 
-<section id="abstpl-counters" data-section="clients" style="background-image: url(<?=$assetPath?>/images/home/full_image_1.jpg);">
+<section id="abstpl-counters" data-section="clients"
+         style="background-image: url(<?= $assetPath ?>/images/home/full_image_1.jpg);">
     <div class="abstpl-overlay"></div>
     <div class="container">
         <div class="row">
@@ -262,10 +297,10 @@ $mediaPath = $this->basePath('media');
             </div>
         </div>
         <div class="row">
-            <?php foreach($this->partners as $partner) :?>
+            <?php foreach ($this->partners as $partner) : ?>
                 <div class="col-md-4">
                     <div class="abstpl-person text-center to-animate">
-                        <figure><img src="<?=$mediaPath . '/' . $partner->logo;?>" alt="Image"></figure>
+                        <figure><img src="<?= $mediaPath . '/' . $partner->logo; ?>" alt="Image"></figure>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -280,7 +315,7 @@ $mediaPath = $this->basePath('media');
                 <h2 class="to-animate">Contacto</h2>
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                        <h3><?= $this->contactIntro;?></h3>
+                        <h3><?= $this->contactIntro; ?></h3>
                     </div>
                 </div>
             </div>
@@ -291,34 +326,60 @@ $mediaPath = $this->basePath('media');
                 <ul class="abstpl-contact-info">
                     <li class="abstpl-contact-address ">
                         <i class="icon-home"></i>
-                        <?=$this->appData->locale->{$this->lang}->address;?>
+                        <?= $this->appData->locale->{$this->lang}->address; ?>
                     </li>
-                    <li><i class="icon-phone"></i><a class="phone" href="tel:<?=$this->appData->locale->{$this->lang}->phone?>"><?=$this->appData->locale->{$this->lang}->phone?></a></li>
-                    <li><i class="icon-envelope"></i><a class="mail" href="mailto:<?=$this->appData->locale->{$this->lang}->email?>"><?=$this->appData->locale->{$this->lang}->email?></a></li>
+                    <li><i class="icon-phone"></i><a class="phone"
+                                                     href="tel:<?= $this->appData->locale->{$this->lang}->phone ?>"><?= $this->appData->locale->{$this->lang}->phone ?></a>
+                    </li>
+                    <li><i class="icon-envelope"></i><a class="mail"
+                                                        href="mailto:<?= $this->appData->locale->{$this->lang}->email ?>"><?= $this->appData->locale->{$this->lang}->email ?></a>
+                    </li>
                 </ul>
             </div>
 
             <div class="col-md-6 to-animate">
-                <div class="form-group">
-                    <label for="name" class="sr-only">Nombre</label>
-                    <input id="name" name="name" class="form-control" placeholder="Nombre" type="text">
-                </div>
-                <div class="form-group">
-                    <label for="email" class="sr-only">Email</label>
-                    <input id="email" name="email" class="form-control" placeholder="Email" type="email">
-                </div>
-                <div class="form-group">
-                    <label for="phone" class="sr-only">Teléfono</label>
-                    <input id="phone" name="phone" class="form-control" placeholder="Teléfono" type="text">
-                </div>
-                <div class="form-group">
-                    <label for="message" class="sr-only">Mensaje</label>
-                    <textarea name="message" id="message" cols="30" rows="5" class="form-control"
-                              placeholder="Mensaje"></textarea>
-                </div>
-                <div class="form-group">
-                    <input class="btn btn-primary btn-lg" value="Enviar" type="submit">
-                </div>
+                <form id="contact_form" class="form-horizontal" action="/example" method="post">
+                    <div class="form-group">
+                        <label for="name" class="sr-only">Nombre</label>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input id="name" name="name" class="form-control" placeholder="Nombre" type="text">
+                            </div>
+                            <div class="col-sm-12 messages"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="sr-only">Email</label>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input id="email" name="email" class="form-control" placeholder="Email" type="email">
+                            </div>
+                            <div class="col-sm-12 messages"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="sr-only">Teléfono</label>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input id="phone" name="phone" class="form-control" placeholder="Teléfono" type="text">
+                            </div>
+                            <div class="col-sm-12 messages"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="sr-only">Mensaje</label>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <textarea name="message" id="message" cols="30" rows="5" class="form-control"
+                                          placeholder="Mensaje"></textarea>
+                            </div>
+                            <div class="col-sm-12 messages"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-primary btn-lg" value="Enviar" type="submit">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
