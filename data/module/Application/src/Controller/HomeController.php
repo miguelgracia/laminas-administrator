@@ -3,12 +3,55 @@
 namespace Application\Controller;
 
 use Api\Service\AccessoryService;
+use Api\Service\ContactService;
 use Api\Service\JobService;
 use Api\Service\PartnerService;
+use Api\Service\StaticPageService;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class HomeController extends ApplicationController
 {
+    private $captchaSecret = '6LdGVMwUAAAAAGak-tvRIV77Q2NYlGWskB4t5tPB';
+
+    public function contactAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            $this->getResponse()->setStatusCode(500);
+            return new JsonModel(
+                [
+                    'isAjax' => $this->getRequest()->isXmlHttpRequest(),
+                    'isPost' => $this->getRequest()->isPost()
+                ]
+            );
+        }
+
+        $contactService = $this->serviceManager->get(ContactService::class);
+
+        $form = $contactService
+            ->createForm($this->captchaSecret)
+            ->setData($this->request->getPost());
+
+        if ($form->isValid()) {
+            $mailTo = $this->appData->row->mailInbox;
+            $mailSended = $contactService->sendFormMail($mailTo);
+            $vars = [
+                'status' => 'ok',
+                'error' => false,
+                'message' => $mailSended ? 'Mensaje enviado' : 'Mensaje NO enviado',
+            ];
+        } else {
+            $this->getResponse()->setStatusCode(422);
+            $vars = [
+                'status' => 'ko',
+                'error' => true,
+                'message' => $form->get('contact')->getMessages()
+            ];
+        }
+
+        return new JsonModel($vars);
+    }
+
     public function indexAction()
     {
         $menuLang = $this->menu->locale->{$this->lang};
@@ -24,8 +67,13 @@ class HomeController extends ApplicationController
             'og' => $ogFacebook,
         ]);
 
+        $contactService = $this->serviceManager->get(ContactService::class);
+
         $vars = [
+            'formActionUrl' => $this->url()->fromRoute('locale/contact', ['locale' => $this->lang]),
+            'contactForm' => $contactService->createForm(),
             'contactIntro' => $menuLang[$this->menu->rows->contact->id]->content,
+            'legal' => $this->serviceManager->get(StaticPageService::class)->getData(),
             'accessoriesIntro' => $menuLang[$this->menu->rows->accessories->id]->content,
             'questionIntro' => $menuLang[$this->menu->rows->technicalquestion->id]->content,
             'companyIntro' => $menuLang[$this->menu->rows->company->id]->content,

@@ -7,6 +7,7 @@
 
 namespace Application;
 
+use Zend\I18n\Translator\Resources;
 use Zend\Mvc\MvcEvent;
 use Zend\Session\SessionManager;
 
@@ -46,6 +47,15 @@ class Module
 
         $session->lang = $currentLang;
 
-        $serviceManager->get('MvcTranslator')->setLocale($currentLang);
+        $mvcTranslator = $serviceManager->get('MvcTranslator');
+        $mvcTranslator->addTranslationFile(
+            'phpArray',
+            Resources::getBasePath() .'es/Zend_Validate.php',
+            'default',
+            'es'
+        );
+        $mvcTranslator->setLocale('es');
+
+
     }
 }

@@ -24,6 +24,7 @@ use Application\View\Helper\Menu;
 use Application\View\Helper\MenuDelegator;
 use Application\View\Helper\Partner;
 use Application\View\Helper\SocialIcon;
+use Zend\I18n\Translator\Resources;
 use Zend\I18n\Translator\TranslatorServiceFactory;
 use Zend\I18n\View\Helper\Translate;
 use Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack;
@@ -69,7 +70,7 @@ return [
                         '__CONTROLLER__' => 'Home',
                         'controller' => HomeController::class,
                         'action' => 'index',
-                        'locale' => 'en_en'
+                        'locale' => 'es_es'
                     ],
                 ],
                 'may_terminate' => true,
@@ -125,8 +126,8 @@ return [
                             'route' => '/{contact}',
                             'defaults' => [
                                 '__CONTROLLER__' => 'Contact',
-                                'controller' => ContactController::class,
-                                'action' => 'index',
+                                'controller' => HomeController::class,
+                                'action' => 'contact',
                             ],
                         ],
                         'may_terminate' => true,
@@ -221,19 +222,24 @@ return [
         ],
     ],
     'translator' => [
-        'locale' => 'es_es',
+        'locale' => 'es',
         'translation_file_patterns' => [
-            [
+            /*[
                 'type' => 'phpArray',
                 'base_dir' => __DIR__ . '/../language',
                 'pattern' => '%s.php',
                 'text_domain' => 'frontend'
-            ],
+            ],*/
             [
                 'type' => 'phpArray',
                 'base_dir' => __DIR__ . '/../language/routing',
                 'pattern' => '%s.php',
                 'text_domain' => 'routing'
+            ],
+            [
+                'type' => 'phpArray',
+                'base_dir' => Resources::getBasePath(),
+                'pattern' => Resources::getPatternForValidator(),
             ],
         ],
     ],

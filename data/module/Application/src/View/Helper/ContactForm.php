@@ -8,11 +8,20 @@ class ContactForm extends AbstractHelper
 {
     protected $form;
 
+    protected $helperManager;
+
+    protected $url;
+
     public function __invoke($form)
     {
         $this->form = $form;
 
         return $this;
+    }
+
+    private function setHelpers()
+    {
+        $this->helperManager = $this->getView()->getHelperPluginManager();
     }
 
     public function getFormWrapper()
@@ -24,65 +33,17 @@ class ContactForm extends AbstractHelper
     public function getFormGroupWrapper()
     {
         return "<div class='form-group'>
-                    %s
-                    %s
-                    %s
+                    <div class='row'>
+                        %s
+                        %s
+                      </div>
                 </div>";
     }
 
-    public function getLabelWrapper($isRequired = false)
+    public function getLabelWrapper($srOnly = true,  $isRequired = false)
     {
-        return "<label for='%s'>%s" . ($isRequired ? ' *' : '') . '</label>';
-    }
-
-    public function renderError($field)
-    {
-        $messageTranslations = [
-            'email' => [
-                'isEmpty' => 'Value is required and can\'t be empty',
-                'emailAddressInvalidHostname' => 'Invalid email format',
-                'emailAddressInvalidFormat' => 'Invalid email format',
-                'hostnameInvalidHostname' => 'Invalid email format',
-                'hostnameLocalNameNotAllowed' => 'Invalid email format',
-            ],
-            'message' => [
-                'isEmpty' => 'Value is required and can\'t be empty',
-            ],
-            'legal' => [
-                'isEmpty' => 'Value is required and can\'t be empty',
-            ],
-            'captcha' => [
-                'badCaptcha' => 'Captcha value is wrong',
-                'missingValue' => 'Empty captcha value',
-                'missingID' => 'Captcha ID field is missing',
-            ]
-        ];
-
-        $fieldId = $field->getAttribute('id');
-        $errorMessages = $field->getMessages();
-
-        $messages = [];
-        $li = '';
-        foreach ($errorMessages as $keyMessage => $message) {
-            if (array_key_exists($fieldId, $messageTranslations)) {
-                $fieldTranslations = $messageTranslations[$fieldId];
-                if (array_key_exists($keyMessage, $fieldTranslations)) {
-                    if (!in_array($fieldTranslations[$keyMessage], $messages)) {
-                        $newMessage = $this->translator->translate($fieldTranslations[$keyMessage], 'frontend');
-                        $messages[] = $fieldTranslations[$keyMessage];
-                        $li .= '<li>' . $newMessage . '</li>';
-                    }
-                } else {
-                    $li .= '<li>' . $this->translator->translate($message) . '</li>';
-                }
-            }
-        }
-
-        $ul = '<ul class="error">';
-        $ul .= $li;
-        $ul .= '</ul>';
-
-        return $ul;
+        $class = $srOnly ? 'sr-only' : '';
+        return "<label class='$class' for='%s'>%s" . ($isRequired ? ' *' : '') . '</label>';
     }
 
     private function setLegalLink($lang, $legal)
@@ -100,15 +61,29 @@ class ContactForm extends AbstractHelper
         );
     }
 
+    private function getElement($helperName, $field, $labelText = false)
+    {
+        $fieldset = $this->form->get('contact');
+
+        $formHelper = $this->helperManager->get($helperName);
+
+        $label = is_string($labelText)
+            ? sprintf($this->getLabelWrapper(), $field, $this->translator->translate($labelText, 'frontend'))
+            : '';
+
+        $field = $fieldset->get($field);
+        $input = $formHelper($field);
+
+        return sprintf($this->getFormGroupWrapper(), $label, $input);
+    }
+
     public function render($lang, $legal)
     {
-        $helperManager = $this->getView()->getHelperPluginManager();
-        $formInput = $helperManager->get('formInput');
-        $formTextarea = $helperManager->get('formTextarea');
-        $formCheckbox = $helperManager->get('formCheckbox');
-        $formCaptcha = $helperManager->get('formCaptcha');
+        $this->setHelpers();
 
-        $url = $helperManager->get('Url');
+        $formCheckbox = $this->helperManager->get('formCheckbox');
+
+        $url = $this->helperManager->get('Url');
 
         $this->form->prepare();
         $this->form->setAttribute('action', $url('locale/contact', ['locale' => $lang]));
@@ -116,25 +91,12 @@ class ContactForm extends AbstractHelper
         $fieldset = $this->form->get('contact');
 
         $formTag = $this->getFormWrapper();
-        $groupTags = '';
 
-        $label = sprintf($this->getLabelWrapper(), 'name', $this->translator->translate('Form Name', 'frontend'));
-        $input = $formInput($fieldset->get('name'));
-        $groupTags .= sprintf($this->getFormGroupWrapper(), $label, $input, '');
-
-        $label = sprintf($this->getLabelWrapper(true), 'email', $this->translator->translate('Form Email', 'frontend'));
-        $field = $fieldset->get('email');
-        $input = $formInput($field);
-        $groupTags .= sprintf($this->getFormGroupWrapper(), $label, $input, $this->renderError($field));
-
-        $label = sprintf($this->getLabelWrapper(), 'phone', $this->translator->translate('Form Phone', 'frontend'));
-        $input = $formInput($fieldset->get('phone'));
-        $groupTags .= sprintf($this->getFormGroupWrapper(), $label, $input, '');
-
-        $label = sprintf($this->getLabelWrapper(true), 'message', $this->translator->translate('Form Message', 'frontend'));
-        $field = $fieldset->get('message');
-        $input = $formTextarea($field);
-        $groupTags .= sprintf($this->getFormGroupWrapper(), $label, $input, $this->renderError($field));
+        $groupTags = $this->getElement('formInput', 'name', 'Form Name');
+        $groupTags .= $this->getElement('formInput', 'email', 'Form Email');
+        $groupTags .= $this->getElement('formInput', 'phone', 'Form Phone');
+        $groupTags .= $this->getElement('formTextarea', 'message', 'Form Message');
+        $groupTags .= $this->getElement('formInput', 'g-recaptcha-response',false);
 
         $field = $fieldset->get('legal');
 
@@ -143,21 +105,23 @@ class ContactForm extends AbstractHelper
         $termAndConditionsStr = $this->setLegalLink($lang, $legal);
 
         $label = sprintf(
-            $this->getLabelWrapper(),
+            $this->getLabelWrapper(false),
             'legal',
             ($input . $termAndConditionsStr)
         );
-        $groupTags .= sprintf($this->getFormGroupWrapper(), $label, '', $this->renderError($field));
 
-        $label = sprintf($this->getLabelWrapper(true), 'captcha', $this->translator->translate('Form Captcha', 'frontend'));
-        $field = $this->form->get('captcha');
-        $input = $formCaptcha($field);
-        $groupTags .= sprintf($this->getFormGroupWrapper(), $label, $input, $this->renderError($field));
+        $groupTags .= sprintf($this->getFormGroupWrapper(), $label, '');
 
-        $groupTags .= "<button type='submit' class='btn btn-default'>" . $this->translator->translate('Form Send', 'frontend') . '</button>';
+        $groupTags .= "
+            <div class='form-group'>
+                <div class='row'>
+                    <button type='submit' class='btn btn-primary btn-lg'>"
+                        . $this->translator->translate('Form Send', 'frontend'). '
+                    </button>
+                </div>
+            </div>'
+        ;
 
-        $html = sprintf($formTag, $groupTags);
-
-        echo $html;
+        echo sprintf($formTag, $groupTags);
     }
 }

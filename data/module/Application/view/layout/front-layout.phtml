@@ -75,7 +75,7 @@ echo $this->doctype(); ?>
     <footer id="footer" role="contentinfo">
         <a href="#" class="gotop" id="js-gotop"><i class="icon-arrow-up2"></i></a>
         <div class="container">
-            <div class="">
+            <div class="row">
                 <div class="col-md-12 text-center">
                     <p>&copy; <?=$this->appData->row->companyName;?></p>
                 </div>
@@ -90,6 +90,13 @@ echo $this->doctype(); ?>
                 </div>
 
                 <?php /*$legalLinkHelper->render($this->legal,$this->lang);*/?>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center small">
+                    This site is protected by reCAPTCHA and the Google
+                    <a target="_blank" href="https://policies.google.com/privacy">Privacy Policy</a> and
+                    <a target="_blank" href="https://policies.google.com/terms">Terms of Service</a> apply.
+                </div>
             </div>
         </div>
     </footer>
@@ -108,7 +115,10 @@ echo $this->doctype(); ?>
     <input type="hidden" id="simple-routing-manager" name="<?=$this->srmController;?>" value="<?=$this->controllerAction;?>" />
 
     <!-- Scripts -->
-        <?php echo $this->headScript()
+    <script src="https://www.google.com/recaptcha/api.js?render=6LdGVMwUAAAAALwwx1GI2tM5ECgIABu9zXxkxogh"></script>
+    <input type="hidden" id="google-captcha-key" value="6LdGVMwUAAAAALwwx1GI2tM5ECgIABu9zXxkxogh">
+
+    <?php echo $this->headScript()
             ->appendFile($assetPath. '/dist/vendor-dist.js')
             ->appendFile($assetPath. '/dist/dist.js')
         ; ?>

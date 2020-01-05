@@ -27,18 +27,6 @@ msgstr "Teléfono"
 msgid "Form Message"
 msgstr "Mensaje"
 
-msgid "Form Captcha"
-msgstr "Introduzca los caracteres que aparecen a continuación"
-
-msgid "Captcha value is wrong"
-msgstr "El valor introducido es incorrecto"
-
-msgid "Empty captcha value"
-msgstr "El campo está vacío"
-
-msgid "Captcha ID field is missing"
-msgstr "No se encuentra el ID del campo"
-
 msgid "I agree with the terms and conditions of use"
 msgstr "He leído y acepto los <a href='%s' target='_blank'>términos y condiciones de uso</a>"
 

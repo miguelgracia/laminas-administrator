@@ -2,16 +2,14 @@
 
 namespace Application\Form;
 
-use Application\Validator\Recaptcha;
 use Zend\Filter\StringTrim;
 use Zend\Form\Element\Checkbox;
-use Zend\Form\Element\Hidden;
 use Zend\Form\Element\Text;
 use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\Validator\EmailAddress;
 
-class ContactFieldset extends Fieldset implements InputFilterProviderInterface
+class QuestionFieldset extends Fieldset implements InputFilterProviderInterface
 {
     public function __construct($name, array $options)
     {
@@ -22,24 +20,21 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
             'type' => Text::class,
             'attributes' => [
                 'id' => 'name',
-                'class' => 'form-control',
-                'placeholder' => 'Nombre'
+                'class' => 'form-control'
             ],
         ])->add([
             'name' => 'email',
             'type' => Text::class,
             'attributes' => [
                 'id' => 'email',
-                'class' => 'form-control',
-                'placeholder' => 'Email'
+                'class' => 'form-control'
             ],
         ])->add([
             'name' => 'phone',
             'type' => Text::class,
             'attributes' => [
                 'id' => 'phone',
-                'class' => 'form-control',
-                'placeholder' => 'Teléfono'
+                'class' => 'form-control'
             ],
         ])->add([
             'name' => 'message',
@@ -47,8 +42,7 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
             'attributes' => [
                 'id' => 'message',
                 'class' => 'form-control',
-                'rows' => '10',
-                'placeholder' => 'Mensaje'
+                'rows' => '10'
             ],
         ])->add([
             'name' => 'legal',
@@ -59,9 +53,6 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
             'options' => [
                 'use_hidden_element' => false
             ]
-        ])->add([
-            'name' => 'g-recaptcha-response',
-            'type' => Hidden::class,
         ]);
     }
 
@@ -91,17 +82,6 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
             ],
             'legal' => [
                 'required' => true
-            ],
-            'g-recaptcha-response' => [
-                'required' => true,
-                'validators' => [
-                    [
-                        'name' => Recaptcha::class,
-                        'options' => [
-                            'captcha_secret' => $this->getOption('captcha_secret')
-                        ]
-                    ]
-                ]
             ]
         ];
     }

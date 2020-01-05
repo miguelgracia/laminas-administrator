@@ -43,9 +43,6 @@ msgstr "Phone"
 msgid "Form Message"
 msgstr "Message"
 
-msgid "Form Captcha"
-msgstr "Enter Captcha"
-
 msgid "I agree with the terms and conditions of use"
 msgstr "I agree with the <a href='%s' target='_blank'>terms and conditions of use</a>"
 

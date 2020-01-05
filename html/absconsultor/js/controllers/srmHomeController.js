@@ -1,6 +1,6 @@
 import simpleJSRoutingManager from './../simple-js-routing-manager';
 import animateScrollTo from 'animated-scroll-to';
-import validate from 'validate.js';
+import axios from 'axios';
 
 function srmHomeController() {
 
@@ -252,95 +252,36 @@ function srmHomeController() {
         });
     };
 
-    const validation = function (formId, constraints) {
+    const newRecaptcha = function (form, callback) {
+        const googleRecaptchaKey = document.getElementById('google-captcha-key').value;
+        grecaptcha.execute(googleRecaptchaKey, {action: form.id}).then(function(token) {
+            form.querySelector('input[name$="[g-recaptcha-response]"]').value=token;
+            if (typeof callback !== "undefined") {
+                callback();
+            }
+        });
+    };
 
-        // Hook up the form so we can prevent it from being posted
-
-        let form = document.querySelector(formId);
+    const validation = function (formId) {
+        let sending = false;
+        const form = document.querySelector(formId);
         form.addEventListener("submit", function(ev) {
             ev.preventDefault();
-            handleFormSubmit(form);
-        });
-        // Hook up the inputs to validate on the fly
-        let inputs = form.querySelectorAll("input, textarea, select")
-        for (let i = 0; i < inputs.length; ++i) {
-            inputs.item(i).addEventListener("change", function(ev) {
-                const errors = validate(form, constraints) || {};
-                showErrorsForInput(this, errors[this.name])
-            });
-        }
-        function handleFormSubmit(form, input) {
-            // validate the form against the constraints
-            const errors = validate(form, constraints);
-            // then we update the form to reflect the results
-            showErrors(form, errors || {});
-            if (!errors) {
-                showSuccess();
-            }
-        }
-        // Updates the inputs with the validation errors
-        function showErrors(form, errors) {
-            // We loop through all the inputs and show the errors for that input
-            [].forEach.call(form.querySelectorAll("input[name], select[name]"), function (input) {
-                // Since the errors can be null if no errors were found we need to handle
-                // that
-                showErrorsForInput(input, errors && errors[input.name]);
-            });
-        }
-        // Shows the errors for a specific input
-        function showErrorsForInput(input, errors) {
-            // This is the root of the input
-            let formGroup = closestParent(input.parentNode, "form-group");
-            // Find where the error messages will be insert into
-            let messages = formGroup.querySelector(".messages");
-            // First we remove any old messages and resets the classes
-            resetFormGroup(formGroup);
-            // If we have errors
-            if (errors) {
-                // we first mark the group has having errors
-                formGroup.classList.add("has-error");
-                // then we append all the errors
-                [].forEach.call(errors, function (error) {
-                    addError(messages, error);
-                });
-            } else {
-                // otherwise we simply mark it as success
-                formGroup.classList.add("has-success");
-            }
-        }
-        // Recusively finds the closest parent that has the specified class
-        function closestParent(child, className) {
-            if (!child || child == document) {
-                return null;
-            }
-            if (child.classList.contains(className)) {
-                return child;
+            if (sending) {
+                return;
             }
 
-            return closestParent(child.parentNode, className);
-        }
-        function resetFormGroup(formGroup) {
-            // Remove the success and error classes
-            formGroup.classList.remove("has-error");
-            formGroup.classList.remove("has-success");
-            // and remove any old messages
-            [].forEach.call(formGroup.querySelectorAll(".help-block.error"), function (el) {
-                el.parentNode.removeChild(el);
+            sending = true;
+            newRecaptcha(this, function () {
+                axios.post(form.action, new FormData(form)).then(function (response) {
+                    console.log(response);
+                }).finally(function () {
+                    sending = false;
+                });
             });
-        }
-        // Adds the specified error with the following markup
-        // <p class="help-block error">[message]</p>
-        function addError(messages, error) {
-            let block = document.createElement("p");
-            block.classList.add("help-block");
-            block.classList.add("error");
-            block.innerText = error;
-            messages.appendChild(block);
-        }
-        function showSuccess() {
-            // We made it \:D/
-            alert("Success!");
-        }
+        });
+
+        grecaptcha.ready();
     };
 
     this.indexAction = function() {
@@ -370,48 +311,9 @@ function srmHomeController() {
 
         checkScroll();
 
-        validation('form#question_form', {
-            question_email: {
-                // Email is required
-                presence: true,
-                // and must be an email (duh)
-                email: true
-            },
-            question_name: {
-                presence: true,
-            },
-            question_customer_code: {
-                presence: true,
-            },
-            question_topic: {
-                presence: true,
-            },
-            question_message: {
-                presence: true,
-                length: {
-                    minimum: 30
-                }
-            },
-        });
+        //validation('form#question_form');
+        validation('form#contact_form');
 
-        validation('form#contact_form', {
-            name: {
-                presence: true,
-            },
-            email: {
-                presence: true,
-                email:true
-            },
-            phone: {
-                presence: true,
-            },
-            message: {
-                presence: true,
-                length: {
-                    minimum: 30
-                }
-            }
-        });
     };
 }
 simpleJSRoutingManager.srmController(srmHomeController);

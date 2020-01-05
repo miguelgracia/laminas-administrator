@@ -3,15 +3,12 @@
 namespace Api\Service;
 
 use Application\Form\ContactFieldset;
-use Zend\Captcha\Dumb;
-use Zend\Captcha\Image;
-use Zend\Filter\RealPath;
-use Zend\Form\Element\Captcha;
 use Zend\Form\Form;
-use Zend\InputFilter\InputFilter;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail;
 use Zend\Validator\EmailAddress;
+use Zend\Mail\Transport\Smtp as SmtpTransport;
+use Zend\Mail\Transport\SmtpOptions;
 
 class ContactService
 {
@@ -20,76 +17,51 @@ class ContactService
      */
     protected $form;
 
-    public function createForm()
+    public function createForm($captchaSecret = false)
     {
-        $fieldset = new ContactFieldset('contact', []);
-        $this->form = new Form();
-        $this->form->add($fieldset);
+        $this->form = (new Form)
+            ->add(new ContactFieldset('contact', [
+                'captcha_secret' => $captchaSecret
+            ]))
+            ->setAttributes([
+                'id' => 'contact_form',
+                'class' => 'form-horizontal',
+                'method' => 'POST'
+            ]);
 
-        $captcha = new Captcha('captcha');
-
-        $realPathFilter = new RealPath(false);
-
-        $fontPath = $realPathFilter->filter($_SERVER['DOCUMENT_ROOT'] . '/font/arial.ttf');
-
-        $imageCaptcha = new Image([
-            'font' => $fontPath
-        ]);
-
-        $imageCaptcha->setImgDir($_SERVER['DOCUMENT_ROOT'] . '/captcha');
-        $imageCaptcha->setImgUrl('/captcha');
-
-        $captcha->setCaptcha($imageCaptcha);
-
-        $captcha->setAttribute('id', 'captcha');
-        $captcha->setAttribute('class', 'form-control');
-        $this->form->add($captcha);
-        $this->form->setAttribute('method', 'post');
-        $inputFilter = new InputFilter();
-
-        $inputFilter->add($captcha->getInputSpecification(), 'captcha');
-
-        $this->form->setInputFilter($inputFilter);
         return $this->form;
-    }
-
-    public function bindForm($postData)
-    {
-        $this->form->setData($postData);
-    }
-
-    public function validateForm()
-    {
-        return $this->form->isValid();
     }
 
     public function sendFormMail($mailTo)
     {
         $mailValidator = new EmailAddress();
 
-        if ($mailValidator->isValid($mailTo)) {
-            $formData = $this->form->getData();
-
-            $formData = $formData['contact'];
-
-            $mail = new Message();
-//            $mail->setFrom('absconsultor@absconsultor.es', "ABS Consultor - Contacto Web");
-            $mail->setFrom('miguelgraciamartin@gmail.com', 'ABS Consultor - Contacto Web');
-            $mail->addTo($mailTo, 'ABS Consultor');
-            $mail->setSubject('Información de contacto desde la web');
-
-            $body = 'Nombre   : ' . $formData['name'] . "\n";
-            $body .= 'Email    : ' . $formData['email'] . "\n";
-            $body .= 'Teléfono : ' . $formData['phone'] . "\n";
-            $body .= 'Mensaje  : ' . $formData['message'] . "\n";
-
-            $mail->setBody($body);
-
-            $transport = new Sendmail();
-            $transport->send($mail);
-
-            return true;
+        if (!$mailValidator->isValid($mailTo)) {
+            return false;
         }
-        return false;
+
+        $formData = $this->form->get('contact');
+        $body = sprintf(
+            "Nombre   : %s \n
+                 Email    : %s \n
+                 Teléfono : %s \n
+                 Mensaje  : %s \n",
+            $formData->get('name')->getValue(),
+            $formData->get('email')->getValue(),
+            $formData->get('phone')->getValue(),
+            $formData->get('message')->getValue());
+
+        $mailTo = "miguelgraciamartin@gmail.com";
+
+        $mail = (new Message)
+            ->setFrom('absconsultor@absconsultor.es', "ABS Consultor - Contacto Web")
+            ->setEncoding('UTF-8')
+            ->addTo($mailTo, 'ABS Consultor')
+            ->setSubject('Información de contacto desde la web')
+            ->setBody($body);
+
+        (new Sendmail())->send($mail);
+
+        return true;
     }
 }
