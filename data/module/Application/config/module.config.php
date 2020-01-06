@@ -35,10 +35,10 @@ use Zend\Session\Storage\SessionArrayStorage;
 
 return [
     'languages_by_host' => [
-        'bravo-consultoria.local' => ['es_es', 'en_en'],
-        'bravo-silva.ngrok.io' => ['es_es', 'en_en'],
-        'absconsultor.es' => ['es_es', 'en_en'],
-        'absconsultor.local' => ['es_es', 'en_en'],
+        'bravo-consultoria.local' => ['es', 'en'],
+        'bravo-silva.ngrok.io' => ['es', 'en'],
+        'absconsultor.es' => ['es', 'en'],
+        'absconsultor.local' => ['es', 'en'],
     ],
     'media_base_url' => [
         'absconsultor.local' => 'http://media.absconsultor.local',
@@ -64,13 +64,13 @@ return [
                 'options' => [
                     'route' => '/[:locale]',
                     'constraints' => [
-                        'locale' => '(es_es|en_en)+'
+                        'locale' => '(es|en)+'
                     ],
                     'defaults' => [
                         '__CONTROLLER__' => 'Home',
                         'controller' => HomeController::class,
                         'action' => 'index',
-                        'locale' => 'es_es'
+                        'locale' => 'es'
                     ],
                 ],
                 'may_terminate' => true,
@@ -224,12 +224,12 @@ return [
     'translator' => [
         'locale' => 'es',
         'translation_file_patterns' => [
-            /*[
+            [
                 'type' => 'phpArray',
                 'base_dir' => __DIR__ . '/../language',
                 'pattern' => '%s.php',
-                'text_domain' => 'frontend'
-            ],*/
+                //'text_domain' => 'frontend'
+            ],
             [
                 'type' => 'phpArray',
                 'base_dir' => __DIR__ . '/../language/routing',
@@ -240,6 +240,7 @@ return [
                 'type' => 'phpArray',
                 'base_dir' => Resources::getBasePath(),
                 'pattern' => Resources::getPatternForValidator(),
+                //'text_domain' => 'formvalidation'
             ],
         ],
     ],

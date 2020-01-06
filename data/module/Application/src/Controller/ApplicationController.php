@@ -27,9 +27,14 @@ abstract class ApplicationController extends AbstractActionController
 
     protected $serviceManager;
 
+    protected $translator;
+
     public function onDispatch(MvcEvent $e)
     {
         $serviceManager = $e->getApplication()->getServiceManager();
+
+        $this->translator = $serviceManager->get('MvcTranslator');
+
         $this->serviceManager = $serviceManager;
         $this->headTitleHelper = $serviceManager->get('ViewHelperManager')->get('headTitle');
 

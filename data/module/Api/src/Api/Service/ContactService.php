@@ -7,8 +7,6 @@ use Zend\Form\Form;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail;
 use Zend\Validator\EmailAddress;
-use Zend\Mail\Transport\Smtp as SmtpTransport;
-use Zend\Mail\Transport\SmtpOptions;
 
 class ContactService
 {

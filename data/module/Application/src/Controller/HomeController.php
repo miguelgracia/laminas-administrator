@@ -7,6 +7,7 @@ use Api\Service\ContactService;
 use Api\Service\JobService;
 use Api\Service\PartnerService;
 use Api\Service\StaticPageService;
+use Application\Form\ContactFieldset;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
@@ -42,10 +43,19 @@ class HomeController extends ApplicationController
             ];
         } else {
             $this->getResponse()->setStatusCode(422);
+
+            $messages = $form->get('contact')->getMessages();
+
+            foreach ($messages as &$message) {
+                foreach ($message as &$msg) {
+                    $msg = $this->translator->translate($msg, 'default', $this->lang);
+                }
+            }
+
             $vars = [
                 'status' => 'ko',
                 'error' => true,
-                'message' => $form->get('contact')->getMessages()
+                'message' => $messages
             ];
         }
 
