@@ -9,10 +9,12 @@ function srmHomeController() {
 
     const goToTop = function () {
 
-        document.getElementById('js-gotop').addEventListener('click', function (event) {
-            event.preventDefault();
-            animateScrollTo(0);
-            return false;
+        [].forEach.call(document.querySelectorAll('.gotop'), function (gotop) {
+            gotop.addEventListener('click', function (event) {
+                event.preventDefault();
+                animateScrollTo(0);
+                return false;
+            });
         });
     };
 
