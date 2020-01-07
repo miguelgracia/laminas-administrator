@@ -23,6 +23,7 @@ use Application\View\Helper\LegalLink;
 use Application\View\Helper\Menu;
 use Application\View\Helper\MenuDelegator;
 use Application\View\Helper\Partner;
+use Application\View\Helper\QuestionForm;
 use Application\View\Helper\SocialIcon;
 use Zend\I18n\Translator\Resources;
 use Zend\I18n\Translator\TranslatorServiceFactory;
@@ -125,9 +126,21 @@ return [
                         'options' => [
                             'route' => '/{contact}',
                             'defaults' => [
-                                '__CONTROLLER__' => 'Contact',
+                                '__CONTROLLER__' => 'Home',
                                 'controller' => HomeController::class,
                                 'action' => 'contact',
+                            ],
+                        ],
+                        'may_terminate' => true,
+                    ],
+                    'question' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/{question}',
+                            'defaults' => [
+                                '__CONTROLLER__' => 'Home',
+                                'controller' => HomeController::class,
+                                'action' => 'question',
                             ],
                         ],
                         'may_terminate' => true,
@@ -199,6 +212,7 @@ return [
             'galleryHelper' => Gallery::class,
             'jobCategoryHelper' => JobCategory::class,
             'contactFormHelper' => ContactForm::class,
+            'questionFormHelper' => QuestionForm::class,
             'carouselItemHelper' => CarouselItem::class,
             'facebookShareHelper' => FacebookShare::class,
             'translate' => Translate::class
@@ -210,7 +224,8 @@ return [
             Partner::class => InvokableFactory::class,
             Gallery::class => InvokableFactory::class,
             JobCategory::class => InvokableFactory::class,
-            ContactForm::class => ContactForm::class,
+            ContactForm::class => InvokableFactory::class,
+            QuestionForm::class => InvokableFactory::class,
             CarouselItem::class => CarouselItem::class,
             FacebookShare::class => InvokableFactory::class,
             Translate::class => InvokableFactory::class
@@ -228,7 +243,7 @@ return [
                 'type' => 'phpArray',
                 'base_dir' => __DIR__ . '/../language',
                 'pattern' => '%s.php',
-                //'text_domain' => 'frontend'
+                'text_domain' => 'frontend'
             ],
             [
                 'type' => 'phpArray',
@@ -240,7 +255,6 @@ return [
                 'type' => 'phpArray',
                 'base_dir' => Resources::getBasePath(),
                 'pattern' => Resources::getPatternForValidator(),
-                //'text_domain' => 'formvalidation'
             ],
         ],
     ],

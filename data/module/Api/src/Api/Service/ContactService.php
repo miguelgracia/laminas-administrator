@@ -15,22 +15,18 @@ class ContactService
      */
     protected $form;
 
-    public function createForm($captchaSecret = false)
+    public function createForm($fieldset)
     {
-        $this->form = (new Form)
-            ->add(new ContactFieldset('contact', [
-                'captcha_secret' => $captchaSecret
-            ]))
+        return (new Form)
+            ->add($fieldset)
             ->setAttributes([
-                'id' => 'contact_form',
+                'id' => $fieldset->getName() .'_form',
                 'class' => 'form-horizontal',
                 'method' => 'POST'
             ]);
-
-        return $this->form;
     }
 
-    public function sendFormMail($mailTo)
+    public function sendFormMail($form, $mailTo)
     {
         $mailValidator = new EmailAddress();
 
@@ -38,7 +34,8 @@ class ContactService
             return false;
         }
 
-        $formData = $this->form->get('contact');
+        $formData = $form->get('contact');
+
         $body = sprintf(
             "Nombre   : %s \n
                  Email    : %s \n

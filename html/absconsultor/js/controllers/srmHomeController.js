@@ -1,6 +1,7 @@
 import simpleJSRoutingManager from './../simple-js-routing-manager';
 import animateScrollTo from 'animated-scroll-to';
 import axios from 'axios';
+import validator from "validator";
 
 function srmHomeController() {
 
@@ -262,9 +263,45 @@ function srmHomeController() {
         });
     };
 
-    const validation = function (formId) {
+    const validation = function (formId, fieldset) {
         let sending = false;
         const form = document.querySelector(formId);
+
+        const validatorMap = {
+            isEmpty: {
+                name: 'isEmpty',
+                passing: false
+            },
+            emailAddressInvalidFormat: {
+                name: 'isEmail',
+                passing: true
+            }
+        };
+
+        [].forEach.call(form.elements, function (element) {
+            element.addEventListener('blur', function () {
+
+                let formGroup = form.querySelector('div.form-group[data-name="'+this.name+'"]');
+                if (formGroup === null) {
+                    return;
+                }
+
+                let messagesWrapper = formGroup.querySelector('.messages');
+                const value = validator.trim(this.value);
+                [].forEach.call(messagesWrapper.querySelectorAll('p'), function (msg) {
+                    const validatorFunction = validatorMap[msg.dataset.validator];
+                    const validatorResult = validator[validatorFunction.name](value);
+                    if (validatorFunction.passing === validatorResult) {
+                        msg.parentNode.removeChild(msg);
+                    }
+                });
+
+                if (messagesWrapper.children.length == 0) {
+                    formGroup.classList.remove('has-error');
+                }
+            });
+        });
+
         form.addEventListener("submit", function(ev) {
             ev.preventDefault();
             if (sending) {
@@ -273,8 +310,36 @@ function srmHomeController() {
 
             sending = true;
             newRecaptcha(this, function () {
-                axios.post(form.action, new FormData(form)).then(function (response) {
-                    console.log(response);
+                axios.post(form.action, new FormData(form)).then(function (result) {
+                    alert(result.data.message);
+                    let button = form.querySelector('button[type="submit"]');
+                    button.parentNode.removeChild(button);
+                }).catch(function (result, pepe) {
+
+                    if (result.response.status !== 422) {
+                        return;
+                    }
+
+                    const messages = result.response.data.message;
+
+                    [].forEach.call(form.querySelectorAll('.messages'), function (msg) {
+                        msg.innerHTML = '';
+                    });
+
+                    for (const element in messages) {
+                        let formGroup = form.querySelector('div.form-group[data-name="'+fieldset+'['+element+']"]');
+                        formGroup.classList.add('has-error');
+                        let messageContainer = formGroup.querySelector(' .messages');
+                        messageContainer.innerHTML = '';
+                        for (let validatorType in messages[element]) {
+                            const validationMessage = messages[element][validatorType];
+                            let p = document.createElement('p');
+                            p.classList.add('help-block','error');
+                            p.dataset.validator = validatorType
+                            p.innerHTML = validationMessage;
+                            messageContainer.appendChild(p);
+                        }
+                    }
                 }).finally(function () {
                     sending = false;
                 });
@@ -311,8 +376,8 @@ function srmHomeController() {
 
         checkScroll();
 
-        //validation('form#question_form');
-        validation('form#contact_form');
+        validation('form#question_form', 'question');
+        validation('form#contact_form', 'contact');
 
     };
 }

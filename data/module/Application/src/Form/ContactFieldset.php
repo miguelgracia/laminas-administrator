@@ -68,6 +68,15 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
     public function getInputFilterSpecification()
     {
         return [
+            'name' => [
+                'required' => true,
+                'filters' => [
+                    [
+                        'name' => StringTrim::class
+                    ]
+                ]
+            ],
+
             'email' => [
                 'required' => true,
                 'filters' => [

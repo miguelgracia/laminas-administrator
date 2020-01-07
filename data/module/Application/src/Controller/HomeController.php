@@ -8,12 +8,80 @@ use Api\Service\JobService;
 use Api\Service\PartnerService;
 use Api\Service\StaticPageService;
 use Application\Form\ContactFieldset;
+use Application\Form\QuestionFieldset;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class HomeController extends ApplicationController
 {
     private $captchaSecret = '6LdGVMwUAAAAAGak-tvRIV77Q2NYlGWskB4t5tPB';
+
+    protected $form;
+    protected $messages;
+
+    private function validation($fieldset)
+    {
+        $contactService = $this->serviceManager->get(ContactService::class);
+
+        $this->form = $contactService
+            ->createForm($fieldset)
+            ->setData($this->request->getPost());
+
+        $isValid = $this->form->isValid();
+
+        if (!$isValid) {
+            $messages = $this->form->get($fieldset->getName())->getMessages();
+
+            foreach ($messages as &$message) {
+                foreach ($message as &$msg) {
+                    $msg = $this->translator->translate($msg, 'default', $this->lang);
+                }
+            }
+
+            $this->messages = $messages;
+        };
+
+        return $isValid;
+    }
+
+    public function questionAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            $this->getResponse()->setStatusCode(500);
+            return new JsonModel(
+                [
+                    'isAjax' => $this->getRequest()->isXmlHttpRequest(),
+                    'isPost' => $this->getRequest()->isPost()
+                ]
+            );
+        }
+
+        $contactService = $this->serviceManager->get(ContactService::class);
+
+        if (!$this->validation(new QuestionFieldset('question', [
+            'captcha_secret' => $this->captchaSecret
+        ]))) {
+            $this->getResponse()->setStatusCode(422);
+
+            return new JsonModel([
+                'status' => 'ko',
+                'error' => true,
+                'message' => $this->messages
+            ]);
+        }
+
+        $mailSended = $contactService->sendFormMail($this->appData->row->mailInbox);
+
+        return new JsonModel([
+            'status' => 'ok',
+            'error' => false,
+            'message' => $this->translator->translate(
+                $mailSended ? 'Mensaje enviado' : 'Mensaje NO enviado',
+                'default',
+                $this->lang
+            ),
+        ]);
+    }
 
     public function contactAction()
     {
@@ -29,37 +97,29 @@ class HomeController extends ApplicationController
 
         $contactService = $this->serviceManager->get(ContactService::class);
 
-        $form = $contactService
-            ->createForm($this->captchaSecret)
-            ->setData($this->request->getPost());
-
-        if ($form->isValid()) {
-            $mailTo = $this->appData->row->mailInbox;
-            $mailSended = $contactService->sendFormMail($mailTo);
-            $vars = [
-                'status' => 'ok',
-                'error' => false,
-                'message' => $mailSended ? 'Mensaje enviado' : 'Mensaje NO enviado',
-            ];
-        } else {
+        if (!$this->validation(new ContactFieldset('contact', [
+            'captcha_secret' => $this->captchaSecret
+        ]))) {
             $this->getResponse()->setStatusCode(422);
 
-            $messages = $form->get('contact')->getMessages();
-
-            foreach ($messages as &$message) {
-                foreach ($message as &$msg) {
-                    $msg = $this->translator->translate($msg, 'default', $this->lang);
-                }
-            }
-
-            $vars = [
+            return new JsonModel([
                 'status' => 'ko',
                 'error' => true,
-                'message' => $messages
-            ];
+                'message' => $this->messages
+            ]);
         }
 
-        return new JsonModel($vars);
+        $mailSended = $contactService->sendFormMail($this->appData->row->mailInbox);
+
+        return new JsonModel([
+            'status' => 'ok',
+            'error' => false,
+            'message' => $this->translator->translate(
+                $mailSended ? 'Mensaje enviado' : 'Mensaje NO enviado',
+                'default',
+                $this->lang
+            ),
+        ]);
     }
 
     public function indexAction()
@@ -78,10 +138,16 @@ class HomeController extends ApplicationController
         ]);
 
         $contactService = $this->serviceManager->get(ContactService::class);
+        $questionService = clone $contactService;
 
         $vars = [
             'formActionUrl' => $this->url()->fromRoute('locale/contact', ['locale' => $this->lang]),
-            'contactForm' => $contactService->createForm(),
+            'contactForm' => $contactService->createForm(new ContactFieldset('contact', [
+                'captcha_secret' => false
+            ])),
+            'questionForm' => $questionService->createForm(new QuestionFieldset('question', [
+                'captcha_secret' => false
+            ])),
             'contactIntro' => $menuLang[$this->menu->rows->contact->id]->content,
             'legal' => $this->serviceManager->get(StaticPageService::class)->getData(),
             'accessoriesIntro' => $menuLang[$this->menu->rows->accessories->id]->content,

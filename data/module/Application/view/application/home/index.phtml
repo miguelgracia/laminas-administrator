@@ -1,7 +1,8 @@
 <?php
 $menuHelper = $this->applicationMenuHelper();
 $galleryHelper = $this->galleryHelper()->setLang($this->lang);
-$contactFormHelper = $this->contactFormHelper($this->contactForm);
+$questionFormHelper = $this->questionFormHelper()->setForm($this->questionForm)->setFieldsetName('question');
+$contactFormHelper = $this->contactFormHelper()->setForm($this->contactForm);
 
 $assetPath = $this->basePath('absconsultor');
 $mediaPath = $this->basePath('media');
@@ -120,67 +121,11 @@ $mediaPath = $this->basePath('media');
         </div>
 
         <div class="col-md-12 to-animate">
-            <form id="question_form" class="form-horizontal" action="<?=$this->basePath() . $this->formActionUrl;?>" method="post">
-                <div class="form-group">
-                    <h3>Consulta Técnica</h3>
-                    <label for="question_name" class="sr-only">Nombre</label>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <input id="question_name" name="question_name" class="form-control" placeholder="Nombre"
-                                   type="text">
-                        </div>
-                        <div class="col-sm-6 messages"></div>
-                    </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <?= $questionFormHelper->render($this->lang,$this->legal); ?>
                 </div>
-                <div class="form-group">
-                    <label for="question_email" class="sr-only">Email</label>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <input id="question_email" name="question_email" class="form-control" placeholder="Email"
-                                   type="email">
-                        </div>
-                        <div class="col-sm-6 messages"></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="question_customer_code" class="sr-only">Código de cliente</label>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <input id="question_customer_code" name="question_customer_code" class="form-control"
-                                   placeholder="Código de cliente" type="text">
-                        </div>
-                        <div class="col-sm-6 messages"></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="question_topic" class="sr-only">Temática de la pregunta</label>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <select name="question_topic" id="question_topic" class="form-control">
-                                <option value="">Temática de la pregunta</option>
-                                <option value="topic_1">Tematica 1</option>
-                                <option value="topic_2">Tematica 2</option>
-                                <option value="topic_3">Tematica 3</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-6 messages"></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="question_message" class="sr-only">Mensaje</label>
-                    <div class="row">
-                        <div class="col-sm-6">
-                        <textarea name="question_message" id="question_message" cols="30" rows="5" class="form-control"
-                                  placeholder="Mensaje"></textarea>
-                        </div>
-                        <div class="col-sm-6 messages"></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <input class="btn btn-primary btn-lg" value="Enviar" type="submit">
-                    <input type="hidden" name="form_type" value="question">
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </section>

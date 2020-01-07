@@ -2,7 +2,7 @@
 
 namespace Application\View\Helper;
 
-class ContactForm extends FormHelper
+class QuestionForm extends FormHelper
 {
     public function render($lang, $legal)
     {
@@ -13,19 +13,21 @@ class ContactForm extends FormHelper
         $url = $this->helperManager->get('Url');
 
         $this->form->prepare();
-        $this->form->setAttribute('action', $url('locale/contact', ['locale' => $lang]));
+
+        $this->form->setAttribute('action', $url('locale/question', ['locale' => $lang]));
 
         $fieldset = $this->form->get($this->fieldsetName);
 
         $formTag = $this->getFormWrapper();
 
-        $groupTags = $this->getElement('formInput', 'name', 'Form Name');
-        $groupTags .= $this->getElement('formInput', 'email', 'Form Email');
-        $groupTags .= $this->getElement('formInput', 'phone', 'Form Phone');
-        $groupTags .= $this->getElement('formTextarea', 'message', 'Form Message');
+        $groupTags = $this->getElement('formInput', 'question_name', 'Form Name');
+        $groupTags .= $this->getElement('formInput', 'question_email', 'Form Email');
+        $groupTags .= $this->getElement('formInput', 'question_code', 'Form customer code');
+        $groupTags .= $this->getElement('formSelect', 'question_topic', 'Form question topic');
+        $groupTags .= $this->getElement('formTextarea', 'question_message', 'Form Message');
         $groupTags .= $this->getElement('formInput', 'g-recaptcha-response',false);
 
-        $field = $fieldset->get('legal');
+        $field = $fieldset->get('question_legal');
 
         $input = $formCheckbox($field);
 
@@ -43,7 +45,7 @@ class ContactForm extends FormHelper
             <div class='form-group'>
                 <div class='row'>
                     <button type='submit' class='btn btn-primary btn-lg'>"
-                        . $this->translator->translate('Form Send', 'frontend'). '
+            . $this->translator->translate('Form Send', 'frontend'). '
                     </button>
                 </div>
             </div>'
