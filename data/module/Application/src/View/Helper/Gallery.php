@@ -61,7 +61,10 @@ class Gallery extends AbstractHelper
 
     private function getGalleryWrapper()
     {
-        return "<div class='col-md-4 col-sm-6 col-xxs-12'>%s</div>";
+        return "<div class='col-md-4 col-sm-6 col-xxs-12'>
+            %s
+            <div class='content hide'>%s</div>
+            </div>";
     }
 
     private function getImageWrapper()
@@ -80,6 +83,7 @@ class Gallery extends AbstractHelper
         $galleryHtml = '';
 
         foreach ($elements as $index => $element) {
+
             $imagesHtml = '';
 
             $images = json_decode($element->imageUrl);
@@ -102,7 +106,7 @@ class Gallery extends AbstractHelper
                 );
             }
 
-            $galleryHtml .= sprintf($galleryWrapper, $imagesHtml);
+            $galleryHtml .= sprintf($galleryWrapper, $imagesHtml, $element->content);
 
             if (($index + 1) % 2 === 0) {
                 $galleryHtml .= $this->getSeparator();

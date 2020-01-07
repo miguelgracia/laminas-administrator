@@ -52,6 +52,7 @@ class JobService implements AllowDatabaseAccessInterface
                 [
                     'category_title' => 'title',
                     'category_url_key' => 'url_key',
+                    'content' => 'content'
                 ]
             )->order('jobs.created_at DESC');
 

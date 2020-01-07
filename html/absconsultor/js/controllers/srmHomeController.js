@@ -392,6 +392,24 @@ function srmHomeController() {
         validation('form#question_form', 'question');
         validation('form#contact_form', 'contact');
 
+        for (let lbInstance in fsLightboxInstances) {
+
+            fsLightboxInstances[lbInstance].props.onInit = function () {
+                setTimeout(function () {
+                    let content = document.querySelector('a[data-fslightbox="' + lbInstance + '"').parentNode.querySelector('.content')
+
+                    let div = document.createElement('div');
+                    div.innerHTML = content.innerHTML;
+                    div.style.position = 'fixed';
+                    div.style.width = '100%';
+                    div.style.color = 'white';
+                    div.style.textAlign = 'center';
+                    div.style.bottom = '10px';
+
+                    document.querySelector('.fslightbox-container').appendChild(div);
+                }, 1000);
+            };
+        }
     };
 }
 simpleJSRoutingManager.srmController(srmHomeController);
