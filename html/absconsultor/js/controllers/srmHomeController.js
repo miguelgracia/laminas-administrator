@@ -290,6 +290,9 @@ function srmHomeController() {
                 const value = validator.trim(this.value);
                 [].forEach.call(messagesWrapper.querySelectorAll('p'), function (msg) {
                     const validatorFunction = validatorMap[msg.dataset.validator];
+                    if (!validatorFunction) {
+                        return;
+                    }
                     const validatorResult = validator[validatorFunction.name](value);
                     if (validatorFunction.passing === validatorResult) {
                         msg.parentNode.removeChild(msg);
@@ -314,7 +317,7 @@ function srmHomeController() {
                     alert(result.data.message);
                     let button = form.querySelector('button[type="submit"]');
                     button.parentNode.removeChild(button);
-                }).catch(function (result, pepe) {
+                }).catch(function (result) {
 
                     if (result.response.status !== 422) {
                         return;
@@ -341,6 +344,14 @@ function srmHomeController() {
                         }
                     }
                 }).finally(function () {
+                    [].forEach.call(form.querySelectorAll('div.form-group'), function (formGroup) {
+
+                        let messagesWrapper = formGroup.querySelector('.messages');
+
+                        if (messagesWrapper !== null && messagesWrapper.children.length == 0) {
+                            formGroup.classList.remove('has-error');
+                        }
+                    });
                     sending = false;
                 });
             });

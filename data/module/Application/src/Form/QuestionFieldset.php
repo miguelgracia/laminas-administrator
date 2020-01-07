@@ -10,14 +10,18 @@ use Zend\Form\Element\Select;
 use Zend\Form\Element\Text;
 use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\Validator\Db\RecordExists;
 use Zend\Validator\EmailAddress;
-use Zend\Validator\NotEmpty;
 
 class QuestionFieldset extends Fieldset implements InputFilterProviderInterface
 {
-    public function __construct($name, array $options)
+    protected $adapter;
+
+    public function __construct($name, array $options, $adapter)
     {
         parent::__construct($name, $options);
+
+        $this->adapter = $adapter;
 
         $this->add([
             'name' => 'question_name',
@@ -123,7 +127,12 @@ class QuestionFieldset extends Fieldset implements InputFilterProviderInterface
                 ],
                 'validators' => [
                     [
-                        'name' => NotEmpty::class
+                        'name' => RecordExists::class,
+                        'options' => [
+                            'table' => 'customers',
+                            'field' => 'key',
+                            'adapter' => $this->adapter
+                        ]
                     ]
                 ]
             ],

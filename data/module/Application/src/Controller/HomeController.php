@@ -9,6 +9,7 @@ use Api\Service\PartnerService;
 use Api\Service\StaticPageService;
 use Application\Form\ContactFieldset;
 use Application\Form\QuestionFieldset;
+use Zend\Db\Adapter\Adapter;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
@@ -60,7 +61,7 @@ class HomeController extends ApplicationController
 
         if (!$this->validation(new QuestionFieldset('question', [
             'captcha_secret' => $this->captchaSecret
-        ]))) {
+        ],$this->serviceManager->get(Adapter::class)))) {
             $this->getResponse()->setStatusCode(422);
 
             return new JsonModel([
@@ -147,7 +148,7 @@ class HomeController extends ApplicationController
             ])),
             'questionForm' => $questionService->createForm(new QuestionFieldset('question', [
                 'captcha_secret' => false
-            ])),
+            ], $this->serviceManager->get(Adapter::class))),
             'contactIntro' => $menuLang[$this->menu->rows->contact->id]->content,
             'legal' => $this->serviceManager->get(StaticPageService::class)->getData(),
             'accessoriesIntro' => $menuLang[$this->menu->rows->accessories->id]->content,
