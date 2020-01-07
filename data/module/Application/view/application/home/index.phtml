@@ -7,6 +7,11 @@ $contactFormHelper = $this->contactFormHelper()->setForm($this->contactForm);
 $assetPath = $this->basePath('absconsultor');
 $mediaPath = $this->basePath('media');
 
+$cookieLocaleId = $this->legal['rows']['cookies']['id'];
+$legalLocaleId = $this->legal['rows']['privacidad']['id'];
+$cookiesMessage = $this->legal['locale'][$this->lang][$cookieLocaleId]['content'];
+$legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
+
 ?>
 
 <section id="abstpl-home" data-section="home"
@@ -289,3 +294,41 @@ $mediaPath = $this->basePath('media');
         </div>
     </div>
 </section>
+
+<div class="modal fade" id="popupTermsAndConditions" tabindex="-1" role="dialog" aria-labelledby="popupTermsAndConditionsTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="popupTermsAndConditionsTitle">Términos y condiciones</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <?= $legalMessage;?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="popupCookies" tabindex="-1" role="dialog" aria-labelledby="popupCookiesTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="popupCookiesTitle">Información sobre Cookies</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <?= $cookiesMessage;?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -105,7 +105,7 @@ echo $this->doctype(); ?>
         <div id="cookie_alert" class="hide container-fluid">
             <div class="col-md-12">
                 <?=$this->translate('Cookie message','frontend');?>
-                <a href="<?=$this->url('locale/legal/page',array('locale' => $this->lang, 'page' => 'cookies'));?>"><?=$this->translate('More info','frontend');?></a>
+                <a data-toggle="modal" data-target="#popupCookies" href="#"><?=$this->translate('More info','frontend');?></a>
                 &nbsp;&nbsp;&nbsp;
                 <a href="#" id="close_cookie_alert"><?=$this->translate('Cookies agree','frontend');?></a>
             </div>

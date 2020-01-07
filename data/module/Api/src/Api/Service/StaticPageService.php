@@ -24,8 +24,8 @@ class StaticPageService implements AllowDatabaseAccessInterface
             'rows' => $this->table->all([
                 'active' => '1',
                 'deleted_at' => null
-            ])->setFetchGroupResultSet('id')->toArray(),
-            'locale' => $this->tableLocale->findLocales()->setFetchGroupResultSet('languageCode', 'urlKey')->toArray()
+            ])->setFetchGroupResultSet('key')->toArray(),
+            'locale' => $this->tableLocale->findLocales()->setFetchGroupResultSet('languageCode', 'relatedTableId')->toArray()
         ];
 
         $this->cacheData[__FUNCTION__] = $result;

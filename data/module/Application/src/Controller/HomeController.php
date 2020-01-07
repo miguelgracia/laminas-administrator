@@ -141,6 +141,8 @@ class HomeController extends ApplicationController
         $contactService = $this->serviceManager->get(ContactService::class);
         $questionService = clone $contactService;
 
+        $legal = $this->serviceManager->get(StaticPageService::class)->getData();
+
         $vars = [
             'formActionUrl' => $this->url()->fromRoute('locale/contact', ['locale' => $this->lang]),
             'contactForm' => $contactService->createForm(new ContactFieldset('contact', [
@@ -150,7 +152,7 @@ class HomeController extends ApplicationController
                 'captcha_secret' => false
             ], $this->serviceManager->get(Adapter::class))),
             'contactIntro' => $menuLang[$this->menu->rows->contact->id]->content,
-            'legal' => $this->serviceManager->get(StaticPageService::class)->getData(),
+            'legal' => $legal,
             'accessoriesIntro' => $menuLang[$this->menu->rows->accessories->id]->content,
             'questionIntro' => $menuLang[$this->menu->rows->technicalquestion->id]->content,
             'companyIntro' => $menuLang[$this->menu->rows->company->id]->content,
