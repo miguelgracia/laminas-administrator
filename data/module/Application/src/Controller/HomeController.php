@@ -71,7 +71,7 @@ class HomeController extends ApplicationController
             ]);
         }
 
-        $mailSended = $contactService->sendFormMail($this->appData->row->mailInbox);
+        $mailSended = $contactService->sendFormMail($this->form->getData(), $this->appData->row->questionMailInbox, 'question');
 
         return new JsonModel([
             'status' => 'ok',
@@ -110,7 +110,7 @@ class HomeController extends ApplicationController
             ]);
         }
 
-        $mailSended = $contactService->sendFormMail($this->appData->row->mailInbox);
+        $mailSended = $contactService->sendFormMail($this->form->getData(), $this->appData->row->mailInbox);
 
         return new JsonModel([
             'status' => 'ok',

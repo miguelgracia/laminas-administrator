@@ -3,6 +3,7 @@
 namespace Api\Service;
 
 use Application\Form\ContactFieldset;
+use Application\Form\QuestionFieldset;
 use Zend\Form\Form;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail;
@@ -20,33 +21,42 @@ class ContactService
         return (new Form)
             ->add($fieldset)
             ->setAttributes([
-                'id' => $fieldset->getName() .'_form',
+                'id' => $fieldset->getName() . '_form',
                 'class' => 'form-horizontal',
                 'method' => 'POST'
             ]);
     }
 
-    public function sendFormMail($form, $mailTo)
+    public function sendFormMail($formData, $mailTo, $fieldset = 'contact')
     {
+        $ignoreFields = ['question_legal', 'legal', 'g-recaptcha-response'];
+
         $mailValidator = new EmailAddress();
 
         if (!$mailValidator->isValid($mailTo)) {
             return false;
         }
 
-        $formData = $form->get('contact');
+        $translations = [
+            'phone' => 'Teléfono',
+            'question_name' => 'Nombre',
+            'name' => 'Nombre',
+            'question_email' => 'Email',
+            'email' => 'Email',
+            'question_topic' => 'Tipo de pregunta',
+            'question_code' => 'Codigo cliente',
+            'question_message' => 'Mensaje',
+            'message' => 'Mensaje',
+        ];
 
-        $body = sprintf(
-            "Nombre   : %s \n
-                 Email    : %s \n
-                 Teléfono : %s \n
-                 Mensaje  : %s \n",
-            $formData->get('name')->getValue(),
-            $formData->get('email')->getValue(),
-            $formData->get('phone')->getValue(),
-            $formData->get('message')->getValue());
+        $body = '';
 
-        $mailTo = "miguelgraciamartin@gmail.com";
+        foreach ($formData[$fieldset] as $field => $fieldValue) {
+            if (in_array($field, $ignoreFields)) {
+                continue;
+            }
+            $body .= $translations[$field] . ': ' . $fieldValue . "\n";
+        }
 
         $mail = (new Message)
             ->setFrom('absconsultor@absconsultor.es', "ABS Consultor - Contacto Web")
