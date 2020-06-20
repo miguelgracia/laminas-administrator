@@ -6,31 +6,38 @@ use Api\Service\JobCategoryService;
 use Api\Service\JobService;
 use Zend\View\Model\ViewModel;
 
-class JobController extends ApplicationController
+class AccessoryController extends ApplicationController
 {
     public function indexAction()
     {
         $menu = $this->menu;
 
         if (isset($menu->rows->jobs) and $menu->rows->jobs->active == 1) {
+            $menuLang = $menu->locale->{$this->lang};
+
+            $menuLangJob = $menuLang[$menu->rows->jobs->id];
+
+            $this->headTitleHelper->append($menuLangJob->name);
 
             $ogFacebook = $this->openGraph->facebook();
             $ogFacebook->title = $this->headTitleHelper->renderTitle();
+            $ogFacebook->description = $menuLangJob->metaDescription;
 
             $this->layout()->setVariable('og', $ogFacebook);
 
             $page = $this->params()->fromQuery('page');
 
-            $jobs = $this->serviceManager->get(JobService::class)->getJobs($this->lang, false, $page);
+            $jobs = $this->serviceManager->get(JobService::class)->getData($this->lang, false, $page);
+            $jobCategories = $this->serviceManager->get(JobCategoryService::class)->getData($this->lang);
 
-            $this->layout()->setTemplate('layout/pagination-layout');
-
-            $viewModel = new ViewModel([
+            return new ViewModel([
+                'menu' => $this->menu,
+                'lang' => $this->lang,
                 'jobs' => $jobs,
-                'galleryType' => 'jobs-gallery'
+                'jobCategories' => $jobCategories,
+                'routePagination' => $this->lang . '/jobs',
+                'routeParams' => []
             ]);
-
-            return $viewModel;
         }
 
         $this->getResponse()->setStatusCode(404);

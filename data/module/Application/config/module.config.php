@@ -245,6 +245,7 @@ return [
         'exception_template' => 'error/index',
         'template_map' => [
             'layout/layout' => __DIR__ . '/../view/layout/front-layout.phtml',
+            'layout/pagination-layout' => __DIR__ . '/../view/layout/gallery-pagination-layout.phtml',
             'error/404' => __DIR__ . '/../view/error/404.phtml',
             'error/index' => __DIR__ . '/../view/error/index.phtml',
         ],

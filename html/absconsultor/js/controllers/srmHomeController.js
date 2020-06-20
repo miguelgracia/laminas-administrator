@@ -369,9 +369,14 @@ function srmHomeController() {
         for (let g = 0; g < gallery.length; g++) {
             gallery[g].addEventListener('click', function(event)  {
                 event.preventDefault();
+                let link = this;
                 axios.get(this.href).then(response => {
-                    console.log(response);
-                    console.log('jare');
+                    let galleries = document
+                        .getElementById(link.dataset.sectionId)
+                        .querySelector('.galleries');
+                    galleries.innerHTML = galleries.innerHTML + response.data;
+
+                    refreshFsLightbox();
                 });
             });
         }
