@@ -1012,16 +1012,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .abstpl-person {
-	padding: 80px 30px 30px 30px;
+	padding: 150px 30px 30px 30px;
 	float: left;
 	width: 100%;
 	position: relative;
+	margin: 1em auto;
 	@media screen and (max-width: $screen-md) {
 		margin-bottom: 3.5em;
 	}
 	figure {
 		position: absolute;
-		margin-top: -60px;
+		margin-top: 0px;
 		top: 0;
 		left: 50%;
 		margin-left: -90px;

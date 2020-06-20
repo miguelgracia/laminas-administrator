@@ -248,13 +248,21 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
             </div>
         </div>
         <div class="row">
-            <?php foreach ($this->partners as $partner) : ?>
+            <?php
+            $partnerCount = count($this->partners);
+            $partnerIndex = 1;
+            foreach ($this->partners as $partner) : ?>
                 <div class="col-md-4">
                     <div class="abstpl-person text-center to-animate">
                         <figure><img src="<?= $mediaPath . '/' . $partner->logo; ?>" alt="Image"></figure>
                     </div>
                 </div>
-            <?php endforeach; ?>
+                <?php if($partnerIndex % 3 == 0 and $partnerIndex < $partnerCount) :?>
+                    </div><div class="row">
+                <?php endif; ?>
+            <?php
+                $partnerIndex++;
+                endforeach; ?>
         </div>
     </div>
 </section>

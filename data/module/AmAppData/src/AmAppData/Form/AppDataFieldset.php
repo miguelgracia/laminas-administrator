@@ -31,7 +31,6 @@ class AppDataFieldset extends AdministratorFieldset
 
         $social = [
             'facebook',
-            'twitter',
             'linkedin',
             'instagram'
         ];
