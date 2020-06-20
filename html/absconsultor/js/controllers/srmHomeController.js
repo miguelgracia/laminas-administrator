@@ -363,6 +363,7 @@ function srmHomeController() {
     };
 
     const pagination = function () {
+
         const gallery = document.querySelectorAll('.js-show-more-gallery');
 
         for (let g = 0; g < gallery.length; g++) {

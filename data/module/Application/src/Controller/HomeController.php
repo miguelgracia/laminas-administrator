@@ -152,35 +152,12 @@ class HomeController extends ApplicationController
         $jobService = $this->serviceManager->get(JobService::class);
         $accessoryService = $this->serviceManager->get(AccessoryService::class);
 
-        $jobsArray = [
-            'featured' => [],
-            'non_featured' => []
-        ];
-
-        $accessoriesArray = [
-            'featured' => [],
-            'non_featured' => []
-        ];
-
-        $jobs = $jobService->getJobs($this->lang);
-        $accessories = $accessoryService->getAccessories($this->lang);
-
-        foreach ($jobs as $job) {
-            $jobType = $job->getShowInHome() === '1' ? 'featured' : 'non_featured';
-            $jobsArray[$jobType][] = $job;
-        }
-
-        foreach ($accessories as $accessory) {
-            $accessoryType = $accessory->getShowInHome() === '1' ? 'featured' : 'non_featured';
-            $accessoriesArray[$accessoryType][] = $accessory;
-        }
-
         return [
             'accessoriesUrl' => $this->url()->fromRoute('locale/accessories', ['locale' => $this->lang, 'type' => 'accessories'], ['query' => ['page' => 1]]),
             'jobUrl' => $this->url()->fromRoute('locale/jobs', ['locale' => $this->lang, 'type' => 'jobs'], ['query' => ['page' => 1]]),
             'partners' => $this->serviceManager->get(PartnerService::class)->getData($this->lang),
-            'jobs' => $jobsArray,
-            'accessories' => $accessoriesArray,
+            'jobs' => $jobService->getJobs($this->lang, true),
+            'accessories' => $accessoryService->getAccessories($this->lang, true),
         ];
     }
 

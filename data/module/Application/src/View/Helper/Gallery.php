@@ -56,7 +56,8 @@ class Gallery extends AbstractHelper
 
     private function getSeparator()
     {
-        return "<div class='clearfix visible-sm-block'></div>";
+        return "";
+//        return "<div class='clearfix visible-sm-block'></div>";
     }
 
     private function getGalleryWrapper()
@@ -108,7 +109,7 @@ class Gallery extends AbstractHelper
 
             $galleryHtml .= sprintf($galleryWrapper, $imagesHtml, $element->content);
 
-            if (($index + 1) % 2 === 0) {
+            if (($index + 1) % 3 === 0) {
                 $galleryHtml .= $this->getSeparator();
             }
         }
