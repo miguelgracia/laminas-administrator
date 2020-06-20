@@ -13,11 +13,11 @@ class JobService implements AllowDatabaseAccessInterface
     protected $tableName = JobTable::class;
     protected $tableLocaleName = JobLocaleTable::class;
 
-    public function getJobs($lang)
+    public function getJobs($lang, $isFeatured = null, $page = 1)
     {
         $this->table->setTableLocaleService($this->tableLocale);
 
-        $closureFunction = function (&$select, &$where) use ($lang) {
+        $closureFunction = function (&$select, &$where) use ($lang, $isFeatured) {
             $select->join(
                 'job_categories',
                 new Expression('job_categories.id =' . 'jobs.job_categories_id'),
@@ -34,7 +34,11 @@ class JobService implements AllowDatabaseAccessInterface
             )->order('jobs.created_at DESC');
 
             $where['job_categories.active'] = '1';
-        };;
+
+            if (!is_null($isFeatured)) {
+                $where['jobs.show_in_home'] = (string) $isFeatured;
+            }
+        };
 
         $tableFields = [
             'key' => 'key',
