@@ -89,7 +89,7 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
     </div>
 </section>
 
-<section id="abstpl-work" data-section="work">
+<section id="abstpl-work" data-section="jobs">
     <div class="container">
         <div class="row">
             <div class="col-md-12 section-heading text-center">
@@ -102,11 +102,11 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
             </div>
         </div>
         <div class="row row-bottom-padded-sm">
-            <?= $galleryHelper->renderFeatured($this->featuredJobs, 'jobs-gallery'); ?>
+            <?= $galleryHelper->renderFeatured($this->jobs['featured'], 'jobs-gallery'); ?>
         </div>
         <div class="row">
             <div class="col-xs-12 text-center">
-                <a href="#" class="btn btn-primary">Ver más trabajos</a>
+                <a href="<?=$jobUrl;?>" class="btn btn-primary js-show-more-gallery">Ver más trabajos</a>
             </div>
         </div>
     </div>
@@ -128,7 +128,7 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
         <div class="col-md-12 to-animate">
             <div class="row">
                 <div class="col-md-6">
-                    <?= $questionFormHelper->render($this->lang,$this->legal); ?>
+                    <?= $questionFormHelper->render($this->lang, $this->legal); ?>
                 </div>
             </div>
         </div>
@@ -221,11 +221,11 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
             </div>
         </div>
         <div class="row row-bottom-padded-sm">
-            <?= $galleryHelper->withBorder()->renderFeatured($this->featuredAccessories, 'accessories-gallery'); ?>
+            <?= $galleryHelper->withBorder()->renderFeatured($this->accessories['featured'], 'accessories-gallery'); ?>
         </div>
         <div class="row">
             <div class="col-xs-12 text-center">
-                <a href="#" class="btn btn-primary">Ver más accesorios</a>
+                <a href="<?=$accessoriesUrl;?>" class="btn btn-primary js-show-more-gallery">Ver más accesorios</a>
             </div>
         </div>
 
@@ -289,13 +289,14 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
             </div>
 
             <div class="col-md-6 to-animate">
-                <?= $contactFormHelper->render($this->lang,$this->legal); ?>
+                <?= $contactFormHelper->render($this->lang, $this->legal); ?>
             </div>
         </div>
     </div>
 </section>
 
-<div class="modal fade" id="popupTermsAndConditions" tabindex="-1" role="dialog" aria-labelledby="popupTermsAndConditionsTitle" aria-hidden="true">
+<div class="modal fade" id="popupTermsAndConditions" tabindex="-1" role="dialog"
+     aria-labelledby="popupTermsAndConditionsTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -305,7 +306,7 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
                 </button>
             </div>
             <div class="modal-body">
-                <?= $legalMessage;?>
+                <?= $legalMessage; ?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -314,7 +315,8 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
     </div>
 </div>
 
-<div class="modal fade" id="popupCookies" tabindex="-1" role="dialog" aria-labelledby="popupCookiesTitle" aria-hidden="true">
+<div class="modal fade" id="popupCookies" tabindex="-1" role="dialog" aria-labelledby="popupCookiesTitle"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -324,7 +326,7 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
                 </button>
             </div>
             <div class="modal-body">
-                <?= $cookiesMessage;?>
+                <?= $cookiesMessage; ?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>

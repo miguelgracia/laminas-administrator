@@ -128,7 +128,7 @@ class HomeController extends ApplicationController
         $menuLang = $this->menu->locale->{$this->lang};
         $menuLangHome = $menuLang[$this->menu->rows->home->id];
 
-        $this->headTitleHelper->append('Home');
+        //$this->headTitleHelper->append('Home');
 
         $ogFacebook = $this->openGraph->facebook();
         $ogFacebook->title = $this->headTitleHelper->renderTitle();
@@ -138,31 +138,87 @@ class HomeController extends ApplicationController
             'og' => $ogFacebook,
         ]);
 
-        $contactService = $this->serviceManager->get(ContactService::class);
-        $questionService = clone $contactService;
+        return new ViewModel(
+            $this->layout()->getVariables()->getArrayCopy()
+            + $this->getIntros()
+            + $this->getForms()
+            + $this->getGalleries()
+            + $this->getText()
+        );
+    }
 
-        $legal = $this->serviceManager->get(StaticPageService::class)->getData();
+    private function getGalleries()
+    {
+        $jobService = $this->serviceManager->get(JobService::class);
+        $accessoryService = $this->serviceManager->get(AccessoryService::class);
 
-        $vars = [
-            'formActionUrl' => $this->url()->fromRoute('locale/contact', ['locale' => $this->lang]),
-            'contactForm' => $contactService->createForm(new ContactFieldset('contact', [
-                'captcha_secret' => false
-            ])),
-            'questionForm' => $questionService->createForm(new QuestionFieldset('question', [
-                'captcha_secret' => false
-            ], $this->serviceManager->get(Adapter::class))),
+        $jobsArray = [
+            'featured' => [],
+            'non_featured' => []
+        ];
+
+        $accessoriesArray = [
+            'featured' => [],
+            'non_featured' => []
+        ];
+
+        $jobs = $jobService->getJobs($this->lang);
+        $accessories = $accessoryService->getAccessories($this->lang);
+
+        foreach ($jobs as $job) {
+            $jobType = $job->getShowInHome() === '1' ? 'featured' : 'non_featured';
+            $jobsArray[$jobType][] = $job;
+        }
+
+        foreach ($accessories as $accessory) {
+            $accessoryType = $accessory->getShowInHome() === '1' ? 'featured' : 'non_featured';
+            $accessoriesArray[$accessoryType][] = $accessory;
+        }
+
+        return [
+            'accessoriesUrl' => $this->url()->fromRoute('locale/accessories', ['locale' => $this->lang, 'type' => 'accessories'], ['query' => ['page' => 1]]),
+            'jobUrl' => $this->url()->fromRoute('locale/jobs', ['locale' => $this->lang, 'type' => 'jobs'], ['query' => ['page' => 1]]),
+            'partners' => $this->serviceManager->get(PartnerService::class)->getData($this->lang),
+            'jobs' => $jobsArray,
+            'accessories' => $accessoriesArray,
+        ];
+    }
+
+    private function getText()
+    {
+        return [
+            'legal' => $this->serviceManager->get(StaticPageService::class)->getData(),
+        ];
+    }
+
+
+    private function getIntros()
+    {
+        $menuLang = $this->menu->locale->{$this->lang};
+
+        return [
             'contactIntro' => $menuLang[$this->menu->rows->contact->id]->content,
-            'legal' => $legal,
             'accessoriesIntro' => $menuLang[$this->menu->rows->accessories->id]->content,
             'questionIntro' => $menuLang[$this->menu->rows->technicalquestion->id]->content,
             'companyIntro' => $menuLang[$this->menu->rows->company->id]->content,
             'servicesIntro' => $menuLang[$this->menu->rows->services->id]->content,
-            'workIntro' => $menuLang[$this->menu->rows->work->id]->content,
-            'partners' => $this->serviceManager->get(PartnerService::class)->getData($this->lang),
-            'featuredJobs' => $this->serviceManager->get(JobService::class)->getFeaturedJobs($this->lang),
-            'featuredAccessories' => $this->serviceManager->get(AccessoryService::class)->getFeaturedAccessories($this->lang),
+            'workIntro' => $menuLang[$this->menu->rows->jobs->id]->content,
+        ];
+    }
+
+    private function getForms()
+    {
+        $contactService = $this->serviceManager->get(ContactService::class);
+        $questionService = clone $contactService;
+
+        $options = [
+            'captcha_secret' => false
         ];
 
-        return new ViewModel($this->layout()->getVariables()->getArrayCopy() + $vars);
+        return [
+            'formActionUrl' => $this->url()->fromRoute('locale/contact', ['locale' => $this->lang]),
+            'contactForm' => $contactService->createForm(new ContactFieldset('contact', $options)),
+            'questionForm' => $questionService->createForm(new QuestionFieldset('question', $options, $this->serviceManager->get(Adapter::class))),
+        ];
     }
 }

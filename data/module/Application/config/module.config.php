@@ -7,13 +7,10 @@
 
 namespace Application;
 
-use Application\Controller\CompanyController;
-use Application\Controller\ContactController;
 use Application\Controller\HomeController;
 use Application\Controller\JobController;
+use Application\Controller\AccessoryController;
 use Application\Controller\LegalController;
-use Application\View\Helper\Blog;
-use Application\View\Helper\BlogCategory;
 use Application\View\Helper\CarouselItem;
 use Application\View\Helper\ContactForm;
 use Application\View\Helper\FacebookShare;
@@ -44,6 +41,7 @@ return [
     'media_base_url' => [
         'absconsultor.local' => 'http://media.absconsultor.local',
         'absconsultor.es' => 'http://media.absconsultor.es',
+        'bravo-silva.ngrok.io' => 'https://bravo-silva.ngrok.io/media'
     ],
     'router' => [
         'router_class' => TranslatorAwareTreeRouteStack::class,
@@ -87,39 +85,18 @@ return [
                             ],
                         ],
                         'may_terminate' => true,
-                        'child_routes' => [
-                            'category' => [
-                                'type' => Segment::class,
-                                'may_terminate' => true,
-                                'options' => [
-                                    'route' => '/[:category]',
-                                    'constraints' => [
-                                        'category' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                    ],
-                                    'defaults' => [
-                                        '__CONTROLLER__' => 'Job',
-                                        'controller' => JobController::class,
-                                        'action' => 'category',
-                                    ],
-                                ],
-                                'child_routes' => [
-                                    'detail' => [
-                                        'type' => 'Segment',
-                                        'options' => [
-                                            'route' => '/[:detail]',
-                                            'constraints' => [
-                                                'detail' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                            ],
-                                            'defaults' => [
-                                                '__CONTROLLER__' => 'Job',
-                                                'controller' => JobController::class,
-                                                'action' => 'detail',
-                                            ],
-                                        ],
-                                    ],
-                                ],
+                    ],
+                    'accessories' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/{accessories}',
+                            'defaults' => [
+                                '__CONTROLLER__' => 'Accessory',
+                                'controller' => AccessoryController::class,
+                                'action' => 'index',
                             ],
                         ],
+                        'may_terminate' => true,
                     ],
                     'contact' => [
                         'type' => Segment::class,
@@ -176,6 +153,7 @@ return [
         'invokables' => [
             'Application\Controller\Home' => Controller\HomeController::class,
             'Application\Controller\Job' => Controller\JobController::class,
+            'Application\Controller\Accessory' => Controller\AccessoryController::class,
             'Application\Controller\Contact' => Controller\ContactController::class,
             'Application\Controller\Company' => Controller\CompanyController::class,
             'Application\Controller\Legal' => Controller\LegalController::class,
@@ -259,7 +237,7 @@ return [
         ],
     ],
     'view_manager' => [
-        'base_path' => 'http://absconsultor.es/',
+        'base_path' => 'https://bravo-silva.ngrok.io/',
         'display_not_found_reason' => true,
         'display_exceptions' => true,
         'doctype' => 'HTML5',

@@ -362,13 +362,27 @@ function srmHomeController() {
         grecaptcha.ready();
     };
 
-    this.indexAction = function() {
+    const pagination = function () {
+        const gallery = document.querySelectorAll('.js-show-more-gallery');
 
+        for (let g = 0; g < gallery.length; g++) {
+            gallery[g].addEventListener('click', function(event)  {
+                event.preventDefault();
+                axios.get(this.href).then(response => {
+                    console.log(response);
+                    console.log('jare');
+                });
+            });
+        }
+    };
+
+    this.indexAction = function() {
         burgerMenu();
         clickMenu();
         windowScroll();
         navigationSection();
         goToTop();
+        pagination();
 
         // Animations
         homeAnimate();
