@@ -4,36 +4,33 @@ namespace Application\Controller;
 
 use Api\Service\JobCategoryService;
 use Api\Service\JobService;
+use Application\Service\GalleryRenderService;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class JobController extends ApplicationController
 {
     public function indexAction()
     {
-        $menu = $this->menu;
+        $page = (int) $this->params()->fromQuery('page');
 
-        if (isset($menu->rows->jobs) and $menu->rows->jobs->active == 1) {
+        $galleryRenderService = $this->serviceManager->build(GalleryRenderService::class, [
+            'ViewRenderer' => $this->serviceManager->get('ViewRenderer')
+        ]);
 
-            $ogFacebook = $this->openGraph->facebook();
-            $ogFacebook->title = $this->headTitleHelper->renderTitle();
+        $jobService = $this->serviceManager->get(JobService::class);
 
-            $this->layout()->setVariable('og', $ogFacebook);
-
-            $page = $this->params()->fromQuery('page');
-
-            $jobs = $this->serviceManager->get(JobService::class)->getJobs($this->lang, false, $page);
-
-            $this->layout()->setTemplate('layout/pagination-layout');
-
-            $viewModel = new ViewModel([
-                'jobs' => $jobs,
+        return new JsonModel([
+            'content' => $galleryRenderService->render([
+                'gallery' => $jobService->getJobs($this->lang, false, $page),
                 'galleryType' => 'jobs-gallery'
-            ]);
-
-            return $viewModel;
-        }
-
-        $this->getResponse()->setStatusCode(404);
+            ]),
+            'nextPage' => $this->url()->fromRoute(
+                'locale/jobs',
+                ['locale' => $this->lang, 'type' => 'jobs'],
+                ['query' => ['page' => $page + 1]]
+            ),
+        ]);
     }
 
     public function categoryAction()

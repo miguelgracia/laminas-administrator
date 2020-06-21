@@ -13,11 +13,11 @@ class AccessoryService implements AllowDatabaseAccessInterface
     protected $tableName = AccessoryTable::class;
     protected $tableLocaleName = AccessoryLocaleTable::class;
 
-    public function getAccessories($lang, $isFeatured = null, $page = 1)
+    public function getAccessories($lang, $isFeatured = null, $page = 0)
     {
         $this->table->setTableLocaleService($this->tableLocale);
 
-        $closureFunction = function (&$select, &$where) use ($lang, $isFeatured) {
+        $closureFunction = function (&$select, &$where) use ($lang, $isFeatured, $page) {
             $select->join(
                 'accessory_categories',
                 new Expression('accessory_categories.id =' . 'accessories.accessory_categories_id'),
@@ -37,6 +37,10 @@ class AccessoryService implements AllowDatabaseAccessInterface
 
             if (!is_null($isFeatured)) {
                 $where['accessories.show_in_home'] = (string) $isFeatured;
+
+                if (!$isFeatured) {
+                    $select->offset(($page * 3))->limit(3);
+                }
             }
 
         };;

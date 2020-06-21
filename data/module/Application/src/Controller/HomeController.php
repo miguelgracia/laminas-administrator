@@ -153,8 +153,8 @@ class HomeController extends ApplicationController
         $accessoryService = $this->serviceManager->get(AccessoryService::class);
 
         return [
-            'accessoriesUrl' => $this->url()->fromRoute('locale/accessories', ['locale' => $this->lang, 'type' => 'accessories'], ['query' => ['page' => 1]]),
-            'jobUrl' => $this->url()->fromRoute('locale/jobs', ['locale' => $this->lang, 'type' => 'jobs'], ['query' => ['page' => 1]]),
+            'accessoriesUrl' => $this->url()->fromRoute('locale/accessories', ['locale' => $this->lang, 'type' => 'accessories'], ['query' => ['page' => 0]]),
+            'jobUrl' => $this->url()->fromRoute('locale/jobs', ['locale' => $this->lang, 'type' => 'jobs'], ['query' => ['page' => 0]]),
             'partners' => $this->serviceManager->get(PartnerService::class)->getData($this->lang),
             'jobs' => $jobService->getJobs($this->lang, true),
             'accessories' => $accessoryService->getAccessories($this->lang, true),

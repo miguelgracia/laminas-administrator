@@ -11,6 +11,8 @@ use Application\Controller\HomeController;
 use Application\Controller\JobController;
 use Application\Controller\AccessoryController;
 use Application\Controller\LegalController;
+use Application\Service\GalleryRenderService;
+use Application\Service\SessionService;
 use Application\View\Helper\CarouselItem;
 use Application\View\Helper\ContactForm;
 use Application\View\Helper\FacebookShare;
@@ -22,9 +24,11 @@ use Application\View\Helper\MenuDelegator;
 use Application\View\Helper\Partner;
 use Application\View\Helper\QuestionForm;
 use Application\View\Helper\SocialIcon;
+use Zend\Cache\Service\StorageCacheAbstractServiceFactory;
 use Zend\I18n\Translator\Resources;
 use Zend\I18n\Translator\TranslatorServiceFactory;
 use Zend\I18n\View\Helper\Translate;
+use Zend\Log\LoggerAbstractServiceFactory;
 use Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
@@ -173,12 +177,13 @@ return [
     ],
     'service_manager' => [
         'abstract_factories' => [
-            'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
-            'Zend\Log\LoggerAbstractServiceFactory',
+            StorageCacheAbstractServiceFactory::class,
+            LoggerAbstractServiceFactory::class,
         ],
         'factories' => [
             'Translator' => TranslatorServiceFactory::class,
-            'Application\Service\SessionService' => 'Application\Service\SessionService',
+            SessionService::class => SessionService::class,
+            GalleryRenderService::class => InvokableFactory::class
         ],
     ],
     'view_helpers' => [

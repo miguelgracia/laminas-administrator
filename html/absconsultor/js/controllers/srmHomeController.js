@@ -374,7 +374,13 @@ function srmHomeController() {
                     let galleries = document
                         .getElementById(link.dataset.sectionId)
                         .querySelector('.galleries');
-                    galleries.innerHTML = galleries.innerHTML + response.data;
+                    galleries.innerHTML = galleries.innerHTML + response.data.content;
+
+                    if (response.data.content !== '') {
+                        link.href = response.data.nextPage;
+                    } else {
+                        link.parentNode.remove(link);
+                    }
 
                     refreshFsLightbox();
                 });

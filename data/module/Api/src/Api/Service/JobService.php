@@ -5,6 +5,7 @@ namespace Api\Service;
 use Api\Model\JobLocaleTable;
 use Api\Model\JobTable;
 use Zend\Db\Sql\Predicate\Expression;
+use Zend\Db\Sql\Select;
 
 class JobService implements AllowDatabaseAccessInterface
 {
@@ -13,11 +14,11 @@ class JobService implements AllowDatabaseAccessInterface
     protected $tableName = JobTable::class;
     protected $tableLocaleName = JobLocaleTable::class;
 
-    public function getJobs($lang, $isFeatured = null, $page = 1)
+    public function getJobs($lang, $isFeatured = null, $page = 0)
     {
         $this->table->setTableLocaleService($this->tableLocale);
 
-        $closureFunction = function (&$select, &$where) use ($lang, $isFeatured) {
+        $closureFunction = function (Select &$select, &$where) use ($lang, $isFeatured, $page) {
             $select->join(
                 'job_categories',
                 new Expression('job_categories.id =' . 'jobs.job_categories_id'),
@@ -37,6 +38,10 @@ class JobService implements AllowDatabaseAccessInterface
 
             if (!is_null($isFeatured)) {
                 $where['jobs.show_in_home'] = (string) $isFeatured;
+
+                if (!$isFeatured) {
+                    $select->offset(($page * 3))->limit(3);
+                }
             }
         };
 
