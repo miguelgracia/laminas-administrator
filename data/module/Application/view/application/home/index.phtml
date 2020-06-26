@@ -89,52 +89,6 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
     </div>
 </section>
 
-<section id="abstpl-work" data-section="jobs">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 section-heading text-center">
-                <h2 class="to-animate">Trabajos</h2>
-                <div class="row">
-                    <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                        <h3><?= $this->workIntro; ?></h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="galleries">
-            <?= $galleryHelper->renderFeatured($this->jobs, 'jobs-gallery'); ?>
-        </div>
-        <div class="row">
-            <div class="col-xs-12 text-center">
-                <a href="<?=$jobUrl;?>" class="btn btn-primary js-show-more-gallery" data-section-id="abstpl-work">Ver más trabajos</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="abstpl-technical-question" data-section="technicalquestion">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 section-heading text-center">
-                <h2 class="to-animate">Pregúntanos</h2>
-                <div class="row">
-                    <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                        <h3><?= $this->questionIntro; ?></h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-12 to-animate">
-            <div class="row">
-                <div class="col-md-6">
-                    <?= $questionFormHelper->render($this->lang, $this->legal); ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 <section id="abstpl-services" data-section="services">
     <div class="container">
         <div class="row">
@@ -207,6 +161,52 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
     </div>
 </section>
 
+<!--<section id="abstpl-technical-question" data-section="technicalquestion">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 section-heading text-center">
+                <h2 class="to-animate">Pregúntanos</h2>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                        <h3><?/*= $this->questionIntro; */?></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 to-animate">
+            <div class="row">
+                <div class="col-md-6">
+                    <?/*= $questionFormHelper->render($this->lang, $this->legal); */?>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>-->
+
+<section id="abstpl-work" data-section="jobs">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 section-heading text-center">
+                <h2 class="to-animate">Trabajos</h2>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                        <h3><?= $this->workIntro; ?></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="galleries">
+            <?= $galleryHelper->withBorder()->renderFeatured($this->jobs, 'jobs-gallery'); ?>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <a href="<?=$jobUrl;?>" class="btn btn-primary js-show-more-gallery" data-section-id="abstpl-work">Ver más trabajos</a>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section id="abstpl-accessories" data-section="accessories">
     <div class="container">
 
@@ -221,11 +221,11 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
             </div>
         </div>
         <div class="galleries">
-            <?= $galleryHelper->withBorder()->renderFeatured($this->accessories, 'accessories-gallery'); ?>
+            <?= $galleryHelper->renderFeatured($this->accessories, 'accessories-gallery'); ?>
         </div>
         <div class="row">
             <div class="col-xs-12 text-center">
-                <a href="<?=$accessoriesUrl;?>" class="btn btn-primary js-show-more-gallery" data-section-id="abstpl-accessories">Ver más repuestos</a>
+                <a href="<?=$accessoriesUrl;?>" class="btn btn-primary js-show-more-gallery" data-section-id="abstpl-accessories">Ver catalogo completo</a>
             </div>
         </div>
 

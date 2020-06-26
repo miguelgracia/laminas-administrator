@@ -22,6 +22,8 @@ class ContactForm extends FormHelper
         $groupTags = $this->getElement('formInput', 'name', 'Form Name');
         $groupTags .= $this->getElement('formInput', 'email', 'Form Email');
         $groupTags .= $this->getElement('formInput', 'phone', 'Form Phone');
+        $groupTags .= $this->getElement('formInput', 'question_code', 'Form customer code');
+        $groupTags .= $this->getElement('formSelect', 'question_topic', 'Form question topic');
         $groupTags .= $this->getElement('formTextarea', 'message', 'Form Message');
         $groupTags .= $this->getElement('formInput', 'g-recaptcha-response',false);
 

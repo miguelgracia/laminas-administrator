@@ -5,9 +5,13 @@ $grid-gutter-width: 40px !default;
 $border-radius-base:  4px !default;
 $padding-vertical: 14px !default;
 
-$brand-primary: #192d4e !default;
-$brand-secondary: #33599b !default;
-$brand-tertiary: #3f95ea !default;
+//$brand-primary: #192d4e !default;
+//$brand-secondary: #33599b !default;
+//$brand-tertiary: #3f95ea !default;
+
+$brand-primary: #000 !default;
+$brand-secondary: #192d4e !default;
+$brand-tertiary: #33599b !default;
 
 
 
@@ -739,14 +743,14 @@ h1, h2, h3, h4, h5, h6 {
 	}
 }
 
-#abstpl-services, #abstpl-counters, #abstpl-work, #abstpl-contact, #abstpl-accessories {
+#abstpl-services, #abstpl-counters, #abstpl-accessories, #abstpl-contact, #abstpl-accessories, #abstpl-work {
 	padding: 4em 0;
 	@media screen and (max-width: $screen-sm) {
 		padding: 2em 0;
 	}
 }
 
-#abstpl-services, #abstpl-work, #abstpl-counters {
+#abstpl-services, #abstpl-accessories, #abstpl-counters {
 	padding: 7em 0;
 	@media screen and (max-width: $screen-sm) {
 		padding: 4em 0;
@@ -849,6 +853,7 @@ h1, h2, h3, h4, h5, h6 {
 	&:before {
 		top: 0;
 		margin-top: -35px;
+		background-image: repeating-linear-gradient(to right, $brand-secondary 0%, #000000 100%)
 	}
 	&:after {
 		bottom: 0;
@@ -903,7 +908,7 @@ h1, h2, h3, h4, h5, h6 {
 	}
 }
 
-#abstpl-work {
+#abstpl-accessories {
 	// background: $brand-secondary;
 
 	overflow: hidden;
@@ -917,6 +922,46 @@ h1, h2, h3, h4, h5, h6 {
 			color: rgba(255,255,255,1);
 		}
 	}
+	&:before {
+		position: absolute;
+		transform: rotate(-1.7deg);
+		-ms-transform: rotate(-1.7deg);
+		-webkit-transform: rotate(-1.7deg);
+		-o-transform: rotate(-1.7deg);
+		-moz-transform: rotate(-1.7deg);
+		background-color: #fff;
+		content: "";
+		z-index: 3;
+		display: inline-block;
+		height: 70px;
+		padding: 0;
+		width: 101%;
+	}
+	&:before {
+		top: 0;
+		margin-top: -35px;
+	}
+
+	.section-heading {
+		h2 {
+			color: $brand-white;
+			
+				&:after {
+					background: rgba(255,255,255,.3);
+				}
+			
+		}
+		h3 {
+			color: rgba(255,255,255,.8);
+		}
+	}
+}
+
+#abstpl-work {
+
+	overflow: hidden;
+	position: relative;
+
 	&:before, &:after {
 		position: absolute;
 		transform: rotate(-1.7deg);
@@ -939,19 +984,6 @@ h1, h2, h3, h4, h5, h6 {
 	&:after {
 		bottom: 0;
 		margin-bottom: -35px;
-	}
-	.section-heading {
-		h2 {
-			color: $brand-white;
-			
-				&:after {
-					background: rgba(255,255,255,.3);
-				}
-			
-		}
-		h3 {
-			color: rgba(255,255,255,.8);
-		}
 	}
 }
 

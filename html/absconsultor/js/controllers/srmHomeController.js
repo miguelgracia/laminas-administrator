@@ -415,7 +415,7 @@ function srmHomeController() {
 
         checkScroll();
 
-        validation('form#question_form', 'question');
+        //validation('form#question_form', 'question');
         validation('form#contact_form', 'contact');
 
         for (let lbInstance in fsLightboxInstances) {

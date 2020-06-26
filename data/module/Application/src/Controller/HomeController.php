@@ -45,45 +45,6 @@ class HomeController extends ApplicationController
         return $isValid;
     }
 
-    public function questionAction()
-    {
-        if (!$this->getRequest()->isPost()) {
-            $this->getResponse()->setStatusCode(500);
-            return new JsonModel(
-                [
-                    'isAjax' => $this->getRequest()->isXmlHttpRequest(),
-                    'isPost' => $this->getRequest()->isPost()
-                ]
-            );
-        }
-
-        $contactService = $this->serviceManager->get(ContactService::class);
-
-        if (!$this->validation(new QuestionFieldset('question', [
-            'captcha_secret' => $this->captchaSecret
-        ],$this->serviceManager->get(Adapter::class)))) {
-            $this->getResponse()->setStatusCode(422);
-
-            return new JsonModel([
-                'status' => 'ko',
-                'error' => true,
-                'message' => $this->messages
-            ]);
-        }
-
-        $mailSended = $contactService->sendFormMail($this->form->getData(), $this->appData->row->questionMailInbox, 'question');
-
-        return new JsonModel([
-            'status' => 'ok',
-            'error' => false,
-            'message' => $this->translator->translate(
-                $mailSended ? 'Mensaje enviado' : 'Mensaje NO enviado',
-                'default',
-                $this->lang
-            ),
-        ]);
-    }
-
     public function contactAction()
     {
         if (!$this->getRequest()->isPost()) {
@@ -100,7 +61,7 @@ class HomeController extends ApplicationController
 
         if (!$this->validation(new ContactFieldset('contact', [
             'captcha_secret' => $this->captchaSecret
-        ]))) {
+        ], $this->serviceManager->get(Adapter::class)))) {
             $this->getResponse()->setStatusCode(422);
 
             return new JsonModel([
@@ -110,7 +71,13 @@ class HomeController extends ApplicationController
             ]);
         }
 
-        $mailSended = $contactService->sendFormMail($this->form->getData(), $this->appData->row->mailInbox);
+        $post = $this->request->getPost();
+
+        $mailInbox = $post['question_code'] !== ''
+            ? $this->appData->row->mailTechnicalInbox
+            : $this->appData->row->mailInbox;
+
+        $mailSended = $contactService->sendFormMail($this->form->getData(), $mailInbox);
 
         return new JsonModel([
             'status' => 'ok',
@@ -149,15 +116,12 @@ class HomeController extends ApplicationController
 
     private function getGalleries()
     {
-        $jobService = $this->serviceManager->get(JobService::class);
-        $accessoryService = $this->serviceManager->get(AccessoryService::class);
-
         return [
             'accessoriesUrl' => $this->url()->fromRoute('locale/accessories', ['locale' => $this->lang, 'type' => 'accessories'], ['query' => ['page' => 0]]),
             'jobUrl' => $this->url()->fromRoute('locale/jobs', ['locale' => $this->lang, 'type' => 'jobs'], ['query' => ['page' => 0]]),
             'partners' => $this->serviceManager->get(PartnerService::class)->getData($this->lang),
-            'jobs' => $jobService->getJobs($this->lang, true),
-            'accessories' => $accessoryService->getAccessories($this->lang, true),
+            'jobs' => $this->serviceManager->get(JobService::class)->getJobs($this->lang, true),
+            'accessories' => $this->serviceManager->get(AccessoryService::class)->getAccessories($this->lang, true),
         ];
     }
 
@@ -194,7 +158,7 @@ class HomeController extends ApplicationController
 
         return [
             'formActionUrl' => $this->url()->fromRoute('locale/contact', ['locale' => $this->lang]),
-            'contactForm' => $contactService->createForm(new ContactFieldset('contact', $options)),
+            'contactForm' => $contactService->createForm(new ContactFieldset('contact', $options, $this->serviceManager->get(Adapter::class))),
             'questionForm' => $questionService->createForm(new QuestionFieldset('question', $options, $this->serviceManager->get(Adapter::class))),
         ];
     }

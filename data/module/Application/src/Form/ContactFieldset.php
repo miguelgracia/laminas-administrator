@@ -6,16 +6,22 @@ use Application\Validator\Recaptcha;
 use Zend\Filter\StringTrim;
 use Zend\Form\Element\Checkbox;
 use Zend\Form\Element\Hidden;
+use Zend\Form\Element\Select;
 use Zend\Form\Element\Text;
 use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\Validator\Db\RecordExists;
 use Zend\Validator\EmailAddress;
 
 class ContactFieldset extends Fieldset implements InputFilterProviderInterface
 {
-    public function __construct($name, array $options)
+    protected $adapter;
+
+    public function __construct($name, array $options, $adapter)
     {
         parent::__construct($name, $options);
+
+        $this->adapter = $adapter;
 
         $this->add([
             'name' => 'name',
@@ -42,6 +48,24 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
                 'placeholder' => 'Teléfono'
             ],
         ])->add([
+            'name' => 'question_topic',
+            'type' => Select::class,
+            'attributes' => [
+                'id' => 'question_topic',
+                'class' => 'form-control'
+            ],
+            'allow_empty' => false,
+            'options' => [
+                'empty_option' => 'Temática de la pregunta',
+                'value_options' => [
+                    'repuestos' => 'Repuestos',
+                    'ingenieria_electrica' => 'Ingeniería Eléctrica',
+                    'reparaciones' => 'Reparaciones',
+                    'ingenieria_mecanica' => 'Ingeniería mecánica',
+                    'otros' => 'otros',
+                ]
+            ],
+        ])->add([
             'name' => 'message',
             'type' => Text::class,
             'attributes' => [
@@ -49,6 +73,14 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
                 'class' => 'form-control',
                 'rows' => '10',
                 'placeholder' => 'Mensaje'
+            ],
+        ])->add([
+            'name' => 'question_code',
+            'type' => Text::class,
+            'attributes' => [
+                'id' => 'question_code',
+                'class' => 'form-control',
+                'placeholder' => 'Código de cliente (opcional)'
             ],
         ])->add([
             'name' => 'legal',
@@ -96,6 +128,27 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
                     [
                         'name' => StringTrim::class
                     ],
+                ]
+            ],
+            'question_topic' => [
+                'required' => true,
+            ],
+            'question_code' => [
+                'required' => true,
+                'filters' => [
+                    [
+                        'name' => StringTrim::class
+                    ]
+                ],
+                'validators' => [
+                    [
+                        'name' => RecordExists::class,
+                        'options' => [
+                            'table' => 'customers',
+                            'field' => 'key',
+                            'adapter' => $this->adapter
+                        ]
+                    ]
                 ]
             ],
             'legal' => [
