@@ -2,6 +2,7 @@ import simpleJSRoutingManager from './../simple-js-routing-manager';
 import animateScrollTo from 'animated-scroll-to';
 import axios from 'axios';
 import validator from "validator";
+import {tns} from ' ./../../node_modules/tiny-slider/src/tiny-slider';
 
 function srmHomeController() {
 
@@ -388,6 +389,34 @@ function srmHomeController() {
         }
     };
 
+    const clientSlider = function () {
+        let slider = tns({
+            container: '.client-slider',
+            items: 3,
+            autoplay: true,
+            controls: false,
+            nav: false,
+            center: true,
+            autoplayButtonOutput: false,
+            responsive: {
+                1024: {
+                    items: 4
+                },
+                800: {
+                    items: 3
+                },
+                640: {
+                    items: 2
+                },
+                300: {
+                    gutter: 180,
+                    items: 2
+                }
+            }
+        });
+
+    };
+
     this.indexAction = function() {
         burgerMenu();
         clickMenu();
@@ -399,6 +428,7 @@ function srmHomeController() {
         // Animations
         homeAnimate();
         introAnimate();
+        clientSlider();
 
         [
             'abstpl-company',

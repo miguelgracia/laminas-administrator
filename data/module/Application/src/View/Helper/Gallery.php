@@ -54,33 +54,26 @@ class Gallery extends AbstractHelper
             </div>";
     }
 
-    private function getSeparator()
+    public function renderFeatured($elements, $galleryPrefix = 'gallery')
     {
-        return "";
-//        return "<div class='clearfix visible-sm-block'></div>";
-    }
+        // $separator = "<div class='clearfix visible-sm-block'></div>";
+        $separator = "";
 
-    private function getGalleryWrapper()
-    {
-        return "<div class='col-md-4 col-sm-6 col-xxs-12'>
-            %s
-            <div class='content hide'>%s</div>
-            </div>";
-    }
+        $galleryWrapper = "
+            <div class='col-md-4 col-sm-6 col-xxs-12'>
+                %s
+                <div class='content hide'>%s</div>
+            </div>
+        ";
 
-    private function getImageWrapper()
-    {
-        return "<a data-fslightbox='%s' href='%s' class='abstpl-project-item %s'>
+        $imageWrapper = "<a data-fslightbox='%s' href='%s' class='abstpl-project-item %s'>
                     <img src='%s' alt='Image' class='img-responsive'>
                     <div class='abstpl-text'>
                         <h2>%s</h2>
                         <span>%s</span>
                     </div>
                 </a>";
-    }
 
-    public function renderFeatured($elements, $galleryPrefix = 'gallery')
-    {
         $galleryHtml = '';
 
         foreach ($elements as $index => $element) {
@@ -89,15 +82,13 @@ class Gallery extends AbstractHelper
 
             $images = json_decode($element->imageUrl);
 
-            $galleryWrapper = $this->getGalleryWrapper();
-
             foreach ($images as $indexImg => $img) {
                 $classes = $this->withBorder ? 'with-border' : '';
                 if ($indexImg > 0) {
                     $classes .= ' hide';
                 }
                 $imagesHtml .= sprintf(
-                    $this->getImageWrapper(),
+                    $imageWrapper,
                     $galleryPrefix . $index,
                     $img,
                     $classes,
@@ -110,7 +101,7 @@ class Gallery extends AbstractHelper
             $galleryHtml .= sprintf($galleryWrapper, $imagesHtml, $element->content);
 
             if (($index + 1) % 3 === 0) {
-                $galleryHtml .= $this->getSeparator();
+                $galleryHtml .= $separator;
             }
         }
 
@@ -125,28 +116,64 @@ class Gallery extends AbstractHelper
 
         $html = '';
 
+        $imageWrapper = '<div>
+                           <img alt="" height="300" class="img-fluid" src="%s">
+                         </div>';
+
+        $contentWrapper = '
+        <div class="col-sm-5 product mb-0">
+                        <div class="owl-carousel owl-theme" data-plugin-options="{\'items\': 1, \'margin\': 10}">
+                            %s
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="summary entry-summary">
+
+                            <h1 class="mb-0 font-weight-bold text-7">%s</h1>
+
+                            <p class="mb-4">%s</p>
+
+                            <div class="product-meta">
+                                <span class="posted-in">Categoria: 
+                                    <a rel="tag" href="%s">%s</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <hr class="my-5">
+                    </div>
+        ';
+
         if ($jobs instanceof Paginator) {
+
             foreach ($jobs as $index => $job) {
                 $job->imageUrl = json_decode($job->imageUrl);
-                $linkUrl = $url('locale/jobs/category/detail', [
+                $linkUrl = $url('locale/accessories/category', [
                     'locale' => $lang,
-                    'category' => $job->categoryUrlKey,
-                    'detail' => $job->urlKey
+                    'category' => $job->categoryUrlKey
                 ]);
 
+                $images = '';
+
+                if (is_array($job->imageUrl)) {
+                    foreach ($job->imageUrl as $imageUrl) {
+                        $images .= sprintf($imageWrapper, $imageUrl);
+                    }
+                } else {
+                    $images .= sprintf($imageWrapper, $job->imageUrl);
+                }
+
                 $html .= sprintf(
-                    $this->getContentWrapper(),
-                    (is_array($job->imageUrl) ? $job->imageUrl[0] : $job->imageUrl),
-                    $linkUrl,
+                    $contentWrapper,
+                    $images,
                     $job->title,
                     $job->content,
-                    $url('locale/jobs/category', [
-                        'locale' => $lang,
-                        'category' => $job->categoryUrlKey
-                    ]),
-                    $job->categoryTitle,
                     $linkUrl,
-                    $this->translator->translate('Show work', 'frontend')
+                    $job->categoryTitle
+                    /*$linkUrl,
+                    $this->translator->translate('Show work', 'frontend')*/
                 );
             }
         }

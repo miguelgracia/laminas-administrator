@@ -117,7 +117,7 @@ class HomeController extends ApplicationController
     private function getGalleries()
     {
         return [
-            'accessoriesUrl' => $this->url()->fromRoute('locale/accessories', ['locale' => $this->lang, 'type' => 'accessories'], ['query' => ['page' => 0]]),
+            'accessoriesUrl' => $this->url()->fromRoute('locale/accessories'),
             'jobUrl' => $this->url()->fromRoute('locale/jobs', ['locale' => $this->lang, 'type' => 'jobs'], ['query' => ['page' => 0]]),
             'partners' => $this->serviceManager->get(PartnerService::class)->getData($this->lang),
             'jobs' => $this->serviceManager->get(JobService::class)->getJobs($this->lang, true),

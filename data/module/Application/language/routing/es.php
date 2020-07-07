@@ -5,4 +5,6 @@ return [
     'jobs' => 'trabajos',
     'contact' => 'contacto',
     'question' => 'pregunta',
+    'featured-accessories' => 'accesorios-destacados',
+    'accessories' => 'repuestos'
 ];

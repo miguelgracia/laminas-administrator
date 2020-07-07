@@ -85,7 +85,19 @@ return [
                             'defaults' => [
                                 '__CONTROLLER__' => 'Job',
                                 'controller' => JobController::class,
-                                'action' => 'index',
+                                'action' => 'home',
+                            ],
+                        ],
+                        'may_terminate' => true,
+                    ],
+                    'featured-accessories' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/{featured-accessories}',
+                            'defaults' => [
+                                '__CONTROLLER__' => 'Accessory',
+                                'controller' => AccessoryController::class,
+                                'action' => 'home',
                             ],
                         ],
                         'may_terminate' => true,
@@ -101,6 +113,39 @@ return [
                             ],
                         ],
                         'may_terminate' => true,
+                        'child_routes' => [
+                            'category' => [
+                                'type'    => 'Segment',
+                                'may_terminate' => true,
+                                'options' => [
+                                    'route' => '/[:category]',
+                                    'constraints' => [
+                                        'category' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                    ],
+                                    'defaults' => [
+                                        '__CONTROLLER__' => 'Accessory',
+                                        'controller'    => AccessoryController::class,
+                                        'action'        => 'category',
+                                    ],
+                                ],
+                                'child_routes' => [
+                                    'detail' => [
+                                        'type'    => 'Segment',
+                                        'options' => [
+                                            'route'    => '/[:detail]',
+                                            'constraints' => [
+                                                'detail'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                            ],
+                                            'defaults' => [
+                                                '__CONTROLLER__' => 'Accessory',
+                                                'controller'    => AccessoryController::class,
+                                                'action'        => 'detail',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                     'contact' => [
                         'type' => Segment::class,
@@ -110,18 +155,6 @@ return [
                                 '__CONTROLLER__' => 'Home',
                                 'controller' => HomeController::class,
                                 'action' => 'contact',
-                            ],
-                        ],
-                        'may_terminate' => true,
-                    ],
-                    'question' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/{question}',
-                            'defaults' => [
-                                '__CONTROLLER__' => 'Home',
-                                'controller' => HomeController::class,
-                                'action' => 'question',
                             ],
                         ],
                         'may_terminate' => true,
@@ -250,6 +283,7 @@ return [
         'exception_template' => 'error/index',
         'template_map' => [
             'layout/layout' => __DIR__ . '/../view/layout/front-layout.phtml',
+            'layout/accessories' => __DIR__ . '/../view/layout/accessories-layout.phtml',
             'layout/pagination-layout' => __DIR__ . '/../view/layout/gallery-pagination-layout.phtml',
             'error/404' => __DIR__ . '/../view/error/404.phtml',
             'error/index' => __DIR__ . '/../view/error/index.phtml',

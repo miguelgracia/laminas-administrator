@@ -1,44 +1,38 @@
 <?php if ($this->pageCount): ?>
-    <ul class="pagination">
+    <ul class="pagination float-right">
         <?php if (isset($this->previous)): ?>
-            <li>
-                <a href="<?php echo $this->url($this->route,$this->routeParams); ?>?page=<?php echo $this->previous; ?>">
-                    <<
-                </a>
+            <li class="page-item">
+                <a class="page-link" href="<?php echo $this->url($this->route,$this->routeParams); ?>?page=<?php echo $this->previous; ?>"><i class="fas fa-angle-left"></i></a>
             </li>
         <?php else: ?>
             <li class="disabled">
-                <a href="#">
-                    <<
-                </a>
+                <li class="page-item"><a class="page-link"><i class="fas fa-angle-left"></i></a></li>
             </li>
         <?php endif; ?>
 
         <?php foreach ($this->pagesInRange as $page): ?>
             <?php if ($page != $this->current): ?>
-                <li>
-                    <a href="<?php echo $this->url($this->route,$this->routeParams);?>?page=<?php echo $page; ?>">
+                <li class="page-item">
+                    <a class="page-link" href="<?php echo $this->url($this->route,$this->routeParams);?>?page=<?php echo $page; ?>">
                         <?php echo $page; ?>
                     </a>
                 </li>
             <?php else: ?>
-                <li class="active">
-                    <a href="#"><?php echo $page; ?></a>
+                <li class="page-item active">
+                    <a class="page-link" href="#">
+                        <?php echo $page; ?>
+                    </a>
                 </li>
             <?php endif; ?>
         <?php endforeach; ?>
 
         <?php if (isset($this->next)): ?>
-            <li>
-                <a href="<?php echo $this->url($this->route,$this->routeParams); ?>?page=<?php echo $this->next; ?>">
-                    >>
-                </a>
+            <li class="page-item">
+                <a class="page-link" href="<?php echo $this->url($this->route,$this->routeParams); ?>?page=<?php echo $this->next; ?>"><i class="fas fa-angle-right"></i></a>
             </li>
         <?php else: ?>
             <li class="disabled">
-                <a href="#">
-                    >>
-                </a>
+                <li class="page-item"><a class="page-link"><i class="fas fa-angle-right"></i></a></li>
             </li>
         <?php endif; ?>
     </ul>

@@ -225,7 +225,7 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
         </div>
         <div class="row">
             <div class="col-xs-12 text-center">
-                <a href="<?=$accessoriesUrl;?>" class="btn btn-primary js-show-more-gallery" data-section-id="abstpl-accessories">Ver catalogo completo</a>
+                <a href="<?=$accessoriesUrl;?>" class="btn btn-primary">Ver catalogo completo</a>
             </div>
         </div>
 
@@ -235,34 +235,24 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
 <section id="abstpl-counters" data-section="clients"
          style="background-image: url(<?= $assetPath ?>/images/home/full_image_1.jpg);">
     <div class="abstpl-overlay"></div>
-    <div class="container">
-        <div class="row">
+    <div class="container-fluid" style="padding: 0">
+        <div class="row" style="padding: 0">
             <div class="col-md-12 section-heading text-center">
                 <h2 class="to-animate">Clientes</h2>
-                <div class="row">
+        <!--        <div class="row">
                     <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                        <!--<h3>Our weary eyes still stray to the horizon. Though down this road we've been so many
-                            times.</h3>-->
+                        <h3>Our weary eyes still stray to the horizon. Though down this road we've been so many
+                            times.</h3>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
-        <div class="row">
-            <?php
-            $partnerCount = count($this->partners);
-            $partnerIndex = 1;
-            foreach ($this->partners as $partner) : ?>
-                <div class="col-md-4">
-                    <div class="abstpl-person text-center to-animate">
-                        <figure><img src="<?= $mediaPath . '/' . $partner->logo; ?>" alt="Image"></figure>
-                    </div>
+        <div class="row client-slider">
+            <?php foreach ($this->partners as $partner) : ?>
+                <div class="abstpl-person text-center to-animate">
+                    <figure><img src="<?= $mediaPath . '/' . $partner->logo; ?>" alt="Image"></figure>
                 </div>
-                <?php if($partnerIndex % 3 == 0 and $partnerIndex < $partnerCount) :?>
-                    </div><div class="row">
-                <?php endif; ?>
-            <?php
-                $partnerIndex++;
-                endforeach; ?>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
@@ -282,16 +272,18 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
         <div class="row row-bottom-padded-md">
             <div class="col-md-6 to-animate">
                 <h3>Información</h3>
-                <ul class="abstpl-contact-info">
+                <ul class="abstpl-contact-  info">
                     <li class="abstpl-contact-address ">
                         <i class="icon-home"></i>
                         <?= $this->appData->locale->{$this->lang}->address; ?>
                     </li>
-                    <li><i class="icon-phone"></i><a class="phone"
-                                                     href="tel:<?= $this->appData->locale->{$this->lang}->phone ?>"><?= $this->appData->locale->{$this->lang}->phone ?></a>
+                    <li>
+                        <i class="icon-phone"></i>
+                        <a class="phone" href="tel:<?= $this->appData->locale->{$this->lang}->phone ?>"><?= $this->appData->locale->{$this->lang}->phone ?></a>
                     </li>
-                    <li><i class="icon-envelope"></i><a class="mail"
-                                                        href="mailto:<?= $this->appData->locale->{$this->lang}->email ?>"><?= $this->appData->locale->{$this->lang}->email ?></a>
+                    <li>
+                        <i class="icon-envelope"></i>
+                        <a class="mail" href="mailto:<?= $this->appData->locale->{$this->lang}->email ?>"><?= $this->appData->locale->{$this->lang}->email ?></a>
                     </li>
                 </ul>
             </div>

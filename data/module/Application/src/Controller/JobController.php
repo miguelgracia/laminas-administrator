@@ -10,7 +10,7 @@ use Zend\View\Model\ViewModel;
 
 class JobController extends ApplicationController
 {
-    public function indexAction()
+    public function homeAction()
     {
         $page = (int) $this->params()->fromQuery('page');
 

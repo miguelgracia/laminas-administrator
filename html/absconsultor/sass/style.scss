@@ -1044,7 +1044,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .abstpl-person {
-	padding: 150px 30px 30px 30px;
+	/*padding: 50px 0 30px 0;*/
 	float: left;
 	width: 100%;
 	position: relative;
@@ -1053,15 +1053,16 @@ h1, h2, h3, h4, h5, h6 {
 		margin-bottom: 3.5em;
 	}
 	figure {
-		position: absolute;
+		/*position: absolute;*/
 		margin-top: 0px;
 		top: 0;
-		left: 50%;
-		margin-left: -90px;
+		/*text-align: left;*/
+		/*left: 50%;*/
+		margin-left: -35px;
 		display: block;
 		margin-bottom: 50px;
 		img {
-			width: 180px;
+			width: 230px;
 			@include border-radius(50%);
 		}
 	}

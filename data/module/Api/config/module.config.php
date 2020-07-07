@@ -16,6 +16,7 @@ return [
             \Api\Service\StaticPageService::class => \Api\Service\ApiServiceFactory::class,
             \Api\Service\PartnerService::class => \Api\Service\ApiServiceFactory::class,
             \Api\Service\ContactService::class => \Api\Service\ApiServiceFactory::class,
+            \Api\Service\AccessoryCategoryService::class => \Api\Service\ApiServiceFactory::class,
         ],
     ],
 ];

@@ -40,5 +40,10 @@
   },
   "jshintConfig": {
     "esversion": 6
+  },
+  "dependencies": {
+    "jquery": "^3.5.1",
+    "slick-carousel": "^1.8.1",
+    "tiny-slider": "^2.9.2"
   }
 }

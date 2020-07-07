@@ -39,7 +39,7 @@ class FormHelper extends AbstractHelper
     public function getFormGroupWrapper()
     {
         return "<div class='form-group' data-name='%s'>
-                    <div class='row'>
+                    <div class='col-lg-offset-2 col-lg-10'>
                         %s
                         %s
                         <div class='messages'></div>

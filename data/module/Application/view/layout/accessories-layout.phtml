@@ -1,0 +1,171 @@
+<?php
+$assetPath = $this->basePath('accessories');
+$absAssetPath = $this->basePath('absconsultor');
+$jobMenuId = $this->menu->rows['accessories']->id;
+$socialIconHelper = $this->socialIconHelper();
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <?php echo $this->headTitle();?>
+
+    <meta name="keywords" content="HTML5 Template"/>
+    <meta name="description" content="Porto - Responsive HTML5 Template">
+    <meta name="theme-color" content="#00344F">
+
+    <!-- Favicon -->
+    <!--<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />-->
+    <!--<link rel="apple-touch-icon" href="img/apple-touch-icon.png">-->
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
+
+    <!-- Vendor CSS -->
+    <?php
+    echo $this->headLink()
+        ->prependStylesheet($assetPath . '/css/custom.css')
+        ->prependStylesheet($assetPath . '/css/skins/default.css')
+        ->prependStylesheet($assetPath . '/css/theme-shop.css')
+        ->prependStylesheet($assetPath . '/css/theme-elements.css')
+        ->prependStylesheet($assetPath . '/css/theme.css')
+        ->prependStylesheet($assetPath . '/vendor/owl.carousel/assets/owl.theme.default.min.css')
+        ->prependStylesheet($assetPath . '/vendor/owl.carousel/assets/owl.carousel.min.css')
+        ->prependStylesheet($assetPath . '/vendor/bootstrap/css/bootstrap.min.css')
+        ->prependStylesheet($assetPath . '/vendor/fontawesome-free/css/all.min.css')
+        ->prependStylesheet('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,400italic,700');
+    ?>
+
+    <!-- Head Libs -->
+    <script src="<?= $assetPath . '/vendor/modernizr/modernizr.min.js'; ?>"></script>
+
+    <?php if (isset($this->og)) {
+        $this->OpenGraphTag()->render($this->og);
+    } ?>
+
+</head>
+<body>
+
+<div class="body">
+    <header id="header" style="position: relative"
+            data-plugin-options="{'stickyEnabled': true, 'stickyEnableOnBoxed': true, 'stickyEnableOnMobile': true, 'stickyStartAt': 135, 'stickySetTop': '0px', 'stickyChangeLogo': true}">
+        <div
+                style="
+                        background-image: url(<?= $absAssetPath ?>/images/home/full_image_1.jpg);
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        box-shadow: 0 0 9px 0 rgba(0, 0, 0, 1);
+                        "
+                class="header-body border-color-primary border-bottom-0" data-sticky-header-style="{'minResolution': 0}"
+                data-sticky-header-style-active="{'background-color': '#f7f7f7'}"
+                data-sticky-header-style-deactive="{'background-color': '#FFF'}">
+            <div class="header-container container">
+                <div class="header-row py-2">
+                    <div class="header-column">
+                        <div class="header-row">
+                            <div class="header-logo">
+                                <a href="/">
+                                    <img alt="Bravo Silva Consultoria Tecnica" height="75" data-sticky-height="75"
+                                         data-sticky-top="0" src="<?= $assetPath . '/img/logo.png'; ?>">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="
+        	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 0;
+	opacity: .9;
+	-webkit-backface-visibility: hidden;
+	background-color: #000;
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxIDEiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxsaW5lYXJHcmFkaWVudCBpZD0idnNnZyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIHN0b3AtY29sb3I9IiMzZjk1ZWEiIHN0b3Atb3BhY2l0eT0iMSIgb2Zmc2V0PSIwIi8+PHN0b3Agc3RvcC1jb2xvcj0iIzUyZDNhYSIgc3RvcC1vcGFjaXR5PSIxIiBvZmZzZXQ9IjEiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjdnNnZykiIC8+PC9zdmc+);
+	background-image: -webkit-gradient(linear, 0% 0%, 100% 100%, color-stop(0, #33599b), color-stop(1, #000));
+	background-image: -webkit-repeating-linear-gradient(top left, #33599b 0%, #000 100%);
+	background-image: repeating-linear-gradient(to bottom right, #33599b 0%, #000 100%);
+	background-image: -ms-repeating-linear-gradient(top left, #33599b 0%, #000 100%);
+"></div>
+        </div>
+
+    </header>
+
+    <div class="header-body">
+        <div class="container-fluid" style="background-color: #e9ecef">
+            <div class="row">
+                <div class="container">
+                    <div class="row">
+                        <ol class="breadcrumb" style="margin-bottom: 0">
+                            <li class="breadcrumb-item"><a href="<?= $this->url('locale') ?>">Home</a></li>
+                            <?php if (!isset($this->currentCategory)): ?>
+                                <li class="breadcrumb-item active"><?= $this->menu->locale->{$this->lang}[$jobMenuId]->name ?></li>
+                            <?php else : ?>
+                                <li class="breadcrumb-item"><a
+                                            href="<?= $this->url('locale/accessories') ?>"><?= $this->menu->locale->{$this->lang}[$jobMenuId]->name ?></a>
+                                </li>
+                                <li class="breadcrumb-item active"><?= $this->currentCategory['title'] ?></a></li>
+                            <?php endif ?>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div role="main" class="main shop py-5">
+
+        <?= $this->content; ?>
+
+    </div>
+
+    <footer id="footer" role="contentinfo">
+        <a href="#" class="gotop" id="js-gotop"><i class="icon-arrow-up2"></i></a>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>&copy; <?= $this->appData->row->companyName; ?></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <ul class="social social-circle">
+                        <?php if (!is_null($this->appData)): ?>
+                            <?php echo $socialIconHelper->render($this->appData->row); ?>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+
+                <?php /*$legalLinkHelper->render($this->legal,$this->lang);*/ ?>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Vendor -->
+<?php echo $this->headScript()
+    ->appendFile($assetPath . '/vendor/jquery/jquery.min.js')
+    ->appendFile($assetPath . '/vendor/jquery.easing/jquery.easing.min.js')
+    ->appendFile($assetPath . '/vendor/jquery.cookie/jquery.cookie.min.js')
+    ->appendFile($assetPath . '/vendor/bootstrap/js/bootstrap.min.js')
+    ->appendFile($assetPath . '/vendor/common/common.min.js')
+    ->appendFile($assetPath . '/vendor/isotope/jquery.isotope.min.js')
+    ->appendFile($assetPath . '/vendor/owl.carousel/owl.carousel.min.js')
+//    Theme Base, Components and Settings
+    ->appendFile($assetPath . '/js/theme.js')
+//    Current Page Vendor and Views
+    ->appendFile($assetPath . '/js/views/view.shop.js')
+//    Theme Custom
+    ->appendFile($assetPath . '/js/custom.js')
+//    Theme Initialization Files
+    ->appendFile($assetPath . '/js/theme.init.modify.js'); ?>
+
+</body>
+</html>
