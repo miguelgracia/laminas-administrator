@@ -8,28 +8,20 @@ $socialIconHelper = $this->socialIconHelper();
 <!DOCTYPE html>
 <html>
 <head>
-
-    <!-- Basic -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <?php echo $this->headTitle();?>
 
-    <meta name="keywords" content="HTML5 Template"/>
-    <meta name="description" content="Porto - Responsive HTML5 Template">
     <meta name="theme-color" content="#00344F">
 
-    <!-- Favicon -->
-    <!--<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />-->
-    <!--<link rel="apple-touch-icon" href="img/apple-touch-icon.png">-->
-
-    <!-- Mobile Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
 
     <!-- Vendor CSS -->
     <?php
-    echo $this->headLink()
+    echo $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.jpg'])
         ->prependStylesheet($assetPath . '/css/custom.css')
+        ->prependStylesheet($absAssetPath . '/css/icomoon.css')
         ->prependStylesheet($assetPath . '/css/skins/default.css')
         ->prependStylesheet($assetPath . '/css/theme-shop.css')
         ->prependStylesheet($assetPath . '/css/theme-elements.css')
@@ -149,6 +141,7 @@ $socialIconHelper = $this->socialIconHelper();
     </footer>
 </div>
 
+<input type="hidden" id="simple-routing-manager" name="<?=$this->srmController;?>" value="<?=$this->controllerAction;?>" />
 <!-- Vendor -->
 <?php echo $this->headScript()
     ->appendFile($assetPath . '/vendor/jquery/jquery.min.js')
@@ -165,7 +158,11 @@ $socialIconHelper = $this->socialIconHelper();
 //    Theme Custom
     ->appendFile($assetPath . '/js/custom.js')
 //    Theme Initialization Files
-    ->appendFile($assetPath . '/js/theme.init.modify.js'); ?>
+    ->appendFile($assetPath . '/js/theme.init.modify.js')
+    ->appendFile($absAssetPath. '/dist/vendor-dist.js')
+    ->appendFile($absAssetPath. '/dist/dist.js')
+;
+?>
 
 </body>
 </html>
