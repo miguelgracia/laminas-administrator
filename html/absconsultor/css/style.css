@@ -5990,6 +5990,9 @@ h1, h2, h3, h4, h5, h6 {
           color: #000 !important; }
         #abstpl-header #navbar li a span:before {
           background: transparent !important; }
+        #abstpl-header #navbar li a[data-nav-section="contact"] {
+          background-color: #192d4e;
+          color: white !important; }
       #abstpl-header #navbar li.active a {
         background: transparent;
         background: none;
@@ -6003,10 +6006,10 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 0; }
   #abstpl-header #navbar li a {
     font-family: "Source Sans Pro", Arial, sans-serif;
-    color: rgba(255, 255, 255, 0.5);
+    color: white;
     position: relative;
     font-size: 19px;
-    font-weight: 300; }
+    font-weight: bold; }
     #abstpl-header #navbar li a span {
       position: relative;
       display: block;
@@ -6039,6 +6042,10 @@ h1, h2, h3, h4, h5, h6 {
         -ms-transform: scaleX(1);
         -o-transform: scaleX(1);
         transform: scaleX(1); }
+    @media screen and (min-width: 992px) {
+      #abstpl-header #navbar li a[data-nav-section="contact"] {
+        background-color: rgba(255, 255, 255, 0.5);
+        color: #fff; } }
   #abstpl-header #navbar li.active a {
     background: transparent;
     background: none;
@@ -6088,6 +6095,14 @@ h1, h2, h3, h4, h5, h6 {
         #abstpl-header.navbar-fixed-top #navbar li a {
           padding-top: 30px;
           padding-bottom: 30px; } }
+      #abstpl-header.navbar-fixed-top #navbar li a[data-nav-section="contact"] {
+        margin-top: 15px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        background-color: #192d4e;
+        color: white; }
+        #abstpl-header.navbar-fixed-top #navbar li a[data-nav-section="contact"]:hover {
+          background-color: #192d4e; }
     #abstpl-header.navbar-fixed-top #navbar li.active a {
       background: transparent;
       background: none;
@@ -6376,17 +6391,19 @@ h1, h2, h3, h4, h5, h6 {
     bottom: 0;
     margin-bottom: -35px; }
   #abstpl-services .abstpl-service {
-    padding-right: 30px; }
+    padding-right: 30px;
+    margin-bottom: 60px; }
   #abstpl-services h3 {
     font-size: 24px;
-    color: #fff; }
+    color: #fff;
+    text-align: center; }
   #abstpl-services .icon {
     font-size: 70px;
     margin-bottom: 30px;
-    display: -moz-inline-stack;
-    display: inline-block;
-    zoom: 1;
-    *display: inline; }
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center; }
     #abstpl-services .icon:before {
       color: #fff; }
   #abstpl-services .section-heading h2 {
@@ -6484,8 +6501,7 @@ h1, h2, h3, h4, h5, h6 {
   background-image: repeating-linear-gradient(to bottom right, #33599b 0%, #000 100%);
   background-image: -ms-repeating-linear-gradient(top left, #33599b 0%, #000 100%); }
   #abstpl-accessories a {
-    color: rgba(255, 255, 255, 0.5);
-    text-decoration: underline; }
+    color: rgba(255, 255, 255, 0.5); }
     #abstpl-accessories a:hover {
       color: white; }
   #abstpl-accessories:before {
