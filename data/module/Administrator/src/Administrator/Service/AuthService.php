@@ -2,7 +2,7 @@
 
 namespace Administrator\Service;
 
-use Zend\Db\Sql\Select;
+use Laminas\Db\Sql\Select;
 
 class AuthService
 {

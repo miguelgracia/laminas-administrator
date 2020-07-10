@@ -8,7 +8,7 @@ return [
 
     'form_elements' => [
         'aliases' => [
-            'accessoryCategoriesId' => \Zend\Form\Element\Hidden::class,
+            'accessoryCategoriesId' => \Laminas\Form\Element\Hidden::class,
         ],
         'factories' => [
             \AmAccessoryCategory\Form\AccessoryCategoryForm::class => \Administrator\Factory\AdministratorFormFactory::class,

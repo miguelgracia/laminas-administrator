@@ -2,7 +2,7 @@
 
 namespace AmMedia\FileManager;
 
-use Zend\Stdlib\AbstractOptions;
+use Laminas\Stdlib\AbstractOptions;
 
 class FileManagerOptions extends AbstractOptions
 {

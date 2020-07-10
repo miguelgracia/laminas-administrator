@@ -2,9 +2,9 @@
 
 namespace Administrator\Service;
 
-use Zend\Db\Metadata\Object\ColumnObject;
-use Zend\Filter\Word\SeparatorToCamelCase;
-use Zend\Form\Element\Hidden;
+use Laminas\Db\Metadata\Object\ColumnObject;
+use Laminas\Filter\Word\SeparatorToCamelCase;
+use Laminas\Form\Element\Hidden;
 
 class ConfigureFieldsetService
 {

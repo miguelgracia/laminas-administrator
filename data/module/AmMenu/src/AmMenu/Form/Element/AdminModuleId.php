@@ -3,7 +3,7 @@
 namespace AmMenu\Form\Element;
 
 use AmModule\Model\ModuleTable;
-use Zend\Form\Element\Select;
+use Laminas\Form\Element\Select;
 
 class AdminModuleId extends Select
 {

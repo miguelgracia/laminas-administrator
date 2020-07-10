@@ -4,7 +4,7 @@ namespace AmLanguage\Form\Factory;
 
 use AmLanguage\Model\LanguageTable;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\DelegatorFactoryInterface;
+use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 
 class LanguageFieldsetDelegatorFactory implements DelegatorFactoryInterface
 {

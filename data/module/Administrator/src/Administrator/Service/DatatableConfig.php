@@ -2,8 +2,8 @@
 
 namespace Administrator\Service;
 
-use Zend\Filter\Word\DashToCamelCase;
-use Zend\Mvc\Controller\Plugin\Params;
+use Laminas\Filter\Word\DashToCamelCase;
+use Laminas\Mvc\Controller\Plugin\Params;
 
 abstract class DatatableConfig
 {

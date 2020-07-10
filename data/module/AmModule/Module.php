@@ -4,8 +4,8 @@ namespace AmModule;
 
 use AmModule\Service\ModuleService;
 use Autoload\ModuleConfigTrait;
-use Zend\Mvc\I18n\Translator;
-use Zend\Mvc\MvcEvent;
+use Laminas\Mvc\I18n\Translator;
+use Laminas\Mvc\MvcEvent;
 
 class Module
 {

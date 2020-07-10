@@ -9,8 +9,8 @@ use Administrator\Service\DatatableService;
 use Administrator\Service\SessionService;
 use AmProfile\Service\ProfilePermissionService;
 use Interop\Container\ContainerInterface;
-use Zend\Filter\Word\DashToCamelCase;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\Filter\Word\DashToCamelCase;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class AdministratorControllerFactory implements FactoryInterface
 {

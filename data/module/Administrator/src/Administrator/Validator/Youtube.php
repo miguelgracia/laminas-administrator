@@ -2,8 +2,8 @@
 
 namespace Administrator\Validator;
 
-use Zend\Validator\Exception;
-use Zend\Validator\Regex;
+use Laminas\Validator\Exception;
+use Laminas\Validator\Regex;
 
 class Youtube extends Regex
 {

@@ -10,7 +10,7 @@ return [
     'form_elements' => [
         'aliases' => [
             'isAdmin' => \Administrator\Form\Element\YesNoSelect::class,
-            'description' => \Zend\Form\Element\Textarea::class,
+            'description' => \Laminas\Form\Element\Textarea::class,
         ],
         'factories' => [
             \AmProfile\Form\Element\Permissions::class => \AmProfile\Form\Element\PermissionsFactory::class,

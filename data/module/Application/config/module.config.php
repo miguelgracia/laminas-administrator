@@ -24,16 +24,16 @@ use Application\View\Helper\MenuDelegator;
 use Application\View\Helper\Partner;
 use Application\View\Helper\QuestionForm;
 use Application\View\Helper\SocialIcon;
-use Zend\Cache\Service\StorageCacheAbstractServiceFactory;
-use Zend\I18n\Translator\Resources;
-use Zend\I18n\Translator\TranslatorServiceFactory;
-use Zend\I18n\View\Helper\Translate;
-use Zend\Log\LoggerAbstractServiceFactory;
-use Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack;
-use Zend\Router\Http\Literal;
-use Zend\Router\Http\Segment;
-use Zend\ServiceManager\Factory\InvokableFactory;
-use Zend\Session\Storage\SessionArrayStorage;
+use Laminas\Cache\Service\StorageCacheAbstractServiceFactory;
+use Laminas\I18n\Translator\Resources;
+use Laminas\I18n\Translator\TranslatorServiceFactory;
+use Laminas\I18n\View\Helper\Translate;
+use Laminas\Log\LoggerAbstractServiceFactory;
+use Laminas\Mvc\I18n\Router\TranslatorAwareTreeRouteStack;
+use Laminas\Router\Http\Literal;
+use Laminas\Router\Http\Segment;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\Session\Storage\SessionArrayStorage;
 
 return [
     'languages_by_host' => [

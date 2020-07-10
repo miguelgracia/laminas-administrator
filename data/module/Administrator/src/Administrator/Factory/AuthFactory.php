@@ -6,10 +6,10 @@ use Administrator\Model\AuthStorage;
 use Administrator\Service\AuthService;
 use AmUser\Model\UserTable;
 use Interop\Container\ContainerInterface;
-use Zend\Db\Adapter\Adapter;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\Authentication\AuthenticationService;
-use Zend\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
 
 class AuthFactory implements FactoryInterface
 {

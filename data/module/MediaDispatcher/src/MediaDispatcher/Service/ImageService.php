@@ -4,11 +4,11 @@ namespace MediaDispatcher\Service;
 
 use Interop\Container\ContainerInterface;
 use Intervention\Image\ImageManager;
-use Zend\Filter\Dir;
-use Zend\Filter\RealPath;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\Stdlib\StringWrapper\Intl;
-use Zend\Validator\File\IsImage;
+use Laminas\Filter\Dir;
+use Laminas\Filter\RealPath;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\Stdlib\StringWrapper\Intl;
+use Laminas\Validator\File\IsImage;
 
 class ImageService implements FactoryInterface
 {
@@ -40,17 +40,17 @@ class ImageService implements FactoryInterface
     protected $cacheImagePath = null;
 
     /**
-     * @var \Zend\Validator\File\IsImage
+     * @var \Laminas\Validator\File\IsImage
      */
     protected $isImageValidator;
 
     /**
-     * @var \Zend\Filter\Dir
+     * @var \Laminas\Filter\Dir
      */
     private $dirFilter;
 
     /**
-     * @var \Zend\Filter\RealPath
+     * @var \Laminas\Filter\RealPath
      */
     private $realPathFilter;
 

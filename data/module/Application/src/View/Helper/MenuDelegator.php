@@ -3,7 +3,7 @@
 namespace Application\View\Helper;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\DelegatorFactoryInterface;
+use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 
 class MenuDelegator implements DelegatorFactoryInterface
 {

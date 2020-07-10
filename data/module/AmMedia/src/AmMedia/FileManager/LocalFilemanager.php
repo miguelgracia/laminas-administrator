@@ -13,9 +13,9 @@
 
 namespace AmMedia\FileManager;
 
-use Zend\Http\Headers;
-use Zend\Http\Response;
-use Zend\View\Model\JsonModel;
+use Laminas\Http\Headers;
+use Laminas\Http\Response;
+use Laminas\View\Model\JsonModel;
 
 class LocalFilemanager extends BaseFilemanager
 {

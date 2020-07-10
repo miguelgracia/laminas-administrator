@@ -12,9 +12,9 @@
 
 namespace AmMedia\FileManager;
 
-use Zend\Http\Headers;
-use Zend\Http\PhpEnvironment\Response;
-use Zend\View\Model\JsonModel;
+use Laminas\Http\Headers;
+use Laminas\Http\PhpEnvironment\Response;
+use Laminas\View\Model\JsonModel;
 
 class BaseUploadHandler
 {

@@ -4,8 +4,8 @@ namespace AmJob\Form\Element;
 
 use AmJobCategory\Model\JobCategoryTable;
 use Interop\Container\ContainerInterface;
-use Zend\Form\Element\Select;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\Form\Element\Select;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class JobCategoriesIdFactory implements FactoryInterface
 {

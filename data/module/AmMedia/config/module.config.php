@@ -10,9 +10,9 @@ return [
     'service_manager' => [
         'factories' => [
             \AmMedia\FileManager\FileManagerService::class => \AmMedia\FileManager\FileManagerService::class,
-            \AmMedia\Service\ScanDirService::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
+            \AmMedia\Service\ScanDirService::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
             \AmMedia\Service\InterventionImageService::class => \AmMedia\Service\InterventionImageService::class,
-            \AmMedia\Model\MediaModel::class => \Zend\ServiceManager\Factory\InvokableFactory::class
+            \AmMedia\Model\MediaModel::class => \Laminas\ServiceManager\Factory\InvokableFactory::class
         ],
     ],
     'AmMedia' => [

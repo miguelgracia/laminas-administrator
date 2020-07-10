@@ -17,7 +17,7 @@ trait ModuleConfigTrait
     }
 
     /**
-     * Return an array for passing to Zend\Loader\AutoloaderFactory.
+     * Return an array for passing to Laminas\Loader\AutoloaderFactory.
      *
      * @return array
      * @throws \ReflectionException
@@ -29,7 +29,7 @@ trait ModuleConfigTrait
         $this->__dir = dirname($reflectionClass->getFileName());
 
         return [
-            'Zend\Loader\StandardAutoloader' => [
+            'Laminas\Loader\StandardAutoloader' => [
                 'namespaces' => [
                     $namespace => $this->__dir . '/src/' . $namespace,
                 ],

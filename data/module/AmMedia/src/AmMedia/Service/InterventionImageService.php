@@ -4,7 +4,7 @@ namespace AmMedia\Service;
 
 use Interop\Container\ContainerInterface;
 use Intervention\Image\ImageManager;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class InterventionImageService implements FactoryInterface
 {

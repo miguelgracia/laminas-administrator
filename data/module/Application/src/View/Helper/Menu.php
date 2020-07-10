@@ -2,8 +2,8 @@
 
 namespace Application\View\Helper;
 
-use Zend\Stdlib\ArrayObject;
-use Zend\View\Helper\AbstractHelper;
+use Laminas\Stdlib\ArrayObject;
+use Laminas\View\Helper\AbstractHelper;
 
 class Menu extends AbstractHelper
 {

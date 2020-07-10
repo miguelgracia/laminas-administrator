@@ -3,10 +3,10 @@
 namespace Application\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\Session\Config\SessionConfig;
-use Zend\Session\Container;
-use Zend\Session\SessionManager;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\Session\Config\SessionConfig;
+use Laminas\Session\Container;
+use Laminas\Session\SessionManager;
 
 class SessionService implements FactoryInterface, SessionServiceInterface
 {

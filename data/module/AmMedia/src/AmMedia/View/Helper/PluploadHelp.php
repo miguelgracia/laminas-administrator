@@ -2,7 +2,7 @@
 
 namespace AmMedia\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
+use Laminas\View\Helper\AbstractHelper;
 
 class PluploadHelp extends AbstractHelper
 {

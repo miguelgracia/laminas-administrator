@@ -6,11 +6,11 @@ use Administrator\Service\AdministratorFormService;
 use Administrator\Service\CheckIdService;
 use Administrator\Service\ConfigureFieldsetService;
 use Interop\Container\ContainerInterface;
-use Zend\Db\Metadata\Object\ColumnObject;
-use Zend\Db\Metadata\Source\Factory;
-use Zend\Filter\Word\SeparatorToCamelCase;
-use Zend\Form\Element\Hidden;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\Db\Metadata\Object\ColumnObject;
+use Laminas\Db\Metadata\Source\Factory;
+use Laminas\Filter\Word\SeparatorToCamelCase;
+use Laminas\Form\Element\Hidden;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class AdministratorFieldsetFactory implements FactoryInterface
 {
@@ -34,7 +34,7 @@ class AdministratorFieldsetFactory implements FactoryInterface
             $formService->setBaseFieldset($fieldset);
         }
 
-        $metadata = Factory::createSourceFromAdapter($container->get('Zend\Db\Adapter\Adapter'));
+        $metadata = Factory::createSourceFromAdapter($container->get('Laminas\Db\Adapter\Adapter'));
         $tableGateway = $container->get($fieldset->getTableGatewayName());
         $columns = $metadata->getColumns($tableGateway->getTable());
 

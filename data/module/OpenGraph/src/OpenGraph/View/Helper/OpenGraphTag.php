@@ -3,7 +3,7 @@
 namespace OpenGraph\View\Helper;
 
 use Administrator\Validator\IsImage;
-use Zend\View\Helper\AbstractHelper;
+use Laminas\View\Helper\AbstractHelper;
 
 class OpenGraphTag extends AbstractHelper
 {

@@ -9,7 +9,7 @@ return [
 
     'form_elements' => [
         'factories' => [
-            \AmUser\Form\Element\AdminProfileId::class => \Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
+            \AmUser\Form\Element\AdminProfileId::class => \Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory::class,
             \AmUser\Form\AmUserForm::class => \Administrator\Factory\AdministratorFormFactory::class,
             \AmUser\Form\UserFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class
         ]

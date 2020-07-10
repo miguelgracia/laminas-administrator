@@ -4,7 +4,7 @@ namespace Api\Service;
 
 use Api\Model\AccessoryLocaleTable;
 use Api\Model\AccessoryTable;
-use Zend\Db\Sql\Predicate\Expression;
+use Laminas\Db\Sql\Predicate\Expression;
 
 class AccessoryService implements AllowDatabaseAccessInterface
 {

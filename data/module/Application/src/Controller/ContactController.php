@@ -4,7 +4,7 @@ namespace Application\Controller;
 
 use Api\Service\ContactService;
 use Api\Service\StaticPageService;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 class ContactController extends ApplicationController
 {
@@ -12,7 +12,7 @@ class ContactController extends ApplicationController
     {
         $prg = $this->prg($this->url()->fromRoute('locale/contact', ['locale' => $this->lang]), true);
 
-        if ($prg instanceof \Zend\Http\PhpEnvironment\Response) {
+        if ($prg instanceof \Laminas\Http\PhpEnvironment\Response) {
             // Returned a response to redirect us.
             return $prg;
         }

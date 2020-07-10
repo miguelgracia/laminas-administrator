@@ -3,8 +3,8 @@
 namespace AmMedia\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\Validator\File\MimeType;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\Validator\File\MimeType;
 
 class ScanDirService implements FactoryInterface
 {

@@ -3,8 +3,8 @@
 namespace Administrator\Model;
 
 use Application\Model\MyOrmTableTrait;
-use Zend\Db\Adapter\AdapterAwareInterface;
-use Zend\Db\TableGateway\AbstractTableGateway;
+use Laminas\Db\Adapter\AdapterAwareInterface;
+use Laminas\Db\TableGateway\AbstractTableGateway;
 
 abstract class AdministratorTable extends AbstractTableGateway implements AdapterAwareInterface
 {

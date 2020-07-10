@@ -3,7 +3,7 @@
 namespace AmUser\Model;
 
 use Administrator\Model\AdministratorTable;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 
 class UserTable extends AdministratorTable
 {

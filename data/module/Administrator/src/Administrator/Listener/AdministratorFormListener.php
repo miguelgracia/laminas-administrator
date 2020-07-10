@@ -2,8 +2,8 @@
 
 namespace Administrator\Listener;
 
-use Zend\EventManager\ListenerAggregateInterface;
-use Zend\EventManager\EventManagerInterface;
+use Laminas\EventManager\ListenerAggregateInterface;
+use Laminas\EventManager\EventManagerInterface;
 
 class AdministratorFormListener implements ListenerAggregateInterface
 {

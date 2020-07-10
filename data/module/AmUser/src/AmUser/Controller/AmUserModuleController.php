@@ -16,7 +16,7 @@ class AmUserModuleController extends AuthController
     public const FORM_CLASS = AmUserForm::class;
 
     /**
-     * @return \Zend\Http\Response
+     * @return \Laminas\Http\Response
      */
     public function deleteAction()
     {

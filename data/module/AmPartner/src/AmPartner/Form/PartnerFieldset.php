@@ -24,7 +24,7 @@ class PartnerFieldset extends AdministratorFieldset
         $inputFilter = parent::getInputFilterSpecification();
 
         $inputFilter['website']['validators'][] = [
-            'name' => 'Zend\Validator\Uri',
+            'name' => 'Laminas\Validator\Uri',
             'options' => [
                 'allowRelative' => false
             ],

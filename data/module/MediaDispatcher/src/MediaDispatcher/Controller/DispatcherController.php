@@ -2,8 +2,8 @@
 
 namespace MediaDispatcher\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\MvcEvent;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\MvcEvent;
 
 class DispatcherController extends AbstractActionController
 {

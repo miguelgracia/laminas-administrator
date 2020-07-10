@@ -4,7 +4,7 @@ namespace Administrator\Factory;
 
 use AmProfile\Service\ProfilePermissionService;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class DatatableConfigFactory implements FactoryInterface
 {

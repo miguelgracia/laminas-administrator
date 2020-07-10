@@ -2,7 +2,7 @@
 
 namespace Administrator\Form\Element;
 
-use Zend\Form\Element\Select;
+use Laminas\Form\Element\Select;
 
 class YesNoSelect extends Select
 {

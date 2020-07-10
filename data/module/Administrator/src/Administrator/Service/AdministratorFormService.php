@@ -3,10 +3,10 @@
 namespace Administrator\Service;
 
 use Administrator\Form\AdministratorForm;
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerAwareTrait;
-use Zend\Form\Fieldset;
-use Zend\Form\FormElementManager\FormElementManagerV3Polyfill;
+use Laminas\EventManager\EventManagerAwareInterface;
+use Laminas\EventManager\EventManagerAwareTrait;
+use Laminas\Form\Fieldset;
+use Laminas\Form\FormElementManager\FormElementManagerV3Polyfill;
 
 class AdministratorFormService implements EventManagerAwareInterface
 {
@@ -18,7 +18,7 @@ class AdministratorFormService implements EventManagerAwareInterface
     protected $formElementManager;
 
     /**
-     * @var \Zend\Form\Form
+     * @var \Laminas\Form\Form
      */
     protected $form = null;
 

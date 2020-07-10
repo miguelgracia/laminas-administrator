@@ -3,8 +3,8 @@
 namespace Administrator\Factory;
 
 use Interop\Container\ContainerInterface;
-use Zend\Filter\Word\SeparatorToSeparator;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\Filter\Word\SeparatorToSeparator;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class AdministratorFormFactory implements FactoryInterface
 {

@@ -40,7 +40,7 @@ return [
     'router' => [
         'routes' => [
             'administrator' => [
-                'type' => \Zend\Router\Http\Segment::class,
+                'type' => \Laminas\Router\Http\Segment::class,
                 'options' => [
                     'route' => '/admin[/[:module[/[:action[/[:id]]]]]]',
                     'defaults' => [
@@ -87,28 +87,28 @@ return [
             'visible' => \Administrator\Form\Element\YesNoSelect::class,
             'targetLink' => \Administrator\Form\Element\TargetLink::class,
             'metaDescription' => \Administrator\Form\Element\SimpleTextarea::class,
-            'content' => \Zend\Form\Element\Textarea::class,
-            'password' => \Zend\Form\Element\Password::class,
+            'content' => \Laminas\Form\Element\Textarea::class,
+            'password' => \Laminas\Form\Element\Password::class,
             'imageUrl' => \Administrator\Form\Element\ImageUrl::class,
 
             /**
              * Si no se especifica el nombre del campo en base de datos, resolvemos un objeto
              * Element en función del tipo de dato seteado en mysql
              */
-            'int' => \Zend\Form\Element\Text::class,
-            'varchar' => \Zend\Form\Element\Text::class,
-            'char' => \Zend\Form\Element\Text::class,
-            'tinyint' => \Zend\Form\Element\Text::class,
-            'enum' => \Zend\Form\Element\Select::class,
-            'timestamp' => \Zend\Form\Element\DateSelect::class,
-            'tinytext' => \Zend\Form\Element\Textarea::class,
-            'mediumtext' => \Zend\Form\Element\Textarea::class,
-            'longtext' => \Zend\Form\Element\Textarea::class,
+            'int' => \Laminas\Form\Element\Text::class,
+            'varchar' => \Laminas\Form\Element\Text::class,
+            'char' => \Laminas\Form\Element\Text::class,
+            'tinyint' => \Laminas\Form\Element\Text::class,
+            'enum' => \Laminas\Form\Element\Select::class,
+            'timestamp' => \Laminas\Form\Element\DateSelect::class,
+            'tinytext' => \Laminas\Form\Element\Textarea::class,
+            'mediumtext' => \Laminas\Form\Element\Textarea::class,
+            'longtext' => \Laminas\Form\Element\Textarea::class,
         ],
         'factories' => [
-            \Administrator\Form\Element\YesNoSelect::class => \Zend\Form\ElementFactory::class,
-            \Administrator\Form\Element\TargetLink::class => \Zend\Form\ElementFactory::class,
-            \Administrator\Form\Element\SimpleTextarea::class => \Zend\Form\ElementFactory::class,
+            \Administrator\Form\Element\YesNoSelect::class => \Laminas\Form\ElementFactory::class,
+            \Administrator\Form\Element\TargetLink::class => \Laminas\Form\ElementFactory::class,
+            \Administrator\Form\Element\SimpleTextarea::class => \Laminas\Form\ElementFactory::class,
             \Administrator\Form\Element\ImageUrl::class => \Administrator\Form\Element\ImageUrlFactory::class
         ],
     ],
@@ -124,9 +124,9 @@ return [
             AdministratorModelAbstractFactory::class,
         ],
         'factories' => [
-            AuthStorage::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
-            \Administrator\Service\ConfigureFieldsetService::class => \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class,
-            \Administrator\Service\CheckIdService::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
+            AuthStorage::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
+            \Administrator\Service\ConfigureFieldsetService::class => \Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory::class,
+            \Administrator\Service\CheckIdService::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
             'AuthService' => \Administrator\Factory\AuthFactory::class,
             SessionService::class => SessionService::class,
             AdministratorFormService::class => AdministratorFormServiceFactory::class,
@@ -139,13 +139,13 @@ return [
             'AdministratorMenu' => \Administrator\View\Helper\AdministratorMenu::class,
         ],
         'factories' => [
-            \Administrator\View\Helper\AdministratorMenu::class => \Zend\ServiceManager\Factory\InvokableFactory::class,
+            \Administrator\View\Helper\AdministratorMenu::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
             'administrator_form_row' => function () {
                 return new \Administrator\View\Helper\AdministratorFormRow;
             }
         ]
     ],
-    \Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory::class => [
+    \Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory::class => [
         \Administrator\Service\ConfigureFieldsetService::class => [
             'FormElementManager',
             \Administrator\Service\CheckIdService::class

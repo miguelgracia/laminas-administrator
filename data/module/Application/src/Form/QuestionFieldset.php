@@ -3,15 +3,15 @@
 namespace Application\Form;
 
 use Application\Validator\Recaptcha;
-use Zend\Filter\StringTrim;
-use Zend\Form\Element\Checkbox;
-use Zend\Form\Element\Hidden;
-use Zend\Form\Element\Select;
-use Zend\Form\Element\Text;
-use Zend\Form\Fieldset;
-use Zend\InputFilter\InputFilterProviderInterface;
-use Zend\Validator\Db\RecordExists;
-use Zend\Validator\EmailAddress;
+use Laminas\Filter\StringTrim;
+use Laminas\Form\Element\Checkbox;
+use Laminas\Form\Element\Hidden;
+use Laminas\Form\Element\Select;
+use Laminas\Form\Element\Text;
+use Laminas\Form\Fieldset;
+use Laminas\InputFilter\InputFilterProviderInterface;
+use Laminas\Validator\Db\RecordExists;
+use Laminas\Validator\EmailAddress;
 
 class QuestionFieldset extends Fieldset implements InputFilterProviderInterface
 {

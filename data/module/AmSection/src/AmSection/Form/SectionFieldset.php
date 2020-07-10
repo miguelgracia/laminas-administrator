@@ -4,7 +4,7 @@ namespace AmSection\Form;
 
 use Administrator\Form\AdministratorFieldset;
 use AmSection\Model\SectionTable;
-use Zend\Db\Metadata\Object\ColumnObject;
+use Laminas\Db\Metadata\Object\ColumnObject;
 
 class SectionFieldset extends AdministratorFieldset
 {

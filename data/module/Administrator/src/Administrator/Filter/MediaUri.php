@@ -3,11 +3,11 @@
 namespace Administrator\Filter;
 
 use Administrator\Validator\Youtube;
-use Zend\Dom\Document;
-use Zend\Filter\AbstractFilter;
-use Zend\Filter\Exception;
-use Zend\Filter\PregReplace;
-use Zend\Validator\Regex;
+use Laminas\Dom\Document;
+use Laminas\Filter\AbstractFilter;
+use Laminas\Filter\Exception;
+use Laminas\Filter\PregReplace;
+use Laminas\Validator\Regex;
 
 /**
  * Class MediaUri

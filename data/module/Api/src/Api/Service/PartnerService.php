@@ -3,7 +3,7 @@
 namespace Api\Service;
 
 use Api\Model\PartnerTable;
-use Zend\Stdlib\ArrayObject;
+use Laminas\Stdlib\ArrayObject;
 
 class PartnerService implements AllowDatabaseAccessInterface
 {

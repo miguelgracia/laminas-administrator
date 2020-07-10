@@ -2,7 +2,7 @@
 
 namespace AmProfile\Form\Element;
 
-use Zend\Form\Element\MultiCheckbox;
+use Laminas\Form\Element\MultiCheckbox;
 
 class Permissions extends MultiCheckbox
 {
