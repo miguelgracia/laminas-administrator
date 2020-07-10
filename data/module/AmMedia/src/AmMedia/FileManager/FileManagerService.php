@@ -3,7 +3,7 @@
 namespace AmMedia\FileManager;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class FileManagerService implements FactoryInterface
 {

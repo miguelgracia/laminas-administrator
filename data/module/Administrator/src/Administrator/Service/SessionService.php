@@ -4,12 +4,12 @@ namespace Administrator\Service;
 
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\Session\Config\SessionConfig;
-use Zend\Session\Container;
-use Zend\Session\SessionManager;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\Session\Config\SessionConfig;
+use Laminas\Session\Container;
+use Laminas\Session\SessionManager;
 
 class SessionService implements FactoryInterface, SessionServiceInterface
 {

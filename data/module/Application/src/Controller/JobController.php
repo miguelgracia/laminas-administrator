@@ -5,8 +5,8 @@ namespace Application\Controller;
 use Api\Service\JobCategoryService;
 use Api\Service\JobService;
 use Application\Service\GalleryRenderService;
-use Zend\View\Model\JsonModel;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\JsonModel;
+use Laminas\View\Model\ViewModel;
 
 class JobController extends ApplicationController
 {

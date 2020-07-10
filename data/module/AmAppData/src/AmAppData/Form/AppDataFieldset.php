@@ -4,7 +4,7 @@ namespace AmAppData\Form;
 
 use Administrator\Form\AdministratorFieldset;
 use AmAppData\Model\AppDataTable;
-use Zend\Validator\EmailAddress;
+use Laminas\Validator\EmailAddress;
 
 class AppDataFieldset extends AdministratorFieldset
 {
@@ -23,7 +23,7 @@ class AppDataFieldset extends AdministratorFieldset
         $inputFilter = parent::getInputFilterSpecification();
 
         $urlValidator = [
-            'name' => 'Zend\Validator\Uri',
+            'name' => 'Laminas\Validator\Uri',
             'options' => [
                 'allowRelative' => false
             ],

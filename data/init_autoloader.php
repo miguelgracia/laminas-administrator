@@ -21,7 +21,7 @@ if (file_exists('data/vendor/autoload.php')) {
     $loader = include 'data/vendor/autoload.php';
 }
 
-if (class_exists('Zend\Loader\AutoloaderFactory')) {
+if (class_exists('Laminas\Loader\AutoloaderFactory')) {
     return;
 }
 
@@ -36,17 +36,17 @@ if (getenv('ZF2_PATH')) {            // Support for ZF2_PATH environment variabl
 if ($zf2Path) {
     if (isset($loader)) {
         $loader->add('Zend', $zf2Path);
-        $loader->add('ZendXml', $zf2Path);
+        $loader->add('Laminas\Xml', $zf2Path);
     } else {
         include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
-        Zend\Loader\AutoloaderFactory::factory([
-            'Zend\Loader\StandardAutoloader' => [
+        Laminas\Loader\AutoloaderFactory::factory([
+            'Laminas\Loader\StandardAutoloader' => [
                 'autoregister_zf' => true
             ]
         ]);
     }
 }
 
-if (!class_exists('Zend\Loader\AutoloaderFactory')) {
+if (!class_exists('Laminas\Loader\AutoloaderFactory')) {
     throw new RuntimeException('Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.');
 }

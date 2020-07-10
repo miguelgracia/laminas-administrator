@@ -4,7 +4,7 @@ namespace Api\Service;
 
 use Api\Model\AppDataLocaleTable;
 use Api\Model\AppDataTable;
-use Zend\Stdlib\ArrayObject;
+use Laminas\Stdlib\ArrayObject;
 
 class AppDataService implements AllowDatabaseAccessInterface
 {

@@ -67,10 +67,10 @@ return [
     // ],
 
     // Initial configuration with which to seed the ServiceManager.
-    // Should be compatible with Zend\ServiceManager\Config.
+    // Should be compatible with Laminas\ServiceManager\Config.
     'service_manager' => [
         'factories' => [
-            //\Zend\I18n\Translator\TranslatorInterface::class => \Zend\I18n\Translator\TranslatorServiceFactory::class
+            //\Laminas\I18n\Translator\TranslatorInterface::class => \Laminas\I18n\Translator\TranslatorServiceFactory::class
         ]
     ],
 ];

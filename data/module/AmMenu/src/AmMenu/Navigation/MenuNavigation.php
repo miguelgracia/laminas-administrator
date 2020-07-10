@@ -11,7 +11,7 @@ namespace AmMenu\Navigation;
 use AmMenu\Model\MenuTable;
 use AmProfile\Service\ProfilePermissionService;
 use Interop\Container\ContainerInterface;
-use Zend\Navigation\Service\DefaultNavigationFactory;
+use Laminas\Navigation\Service\DefaultNavigationFactory;
 
 class MenuNavigation extends DefaultNavigationFactory
 {

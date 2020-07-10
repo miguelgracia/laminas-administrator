@@ -2,7 +2,7 @@
 
 namespace MediaDispatcher\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
+use Laminas\View\Helper\AbstractHelper;
 
 class DinamicUrlImage extends AbstractHelper
 {

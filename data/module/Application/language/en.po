@@ -63,11 +63,11 @@ msgstr ""
 msgid "Social Networks"
 msgstr ""
 
-# Zend\Validator\NotEmpty
+# Laminas\Validator\NotEmpty
 msgid "Value is required and can't be empty"
 msgstr ""
 
-# Zend\Validator\EmailAddress
+# Laminas\Validator\EmailAddress
 msgid "Invalid email format"
 msgstr ""
 

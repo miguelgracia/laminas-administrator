@@ -123,11 +123,11 @@ msgstr "El ruteador no ha encontrado la ruta para la URL solicitada."
 msgid "We cannot determine at this time why a 404 was generated."
 msgstr "No pudimos determinar por qué un error 404 ha sido generado."
 
-# Zend\Validator\NotEmpty
+# Laminas\Validator\NotEmpty
 msgid "Value is required and can't be empty"
 msgstr "Este campo no puede estar vacío"
 
-# Zend\Validator\EmailAddress
+# Laminas\Validator\EmailAddress
 msgid "Invalid email format"
 msgstr "Formato de email incorrecto"
 

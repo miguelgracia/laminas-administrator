@@ -2,8 +2,8 @@
 
 namespace Application\View\Helper;
 
-use Zend\Form\View\Helper\AbstractHelper;
-use Zend\Paginator\Paginator;
+use Laminas\Form\View\Helper\AbstractHelper;
+use Laminas\Paginator\Paginator;
 
 class JobCategory extends AbstractHelper
 {

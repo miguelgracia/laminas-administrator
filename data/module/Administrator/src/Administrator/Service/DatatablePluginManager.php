@@ -2,7 +2,7 @@
 
 namespace Administrator\Service;
 
-use Zend\ServiceManager\AbstractPluginManager;
+use Laminas\ServiceManager\AbstractPluginManager;
 
 class DatatablePluginManager extends AbstractPluginManager
 {

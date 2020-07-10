@@ -9,9 +9,9 @@ use Api\Service\PartnerService;
 use Api\Service\StaticPageService;
 use Application\Form\ContactFieldset;
 use Application\Form\QuestionFieldset;
-use Zend\Db\Adapter\Adapter;
-use Zend\View\Model\JsonModel;
-use Zend\View\Model\ViewModel;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\View\Model\JsonModel;
+use Laminas\View\Model\ViewModel;
 
 class HomeController extends ApplicationController
 {

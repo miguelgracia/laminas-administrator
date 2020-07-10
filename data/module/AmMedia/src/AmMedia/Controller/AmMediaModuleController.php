@@ -6,10 +6,10 @@ use Administrator\Controller\AuthController;
 use AmMedia\FileManager\FileManagerService;
 use AmMedia\Service\InterventionImageService;
 use AmMedia\Service\ScanDirService;
-use Zend\Filter\BaseName;
-use Zend\Filter\Dir;
-use Zend\Mvc\MvcEvent;
-use Zend\View\Model\JsonModel;
+use Laminas\Filter\BaseName;
+use Laminas\Filter\Dir;
+use Laminas\Mvc\MvcEvent;
+use Laminas\View\Model\JsonModel;
 
 class AmMediaModuleController extends AuthController
 {

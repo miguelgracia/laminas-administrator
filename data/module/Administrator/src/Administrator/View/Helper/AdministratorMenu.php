@@ -8,12 +8,12 @@
 
 namespace Administrator\View\Helper;
 
-use Zend\View\Helper\Navigation\Menu;
+use Laminas\View\Helper\Navigation\Menu;
 use RecursiveIteratorIterator;
-use Zend\Navigation\AbstractContainer;
-use Zend\Navigation\Page\AbstractPage;
-use Zend\View;
-use Zend\View\Exception;
+use Laminas\Navigation\AbstractContainer;
+use Laminas\Navigation\Page\AbstractPage;
+use Laminas\View;
+use Laminas\View\Exception;
 
 class AdministratorMenu extends Menu
 {
@@ -56,7 +56,7 @@ class AdministratorMenu extends Menu
 
         // find deepest active
         $found = $this->findActive($container, $minDepth, $maxDepth);
-        /* @var $escaper \Zend\View\Helper\EscapeHtmlAttr */
+        /* @var $escaper \Laminas\View\Helper\EscapeHtmlAttr */
         $escaper = $this->view->plugin('escapeHtmlAttr');
 
         if ($found) {

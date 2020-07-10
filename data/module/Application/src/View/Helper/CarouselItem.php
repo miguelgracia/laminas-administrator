@@ -3,12 +3,12 @@
 namespace Application\View\Helper;
 
 use Administrator\Validator\Youtube;
-use Zend\Code\Scanner\FileScanner;
-use Zend\Filter\BaseName;
-use Zend\Filter\Dir;
-use Zend\Validator\File\IsImage;
-use Zend\Validator\File\MimeType;
-use Zend\View\Helper\AbstractHelper;
+use Laminas\Code\Scanner\FileScanner;
+use Laminas\Filter\BaseName;
+use Laminas\Filter\Dir;
+use Laminas\Validator\File\IsImage;
+use Laminas\Validator\File\MimeType;
+use Laminas\View\Helper\AbstractHelper;
 
 class CarouselItem extends AbstractHelper
 {

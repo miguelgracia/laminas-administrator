@@ -2,7 +2,7 @@
 
 namespace Api\Service;
 
-use Zend\Db\Adapter\AdapterAwareInterface;
+use Laminas\Db\Adapter\AdapterAwareInterface;
 
 trait AllowDatabaseAccessTrait
 {

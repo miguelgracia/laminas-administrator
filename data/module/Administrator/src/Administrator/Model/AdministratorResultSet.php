@@ -2,7 +2,7 @@
 
 namespace Administrator\Model;
 
-use Zend\Db\ResultSet\HydratingResultSet;
+use Laminas\Db\ResultSet\HydratingResultSet;
 
 class AdministratorResultSet extends HydratingResultSet
 {

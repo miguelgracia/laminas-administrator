@@ -4,8 +4,8 @@ namespace Administrator\Form\Element;
 
 use AmYouTube\Service\YoutubeService;
 use Interop\Container\ContainerInterface;
-use Zend\Form\Element;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\Form\Element;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ImageUrlFactory implements FactoryInterface
 {

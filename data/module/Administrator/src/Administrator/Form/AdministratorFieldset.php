@@ -4,15 +4,15 @@ namespace Administrator\Form;
 
 use Administrator\Filter\SlugFilter;
 use Administrator\Filter\MediaUri;
-use Zend\Db\Metadata\Object\ColumnObject;
-use Zend\Db\Sql\Where;
-use Zend\Filter\Word\UnderscoreToCamelCase;
-use Zend\Form\Fieldset;
-use Zend\I18n\Validator\IsInt;
-use Zend\InputFilter\InputFilterProviderInterface;
-use Zend\Validator\Between;
-use Zend\Validator\Date;
-use Zend\Validator\StringLength;
+use Laminas\Db\Metadata\Object\ColumnObject;
+use Laminas\Db\Sql\Where;
+use Laminas\Filter\Word\UnderscoreToCamelCase;
+use Laminas\Form\Fieldset;
+use Laminas\I18n\Validator\IsInt;
+use Laminas\InputFilter\InputFilterProviderInterface;
+use Laminas\Validator\Between;
+use Laminas\Validator\Date;
+use Laminas\Validator\StringLength;
 
 abstract class AdministratorFieldset extends Fieldset implements InputFilterProviderInterface
 {
@@ -45,17 +45,17 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
     protected $hiddenFields = [];
 
     /**
-     * @var \Zend\InputFilter\Factory
+     * @var \Laminas\InputFilter\Factory
      */
     private $inputFilterFactory;
 
     /**
-     * @var \Zend\Filter\FilterPluginManager
+     * @var \Laminas\Filter\FilterPluginManager
      */
     private $filterManager;
 
     /**
-     * @var \Zend\Validator\ValidatorPluginManager
+     * @var \Laminas\Validator\ValidatorPluginManager
      */
     private $validatorManager;
 
@@ -279,7 +279,7 @@ abstract class AdministratorFieldset extends Fieldset implements InputFilterProv
             }
 
             $validators[] = [
-                'name' => 'Zend\Validator\Db\NoRecordExists',
+                'name' => 'Laminas\Validator\Db\NoRecordExists',
                 'options' => [
                     'table' => $this->tableGateway->getTable(),
                     'field' => $columnName,

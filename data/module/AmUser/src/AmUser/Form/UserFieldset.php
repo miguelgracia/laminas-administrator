@@ -45,7 +45,7 @@ class UserFieldset extends AdministratorFieldset
         if ($this->get('id')->getValue() !== null) {
             $this->add([
                 'name' => 'checkPassword',
-                'type' => 'Zend\Form\Element\Checkbox',
+                'type' => 'Laminas\Form\Element\Checkbox',
                 'label' => 'Change Password',
                 'options' => [
                     'use_hidden_element' => true,
@@ -70,7 +70,7 @@ class UserFieldset extends AdministratorFieldset
         $filter = parent::getInputFilterSpecification();
 
         $filter['username']['validators'][] = [
-            'name' => 'Zend\Validator\Db\NoRecordExists',
+            'name' => 'Laminas\Validator\Db\NoRecordExists',
             'options' => [
                 'table' => $this->tableGateway->getTable(),
                 'field' => 'username',

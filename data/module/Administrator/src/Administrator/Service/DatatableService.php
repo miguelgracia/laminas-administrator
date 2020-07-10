@@ -2,13 +2,13 @@
 
 namespace Administrator\Service;
 
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Having;
-use Zend\Db\Sql\Sql;
-use Zend\Db\Sql\Where;
-use Zend\Filter\Word\SeparatorToSeparator;
-use Zend\Filter\Word\UnderscoreToSeparator;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Having;
+use Laminas\Db\Sql\Sql;
+use Laminas\Db\Sql\Where;
+use Laminas\Filter\Word\SeparatorToSeparator;
+use Laminas\Filter\Word\UnderscoreToSeparator;
 
 class DatatableService
 {

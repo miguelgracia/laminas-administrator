@@ -3,11 +3,11 @@
 namespace Application\Model;
 
 use Administrator\Model\AdministratorResultSet;
-use Zend\Db\Adapter\Adapter;
-use Zend\Db\Metadata\Metadata;
-use Zend\Db\Sql\Predicate\Expression;
-use Zend\Db\Sql\Select;
-use Zend\Hydrator\ClassMethods;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Metadata\Metadata;
+use Laminas\Db\Sql\Predicate\Expression;
+use Laminas\Db\Sql\Select;
+use Laminas\Hydrator\ClassMethods;
 
 trait MyOrmTableTrait
 {

@@ -2,7 +2,7 @@
 
 namespace Administrator\Model;
 
-use Zend\Authentication\Storage;
+use Laminas\Authentication\Storage;
 
 class AuthStorage extends Storage\Session
 {

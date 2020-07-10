@@ -5,7 +5,7 @@ namespace AmYouTube\Controller;
 use Administrator\Controller\AuthController;
 use Administrator\Traits\IndexAction;
 use AmYouTube\Form\YouTubeForm;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Expression;
 
 class AmYouTubeModuleController extends AuthController
 {

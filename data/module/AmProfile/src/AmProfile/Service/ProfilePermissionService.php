@@ -2,7 +2,7 @@
 
 namespace AmProfile\Service;
 
-use Zend\Filter\Word\DashToCamelCase;
+use Laminas\Filter\Word\DashToCamelCase;
 
 class ProfilePermissionService
 {

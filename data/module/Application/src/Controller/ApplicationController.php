@@ -6,10 +6,10 @@ use Api\Service\AppDataService;
 use Api\Service\LanguageService;
 use Api\Service\SectionService;
 use Api\Service\StaticPageService;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\MvcEvent;
-use Zend\Session\Config\ConfigInterface;
-use Zend\Session\SessionManager;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Session\Config\ConfigInterface;
+use Laminas\Session\SessionManager;
 
 abstract class ApplicationController extends AbstractActionController
 {

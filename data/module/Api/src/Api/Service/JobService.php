@@ -4,8 +4,8 @@ namespace Api\Service;
 
 use Api\Model\JobLocaleTable;
 use Api\Model\JobTable;
-use Zend\Db\Sql\Predicate\Expression;
-use Zend\Db\Sql\Select;
+use Laminas\Db\Sql\Predicate\Expression;
+use Laminas\Db\Sql\Select;
 
 class JobService implements AllowDatabaseAccessInterface
 {

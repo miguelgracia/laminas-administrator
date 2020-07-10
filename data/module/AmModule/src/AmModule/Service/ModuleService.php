@@ -3,10 +3,10 @@
 namespace AmModule\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\Code\Reflection\ClassReflection;
-use Zend\Filter\Word\CamelCaseToDash;
-use Zend\Filter\Word\DashToCamelCase;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\Code\Reflection\ClassReflection;
+use Laminas\Filter\Word\CamelCaseToDash;
+use Laminas\Filter\Word\DashToCamelCase;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ModuleService implements FactoryInterface
 {

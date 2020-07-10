@@ -3,7 +3,7 @@
 namespace AmUser\Form\Element;
 
 use AmProfile\Model\ProfileTable;
-use Zend\Form\Element\Select;
+use Laminas\Form\Element\Select;
 
 class AdminProfileId extends Select
 {

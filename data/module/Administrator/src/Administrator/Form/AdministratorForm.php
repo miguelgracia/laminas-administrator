@@ -2,7 +2,7 @@
 
 namespace Administrator\Form;
 
-use Zend\Form\Form;
+use Laminas\Form\Form;
 
 class AdministratorForm extends Form
 {

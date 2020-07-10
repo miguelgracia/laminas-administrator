@@ -13,8 +13,8 @@
 
 namespace AmMedia\FileManager;
 
-use Zend\Http\Response;
-use Zend\View\Model\JsonModel;
+use Laminas\Http\Response;
+use Laminas\View\Model\JsonModel;
 
 abstract class BaseFilemanager
 {

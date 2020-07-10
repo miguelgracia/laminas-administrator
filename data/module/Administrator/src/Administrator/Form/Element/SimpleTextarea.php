@@ -2,7 +2,7 @@
 
 namespace Administrator\Form\Element;
 
-use Zend\Form\Element\Textarea;
+use Laminas\Form\Element\Textarea;
 
 class SimpleTextarea extends Textarea
 {

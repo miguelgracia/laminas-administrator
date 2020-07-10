@@ -2,15 +2,15 @@
 
 namespace Api\Service;
 
-use Zend\Form\Form;
-use Zend\Mail\Message;
-use Zend\Mail\Transport\Sendmail;
-use Zend\Validator\EmailAddress;
+use Laminas\Form\Form;
+use Laminas\Mail\Message;
+use Laminas\Mail\Transport\Sendmail;
+use Laminas\Validator\EmailAddress;
 
 class ContactService
 {
     /**
-     * @var \Zend\Form\Form
+     * @var \Laminas\Form\Form
      */
     protected $form;
 

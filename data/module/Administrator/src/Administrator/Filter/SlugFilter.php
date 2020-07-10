@@ -3,8 +3,8 @@
 namespace Administrator\Filter;
 
 use Cocur\Slugify\Slugify;
-use Zend\Filter\AbstractFilter;
-use Zend\Filter\Exception;
+use Laminas\Filter\AbstractFilter;
+use Laminas\Filter\Exception;
 
 class SlugFilter extends AbstractFilter
 {

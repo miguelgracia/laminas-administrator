@@ -3,7 +3,7 @@
 namespace Application\Controller;
 
 use Api\Service\PartnerService;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 class CompanyController extends ApplicationController
 {

@@ -4,7 +4,7 @@ namespace Api\Service;
 
 use Api\Model\SectionLocaleTable;
 use Api\Model\SectionTable;
-use Zend\Stdlib\ArrayObject;
+use Laminas\Stdlib\ArrayObject;
 
 class SectionService implements AllowDatabaseAccessInterface
 {

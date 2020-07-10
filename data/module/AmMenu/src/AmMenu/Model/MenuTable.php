@@ -3,7 +3,7 @@
 namespace AmMenu\Model;
 
 use Administrator\Model\AdministratorTable;
-use Zend\Db\Sql\Select;
+use Laminas\Db\Sql\Select;
 
 class MenuTable extends AdministratorTable
 {

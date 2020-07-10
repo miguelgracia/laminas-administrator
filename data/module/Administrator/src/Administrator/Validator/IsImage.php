@@ -3,12 +3,12 @@
 namespace Administrator\Validator;
 
 use Traversable;
-use Zend\Stdlib\ArrayUtils;
+use Laminas\Stdlib\ArrayUtils;
 
 /**
  * Validator which checks if the file is an image
  */
-class IsImage extends \Zend\Validator\File\IsImage
+class IsImage extends \Laminas\Validator\File\IsImage
 {
     /**
      * Sets validator options

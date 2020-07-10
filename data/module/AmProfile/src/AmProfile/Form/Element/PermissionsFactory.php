@@ -4,8 +4,8 @@ namespace AmProfile\Form\Element;
 
 use AmModule\Service\ModuleService;
 use Interop\Container\ContainerInterface;
-use Zend\Form\Element\MultiCheckbox;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\Form\Element\MultiCheckbox;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class PermissionsFactory implements FactoryInterface
 {

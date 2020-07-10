@@ -4,7 +4,7 @@ namespace AmCustomer\Form;
 
 use Administrator\Form\AdministratorFieldset;
 use AmCustomer\Model\CustomerTable;
-use Zend\Db\Metadata\Object\ColumnObject;
+use Laminas\Db\Metadata\Object\ColumnObject;
 
 class CustomerFieldset extends AdministratorFieldset
 {

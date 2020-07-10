@@ -2,10 +2,10 @@
 
 namespace Administrator\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\MvcEvent;
-use Zend\View\Model\JsonModel;
-use Zend\View\Model\ViewModel;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\MvcEvent;
+use Laminas\View\Model\JsonModel;
+use Laminas\View\Model\ViewModel;
 
 abstract class AuthController extends AbstractActionController
 {
@@ -96,7 +96,7 @@ abstract class AuthController extends AbstractActionController
      * @param array $params
      * Parámetros opcionales
      *
-     * @return \Zend\Http\Response
+     * @return \Laminas\Http\Response
      */
     public function goToSection($module, $params = [], $returnLink = false, $options = [])
     {

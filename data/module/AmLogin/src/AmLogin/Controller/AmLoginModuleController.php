@@ -5,7 +5,7 @@ namespace AmLogin\Controller;
 use Administrator\Controller\AuthController;
 use Administrator\Form\DatosAccesoForm;
 use Administrator\Form\RecordarPasswordForm;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 class AmLoginModuleController extends AuthController
 {

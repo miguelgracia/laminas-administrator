@@ -4,7 +4,7 @@ namespace OpenGraph;
 
 use OpenGraph\Service\OpenGraphService;
 use OpenGraph\View\Helper\OpenGraphTag;
-use Zend\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\Factory\InvokableFactory;
 
 return [
     'service_manager' => [

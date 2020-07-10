@@ -6,8 +6,8 @@ use Administrator\Service\AdministratorFormService;
 use Administrator\Service\ConfigureFieldsetService;
 use AmLanguage\Model\LanguageTable;
 use Interop\Container\ContainerInterface;
-use Zend\Db\Metadata\Source\Factory;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\Db\Metadata\Source\Factory;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class AdministratorLocaleFieldsetFactory implements FactoryInterface
 {
@@ -57,7 +57,7 @@ class AdministratorLocaleFieldsetFactory implements FactoryInterface
     {
         $fieldset = (new $fieldsetName($fieldsetName));
 
-        $metadata = Factory::createSourceFromAdapter($this->container->get('Zend\Db\Adapter\Adapter'));
+        $metadata = Factory::createSourceFromAdapter($this->container->get('Laminas\Db\Adapter\Adapter'));
         $tableGateway = $this->container->get($fieldset->getTableGatewayName());
         $columns = $metadata->getColumns($tableGateway->getTable());
 

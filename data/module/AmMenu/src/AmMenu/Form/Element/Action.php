@@ -3,7 +3,7 @@
 namespace AmMenu\Form\Element;
 
 use AmModule\Service\ModuleService;
-use Zend\Form\Element\Select;
+use Laminas\Form\Element\Select;
 
 class Action extends Select
 {
