@@ -284,6 +284,18 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   margin-top: 40px;
 
+  img.main-logo {
+    display: none;
+  }
+
+  &.navbar-fixed-top {
+    .navbar-brand {
+      img.main-logo {
+        display: block;
+      }
+    }
+  }
+
   @media screen and (max-width: $screen-sm) {
     margin-top: 0;
     background: $brand-white;
@@ -291,6 +303,7 @@ h1, h2, h3, h4, h5, h6 {
     -moz-box-shadow: 0 0 9px 0 rgba(0, 0, 0, .1);
     -ms-box-shadow: 0 0 9px 0 rgba(0, 0, 0, .1);
     box-shadow: 0 0 9px 0 rgba(0, 0, 0, .1);
+
 
     &.navbar-fixed-top {
       .navbar-brand {

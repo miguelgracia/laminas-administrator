@@ -5,6 +5,7 @@ namespace Application\Form;
 use Application\Validator\Recaptcha;
 use Zend\Filter\StringTrim;
 use Zend\Form\Element\Checkbox;
+use Zend\Form\Element\File;
 use Zend\Form\Element\Hidden;
 use Zend\Form\Element\Select;
 use Zend\Form\Element\Text;
@@ -12,6 +13,8 @@ use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\Validator\Db\RecordExists;
 use Zend\Validator\EmailAddress;
+use Zend\Validator\File\Count;
+use Zend\Validator\File\FilesSize;
 
 class ContactFieldset extends Fieldset implements InputFilterProviderInterface
 {
@@ -75,6 +78,14 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
                 'placeholder' => 'Mensaje'
             ],
         ])->add([
+            'name' => 'file',
+            'type' => File::class,
+            'attributes' => [
+                'id' => 'file',
+                'class' => 'form-control',
+                'multiple' => true
+            ],
+        ])->add([
             'name' => 'question_code',
             'type' => Text::class,
             'attributes' => [
@@ -134,7 +145,7 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
                 'required' => true,
             ],
             'question_code' => [
-                'required' => true,
+                'required' => false,
                 'filters' => [
                     [
                         'name' => StringTrim::class
@@ -147,6 +158,24 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
                             'table' => 'customers',
                             'field' => 'key',
                             'adapter' => $this->adapter
+                        ]
+                    ]
+                ]
+            ],
+            'file' => [
+                'required' => false,
+                'validators' => [
+                    [
+                        'name' => Count::class,
+                        'options' => [
+                            'min' => 0,
+                            'max' => 2
+                        ]
+                    ],
+                    [
+                        'name' => FilesSize::class,
+                        'options' => [
+                            'max' => '1kB',
                         ]
                     ]
                 ]

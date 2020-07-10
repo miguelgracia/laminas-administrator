@@ -25,6 +25,7 @@ class ContactForm extends FormHelper
         $groupTags .= $this->getElement('formInput', 'question_code', 'Form customer code');
         $groupTags .= $this->getElement('formSelect', 'question_topic', 'Form question topic');
         $groupTags .= $this->getElement('formTextarea', 'message', 'Form Message');
+        $groupTags .= $this->getElement('formFile', 'file', 'Archivo');
         $groupTags .= $this->getElement('formInput', 'g-recaptcha-response',false);
 
         $field = $fieldset->get('legal');
@@ -48,8 +49,7 @@ class ContactForm extends FormHelper
                         . $this->translator->translate('Form Send', 'frontend'). '
                     </button>
                 </div>
-            </div>'
-        ;
+            </div>';
 
         echo sprintf($formTag, $groupTags);
     }

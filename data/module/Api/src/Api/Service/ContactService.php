@@ -2,8 +2,6 @@
 
 namespace Api\Service;
 
-use Application\Form\ContactFieldset;
-use Application\Form\QuestionFieldset;
 use Zend\Form\Form;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail;

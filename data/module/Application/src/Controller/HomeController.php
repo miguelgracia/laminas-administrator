@@ -26,7 +26,10 @@ class HomeController extends ApplicationController
 
         $this->form = $contactService
             ->createForm($fieldset)
-            ->setData($this->request->getPost());
+            ->setData(array_merge(
+                $this->request->getPost()->toArray(),
+                $this->request->getFiles()->toArray()
+            ));
 
         $isValid = $this->form->isValid();
 
@@ -140,7 +143,6 @@ class HomeController extends ApplicationController
         return [
             'contactIntro' => $menuLang[$this->menu->rows->contact->id]->content,
             'accessoriesIntro' => $menuLang[$this->menu->rows->accessories->id]->content,
-            'questionIntro' => $menuLang[$this->menu->rows->technicalquestion->id]->content,
             'companyIntro' => $menuLang[$this->menu->rows->company->id]->content,
             'servicesIntro' => $menuLang[$this->menu->rows->services->id]->content,
             'workIntro' => $menuLang[$this->menu->rows->jobs->id]->content,
