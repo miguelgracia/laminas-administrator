@@ -9,10 +9,10 @@ class JobCategory extends AbstractHelper
 {
     public function getContentWrapper()
     {
-        return "<li><a href='%s'>%s</a></li>";
+        return "<li class='nav-item %s'><a class='nav-link' href='%s'>%s</a></li>";
     }
 
-    public function render($lang, $jobCategories)
+    public function render($lang, $jobCategories, $currentCategory = null)
     {
         $url = $this->getView()->getHelperPluginManager()->get('Url');
 
@@ -22,7 +22,9 @@ class JobCategory extends AbstractHelper
             if ($jobCategory['active'] == '1') {
                 $html .= sprintf(
                     $this->getContentWrapper(),
-                    $url('locale/jobs/category', [
+                    (is_array($currentCategory) and
+                    $currentCategory['relatedTableId'] === $jobCategory['id']) ? 'active' : '',
+                    $url('locale/accessories/category', [
                         'locale' => $lang,
                         'category' => $jobCategories['locale'][$lang][$jobCategory['id']]['urlKey']
                     ]),

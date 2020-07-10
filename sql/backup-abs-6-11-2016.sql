@@ -1,8 +1,9 @@
 /*
 SQLyog Ultimate v11.33 (64 bit)
-MySQL - 5.6.26 : Database - qwi250
+MySQL - 5.6.26 : Database - absconsultor
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -12,9 +13,9 @@ MySQL - 5.6.26 : Database - qwi250
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`qwi250` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`absconsultor` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
-USE `qwi250`;
+USE `absconsultor`;
 
 /*Table structure for table `admin_menus` */
 

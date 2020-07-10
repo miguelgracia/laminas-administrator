@@ -1,25 +1,336 @@
 <?php
 $menuHelper = $this->applicationMenuHelper();
-$megabannerHelper = $this->megabannerHelper();
-$homeModuleHelper = $this->homeModuleHelper();
+$galleryHelper = $this->galleryHelper()->setLang($this->lang);
+$questionFormHelper = $this->questionFormHelper()->setForm($this->questionForm)->setFieldsetName('question');
+$contactFormHelper = $this->contactFormHelper()->setForm($this->contactForm);
 
-$this->headLink()->appendStylesheet($this->basePath('absconsultor/css/home.css'))
+$assetPath = $this->basePath('absconsultor');
+$mediaPath = $this->basePath('media');
+
+$cookieLocaleId = $this->legal['rows']['cookies']['id'];
+$legalLocaleId = $this->legal['rows']['privacidad']['id'];
+$cookiesMessage = $this->legal['locale'][$this->lang][$cookieLocaleId]['content'];
+$legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
+
 ?>
-<div class="container-fluid home">
-    <div class="row">
-        <ul class="bxslider">
-            <?php $megabannerHelper->render($megabanners);?>
-        </ul>
 
-        <img id="home_brand_logo" src="<?php echo $this->basePath('img/white-logo.png') ?>" alt="Logo ABS Consultor" class="transition brand-logo"/>
-        <ul class="nav home-navbar navbar-nav transition">
-            <?=$menuHelper->render($menu,$lang);?>
-        </ul>
+<section id="abstpl-home" data-section="home"
+         style="background-image: url(<?= $assetPath ?>/images/home/full_image_2.jpg);">
+    <div class="gradient"></div>
+    <div class="container">
+        <div class="text-wrap">
+            <div class="text-inner">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h1 class="to-animate">"Si no sabes hacia qué puerto zarpa tu barco, ningún viento te será
+                            favorable"</h1>
+                        <h2 class="to-animate">Ignoranti quem portum petat nullus suus ventus est. Séneca.</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slant"></div>
+</section>
+
+<section id="abstpl-intro">
+    <div class="container">
+        <div class="row row-bottom-padded-lg">
+            <div class="abstpl-block to-animate"
+                 style="background-image: url(<?= $assetPath ?>/images/home/img_7.jpg);">
+                <div class="overlay-darker"></div>
+                <div class="overlay"></div>
+                <div class="abstpl-text">
+                    <i class="abstpl-intro-icon icon-bulb"></i>
+                    <h2>Supervisión y Asesoría</h2>
+                    <p>Asesoramiento completo en proyectos complejos e inspecciones, en relación a grúas portuarias.</p>
+                    <p><a href="#" class="btn btn-primary more-info">Más Información</a></p>
+                </div>
+            </div>
+            <div class="abstpl-block to-animate"
+                 style="background-image: url(<?= $assetPath ?>/images/home/img_8.jpg);">
+                <div class="overlay-darker"></div>
+                <div class="overlay"></div>
+                <div class="abstpl-text">
+                    <i class="abstpl-intro-icon icon-wrench"></i>
+                    <h2>Reparaciones y Montajes</h2>
+                    <p>Realizamos montajes completos de cualquier grúa y todo tipo de reparaciones con los mejores
+                        equipos y garantías.</p>
+                    <p><a href="#" class="btn btn-primary more-info">Más Información</a></p>
+                </div>
+            </div>
+            <div class="abstpl-block to-animate"
+                 style="background-image: url(<?= $assetPath ?>/images/home/img_10.jpg);">
+                <div class="overlay-darker"></div>
+                <div class="overlay"></div>
+                <div class="abstpl-text">
+                    <i class="abstpl-intro-icon icon-rocket"></i>
+                    <h2>Repuestos y Fabricación</h2>
+                    <p>Suministro de repuestos de grúas de cualquier marca. Mejoramos la calidad tanto en materiales
+                        como en diseño.</p>
+                    <p><a href="#" class="btn btn-primary more-info">Más Información</a></p>
+                </div>
+            </div>
+        </div>
+        <section class="row text-center to-animate" id="abstpl-company" data-section="company">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 section-heading text-center">
+                        <h2 class="to-animate">Empresa</h2>
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                                <?= $this->companyIntro; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+<section id="abstpl-services" data-section="services">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 section-heading text-center">
+                <h2 class="to-animate">Servicios</h2>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                        <h3><?= $this->servicesIntro ?></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-6 abstpl-service to-animate">
+                <i class="icon to-animate-2 icon-bulb"></i>
+                <h3>Ingeniería mecánica y electrónica</h3>
+                <p>Contamos con un equipo de ingenieros con gran experiencia en el mundo de las grúas portuarias.</p>
+                <ul>
+                    <li>Equipo con gran experiencia en grúas, tanto en diseño como en fabricación.</li>
+                    <li>Programas de diseño y cálculo estructural de última generación.</li>
+                    <li>Trabajos en terminales de todo el mundo.</li>
+                </ul>
+            </div>
+            <div class="col-md-6 col-sm-6 abstpl-service to-animate">
+                <i class="icon to-animate-2 icon-wrench"></i>
+                <h3>Reparaciones</h3>
+                <p>Realizamos todo tipo de reparaciones con los mejores equipos y garantías.</p>
+                <ul>
+                    <li>Railes: reparación y cambio.</li>
+                    <li>Estructurales: golpes de grúa, recrecidos y daños por fatiga.</li>
+                    <li>Reparaciones de mecanismos.</li>
+                    <li>Modificaciones eléctricas.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="clearfix visible-sm-block"></div>
+
+        <div class="row">
+            <div class="col-md-6 col-sm-6 abstpl-service to-animate">
+                <i class="icon to-animate-2 icon-briefcase"></i>
+                <h3>Repuestos</h3>
+                <p>Suministramos cualquier repuesto de grúas de cualquier marca. Mejoramos la calidad de los repuestos
+                    tanto en materiales como en diseño</p>
+                <ul>
+                    <li>Diseño y fabricación: Diseñamos cualquier tipo de eje, polea, rueda y twist-lock mejorando la
+                        durabilidad, adaptado a cualquier grúa.
+                    </li>
+                    <li>Twistlock: Diseñamos Twist-Lock mejorando la durabilidad adaptado a cualquier grúa.</li>
+                    <li>Elementos comerciales: Suministro de cualquier elemento comercial para grúas, disponiendo de un
+                        departamento dedicado a trabajar con los mejores proveedores.
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6 col-sm-6 abstpl-service to-animate">
+                <i class="icon to-animate-2 icon-globe"></i>
+                <h3>Montajes</h3>
+                <p>Realizamos montajes completos, recolocaciones y transporte de cualquier grúa</p>
+                <ul>
+                    <li>Montaje mecánico y eléctrico de cualquier grúa Portainers, trastainers, etc...</li>
+                    <li>Trabajos realizados desde el transporte hasta la puesta en marcha.</li>
+                    <li>Traslado de grúas, dentro de una misma terminal o desplazándola de otra terminal.</li>
+                    <li>Las recolocaciones las realizamos desde, el diseño de los refuerzos necesarios, hasta la puesta
+                        en marcha.
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!--<section id="abstpl-technical-question" data-section="technicalquestion">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 section-heading text-center">
+                <h2 class="to-animate">Pregúntanos</h2>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                        <h3><?/*= $this->questionIntro; */?></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 to-animate">
+            <div class="row">
+                <div class="col-md-6">
+                    <?/*= $questionFormHelper->render($this->lang, $this->legal); */?>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>-->
+
+<section id="abstpl-work" data-section="jobs">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 section-heading text-center">
+                <h2 class="to-animate">Trabajos</h2>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                        <h3><?= $this->workIntro; ?></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="galleries">
+            <?= $galleryHelper->withBorder()->renderFeatured($this->jobs, 'jobs-gallery'); ?>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <a href="<?=$jobUrl;?>" class="btn btn-primary js-show-more-gallery" data-section-id="abstpl-work">Ver más trabajos</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="abstpl-accessories" data-section="accessories">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12 section-heading text-center">
+                <h2 class="to-animate">REPUESTOS</h2>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                        <h3><?= $this->accessoriesIntro; ?></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="galleries">
+            <?= $galleryHelper->renderFeatured($this->accessories, 'accessories-gallery'); ?>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <a href="<?=$accessoriesUrl;?>" class="btn btn-primary">Ver catalogo completo</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section id="abstpl-counters" data-section="clients"
+         style="background-image: url(<?= $assetPath ?>/images/home/full_image_1.jpg);">
+    <div class="abstpl-overlay"></div>
+    <div class="container-fluid" style="padding: 0">
+        <div class="row" style="padding: 0">
+            <div class="col-md-12 section-heading text-center">
+                <h2 class="to-animate">Clientes</h2>
+        <!--        <div class="row">
+                    <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                        <h3>Our weary eyes still stray to the horizon. Though down this road we've been so many
+                            times.</h3>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+        <div class="row client-slider">
+            <?php foreach ($this->partners as $partner) : ?>
+                <div class="abstpl-person text-center to-animate">
+                    <figure><img src="<?= $mediaPath . '/' . $partner->logo; ?>" alt="Image"></figure>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+
+<section id="abstpl-contact" data-section="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 section-heading text-center">
+                <h2 class="to-animate">Contacto</h2>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                        <h3><?= $this->contactIntro; ?></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row-bottom-padded-md">
+            <div class="col-md-6 to-animate">
+                <h3>Información</h3>
+                <ul class="abstpl-contact-info">
+                    <li class="abstpl-contact-address ">
+                        <i class="icon-home"></i>
+                        <?= $this->appData->locale->{$this->lang}->address; ?>
+                    </li>
+                    <li>
+                        <i class="icon-phone"></i>
+                        <a class="phone" href="tel:<?= $this->appData->locale->{$this->lang}->phone ?>"><?= $this->appData->locale->{$this->lang}->phone ?></a>
+                    </li>
+                    <li>
+                        <i class="icon-envelope"></i>
+                        <a class="mail" href="mailto:<?= $this->appData->locale->{$this->lang}->email ?>"><?= $this->appData->locale->{$this->lang}->email ?></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-6 to-animate">
+                <?= $contactFormHelper->render($this->lang, $this->legal); ?>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="popupTermsAndConditions" tabindex="-1" role="dialog"
+     aria-labelledby="popupTermsAndConditionsTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="popupTermsAndConditionsTitle">Términos y condiciones</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <?= $legalMessage; ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 
-<hr>
-
-<div class="container">
-    <?=$homeModuleHelper->render($homeModules);?>
+<div class="modal fade" id="popupCookies" tabindex="-1" role="dialog" aria-labelledby="popupCookiesTitle"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="popupCookiesTitle">Información sobre Cookies</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <?= $cookiesMessage; ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>

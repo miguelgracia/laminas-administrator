@@ -12,7 +12,7 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": "7.1",
+    "php": "^7.1",
     "zendframework/zend-component-installer": "^1.0 || ^0.7 || ^1.0.0-dev@dev",
     "zendframework/zend-mvc": "^3.0.1",
     "zfcampus/zf-development-mode": "^3.0",
@@ -34,9 +34,9 @@
     "zendframework/zend-code": "3.4.*",
     "zendframework/zend-paginator": "^2.8",
     "zendframework/zend-mail": "^2.10",
-    "zendframework/zend-captcha": "^2.9",
     "zendframework/zend-navigation": "^2.9",
-    "google/apiclient": "2.0.*"
+    "google/apiclient": "2.0.*",
+    "zendframework/zend-i18n-resources": "^2.6"
   },
   "autoload": {
     "psr-4": {

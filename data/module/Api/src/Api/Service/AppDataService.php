@@ -15,7 +15,7 @@ class AppDataService implements AllowDatabaseAccessInterface
 
     public function getData()
     {
-        $row = $this->table->find('app-data', 'key');
+        $row = $this->table->find('1');
 
         $locales = $this->tableLocale->findLocales($row->id)->setFetchGroupResultSet('languageCode');
         $localeObj = new \stdClass();

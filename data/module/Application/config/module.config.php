@@ -7,28 +7,28 @@
 
 namespace Application;
 
-use Application\Controller\BlogController;
-use Application\Controller\CompanyController;
-use Application\Controller\ContactController;
 use Application\Controller\HomeController;
 use Application\Controller\JobController;
+use Application\Controller\AccessoryController;
 use Application\Controller\LegalController;
-use Application\View\Helper\Blog;
-use Application\View\Helper\BlogCategory;
+use Application\Service\GalleryRenderService;
+use Application\Service\SessionService;
 use Application\View\Helper\CarouselItem;
 use Application\View\Helper\ContactForm;
 use Application\View\Helper\FacebookShare;
-use Application\View\Helper\HomeModule;
-use Application\View\Helper\Job;
+use Application\View\Helper\Gallery;
 use Application\View\Helper\JobCategory;
 use Application\View\Helper\LegalLink;
-use Application\View\Helper\Megabanner;
 use Application\View\Helper\Menu;
 use Application\View\Helper\MenuDelegator;
 use Application\View\Helper\Partner;
+use Application\View\Helper\QuestionForm;
 use Application\View\Helper\SocialIcon;
+use Zend\Cache\Service\StorageCacheAbstractServiceFactory;
+use Zend\I18n\Translator\Resources;
 use Zend\I18n\Translator\TranslatorServiceFactory;
 use Zend\I18n\View\Helper\Translate;
+use Zend\Log\LoggerAbstractServiceFactory;
 use Zend\Mvc\I18n\Router\TranslatorAwareTreeRouteStack;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
@@ -37,13 +37,15 @@ use Zend\Session\Storage\SessionArrayStorage;
 
 return [
     'languages_by_host' => [
-        'bravo-consultoria.local' => ['es_es', 'en_en'],
-        'absconsultor.es' => ['es_es', 'en_en'],
-        'absconsultor.local' => ['es_es', 'en_en'],
+        'bravo-consultoria.local' => ['es', 'en'],
+        'bravo-silva.ngrok.io' => ['es', 'en'],
+        'absconsultor.es' => ['es', 'en'],
+        'absconsultor.local' => ['es', 'en'],
     ],
     'media_base_url' => [
         'absconsultor.local' => 'http://media.absconsultor.local',
         'absconsultor.es' => 'http://media.absconsultor.es',
+        'bravo-silva.ngrok.io' => 'https://bravo-silva.ngrok.io/media'
     ],
     'router' => [
         'router_class' => TranslatorAwareTreeRouteStack::class,
@@ -65,43 +67,17 @@ return [
                 'options' => [
                     'route' => '/[:locale]',
                     'constraints' => [
-                        'locale' => '(es_es|en_en)+'
+                        'locale' => '(es|en)+'
                     ],
                     'defaults' => [
                         '__CONTROLLER__' => 'Home',
                         'controller' => HomeController::class,
                         'action' => 'index',
-                        'locale' => 'en_en'
+                        'locale' => 'es'
                     ],
                 ],
                 'may_terminate' => true,
                 'child_routes' => [
-                    'company' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/{company}', // '/company'
-                            'defaults' => [
-                                '__CONTROLLER__' => 'Company',
-                                'controller' => CompanyController::class,
-                                'action' => 'index',
-                            ],
-                        ],
-                        'may_terminate' => true,
-                        'child_routes' => [
-                            'colaborators' => [
-                                'type' => Literal::class,
-                                'options' => [
-                                    'route' => '/colaboradores', // '/colaborators'
-                                    'defaults' => [
-                                        '__CONTROLLER__' => 'Company',
-                                        'controller' => CompanyController::class,
-                                        'action' => 'collaborators',
-                                    ],
-                                ],
-                                'may_terminate' => true,
-                            ],
-                        ],
-                    ],
                     'jobs' => [
                         'type' => Segment::class,
                         'options' => [
@@ -109,58 +85,37 @@ return [
                             'defaults' => [
                                 '__CONTROLLER__' => 'Job',
                                 'controller' => JobController::class,
-                                'action' => 'index',
+                                'action' => 'home',
                             ],
                         ],
                         'may_terminate' => true,
-                        'child_routes' => [
-                            'category' => [
-                                'type' => Segment::class,
-                                'may_terminate' => true,
-                                'options' => [
-                                    'route' => '/[:category]',
-                                    'constraints' => [
-                                        'category' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                    ],
-                                    'defaults' => [
-                                        '__CONTROLLER__' => 'Job',
-                                        'controller' => JobController::class,
-                                        'action' => 'category',
-                                    ],
-                                ],
-                                'child_routes' => [
-                                    'detail' => [
-                                        'type' => 'Segment',
-                                        'options' => [
-                                            'route' => '/[:detail]',
-                                            'constraints' => [
-                                                'detail' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                            ],
-                                            'defaults' => [
-                                                '__CONTROLLER__' => 'Job',
-                                                'controller' => JobController::class,
-                                                'action' => 'detail',
-                                            ],
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
                     ],
-                    'blog' => [
-                        'type' => Literal::class,
+                    'featured-accessories' => [
+                        'type' => Segment::class,
                         'options' => [
-                            'route' => '/blog',
+                            'route' => '/{featured-accessories}',
                             'defaults' => [
-                                '__CONTROLLER__' => 'Blog',
-                                'controller' => BlogController::class,
+                                '__CONTROLLER__' => 'Accessory',
+                                'controller' => AccessoryController::class,
+                                'action' => 'home',
+                            ],
+                        ],
+                        'may_terminate' => true,
+                    ],
+                    'accessories' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/{accessories}',
+                            'defaults' => [
+                                '__CONTROLLER__' => 'Accessory',
+                                'controller' => AccessoryController::class,
                                 'action' => 'index',
                             ],
                         ],
                         'may_terminate' => true,
                         'child_routes' => [
                             'category' => [
-                                'type' => 'Segment',
+                                'type'    => 'Segment',
                                 'may_terminate' => true,
                                 'options' => [
                                     'route' => '/[:category]',
@@ -168,23 +123,23 @@ return [
                                         'category' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                     ],
                                     'defaults' => [
-                                        '__CONTROLLER__' => 'Blog',
-                                        'controller' => BlogController::class,
-                                        'action' => 'category',
+                                        '__CONTROLLER__' => 'Accessory',
+                                        'controller'    => AccessoryController::class,
+                                        'action'        => 'category',
                                     ],
                                 ],
                                 'child_routes' => [
                                     'detail' => [
-                                        'type' => 'Segment',
+                                        'type'    => 'Segment',
                                         'options' => [
-                                            'route' => '/[:detail]',
+                                            'route'    => '/[:detail]',
                                             'constraints' => [
-                                                'detail' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                                'detail'    => '[a-zA-Z][a-zA-Z0-9_-]*',
                                             ],
                                             'defaults' => [
-                                                '__CONTROLLER__' => 'Blog',
-                                                'controller' => BlogController::class,
-                                                'action' => 'detail',
+                                                '__CONTROLLER__' => 'Accessory',
+                                                'controller'    => AccessoryController::class,
+                                                'action'        => 'detail',
                                             ],
                                         ],
                                     ],
@@ -197,9 +152,9 @@ return [
                         'options' => [
                             'route' => '/{contact}',
                             'defaults' => [
-                                '__CONTROLLER__' => 'Contact',
-                                'controller' => ContactController::class,
-                                'action' => 'index',
+                                '__CONTROLLER__' => 'Home',
+                                'controller' => HomeController::class,
+                                'action' => 'contact',
                             ],
                         ],
                         'may_terminate' => true,
@@ -235,7 +190,7 @@ return [
         'invokables' => [
             'Application\Controller\Home' => Controller\HomeController::class,
             'Application\Controller\Job' => Controller\JobController::class,
-            'Application\Controller\Blog' => Controller\BlogController::class,
+            'Application\Controller\Accessory' => Controller\AccessoryController::class,
             'Application\Controller\Contact' => Controller\ContactController::class,
             'Application\Controller\Company' => Controller\CompanyController::class,
             'Application\Controller\Legal' => Controller\LegalController::class,
@@ -255,12 +210,13 @@ return [
     ],
     'service_manager' => [
         'abstract_factories' => [
-            'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
-            'Zend\Log\LoggerAbstractServiceFactory',
+            StorageCacheAbstractServiceFactory::class,
+            LoggerAbstractServiceFactory::class,
         ],
         'factories' => [
             'Translator' => TranslatorServiceFactory::class,
-            'Application\Service\SessionService' => 'Application\Service\SessionService',
+            SessionService::class => SessionService::class,
+            GalleryRenderService::class => InvokableFactory::class
         ],
     ],
     'view_helpers' => [
@@ -268,14 +224,11 @@ return [
             'applicationMenuHelper' => Menu::class,
             'socialIconHelper' => SocialIcon::class,
             'legalLinkHelper' => LegalLink::class,
-            'megabannerHelper' => Megabanner::class,
-            'homeModuleHelper' => HomeModule::class,
             'partnerHelper' => Partner::class,
-            'jobHelper' => Job::class,
+            'galleryHelper' => Gallery::class,
             'jobCategoryHelper' => JobCategory::class,
-            'blogHelper' => Blog::class,
-            'blogCategoryHelper' => BlogCategory::class,
             'contactFormHelper' => ContactForm::class,
+            'questionFormHelper' => QuestionForm::class,
             'carouselItemHelper' => CarouselItem::class,
             'facebookShareHelper' => FacebookShare::class,
             'translate' => Translate::class
@@ -284,14 +237,11 @@ return [
             Menu::class => InvokableFactory::class,
             SocialIcon::class => InvokableFactory::class,
             LegalLink::class => InvokableFactory::class,
-            Megabanner::class => InvokableFactory::class,
-            HomeModule::class => InvokableFactory::class,
             Partner::class => InvokableFactory::class,
-            Job::class => InvokableFactory::class,
+            Gallery::class => InvokableFactory::class,
             JobCategory::class => InvokableFactory::class,
-            Blog::class => InvokableFactory::class,
-            BlogCategory::class => InvokableFactory::class,
-            ContactForm::class => ContactForm::class,
+            ContactForm::class => InvokableFactory::class,
+            QuestionForm::class => InvokableFactory::class,
             CarouselItem::class => CarouselItem::class,
             FacebookShare::class => InvokableFactory::class,
             Translate::class => InvokableFactory::class
@@ -303,7 +253,7 @@ return [
         ],
     ],
     'translator' => [
-        'locale' => 'es_es',
+        'locale' => 'es',
         'translation_file_patterns' => [
             [
                 'type' => 'phpArray',
@@ -317,9 +267,15 @@ return [
                 'pattern' => '%s.php',
                 'text_domain' => 'routing'
             ],
+            [
+                'type' => 'phpArray',
+                'base_dir' => Resources::getBasePath(),
+                'pattern' => Resources::getPatternForValidator(),
+            ],
         ],
     ],
     'view_manager' => [
+        'base_path' => 'https://bravo-silva.ngrok.io/',
         'display_not_found_reason' => true,
         'display_exceptions' => true,
         'doctype' => 'HTML5',
@@ -327,6 +283,8 @@ return [
         'exception_template' => 'error/index',
         'template_map' => [
             'layout/layout' => __DIR__ . '/../view/layout/front-layout.phtml',
+            'layout/accessories' => __DIR__ . '/../view/layout/accessories-layout.phtml',
+            'layout/pagination-layout' => __DIR__ . '/../view/layout/gallery-pagination-layout.phtml',
             'error/404' => __DIR__ . '/../view/error/404.phtml',
             'error/index' => __DIR__ . '/../view/error/index.phtml',
         ],

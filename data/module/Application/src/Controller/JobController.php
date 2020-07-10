@@ -4,43 +4,33 @@ namespace Application\Controller;
 
 use Api\Service\JobCategoryService;
 use Api\Service\JobService;
+use Application\Service\GalleryRenderService;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class JobController extends ApplicationController
 {
-    public function indexAction()
+    public function homeAction()
     {
-        $menu = $this->menu;
+        $page = (int) $this->params()->fromQuery('page');
 
-        if (isset($menu->rows->jobs) and $menu->rows->jobs->active == 1) {
-            $menuLang = $menu->locale->{$this->lang};
+        $galleryRenderService = $this->serviceManager->build(GalleryRenderService::class, [
+            'ViewRenderer' => $this->serviceManager->get('ViewRenderer')
+        ]);
 
-            $menuLangJob = $menuLang[$menu->rows->jobs->id];
+        $jobService = $this->serviceManager->get(JobService::class);
 
-            $this->headTitleHelper->append($menuLangJob->name);
-
-            $ogFacebook = $this->openGraph->facebook();
-            $ogFacebook->title = $this->headTitleHelper->renderTitle();
-            $ogFacebook->description = $menuLangJob->metaDescription;
-
-            $this->layout()->setVariable('og', $ogFacebook);
-
-            $page = $this->params()->fromQuery('page');
-
-            $jobs = $this->serviceManager->get(JobService::class)->getData($this->lang, false, $page);
-            $jobCategories = $this->serviceManager->get(JobCategoryService::class)->getData($this->lang);
-
-            return new ViewModel([
-                'menu' => $this->menu,
-                'lang' => $this->lang,
-                'jobs' => $jobs,
-                'jobCategories' => $jobCategories,
-                'routePagination' => $this->lang . '/jobs',
-                'routeParams' => []
-            ]);
-        }
-
-        $this->getResponse()->setStatusCode(404);
+        return new JsonModel([
+            'content' => $galleryRenderService->render([
+                'gallery' => $jobService->getJobs($this->lang, false, $page),
+                'galleryType' => 'jobs-gallery'
+            ]),
+            'nextPage' => $this->url()->fromRoute(
+                'locale/jobs',
+                ['locale' => $this->lang, 'type' => 'jobs'],
+                ['query' => ['page' => $page + 1]]
+            ),
+        ]);
     }
 
     public function categoryAction()

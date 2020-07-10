@@ -2,40 +2,71 @@
 
 namespace Application\Form;
 
-use Zend\Filter\HtmlEntities;
+use Application\Validator\Recaptcha;
 use Zend\Filter\StringTrim;
 use Zend\Form\Element\Checkbox;
+use Zend\Form\Element\File;
+use Zend\Form\Element\Hidden;
+use Zend\Form\Element\Select;
 use Zend\Form\Element\Text;
 use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
+use Zend\Validator\Db\RecordExists;
 use Zend\Validator\EmailAddress;
+use Zend\Validator\File\Count;
+use Zend\Validator\File\FilesSize;
 
 class ContactFieldset extends Fieldset implements InputFilterProviderInterface
 {
-    public function __construct($name, array $options)
+    protected $adapter;
+
+    public function __construct($name, array $options, $adapter)
     {
         parent::__construct($name, $options);
+
+        $this->adapter = $adapter;
 
         $this->add([
             'name' => 'name',
             'type' => Text::class,
             'attributes' => [
                 'id' => 'name',
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'placeholder' => 'Nombre'
             ],
         ])->add([
             'name' => 'email',
             'type' => Text::class,
             'attributes' => [
                 'id' => 'email',
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'placeholder' => 'Email'
             ],
         ])->add([
             'name' => 'phone',
             'type' => Text::class,
             'attributes' => [
                 'id' => 'phone',
+                'class' => 'form-control',
+                'placeholder' => 'Teléfono'
+            ],
+        ])->add([
+            'name' => 'question_topic',
+            'type' => Select::class,
+            'attributes' => [
+                'id' => 'question_topic',
                 'class' => 'form-control'
+            ],
+            'allow_empty' => false,
+            'options' => [
+                'empty_option' => 'Temática de la pregunta',
+                'value_options' => [
+                    'repuestos' => 'Repuestos',
+                    'ingenieria_electrica' => 'Ingeniería Eléctrica',
+                    'reparaciones' => 'Reparaciones',
+                    'ingenieria_mecanica' => 'Ingeniería mecánica',
+                    'otros' => 'otros',
+                ]
             ],
         ])->add([
             'name' => 'message',
@@ -43,7 +74,24 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
             'attributes' => [
                 'id' => 'message',
                 'class' => 'form-control',
-                'rows' => '10'
+                'rows' => '10',
+                'placeholder' => 'Mensaje'
+            ],
+        ])->add([
+            'name' => 'file',
+            'type' => File::class,
+            'attributes' => [
+                'id' => 'file',
+                'class' => 'form-control',
+                'multiple' => true
+            ],
+        ])->add([
+            'name' => 'question_code',
+            'type' => Text::class,
+            'attributes' => [
+                'id' => 'question_code',
+                'class' => 'form-control',
+                'placeholder' => 'Código de cliente (opcional)'
             ],
         ])->add([
             'name' => 'legal',
@@ -54,12 +102,24 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
             'options' => [
                 'use_hidden_element' => false
             ]
+        ])->add([
+            'name' => 'g-recaptcha-response',
+            'type' => Hidden::class,
         ]);
     }
 
     public function getInputFilterSpecification()
     {
         return [
+            'name' => [
+                'required' => true,
+                'filters' => [
+                    [
+                        'name' => StringTrim::class
+                    ]
+                ]
+            ],
+
             'email' => [
                 'required' => true,
                 'filters' => [
@@ -81,8 +141,58 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
                     ],
                 ]
             ],
+            'question_topic' => [
+                'required' => true,
+            ],
+            'question_code' => [
+                'required' => false,
+                'filters' => [
+                    [
+                        'name' => StringTrim::class
+                    ]
+                ],
+                'validators' => [
+                    [
+                        'name' => RecordExists::class,
+                        'options' => [
+                            'table' => 'customers',
+                            'field' => 'key',
+                            'adapter' => $this->adapter
+                        ]
+                    ]
+                ]
+            ],
+            'file' => [
+                'required' => false,
+                'validators' => [
+                    [
+                        'name' => Count::class,
+                        'options' => [
+                            'min' => 0,
+                            'max' => 2
+                        ]
+                    ],
+                    [
+                        'name' => FilesSize::class,
+                        'options' => [
+                            'max' => '1kB',
+                        ]
+                    ]
+                ]
+            ],
             'legal' => [
                 'required' => true
+            ],
+            'g-recaptcha-response' => [
+                'required' => true,
+                'validators' => [
+                    [
+                        'name' => Recaptcha::class,
+                        'options' => [
+                            'captcha_secret' => $this->getOption('captcha_secret')
+                        ]
+                    ]
+                ]
             ]
         ];
     }

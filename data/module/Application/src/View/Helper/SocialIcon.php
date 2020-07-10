@@ -14,17 +14,17 @@ class SocialIcon extends AbstractHelper
 {
     protected $socialIcons = [
         'facebook' => [
-            'icon' => 'fa-facebook-official'
+            'icon' => 'icon-facebook'
         ],
-        'twitter' => [
-            'icon' => 'fa-twitter'
-        ],
-        'googlePlus' => [
-            'icon' => 'fa-google-plus'
+        'linkedin' => [
+            'icon' => 'icon-linkedin'
         ],
         'instagram' => [
-            'icon' => 'fa-instagram'
-        ]
+            'icon' => 'icon-instagram'
+        ],
+        'twitter' => [
+            'icon' => 'icon-twitter'
+        ],
     ];
 
     public function __invoke($data = [])
@@ -40,7 +40,7 @@ class SocialIcon extends AbstractHelper
         foreach ($this->socialIcons as $name => $socialInfo) {
             if (property_exists($data, $name) and trim($data->{$name}) != '') {
                 echo sprintf(
-                    '<a href="%s" target="_blank"><i class="fa %s"></i></a>',
+                    '<li><a href="%s" target="_blank"><i class="%s"></i></a></li>',
                     $data->{$name},
                     $socialInfo['icon']
                 );

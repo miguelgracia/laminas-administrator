@@ -16,7 +16,7 @@ class SectionService implements AllowDatabaseAccessInterface
     public function getMenu()
     {
         $rows = new ArrayObject(
-            $this->table->all(['deleted_at' => null])->setFetchGroupResultSet('key')->toObjectArray(),
+            $this->table->all(['deleted_at' => null], ['order' => 'ASC'])->setFetchGroupResultSet('key')->toObjectArray(),
             ArrayObject::ARRAY_AS_PROPS
         );
 

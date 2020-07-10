@@ -13,14 +13,12 @@ class PartnerService implements AllowDatabaseAccessInterface
 
     public function getData($lang)
     {
-        $rows = new ArrayObject(
+        return new ArrayObject(
             $this->table->all([
                 'active' => '1',
                 'deleted_at' => null
-            ])->setFetchGroupResultSet('id')->toObjectArray(),
+            ], ['order' => 'ASC'])->setFetchGroupResultSet('id')->toObjectArray(),
             ArrayObject::ARRAY_AS_PROPS
         );
-
-        return $rows;
     }
 }

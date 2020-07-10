@@ -2,13 +2,7 @@
 
 namespace Api\Service;
 
-use Application\Form\ContactFieldset;
-use Zend\Captcha\Dumb;
-use Zend\Captcha\Image;
-use Zend\Filter\RealPath;
-use Zend\Form\Element\Captcha;
 use Zend\Form\Form;
-use Zend\InputFilter\InputFilter;
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail;
 use Zend\Validator\EmailAddress;
@@ -20,76 +14,57 @@ class ContactService
      */
     protected $form;
 
-    public function createForm()
+    public function createForm($fieldset)
     {
-        $fieldset = new ContactFieldset('contact', []);
-        $this->form = new Form();
-        $this->form->add($fieldset);
-
-        $captcha = new Captcha('captcha');
-
-        $realPathFilter = new RealPath(false);
-
-        $fontPath = $realPathFilter->filter($_SERVER['DOCUMENT_ROOT'] . '/font/arial.ttf');
-
-        $imageCaptcha = new Image([
-            'font' => $fontPath
-        ]);
-
-        $imageCaptcha->setImgDir($_SERVER['DOCUMENT_ROOT'] . '/captcha');
-        $imageCaptcha->setImgUrl('/captcha');
-
-        $captcha->setCaptcha($imageCaptcha);
-
-        $captcha->setAttribute('id', 'captcha');
-        $captcha->setAttribute('class', 'form-control');
-        $this->form->add($captcha);
-        $this->form->setAttribute('method', 'post');
-        $inputFilter = new InputFilter();
-
-        $inputFilter->add($captcha->getInputSpecification(), 'captcha');
-
-        $this->form->setInputFilter($inputFilter);
-        return $this->form;
+        return (new Form)
+            ->add($fieldset)
+            ->setAttributes([
+                'id' => $fieldset->getName() . '_form',
+                'class' => 'form-horizontal',
+                'method' => 'POST'
+            ]);
     }
 
-    public function bindForm($postData)
+    public function sendFormMail($formData, $mailTo, $fieldset = 'contact')
     {
-        $this->form->setData($postData);
-    }
+        $ignoreFields = ['question_legal', 'legal', 'g-recaptcha-response'];
 
-    public function validateForm()
-    {
-        return $this->form->isValid();
-    }
-
-    public function sendFormMail($mailTo)
-    {
         $mailValidator = new EmailAddress();
 
-        if ($mailValidator->isValid($mailTo)) {
-            $formData = $this->form->getData();
-
-            $formData = $formData['contact'];
-
-            $mail = new Message();
-//            $mail->setFrom('absconsultor@absconsultor.es', "ABS Consultor - Contacto Web");
-            $mail->setFrom('miguelgraciamartin@gmail.com', 'ABS Consultor - Contacto Web');
-            $mail->addTo($mailTo, 'ABS Consultor');
-            $mail->setSubject('Información de contacto desde la web');
-
-            $body = 'Nombre   : ' . $formData['name'] . "\n";
-            $body .= 'Email    : ' . $formData['email'] . "\n";
-            $body .= 'Teléfono : ' . $formData['phone'] . "\n";
-            $body .= 'Mensaje  : ' . $formData['message'] . "\n";
-
-            $mail->setBody($body);
-
-            $transport = new Sendmail();
-            $transport->send($mail);
-
-            return true;
+        if (!$mailValidator->isValid($mailTo)) {
+            return false;
         }
-        return false;
+
+        $translations = [
+            'phone' => 'Teléfono',
+            'question_name' => 'Nombre',
+            'name' => 'Nombre',
+            'question_email' => 'Email',
+            'email' => 'Email',
+            'question_topic' => 'Tipo de pregunta',
+            'question_code' => 'Codigo cliente',
+            'question_message' => 'Mensaje',
+            'message' => 'Mensaje',
+        ];
+
+        $body = '';
+
+        foreach ($formData[$fieldset] as $field => $fieldValue) {
+            if (in_array($field, $ignoreFields)) {
+                continue;
+            }
+            $body .= $translations[$field] . ': ' . $fieldValue . "\n";
+        }
+
+        $mail = (new Message)
+            ->setFrom('absconsultor@absconsultor.es', "ABS Consultor - Contacto Web")
+            ->setEncoding('UTF-8')
+            ->addTo($mailTo, 'ABS Consultor')
+            ->setSubject('Información de contacto desde la web')
+            ->setBody($body);
+
+        (new Sendmail())->send($mail);
+
+        return true;
     }
 }

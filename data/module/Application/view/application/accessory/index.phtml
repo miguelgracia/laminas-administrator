@@ -1,0 +1,48 @@
+<?php
+$galleryHelper = $this->galleryHelper();
+$jobCategoryHelper = $this->jobCategoryHelper();
+?>
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-9">
+
+            <div class="masonry-loader masonry-loader-showing">
+
+                <div class="row products product-thumb-info-list" data-plugin-masonry data-plugin-options="{'layoutMode': 'fitRows'}">
+                    <?php $galleryHelper->render($this->lang, $this->accessories);?>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <?php
+                        // add at the end of the file after the table
+                        echo $this->paginationControl(
+                        // the paginator object
+                            $this->accessories,
+                            // the scrolling style
+                            'sliding',
+                            // the partial to use to render the control
+                            'partial/paginator.phtml',
+                            // the route to link to when a user clicks a control link
+                            [
+                                'route' => $this->routePagination,
+                                'routeParams' => $this->routeParams
+                            ]
+                        );
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 d-none d-lg-block">
+            <aside class="sidebar">
+                <h5 class="font-weight-bold pt-3">Categorias</h5>
+                <ul class="nav nav-list flex-column">
+                    <?php $jobCategoryHelper->render($this->lang, $this->accessoriesCategories, $this->currentCategory);?>
+                </ul>
+            </aside>
+        </div>
+    </div>
+</div>

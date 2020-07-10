@@ -5,6 +5,7 @@ namespace Api\Service;
 use Api\Model\JobLocaleTable;
 use Api\Model\JobTable;
 use Zend\Db\Sql\Predicate\Expression;
+use Zend\Db\Sql\Select;
 
 class JobService implements AllowDatabaseAccessInterface
 {
@@ -13,33 +14,11 @@ class JobService implements AllowDatabaseAccessInterface
     protected $tableName = JobTable::class;
     protected $tableLocaleName = JobLocaleTable::class;
 
-    public function getDetail($lang, $jobUri)
-    {
-        $this->table->setTableLocaleService($this->tableLocale);
-        $tableFields = [
-            'id' => 'id',
-            'job_categories_id' => 'job_categories_id',
-            'key' => 'key',
-            'image_url' => 'image_url',
-            'created_at' => 'created_at',
-            'updated_at' => 'updated_at',
-            'deteled_at' => 'deleted_at',
-            'active' => 'active'
-        ];
-        $localeFields = [
-            'title' => 'title',
-            'url_key' => 'url_key',
-            'content' => 'content',
-            'meta_description' => 'meta_description',
-        ];
-        return $this->table->findRow($lang, 'jobs_locales.url_key', $jobUri, $tableFields, $localeFields);
-    }
-
-    public function getData($lang, $categoryFilter = false, $page = 1, $limit = 10)
+    public function getJobs($lang, $isFeatured = null, $page = 0)
     {
         $this->table->setTableLocaleService($this->tableLocale);
 
-        $paginateCallback = function (&$select, &$where) use ($lang, $categoryFilter) {
+        $closureFunction = function (Select &$select, &$where) use ($lang, $isFeatured, $page) {
             $select->join(
                 'job_categories',
                 new Expression('job_categories.id =' . 'jobs.job_categories_id'),
@@ -52,39 +31,32 @@ class JobService implements AllowDatabaseAccessInterface
                 [
                     'category_title' => 'title',
                     'category_url_key' => 'url_key',
-                    'category_meta_description' => 'meta_description'
                 ]
             )->order('jobs.created_at DESC');
+
             $where['job_categories.active'] = '1';
 
-            if ($categoryFilter) {
-                $where['job_categories_locales.url_key'] = $categoryFilter;
+            if (!is_null($isFeatured)) {
+                $where['jobs.show_in_home'] = (string) $isFeatured;
+
+                if (!$isFeatured) {
+                    $select->offset(($page * 3))->limit(3);
+                }
             }
         };
 
         $tableFields = [
-            'id' => 'id',
-            'job_categories_id' => 'job_categories_id',
             'key' => 'key',
             'image_url' => 'image_url',
-            'created_at' => 'created_at',
-            'updated_at' => 'updated_at',
-            'active' => 'active',
-            'deleted_at' => 'deleted_at'
+            'show_in_home' => 'show_in_home'
         ];
+
         $localeTableFields = [
             'title' => 'title',
             'url_key' => 'url_key',
-            'content' => 'content',
-            'meta_description' => 'meta_description',
+            'content' => 'content'
         ];
 
-        $jobsPaginator = $this->table->paginate($lang, $tableFields, $localeTableFields, $paginateCallback);
-
-        $jobsPaginator->setCurrentPageNumber($page);
-
-        $jobsPaginator->setItemCountPerPage($limit);
-
-        return $jobsPaginator;
+        return $this->table->allWithLocale($lang, $tableFields, $localeTableFields, $closureFunction);
     }
 }

@@ -14,8 +14,7 @@ class AdministratorFormRow extends AbstractHelper
 
     private function formTemplate()
     {
-        $template = '<div class="box-body">%s%s</div><div class="box-footer">%s</div>';
-        return $template;
+        return '<div class="box-body">%s%s</div><div class="box-footer">%s</div>';
     }
 
     private function localeTabTemplate($tplType = '')

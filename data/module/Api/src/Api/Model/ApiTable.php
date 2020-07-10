@@ -24,7 +24,7 @@ class ApiTable extends AbstractTableGateway implements AdapterAwareInterface
         $this->tableLocaleService = $tableLocaleService;
     }
 
-    public function paginate($languageCode = false, $tableFields = [], $localeFields = [], $callback = false)
+    private function getSelectForLocale($languageCode = false, $tableFields = [], $localeFields = [], $callback = false)
     {
         $tableLocaleService = $this->tableLocaleService;
 
@@ -60,6 +60,20 @@ class ApiTable extends AbstractTableGateway implements AdapterAwareInterface
         }
 
         $select->where($where);
+
+        return $select;
+    }
+
+    public function allWithLocale($languageCode = false, $tableFields = [], $localeFields = [], $callback = false)
+    {
+        return $this->selectWith(
+            $this->getSelectForLocale($languageCode, $tableFields, $localeFields, $callback)
+        );
+    }
+
+    public function paginate($languageCode = false, $tableFields = [], $localeFields = [], $callback = false)
+    {
+        $select = $this->getSelectForLocale($languageCode, $tableFields, $localeFields, $callback);
 
         $paginatorAdapter = new DbSelect(
             $select,

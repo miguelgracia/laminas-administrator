@@ -16,7 +16,7 @@ class AmAppDataModuleController extends AuthController
 
     public function indexAction()
     {
-        $this->redirect()->toRoute('administrator', [
+        return $this->redirect()->toRoute('administrator', [
             'module' => 'app-data',
             'action' => 'edit',
             'id' => 1
