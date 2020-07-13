@@ -142,7 +142,6 @@ class HomeController extends ApplicationController
         ];
     }
 
-
     private function getIntros()
     {
         $menuLang = $this->menu->locale->{$this->lang};
