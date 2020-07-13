@@ -791,11 +791,36 @@ h1, h2, h3, h4, h5, h6 {
         margin-bottom: 30px;
         display: block;
       }
+
+      .intro-service {
+
+        min-height: auto;
+
+        @media screen and (max-width: $screen-lg){
+          min-height: 145px;
+          margin-bottom: 0;
+        }
+
+        @media screen and (max-width: $screen-md){
+          min-height: 145px;
+          margin-bottom: 10px;
+        }
+
+        @media screen and (max-width: $screen-sm){
+          min-height: 65px;
+          margin-bottom: 10px;
+        }
+      }
     }
 
     h2 {
       font-size: 24px;
       font-weight: 400;
+      height: 40px;
+
+      @media screen and (max-width: $screen-sm){
+        height: auto;
+      }
     }
 
     &:hover, &:focus {

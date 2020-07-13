@@ -6316,9 +6316,27 @@ h1, h2, h3, h4, h5, h6 {
         color: #000;
         margin-bottom: 30px;
         display: block; }
+      #abstpl-intro .abstpl-block > .abstpl-text .intro-service {
+        min-height: auto; }
+        @media screen and (max-width: 1200px) {
+          #abstpl-intro .abstpl-block > .abstpl-text .intro-service {
+            min-height: 145px;
+            margin-bottom: 0; } }
+        @media screen and (max-width: 992px) {
+          #abstpl-intro .abstpl-block > .abstpl-text .intro-service {
+            min-height: 145px;
+            margin-bottom: 10px; } }
+        @media screen and (max-width: 768px) {
+          #abstpl-intro .abstpl-block > .abstpl-text .intro-service {
+            min-height: 65px;
+            margin-bottom: 10px; } }
     #abstpl-intro .abstpl-block h2 {
       font-size: 24px;
-      font-weight: 400; }
+      font-weight: 400;
+      height: 40px; }
+      @media screen and (max-width: 768px) {
+        #abstpl-intro .abstpl-block h2 {
+          height: auto; } }
     #abstpl-intro .abstpl-block:hover > .overlay, #abstpl-intro .abstpl-block:focus > .overlay {
       opacity: 0;
       z-index: 9; }
