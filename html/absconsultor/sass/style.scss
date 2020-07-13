@@ -1286,21 +1286,42 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 // Forms
-.form-control {
-  color: #7f7f7f;
-  box-shadow: none;
-  background: transparent;
-  border: 2px solid rgba(0, 0, 0, .1);
-  height: 54px;
-  font-size: 18px;
-  font-weight: 400;
-  // &:hover
-  &:active, &:focus {
-    outline: none;
-    box-shadow: none;
-    border-color: $brand-primary;
+.form-group {
+
+  margin-bottom: 20px;
+
+  label {
+    font-size: 0.8em;
+
+    input[type="checkbox"] {
+      margin: 0 5px 0 0;
+      vertical-align: middle;
+    }
   }
+
+  .form-control {
+    color: #7f7f7f;
+    box-shadow: none;
+    background: transparent;
+    border: 2px solid rgba(0, 0, 0, .1);
+    height: 54px;
+    font-size: 18px;
+    font-weight: 400;
+    // &:hover
+    &:active, &:focus {
+      outline: none;
+      box-shadow: none;
+      border-color: $brand-primary;
+    }
+  }
+
+  &[data-name="contact[g-recaptcha-response]"] {
+    height: 0;
+    margin: 0;
+  }
+
 }
+
 
 .btn {
   @include transition(.5s);
@@ -1691,7 +1712,7 @@ h1, h2, h3, h4, h5, h6 {
   position: fixed;
   width: 100%;
   color: white;
-  text-align: center;
+  text-align: left;
   bottom: 0;
   font-size: 14px;
   padding: 20px;

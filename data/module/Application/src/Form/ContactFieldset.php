@@ -13,7 +13,6 @@ use Laminas\Form\Fieldset;
 use Laminas\InputFilter\InputFilterProviderInterface;
 use Laminas\Validator\Db\RecordExists;
 use Laminas\Validator\EmailAddress;
-use Laminas\Validator\File\Count;
 use Laminas\Validator\File\FilesSize;
 
 class ContactFieldset extends Fieldset implements InputFilterProviderInterface
@@ -168,6 +167,10 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
                     [
                         'name' => FilesSize::class,
                         'options' => [
+                            /**
+                             * TODO: parametrizar este valor para que vaya acorde al string que se encuentra a pelo
+                             * en el archivo module/Application/languages/es.php
+                             */
                             'max' => (1024 * 4) . 'kB',
                         ]
                     ]

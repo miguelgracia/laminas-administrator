@@ -75,7 +75,7 @@ class FormHelper extends AbstractHelper
         $formHelper = $this->helperManager->get($helperName);
 
         $label = is_string($labelText)
-            ? sprintf($this->getLabelWrapper(), $field, $this->translator->translate($labelText, 'frontend'))
+            ? sprintf($this->getLabelWrapper(!is_string($labelText)), $field, $this->translator->translate($labelText, 'frontend'))
             : '';
 
         $field = $fieldset->get($field);
