@@ -455,12 +455,8 @@ function srmHomeController() {
                     let content = document.querySelector('a[data-fslightbox="' + lbInstance + '"').parentNode.querySelector('.content')
 
                     let div = document.createElement('div');
+                    div.classList.add('js-image-popup-text');
                     div.innerHTML = content.innerHTML;
-                    div.style.position = 'fixed';
-                    div.style.width = '100%';
-                    div.style.color = 'white';
-                    div.style.textAlign = 'center';
-                    div.style.bottom = '10px';
 
                     document.querySelector('.fslightbox-container').appendChild(div);
                 }, 1000);

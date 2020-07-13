@@ -5994,6 +5994,11 @@ h1, h2, h3, h4, h5, h6 {
       }*/ }
         #abstpl-header .navbar-brand img.main-logo {
           width: 75px; }
+        #abstpl-header .navbar-brand.secondary {
+          position: absolute;
+          top: 100px;
+          left: 50%;
+          margin-left: -125px; }
       #abstpl-header .navbar-brand {
         color: #000 !important; }
       #abstpl-header #navbar li a {
@@ -6080,6 +6085,9 @@ h1, h2, h3, h4, h5, h6 {
     #abstpl-header .navbar-brand img {
       width: 292px;
       padding-top: 5px; }
+      @media screen and (max-width: 768px) {
+        #abstpl-header .navbar-brand img {
+          width: 250px; } }
   #abstpl-header.navbar-fixed-top {
     position: fixed !important;
     background: #fff;
@@ -6200,6 +6208,9 @@ h1, h2, h3, h4, h5, h6 {
       font-size: 50px;
       color: white;
       margin: 0 0 20px 0; }
+      @media screen and (max-width: 768px) {
+        #abstpl-home .text-inner h1 {
+          font-size: 2em; } }
     #abstpl-home .text-inner h2 {
       font-size: 28px;
       line-height: 38px;
@@ -6963,3 +6974,15 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center; }
+
+.js-image-popup-text {
+  position: fixed;
+  width: 100%;
+  color: white;
+  text-align: center;
+  bottom: 0;
+  font-size: 14px;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.7); }
+  .js-image-popup-text ul {
+    text-align: left; }

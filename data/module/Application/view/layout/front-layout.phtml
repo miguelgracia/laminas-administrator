@@ -123,7 +123,7 @@ echo $this->doctype(); ?>
 
     <?php echo $this->headScript()
             ->appendFile($assetPath. '/dist/vendor-dist.js')
-            ->appendFile($assetPath. '/dist/dist.js')
+            ->appendFile($assetPath. '/dist/dist.js?t=' . microtime())
         ; ?>
         <?php echo $this->inlineScript() ?>
     </body>

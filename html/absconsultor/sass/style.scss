@@ -335,6 +335,13 @@ h1, h2, h3, h4, h5, h6 {
         width: 75px;
       }
 
+      &.secondary {
+        position: absolute;
+        top: 100px;
+        left: 50%;
+        margin-left: -125px;
+      }
+
       /*img.secondary-logo {
         display: none;
       }*/
@@ -482,7 +489,13 @@ h1, h2, h3, h4, h5, h6 {
     img {
       width: 292px;
       padding-top: 5px;
+
+      @media screen and (max-width: $screen-sm) {
+        width: 250px;
+      }
     }
+
+
 
 
   }
@@ -643,6 +656,10 @@ h1, h2, h3, h4, h5, h6 {
       font-size: 50px;
       color: rgba(255, 255, 255, 1);
       margin: 0 0 20px 0;
+
+      @media screen and (max-width: $screen-sm){
+        font-size: 2em;
+      }
     }
 
     h2 {
@@ -1619,4 +1636,19 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.js-image-popup-text {
+  position: fixed;
+  width: 100%;
+  color: white;
+  text-align: center;
+  bottom: 0;
+  font-size: 14px;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+
+  ul {
+    text-align: left;
+  }
 }
