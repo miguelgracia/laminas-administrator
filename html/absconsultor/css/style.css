@@ -6703,6 +6703,8 @@ h1, h2, h3, h4, h5, h6 {
       outline: none;
       box-shadow: none;
       border-color: #000; }
+    .form-group .form-control[name="contact[message]"] {
+      height: auto; }
   .form-group[data-name="contact[g-recaptcha-response]"] {
     height: 0;
     margin: 0; }

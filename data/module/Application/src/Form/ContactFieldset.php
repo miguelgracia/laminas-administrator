@@ -21,6 +21,7 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
 
     public function __construct($name, array $options, $adapter)
     {
+        $this->setMessages();
         parent::__construct($name, $options);
 
         $this->adapter = $adapter;
@@ -172,6 +173,13 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
                              * en el archivo module/Application/languages/es.php
                              */
                             'max' => (1024 * 4) . 'kB',
+                            'messages' => [
+                                /**
+                                 * TODO: Buscar la forma de no tener que estar poniendo los mnesajes de error con variables
+                                 * desde aqui para que lo pille en espa;ol
+                                 */
+                                FilesSize::TOO_BIG => _("El conjunto de archivos debería tener un tamaño máximo de '%max%' pero tiene un tamaño de '%size%'")
+                            ]
                         ]
                     ]
                 ]

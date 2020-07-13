@@ -1313,6 +1313,10 @@ h1, h2, h3, h4, h5, h6 {
       box-shadow: none;
       border-color: $brand-primary;
     }
+
+    &[name="contact[message]"] {
+      height: auto;
+    }
   }
 
   &[data-name="contact[g-recaptcha-response]"] {
