@@ -10,6 +10,7 @@ use Api\Service\StaticPageService;
 use Application\Form\ContactFieldset;
 use Application\Form\QuestionFieldset;
 use Laminas\Db\Adapter\Adapter;
+use Laminas\Stdlib\Parameters;
 use Laminas\View\Model\JsonModel;
 use Laminas\View\Model\ViewModel;
 
@@ -24,12 +25,18 @@ class HomeController extends ApplicationController
     {
         $contactService = $this->serviceManager->get(ContactService::class);
 
-        $this->form = $contactService
-            ->createForm($fieldset)
-            ->setData(array_merge(
+        $parameters = new Parameters;
+
+        $parameters->fromArray(
+            array_merge_recursive(
                 $this->request->getPost()->toArray(),
                 $this->request->getFiles()->toArray()
-            ));
+            )
+        );
+
+        $this->form = $contactService
+            ->createForm($fieldset)
+            ->setData($parameters);
 
         $isValid = $this->form->isValid();
 

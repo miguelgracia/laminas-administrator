@@ -257,19 +257,19 @@ return [
         'translation_file_patterns' => [
             [
                 'type' => 'phpArray',
-                'base_dir' => __DIR__ . '/../language',
+                'base_dir' => __DIR__ . '/../languages',
                 'pattern' => '%s.php',
                 'text_domain' => 'frontend'
             ],
             [
                 'type' => 'phpArray',
-                'base_dir' => __DIR__ . '/../language/routing',
+                'base_dir' => __DIR__ . '/../languages/routing',
                 'pattern' => '%s.php',
                 'text_domain' => 'routing'
             ],
             [
                 'type' => 'phpArray',
-                'base_dir' => Resources::getBasePath(),
+                'base_dir' => __DIR__ . '/../languages',
                 'pattern' => Resources::getPatternForValidator(),
             ],
         ],

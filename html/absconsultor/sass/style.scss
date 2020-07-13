@@ -284,6 +284,10 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   margin-top: 40px;
 
+  .navbar-header {
+    display: flex;
+  }
+
   img.main-logo {
     display: none;
   }
@@ -293,6 +297,17 @@ h1, h2, h3, h4, h5, h6 {
       img.main-logo {
         display: block;
       }
+    }
+  }
+
+  @media screen and (min-width: $screen-xs-max) and (max-width: $screen-md-min) {
+    margin-top: 20px;
+
+    .navbar-brand.secondary {
+      position: absolute;
+      left: 50%;
+      margin-left: -146px;
+      top: 80px;
     }
   }
 
@@ -320,9 +335,9 @@ h1, h2, h3, h4, h5, h6 {
         width: 75px;
       }
 
-      img.secondary-logo {
+      /*img.secondary-logo {
         display: none;
-      }
+      }*/
     }
 
     .navbar-brand {
@@ -467,12 +482,6 @@ h1, h2, h3, h4, h5, h6 {
     img {
       width: 292px;
       padding-top: 5px;
-
-      &.secondary-logo {
-        position: absolute;
-        top: 3px;
-        left: 0;
-      }
     }
 
 

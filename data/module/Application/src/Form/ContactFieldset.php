@@ -166,16 +166,9 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
                 'required' => false,
                 'validators' => [
                     [
-                        'name' => Count::class,
-                        'options' => [
-                            'min' => 0,
-                            'max' => 2
-                        ]
-                    ],
-                    [
                         'name' => FilesSize::class,
                         'options' => [
-                            'max' => '1kB',
+                            'max' => (1024 * 4) . 'kB',
                         ]
                     ]
                 ]
