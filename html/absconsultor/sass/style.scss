@@ -1465,9 +1465,9 @@ h1, h2, h3, h4, h5, h6 {
   height: 44px;
   width: 25px;
   border-bottom: none !important;
-  /*@media screen and (max-width: $screen-sm) {
-    display: block;
-  }*/
+  @media screen and (min-width: $screen-sm-min) {
+    display: none;
+  }
 }
 
 #footer {
