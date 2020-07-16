@@ -19,14 +19,14 @@ class ContactForm extends FormHelper
 
         $formTag = $this->getFormWrapper();
 
-        $groupTags = $this->getElement('formInput', 'name', 'Form Name');
-        $groupTags .= $this->getElement('formInput', 'email', 'Form Email');
-        $groupTags .= $this->getElement('formInput', 'phone', 'Form Phone');
-        $groupTags .= $this->getElement('formInput', 'question_code', 'Form customer code');
-        $groupTags .= $this->getElement('formSelect', 'question_topic', 'Form question topic');
-        $groupTags .= $this->getElement('formTextarea', 'message', 'Form Message');
-        $groupTags .= $this->getElement('formFile', 'file', 'Archivo');
-        $groupTags .= $this->getElement('formInput', 'g-recaptcha-response',false);
+        $groupTags = $this->getElement('formInput', 'name');
+        $groupTags .= $this->getElement('formInput', 'email');
+        $groupTags .= $this->getElement('formInput', 'phone');
+        $groupTags .= $this->getElement('formInput', 'question_code');
+        $groupTags .= $this->getElement('formSelect', 'question_topic');
+        $groupTags .= $this->getElement('formTextarea', 'message');
+        $groupTags .= $this->getElement('formInput', 'g-recaptcha-response');
+        $groupTags .= $this->getElement('formFile', 'file', 'Form files');
 
         $field = $fieldset->get('legal');
 

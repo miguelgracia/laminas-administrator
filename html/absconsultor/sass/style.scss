@@ -284,15 +284,55 @@ h1, h2, h3, h4, h5, h6 {
   top: 0;
   margin-top: 40px;
 
+
   img.main-logo {
     display: none;
   }
+
+  @media screen and (width: $screen-sm) {
+    .abstpl-nav-toggle {
+      display: none;
+    }
+  }
+
 
   &.navbar-fixed-top {
     .navbar-brand {
       img.main-logo {
         display: block;
       }
+    }
+
+    @media screen and (width: $screen-sm) {
+
+      .navbar-header {
+        height: 100px;
+        width: 100%;
+        display: flex;
+
+        .navbar-right {
+          margin-right: 0;
+        }
+
+        a.gotop {
+          margin: 0 auto;
+
+          img.main-logo {
+            width: 150px;
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and (min-width: $screen-xs-max) and (max-width: $screen-md-min) {
+    margin-top: 20px;
+
+    .navbar-brand.secondary {
+      position: absolute;
+      left: 50%;
+      margin-left: -146px;
+      top: 80px;
     }
   }
 
@@ -320,9 +360,16 @@ h1, h2, h3, h4, h5, h6 {
         width: 75px;
       }
 
-      img.secondary-logo {
-        display: none;
+      &.secondary {
+        position: absolute;
+        top: 100px;
+        left: 50%;
+        margin-left: -125px;
       }
+
+      /*img.secondary-logo {
+        display: none;
+      }*/
     }
 
     .navbar-brand {
@@ -468,12 +515,12 @@ h1, h2, h3, h4, h5, h6 {
       width: 292px;
       padding-top: 5px;
 
-      &.secondary-logo {
-        position: absolute;
-        top: 3px;
-        left: 0;
+      @media screen and (max-width: $screen-sm) {
+        width: 250px;
       }
     }
+
+
 
 
   }
@@ -634,6 +681,10 @@ h1, h2, h3, h4, h5, h6 {
       font-size: 50px;
       color: rgba(255, 255, 255, 1);
       margin: 0 0 20px 0;
+
+      @media screen and (max-width: $screen-sm){
+        font-size: 2em;
+      }
     }
 
     h2 {
@@ -740,11 +791,36 @@ h1, h2, h3, h4, h5, h6 {
         margin-bottom: 30px;
         display: block;
       }
+
+      .intro-service {
+
+        min-height: auto;
+
+        @media screen and (max-width: $screen-lg){
+          min-height: 145px;
+          margin-bottom: 0;
+        }
+
+        @media screen and (max-width: $screen-md){
+          min-height: 145px;
+          margin-bottom: 10px;
+        }
+
+        @media screen and (max-width: $screen-sm){
+          min-height: 65px;
+          margin-bottom: 10px;
+        }
+      }
     }
 
     h2 {
       font-size: 24px;
       font-weight: 400;
+      height: 40px;
+
+      @media screen and (max-width: $screen-sm){
+        height: auto;
+      }
     }
 
     &:hover, &:focus {
@@ -1210,21 +1286,46 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 // Forms
-.form-control {
-  color: #7f7f7f;
-  box-shadow: none;
-  background: transparent;
-  border: 2px solid rgba(0, 0, 0, .1);
-  height: 54px;
-  font-size: 18px;
-  font-weight: 400;
-  // &:hover
-  &:active, &:focus {
-    outline: none;
-    box-shadow: none;
-    border-color: $brand-primary;
+.form-group {
+
+  margin-bottom: 20px;
+
+  label {
+    font-size: 0.8em;
+
+    input[type="checkbox"] {
+      margin: 0 5px 0 0;
+      vertical-align: middle;
+    }
   }
+
+  .form-control {
+    color: #7f7f7f;
+    box-shadow: none;
+    background: transparent;
+    border: 2px solid rgba(0, 0, 0, .1);
+    height: 54px;
+    font-size: 18px;
+    font-weight: 400;
+    // &:hover
+    &:active, &:focus {
+      outline: none;
+      box-shadow: none;
+      border-color: $brand-primary;
+    }
+
+    &[name="contact[message]"] {
+      height: auto;
+    }
+  }
+
+  &[data-name="contact[g-recaptcha-response]"] {
+    height: 0;
+    margin: 0;
+  }
+
 }
+
 
 .btn {
   @include transition(.5s);
@@ -1411,12 +1512,11 @@ h1, h2, h3, h4, h5, h6 {
   padding: 6px 0 0 0;
   display: block;
   margin: 0 auto;
-  display: none;
   height: 44px;
   width: 25px;
   border-bottom: none !important;
-  @media screen and (max-width: $screen-sm) {
-    display: block;
+  @media screen and (min-width: $screen-sm-min) {
+    display: none;
   }
 }
 
@@ -1610,4 +1710,19 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.js-image-popup-text {
+  position: fixed;
+  width: 100%;
+  color: white;
+  text-align: left;
+  bottom: 0;
+  font-size: 14px;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+
+  ul {
+    text-align: left;
+  }
 }

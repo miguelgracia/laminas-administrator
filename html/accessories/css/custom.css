@@ -1,10 +1,27 @@
 /* Add here all your CSS customizations */
 
+body {
+    font-family: "Source Sans Pro", Arial, sans-serif;
+}
+
+a {
+    color: #33599b;
+}
+
+aside ul.nav-list > li > a {
+    font-size: 1em;
+}
+
+h5 {
+    font-size: 1.1em;
+}
+
 #footer {
     padding: 50px 0;
     color: #7f7f7f;
     position: relative; }
 #footer .gotop {
+    color: #192d4e;
     position: absolute;
     top: -20px;
     left: 50%;
@@ -77,3 +94,26 @@
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
     border-radius: 50%; }
+
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus,
+.pagination .page-item.active .page-link {
+    background-color: #33599b !important;
+    border-color: #33599b;
+}
+
+.pagination > a,
+.pagination > a:hover,
+.pagination > a:focus,
+.pagination > li > a,
+.pagination > li > span,
+.pagination > li > a:hover,
+.pagination > li > span:hover,
+.pagination > li > a:focus,
+.pagination > li > span:focus {
+    color: #33599b;
+}
