@@ -44,7 +44,7 @@ return [
     ],
     'media_base_url' => [
         'absconsultor.local' => 'http://media.absconsultor.local',
-        'absconsultor.es' => 'http://media.absconsultor.es',
+        'absconsultor.es' => 'https://media.absconsultor.es',
         'bravo-silva.ngrok.io' => 'https://bravo-silva.ngrok.io/media'
     ],
     'router' => [
@@ -275,7 +275,7 @@ return [
         ],
     ],
     'view_manager' => [
-        'base_path' => 'https://bravo-silva.ngrok.io/',
+        'base_path' => 'https://absconsultor.es/',
         'display_not_found_reason' => true,
         'display_exceptions' => true,
         'doctype' => 'HTML5',
