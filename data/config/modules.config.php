@@ -53,7 +53,6 @@ return [
     'AmCustomer',
     'Api',
     'AmPartner',
-    'AmYouTube',
     'MediaDispatcher',
     'OpenGraph',
     'Administrator',

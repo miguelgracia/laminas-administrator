@@ -69,7 +69,6 @@ return [
             \AmSection\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
             \AmStaticPage\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
             \AmUser\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmYouTube\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
             \AmAccessory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
             \AmAccessoryCategory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class
         ]
