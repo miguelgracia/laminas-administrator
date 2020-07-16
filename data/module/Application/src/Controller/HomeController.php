@@ -8,7 +8,6 @@ use Api\Service\JobService;
 use Api\Service\PartnerService;
 use Api\Service\StaticPageService;
 use Application\Form\ContactFieldset;
-use Application\Form\QuestionFieldset;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Stdlib\Parameters;
 use Laminas\View\Model\JsonModel;
@@ -167,7 +166,6 @@ class HomeController extends ApplicationController
         return [
             'formActionUrl' => $this->url()->fromRoute('locale/contact', ['locale' => $this->lang]),
             'contactForm' => $contactService->createForm(new ContactFieldset('contact', $options, $this->serviceManager->get(Adapter::class))),
-            'questionForm' => $questionService->createForm(new QuestionFieldset('question', $options, $this->serviceManager->get(Adapter::class))),
         ];
     }
 }

@@ -21,7 +21,6 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
 
     public function __construct($name, array $options, $adapter)
     {
-        $this->setMessages();
         parent::__construct($name, $options);
 
         $this->adapter = $adapter;
