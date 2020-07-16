@@ -84,12 +84,6 @@ LANGUAGE TABS
     background: url('../../img/footer-background-logo.png') no-repeat;
 }
 
-.btn-youtube {
-    font-size: 20px;
-    padding: 2px 8px;
-}
-
-
 #modal_wrapper {
     position: fixed;
     overflow: hidden;

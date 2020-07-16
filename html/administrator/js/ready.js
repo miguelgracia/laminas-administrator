@@ -18,8 +18,6 @@ $(document).ready(function () {
         '/admin/app-data': ['app_data', 'index'],
         '/admin/partner': ['partner', 'index'],
         '/admin/media/videoPoster': ['video_poster', 'index'],
-        '/admin/you-tube': ['youtube', 'index'],
-        '/admin/add': ['youtube', 'add'],
         '/admin/accessory': ['accessory', 'index'],
         '/admin/accessory-category': ['accessory_category', 'index'],
         '/admin/customer': ['customer', 'index']

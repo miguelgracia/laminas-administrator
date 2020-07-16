@@ -597,11 +597,6 @@ msgstr "Nombre Interno"
 msgid "publicName"
 msgstr "Nombre público"
 
-msgid "youtubeSignupRequired"
-msgstr "No se ha encontrado un canal de You Tube"
-
-msgid "youtubeSignupRequired description"
-msgstr "Este error indica que el usuario tiene cuenta de google pero no un canal de YouTube. <a href='https://www.youtube.com/create_channel' target='_blank'>Crea un canal de YouTube</a> e inténtalo de nuevo."
 
 msgid "authorizationRequired"
 msgstr "Error al autorizar el acceso"
