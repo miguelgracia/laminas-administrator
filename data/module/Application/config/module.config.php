@@ -22,7 +22,6 @@ use Application\View\Helper\LegalLink;
 use Application\View\Helper\Menu;
 use Application\View\Helper\MenuDelegator;
 use Application\View\Helper\Partner;
-use Application\View\Helper\QuestionForm;
 use Application\View\Helper\SocialIcon;
 use Laminas\Cache\Service\StorageCacheAbstractServiceFactory;
 use Laminas\I18n\Translator\Resources;
@@ -228,7 +227,6 @@ return [
             'galleryHelper' => Gallery::class,
             'jobCategoryHelper' => JobCategory::class,
             'contactFormHelper' => ContactForm::class,
-            'questionFormHelper' => QuestionForm::class,
             'carouselItemHelper' => CarouselItem::class,
             'facebookShareHelper' => FacebookShare::class,
             'translate' => Translate::class
@@ -241,7 +239,6 @@ return [
             Gallery::class => InvokableFactory::class,
             JobCategory::class => InvokableFactory::class,
             ContactForm::class => InvokableFactory::class,
-            QuestionForm::class => InvokableFactory::class,
             CarouselItem::class => CarouselItem::class,
             FacebookShare::class => InvokableFactory::class,
             Translate::class => InvokableFactory::class
@@ -275,7 +272,7 @@ return [
         ],
     ],
     'view_manager' => [
-        'base_path' => 'https://absconsultor.es/',
+        'base_path' => 'https://bravo-silva.ngrok.io/',
         'display_not_found_reason' => true,
         'display_exceptions' => true,
         'doctype' => 'HTML5',

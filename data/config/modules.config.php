@@ -47,7 +47,6 @@ return [
     'AmJob',
     'AmJobCategory',
     'AmSection',
-    'AmJobVideo',
     'AmLanguage',
     'AmAppData',
     'AmCustomer',

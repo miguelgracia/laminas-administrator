@@ -1,7 +1,6 @@
 <?php
 $menuHelper = $this->applicationMenuHelper();
 $galleryHelper = $this->galleryHelper()->setLang($this->lang);
-$questionFormHelper = $this->questionFormHelper()->setForm($this->questionForm)->setFieldsetName('question');
 $contactFormHelper = $this->contactFormHelper()->setForm($this->contactForm);
 
 $assetPath = $this->basePath('absconsultor');
@@ -160,29 +159,6 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
         </div>
     </div>
 </section>
-
-<!--<section id="abstpl-technical-question" data-section="technicalquestion">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 section-heading text-center">
-                <h2 class="to-animate">Pregúntanos</h2>
-                <div class="row">
-                    <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                        <h3><?/*= $this->questionIntro; */?></h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-12 to-animate">
-            <div class="row">
-                <div class="col-md-6">
-                    <?/*= $questionFormHelper->render($this->lang, $this->legal); */?>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>-->
 
 <section id="abstpl-work" data-section="jobs">
     <div class="container">
