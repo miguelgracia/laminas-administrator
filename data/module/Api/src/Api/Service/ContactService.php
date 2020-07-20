@@ -30,6 +30,15 @@ class ContactService
             ]);
     }
 
+    private function parseFiles(&$files)
+    {
+        foreach ($files as $key => $file) {
+            if ($file['size'] === 0) {
+                unset($files[$key]);
+            }
+        }
+    }
+
     public function sendFormMail($formData, $mailTo, $fieldset = 'contact')
     {
         $ignoreFields = ['question_legal', 'legal', 'g-recaptcha-response', 'file'];
@@ -39,6 +48,12 @@ class ContactService
         if (!$mailValidator->isValid($mailTo)) {
             return false;
         }
+
+        $mail = (new Message)
+            ->setFrom('absconsultor@absconsultor.es', "ABS Consultor - Contacto Web")
+            ->setEncoding('UTF-8')
+            ->addTo($mailTo, 'ABS Consultor')
+            ->setSubject('Información de contacto desde la web');
 
         $translations = [
             'phone' => 'Teléfono',
@@ -52,46 +67,50 @@ class ContactService
             'message' => 'Mensaje',
         ];
 
-        $body = '';
+        $formDataText = '';
 
         foreach ($formData[$fieldset] as $field => $fieldValue) {
             if (in_array($field, $ignoreFields)) {
                 continue;
             }
-            $body .= $translations[$field] . ': ' . $fieldValue . "\n";
+            $formDataText .= $translations[$field] . ': ' . $fieldValue . "[END_OF_LINE]";
         }
-
-        $html = new MimePart($body);
-        $html->type = Mime::TYPE_HTML;
-        $html->charset = 'utf-8';
-        $html->encoding = Mime::ENCODING_QUOTEDPRINTABLE;
-
-        $parts = [$html];
 
         $files = $formData[$fieldset]['file'];
 
-        foreach ($files as $file) {
-            $image = new MimePart(fopen($file['tmp_name'], 'r'));
-            $image->type = $file['type'];
-            $image->filename = $file['name'];
-            $image->disposition = Mime::DISPOSITION_ATTACHMENT;
-            $image->encoding = Mime::ENCODING_BASE64;
+        $this->parseFiles($files);
 
-            $parts[] = $image;
+        if (count($files)) {
+            $formDataText = str_replace('[END_OF_LINE]', '<br>', $formDataText);
+            $html = new MimePart($formDataText);
+            $html->type = Mime::TYPE_HTML;
+            $html->charset = 'utf-8';
+            $html->encoding = Mime::ENCODING_QUOTEDPRINTABLE;
+
+            $parts = [$html];
+
+            foreach ($files as $file) {
+                $image = new MimePart(fopen($file['tmp_name'], 'r'));
+                $image->type = $file['type'];
+                $image->filename = $file['name'];
+                $image->disposition = Mime::DISPOSITION_ATTACHMENT;
+                $image->encoding = Mime::ENCODING_BASE64;
+
+                $parts[] = $image;
+            }
+
+            $body = new MimeMessage();
+            $body->setParts($parts);
+
+            $mail->setBody($body);
+
+            $contentTypeHeader = $mail->getHeaders()->get('Content-Type');
+            $contentTypeHeader->setType('multipart/related');
+        } else {
+            $formDataText = str_replace('[END_OF_LINE]', "\n", $formDataText);
+            $body = $formDataText;
+            $mail->setBody($body);
         }
-
-        $body = new MimeMessage();
-        $body->setParts($parts);
-
-        $mail = (new Message)
-            ->setFrom('absconsultor@absconsultor.es', "ABS Consultor - Contacto Web")
-            ->setEncoding('UTF-8')
-            ->addTo($mailTo, 'ABS Consultor')
-            ->setSubject('Información de contacto desde la web')
-            ->setBody($body);
-
-        $contentTypeHeader = $mail->getHeaders()->get('Content-Type');
-        $contentTypeHeader->setType('multipart/related');
 
         /*$transport = new Smtp();
         $options   = new SmtpOptions([
@@ -109,7 +128,7 @@ class ContactService
         $transport->setOptions($options);
         $transport->send($mail);*/
 
-        //(new Sendmail())->send($mail);
+        (new Sendmail())->send($mail);
 
         return true;
     }

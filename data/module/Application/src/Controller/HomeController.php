@@ -20,85 +20,6 @@ class HomeController extends ApplicationController
     protected $form;
     protected $messages;
 
-    private function validation($fieldset)
-    {
-        $contactService = $this->serviceManager->get(ContactService::class);
-
-        $parameters = new Parameters;
-
-        $parameters->fromArray(
-            array_merge_recursive(
-                $this->request->getPost()->toArray(),
-                $this->request->getFiles()->toArray()
-            )
-        );
-
-        $this->form = $contactService
-            ->createForm($fieldset)
-            ->setData($parameters);
-
-        $isValid = $this->form->isValid();
-
-        if (!$isValid) {
-            $messages = $this->form->get($fieldset->getName())->getMessages();
-
-            foreach ($messages as &$message) {
-                foreach ($message as &$msg) {
-                    $msg = $this->translator->translate($msg, 'default', $this->lang);
-                }
-            }
-
-            $this->messages = $messages;
-        };
-
-        return $isValid;
-    }
-
-    public function contactAction()
-    {
-        if (!$this->getRequest()->isPost()) {
-            $this->getResponse()->setStatusCode(500);
-            return new JsonModel(
-                [
-                    'isAjax' => $this->getRequest()->isXmlHttpRequest(),
-                    'isPost' => $this->getRequest()->isPost()
-                ]
-            );
-        }
-
-        $contactService = $this->serviceManager->get(ContactService::class);
-
-        if (!$this->validation(new ContactFieldset('contact', [
-            'captcha_secret' => $this->captchaSecret
-        ], $this->serviceManager->get(Adapter::class)))) {
-            $this->getResponse()->setStatusCode(422);
-
-            return new JsonModel([
-                'status' => 'ko',
-                'error' => true,
-                'message' => $this->messages
-            ]);
-        }
-
-        $post = $this->request->getPost();
-
-        $mailInbox = $post['question_code'] !== ''
-            ? $this->appData->row->mailTechnicalInbox
-            : $this->appData->row->mailInbox;
-
-        $mailSended = $contactService->sendFormMail($this->form->getData(), $mailInbox);
-
-        return new JsonModel([
-            'status' => 'ok',
-            'error' => false,
-            'message' => $this->translator->translate(
-                $mailSended ? 'Mensaje enviado' : 'Mensaje NO enviado',
-                'default',
-                $this->lang
-            ),
-        ]);
-    }
-
     public function indexAction()
     {
         $menuLang = $this->menu->locale->{$this->lang};
@@ -157,7 +78,6 @@ class HomeController extends ApplicationController
     private function getForms()
     {
         $contactService = $this->serviceManager->get(ContactService::class);
-        $questionService = clone $contactService;
 
         $options = [
             'captcha_secret' => false

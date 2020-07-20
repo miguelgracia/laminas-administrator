@@ -3,61 +3,95 @@
 namespace Application\Controller;
 
 use Api\Service\ContactService;
-use Api\Service\StaticPageService;
-use Laminas\View\Model\ViewModel;
+use Application\Form\ContactFieldset;
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Stdlib\Parameters;
+use Laminas\View\Model\JsonModel;
 
 class ContactController extends ApplicationController
 {
-    public function indexAction()
+
+    private $captchaSecret = '6LdGVMwUAAAAAGak-tvRIV77Q2NYlGWskB4t5tPB';
+
+    protected $form;
+    protected $messages;
+
+    private function validation($fieldset)
     {
-        $prg = $this->prg($this->url()->fromRoute('locale/contact', ['locale' => $this->lang]), true);
+        $contactService = $this->serviceManager->get(ContactService::class);
 
-        if ($prg instanceof \Laminas\Http\PhpEnvironment\Response) {
-            // Returned a response to redirect us.
-            return $prg;
+        $parameters = new Parameters;
+
+        $parameters->fromArray(
+            array_merge_recursive(
+                $this->request->getPost()->toArray(),
+                $this->request->getFiles()->toArray()
+            )
+        );
+
+        $this->form = $contactService
+            ->createForm($fieldset)
+            ->setData($parameters);
+
+        $isValid = $this->form->isValid();
+
+        if (!$isValid) {
+            $messages = $this->form->get($fieldset->getName())->getMessages();
+
+            foreach ($messages as &$message) {
+                foreach ($message as &$msg) {
+                    $msg = $this->translator->translate($msg, 'default', $this->lang);
+                }
+            }
+
+            $this->messages = $messages;
+        };
+
+        return $isValid;
+    }
+
+    public function contactAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            $this->getResponse()->setStatusCode(500);
+            return new JsonModel(
+                [
+                    'isAjax' => $this->getRequest()->isXmlHttpRequest(),
+                    'isPost' => $this->getRequest()->isPost()
+                ]
+            );
         }
 
-        $form = $this->serviceManager->get(ContactService::class)->createForm();
+        $contactService = $this->serviceManager->get(ContactService::class);
 
-        $menu = $this->menu;
+        if (!$this->validation(new ContactFieldset('contact', [
+            'captcha_secret' => $this->captchaSecret
+        ], $this->serviceManager->get(Adapter::class)))) {
+            $this->getResponse()->setStatusCode(422);
 
-        $menuLang = $this->menu->locale->{$this->lang};
-
-        $menuLangContact = $menuLang[$menu->rows->contact->id];
-
-        $this->headTitleHelper->append($menuLang[$this->menu->rows->contact->id]->name);
-
-        $ogFacebook = $this->openGraph->facebook();
-        $ogFacebook->title = $this->headTitleHelper->renderTitle();
-        $ogFacebook->description = $menuLangContact->metaDescription;
-
-        $this->layout()->setVariable('og', $ogFacebook);
-
-        $mailSended = null;
-
-        if ($prg === false) {
-            if (!isset($menu->rows->contact) or $menu->rows->contact->active == 0) {
-                $this->getResponse()->setStatusCode(404);
-            }
-        } else {
-            $contactService = $this->serviceManager->get(ContactService::class);
-            $contactService->bindForm($prg);
-
-            $isValid = $contactService->validateForm();
-
-            if ($isValid) {
-                $mailTo = $this->appData->row->mailInbox;
-                $mailSended = $contactService->sendFormMail($mailTo);
-            }
+            return new JsonModel([
+                'status' => 'ko',
+                'error' => true,
+                'message' => $this->messages
+            ]);
         }
 
-        return new ViewModel([
-            'formObject' => $form,
-            'legal' => $this->serviceManager->get(StaticPageService::class)->getData(),
-            'menu' => $this->menu,
-            'lang' => $this->lang,
-            'appData' => $this->appData,
-            'mailSended' => $mailSended,
+        $post = $this->request->getPost();
+
+        $mailInbox = $post['question_code'] !== ''
+            ? $this->appData->row->mailTechnicalInbox
+            : $this->appData->row->mailInbox;
+
+        $mailSended = $contactService->sendFormMail($this->form->getData(), $mailInbox);
+
+        return new JsonModel([
+            'status' => 'ok',
+            'error' => false,
+            'message' => $this->translator->translate(
+                $mailSended ? 'Mensaje enviado' : 'Mensaje NO enviado',
+                'default',
+                $this->lang
+            ),
         ]);
     }
 }
