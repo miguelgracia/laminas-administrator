@@ -14,18 +14,37 @@ class Recaptcha extends AbstractValidator
      * @var array
      */
     protected $messageTemplates = [
-        self::IS_BOT   => "The user must be a bot",
+        self::IS_BOT => "The user must be a bot",
     ];
 
     public function isValid($token)
     {
         $secret = $this->getOption('captcha_secret');
 
-        $captchaUrl = "https://www.google.com/recaptcha/api/siteverify?secret=$secret&response=$token";
+        $url = 'https://www.google.com/recaptcha/api/siteverify';
 
-        $result = json_decode(file_get_contents($captchaUrl));
+        $data = [
+            'secret' => $secret,
+            'response' => $token,
+            'remoteip' => $_SERVER['REMOTE_ADDR']
+        ];
 
-        if ($result->success) {
+        $curlConfig = array(
+            CURLOPT_URL => $url,
+            CURLOPT_POST => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POSTFIELDS => $data
+        );
+
+        $ch = curl_init();
+
+        curl_setopt_array($ch, $curlConfig);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $jsonResponse = json_decode($response);
+
+        if ($jsonResponse->success) {
             return true;
         }
 
