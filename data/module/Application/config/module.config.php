@@ -7,6 +7,7 @@
 
 namespace Application;
 
+use Application\Controller\ContactController;
 use Application\Controller\HomeController;
 use Application\Controller\JobController;
 use Application\Controller\AccessoryController;
@@ -151,8 +152,8 @@ return [
                         'options' => [
                             'route' => '/{contact}',
                             'defaults' => [
-                                '__CONTROLLER__' => 'Home',
-                                'controller' => HomeController::class,
+                                '__CONTROLLER__' => 'Contact',
+                                'controller' => ContactController::class,
                                 'action' => 'contact',
                             ],
                         ],
@@ -272,7 +273,7 @@ return [
         ],
     ],
     'view_manager' => [
-        'base_path' => 'https://bravo-silva.ngrok.io/',
+        'base_path' => 'https://absconsultor.es/',
         'display_not_found_reason' => true,
         'display_exceptions' => true,
         'doctype' => 'HTML5',
