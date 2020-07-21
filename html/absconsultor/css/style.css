@@ -6023,8 +6023,16 @@ h1, h2, h3, h4, h5, h6 {
         #abstpl-header #navbar li a span:before {
           background: transparent !important; }
         #abstpl-header #navbar li a[data-nav-section="contact"] {
-          background-color: #192d4e;
-          color: white !important; }
+          background-color: black;
+          border: 2px solid black;
+          color: #fff !important;
+          padding: 10px 16px;
+          font-size: 16px;
+          line-height: 1.33333;
+          border-radius: 6px;
+          font-weight: 400;
+          text-transform: uppercase;
+          margin-top: 3px; }
       #abstpl-header #navbar li.active a {
         background: transparent;
         background: none;
@@ -6074,10 +6082,21 @@ h1, h2, h3, h4, h5, h6 {
         -ms-transform: scaleX(1);
         -o-transform: scaleX(1);
         transform: scaleX(1); }
-    @media screen and (min-width: 992px) {
-      #abstpl-header #navbar li a[data-nav-section="contact"] {
-        background-color: rgba(255, 255, 255, 0.5);
-        color: #fff; } }
+    #abstpl-header #navbar li a[data-nav-section="contact"] {
+      /*background-color: $brand-secondary;*/
+      background-color: black;
+      border: 2px solid black;
+      color: #fff;
+      padding: 10px 16px;
+      font-size: 18px;
+      line-height: 1.33333;
+      border-radius: 6px;
+      font-weight: 400;
+      text-transform: uppercase; }
+      #abstpl-header #navbar li a[data-nav-section="contact"]:hover {
+        background: #63676d !important;
+        color: #fff;
+        outline: none !important; }
   #abstpl-header #navbar li.active a {
     background: transparent;
     background: none;
@@ -6128,12 +6147,13 @@ h1, h2, h3, h4, h5, h6 {
           padding-bottom: 30px; } }
       #abstpl-header.navbar-fixed-top #navbar li a[data-nav-section="contact"] {
         margin-top: 15px;
-        padding-top: 15px;
-        padding-bottom: 15px;
-        background-color: #192d4e;
-        color: white; }
-        #abstpl-header.navbar-fixed-top #navbar li a[data-nav-section="contact"]:hover {
-          background-color: #192d4e; }
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background-color: black;
+        color: white;
+        /*&:hover {
+              background-color: $brand-secondary;
+            }*/ }
     #abstpl-header.navbar-fixed-top #navbar li.active a {
       background: transparent;
       background: none;

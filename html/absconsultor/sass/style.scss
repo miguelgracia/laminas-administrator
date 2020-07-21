@@ -393,8 +393,16 @@ h1, h2, h3, h4, h5, h6 {
           }
 
           &[data-nav-section="contact"] {
-            background-color: $brand-secondary;
-            color: white !important;
+            background-color: black;
+            border: 2px solid black;
+            color: $brand-white !important;
+            padding: 10px 16px;
+            font-size: 16px;
+            line-height: 1.33333;
+            border-radius: 6px;
+            font-weight: 400;
+            text-transform: uppercase;
+            margin-top: 3px;
           }
         }
 
@@ -476,10 +484,22 @@ h1, h2, h3, h4, h5, h6 {
         }
 
 
-        @media screen and (min-width: $screen-md) {
-          &[data-nav-section="contact"] {
-            background-color: rgba(255, 255, 255, 0.5);
-            color: $brand-white;
+        &[data-nav-section="contact"] {
+          /*background-color: $brand-secondary;*/
+          background-color: black;
+          border: 2px solid black;
+          color: $brand-white;
+          padding: 10px 16px;
+          font-size: 18px;
+          line-height: 1.33333;
+          border-radius: 6px;
+          font-weight: 400;
+          text-transform: uppercase;
+
+          &:hover {
+            background: #63676d !important;
+            color: #fff;
+            outline: none !important;
           }
         }
       }
@@ -565,14 +585,14 @@ h1, h2, h3, h4, h5, h6 {
 
           &[data-nav-section="contact"] {
             margin-top: 15px;
-            padding-top: 15px;
-            padding-bottom: 15px;
-            background-color: $brand-secondary;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            background-color: black;
             color: white;
 
-            &:hover {
+            /*&:hover {
               background-color: $brand-secondary;
-            }
+            }*/
           }
         }
 

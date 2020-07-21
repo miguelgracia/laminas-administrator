@@ -51,7 +51,7 @@ class Menu extends AbstractHelper
             $attributes .= 'class = "'.implode(' ', $class).'" ';
 
             echo sprintf(
-                $this->getHtmlRow(),
+                $this->getHtmlRow($routeName === 'contact'),
                 $attributes,
                 $routeKey,
                 $link,
@@ -60,8 +60,12 @@ class Menu extends AbstractHelper
         }
     }
 
-    private function getHtmlRow()
+    private function getHtmlRow($isButton = false)
     {
+        if ($isButton) {
+            return "<li %s><a data-nav-section='%s' href='%s'>%s</a></li>";
+        }
+
         return "<li %s><a data-nav-section='%s' href='%s'><span>%s</span></a></li>";
     }
 }
