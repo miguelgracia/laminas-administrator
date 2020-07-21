@@ -33,24 +33,8 @@ $basePath = $this->basePath() . '/administrator';
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
     <header class="main-header">
-
-        <!-- Logo -->
-        <a href="<?php echo $this->url('administrator',array('module' => 'home')) ?>" class="logo">
-            <!-- mini logo for sidebar mini 50x50 pixels -->
-             <img height="35" src="/img/white-logo-horizontal.png"/>
-            <!--<span class="logo-mini"><?php /*echo $settings->nameClient;*/?></span>-->
-            <span class="logo-mini"><!--ABS Consultor--></span>
-            <!-- logo for regular state and mobile devices -->
-            <!--<span class="logo-lg"><?php /*echo $settings->nameClient;*/?></span>-->
-            <span class="logo-lg"><!--ABS Consultor--></span>
-        </a>
-
         <!-- Header Navbar -->
         <nav class="navbar navbar-static-top" role="navigation">
-            <!-- Sidebar toggle button-->
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                <span class="sr-only">Toggle navigation</span>
-            </a>
             <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
@@ -100,6 +84,11 @@ $basePath = $this->basePath() . '/administrator';
     <aside class="main-sidebar">
 
         <section class="sidebar">
+
+            <a class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <img width="200" src="/img/white-logo-horizontal.png"/>
+            </a>
 
             <!-- Sidebar Menu -->
             <?php
