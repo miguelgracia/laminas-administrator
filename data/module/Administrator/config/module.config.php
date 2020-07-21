@@ -8,6 +8,7 @@ use Administrator\Model\AuthStorage;
 use Administrator\Service\AdministratorFormService;
 use Administrator\Service\DatatableService;
 use Administrator\Service\SessionService;
+use Laminas\I18n\Translator\Resources;
 
 return [
     'view_manager' => [
@@ -28,12 +29,17 @@ return [
         ],
     ],
     'translator' => [
-        'locale' => 'es_ES',
+        'locale' => 'es',
         'translation_file_patterns' => [
-            [
+            /*[
                 'type' => 'gettext',
                 'base_dir' => __DIR__ . '/../language',
                 'pattern' => '%s.mo',
+            ],*/
+            [
+                'type' => 'phpArray',
+                'base_dir' => __DIR__ . '/../language',
+                'pattern' => '%s.php',
             ],
         ],
     ],
