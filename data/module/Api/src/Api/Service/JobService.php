@@ -35,6 +35,7 @@ class JobService implements AllowDatabaseAccessInterface
             )->order('jobs.created_at DESC');
 
             $where['job_categories.active'] = '1';
+            $where['jobs.active'] = '1';
 
             if (!is_null($isFeatured)) {
                 $where['jobs.show_in_home'] = (string) $isFeatured;

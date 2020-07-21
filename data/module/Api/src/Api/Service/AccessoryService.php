@@ -34,6 +34,7 @@ class AccessoryService implements AllowDatabaseAccessInterface
             )->order('accessories.created_at DESC');
 
             $where['accessory_categories.active'] = '1';
+            $where['accessories.active'] = '1';
 
             if (!is_null($isFeatured)) {
                 $where['accessories.show_in_home'] = (string)$isFeatured;
