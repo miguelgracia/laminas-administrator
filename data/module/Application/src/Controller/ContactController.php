@@ -22,10 +22,16 @@ class ContactController extends ApplicationController
 
         $parameters = new Parameters;
 
+        $files = $this->request->getFiles()->toArray();
+
+        if ($files['contact']['file'][0]['error'] !== 0) {
+            $files = [];
+        }
+
         $parameters->fromArray(
             array_merge_recursive(
                 $this->request->getPost()->toArray(),
-                $this->request->getFiles()->toArray()
+                $files
             )
         );
 
