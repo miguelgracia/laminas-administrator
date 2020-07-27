@@ -20,6 +20,7 @@ $(document).ready(function () {
         '/admin/media/videoPoster': ['video_poster', 'index'],
         '/admin/accessory': ['accessory', 'index'],
         '/admin/accessory-category': ['accessory_category', 'index'],
-        '/admin/customer': ['customer', 'index']
+        '/admin/customer': ['customer', 'index'],
+        '/admin/certification': ['certification', 'index']
     }).run();
 });

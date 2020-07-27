@@ -76,7 +76,8 @@ return [
             \AmStaticPage\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
             \AmUser\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
             \AmAccessory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmAccessoryCategory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class
+            \AmAccessoryCategory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+            \AmCertification\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class
         ]
     ],
     'form_elements' => [
