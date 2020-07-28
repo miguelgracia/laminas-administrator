@@ -741,7 +741,7 @@ h1, h2, h3, h4, h5, h6 {
   bottom: 0;
   margin-top: -150px;
   z-index: 10;
-  padding-bottom: 7em;
+  padding-bottom: 0em;
   @media screen and (max-width: $screen-sm) {
     padding-bottom: 3em;
   }
@@ -873,6 +873,32 @@ h1, h2, h3, h4, h5, h6 {
       }
     }
 
+  }
+}
+
+#abstpl-certifications {
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  .certification-icon-info {
+    position: relative;
+    display: block;
+    flex: 1 0 21%; /* explanation below */
+    margin: 5px;
+    height: 100px;
+
+    span {
+      font-size: 1.3em;
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 12px;
+      background-color: white;
+    }
   }
 }
 

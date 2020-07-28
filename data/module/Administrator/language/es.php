@@ -66,9 +66,10 @@ return [
 
     'AmCertification.key' => 'Clave',
     'AmCertification.name' => 'Nombre',
-    'AmCertification.imageUrl' => 'Imagen Certificado',
+    'AmCertification.logo' => 'Imagen Certificado',
     'AmCertification.fileUrl' => 'Documento',
     'AmCertification.active' => 'Activo',
+    'AmCertification.order' => 'Posicion',
 
     //PAGINAS ESTATICAS
     'AmStaticPage.key' => 'Clave',

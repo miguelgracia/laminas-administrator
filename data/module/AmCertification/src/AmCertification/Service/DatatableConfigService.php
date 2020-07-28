@@ -22,7 +22,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
             'orderable' => $disallowOrderTo,
             'columns' => function ($header) use ($thisClass) {
                 //ocultamos la columna ID
-                $header['accessories.id']['options']['visible'] = false;
+                $header['certifications.id']['options']['visible'] = false;
 
                 $thisClass->setEditAndDeleteColumnsOptions($header);
 
