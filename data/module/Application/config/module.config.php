@@ -15,6 +15,7 @@ use Application\Controller\LegalController;
 use Application\Service\GalleryRenderService;
 use Application\Service\SessionService;
 use Application\View\Helper\CarouselItem;
+use Application\View\Helper\CertificationItem;
 use Application\View\Helper\ContactForm;
 use Application\View\Helper\FacebookShare;
 use Application\View\Helper\Gallery;
@@ -229,6 +230,7 @@ return [
             'jobCategoryHelper' => JobCategory::class,
             'contactFormHelper' => ContactForm::class,
             'carouselItemHelper' => CarouselItem::class,
+            'certificationItemHelper' => CertificationItem::class,
             'facebookShareHelper' => FacebookShare::class,
             'translate' => Translate::class
         ],
@@ -242,7 +244,8 @@ return [
             ContactForm::class => InvokableFactory::class,
             CarouselItem::class => CarouselItem::class,
             FacebookShare::class => InvokableFactory::class,
-            Translate::class => InvokableFactory::class
+            Translate::class => InvokableFactory::class,
+            CertificationItem::class => InvokableFactory::class,
         ],
         'delegators' => [
             Menu::class => [

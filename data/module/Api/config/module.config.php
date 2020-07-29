@@ -17,6 +17,7 @@ return [
             \Api\Service\PartnerService::class => \Api\Service\ApiServiceFactory::class,
             \Api\Service\ContactService::class => \Api\Service\ApiServiceFactory::class,
             \Api\Service\AccessoryCategoryService::class => \Api\Service\ApiServiceFactory::class,
+            \Api\Service\CertificationService::class => \Api\Service\ApiServiceFactory::class,
         ],
     ],
 ];

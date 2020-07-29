@@ -43,20 +43,24 @@ class ConfigureFieldsetService
                 'priority' => -($column->getOrdinalPosition() * 100),
             ];
 
+            $reflectionClass = (new \ReflectionClass($fieldset));
+
+            $fieldsetNamespaceName = $reflectionClass->getNamespaceName();
+
+            $moduleNamespace = (explode("\\", $fieldsetNamespaceName))[0];
+
             if (in_array($column->getName(), [
                 $this->hiddenPrimaryKey,
                 $this->hiddenRelatedKey,
                 'language_id'
             ])) {
                 $element = $this->formElementManager->build(Hidden::class);
-                $this->setElementConfig($column, $element);
+                $this->setElementConfig($column, $element, $moduleNamespace);
                 $fieldset->add($element, $flags);
                 continue;
             }
 
             $dataType = $column->getDataType();
-
-            $fieldsetNamespaceName = (new \ReflectionClass($fieldset))->getNamespaceName();
 
             $formElement = $fieldsetNamespaceName . '\\Element\\' . ucfirst($columnName);
 
@@ -70,7 +74,7 @@ class ConfigureFieldsetService
 
             $element = $this->formElementManager->build($elementName);
 
-            $this->setElementConfig($column, $element);
+            $this->setElementConfig($column, $element, $moduleNamespace);
 
             $fieldset->add($element);
         }
@@ -82,7 +86,7 @@ class ConfigureFieldsetService
         }
     }
 
-    private function setElementConfig(ColumnObject $column, &$element)
+    private function setElementConfig(ColumnObject $column, &$element, $moduleNamespace)
     {
         $toCamel = new SeparatorToCamelCase('_');
         $columnName = lcfirst($toCamel->filter($column->getName()));
@@ -103,7 +107,7 @@ class ConfigureFieldsetService
 
         $options += [
             'data_type' => $dataType,
-            'label' => $columnName,
+            'label' => "$moduleNamespace.$columnName",
             'label_attributes' => [
                 'class' => 'col-sm-2 control-label'
             ],

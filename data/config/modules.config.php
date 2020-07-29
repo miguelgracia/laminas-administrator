@@ -50,6 +50,7 @@ return [
     'AmLanguage',
     'AmAppData',
     'AmCustomer',
+    'AmCertification',
     'Api',
     'AmPartner',
     'MediaDispatcher',

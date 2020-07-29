@@ -2,14 +2,14 @@
 
 namespace Api\Service;
 
-use Api\Model\PartnerTable;
+use Api\Model\CertificationTable;
 use Laminas\Stdlib\ArrayObject;
 
-class PartnerService implements AllowDatabaseAccessInterface
+class CertificationService implements AllowDatabaseAccessInterface
 {
     use AllowDatabaseAccessTrait;
 
-    protected $tableName = PartnerTable::class;
+    protected $tableName = CertificationTable::class;
 
     public function getData()
     {

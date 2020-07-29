@@ -42,7 +42,8 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
                 <div class="abstpl-text">
                     <i class="abstpl-intro-icon icon-bulb"></i>
                     <h2>Supervisión y Asesoría</h2>
-                    <p class="intro-service">Asesoramiento completo en proyectos complejos e inspecciones, en relación a grúas portuarias.</p>
+                    <p class="intro-service">Asesoramiento completo en proyectos complejos e inspecciones, en relación a
+                        grúas portuarias.</p>
                     <p><a href="#" class="btn btn-primary more-info">Más Información</a></p>
                 </div>
             </div>
@@ -53,7 +54,8 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
                 <div class="abstpl-text">
                     <i class="abstpl-intro-icon icon-wrench"></i>
                     <h2>Reparaciones y Montajes</h2>
-                    <p class="intro-service">Realizamos montajes completos de cualquier grúa y todo tipo de reparaciones con los mejores
+                    <p class="intro-service">Realizamos montajes completos de cualquier grúa y todo tipo de reparaciones
+                        con los mejores
                         equipos y garantías.</p>
                     <p><a href="#" class="btn btn-primary more-info">Más Información</a></p>
                 </div>
@@ -65,7 +67,8 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
                 <div class="abstpl-text">
                     <i class="abstpl-intro-icon icon-rocket"></i>
                     <h2>Repuestos y Fabricación</h2>
-                    <p class="intro-service">Suministro de repuestos de grúas de cualquier marca. Mejoramos la calidad tanto en materiales
+                    <p class="intro-service">Suministro de repuestos de grúas de cualquier marca. Mejoramos la calidad
+                        tanto en materiales
                         como en diseño.</p>
                     <p><a href="#" class="btn btn-primary more-info">Más Información</a></p>
                 </div>
@@ -82,6 +85,13 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
                             </div>
                         </div>
                     </div>
+
+                    <?php if($this->certifications->count()):?>
+                    <div class="col-md-12 section-heading text-center">
+                        <h2 class="to-animate">Certificaciones</h2>
+                        <?=$this->certificationItemHelper($this->certifications);?>
+                    </div>
+                    <?php endif;?>
                 </div>
             </div>
         </section>
@@ -177,7 +187,8 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
         </div>
         <div class="row">
             <div class="col-xs-12 text-center">
-                <a href="<?=$jobUrl;?>" class="btn btn-primary js-show-more-gallery" data-section-id="abstpl-work">Ver más trabajos</a>
+                <a href="<?= $jobUrl; ?>" class="btn btn-primary js-show-more-gallery" data-section-id="abstpl-work">Ver
+                    más trabajos</a>
             </div>
         </div>
     </div>
@@ -201,7 +212,7 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
         </div>
         <div class="row">
             <div class="col-xs-12 text-center">
-                <a href="<?=$accessoriesUrl;?>" class="btn btn-primary">Ver catalogo completo</a>
+                <a href="<?= $accessoriesUrl; ?>" class="btn btn-primary">Ver catalogo completo</a>
             </div>
         </div>
 
@@ -215,12 +226,12 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
         <div class="row" style="padding: 0">
             <div class="col-md-12 section-heading text-center">
                 <h2 class="to-animate">Clientes</h2>
-        <!--        <div class="row">
-                    <div class="col-md-8 col-md-offset-2 subtext to-animate">
-                        <h3>Our weary eyes still stray to the horizon. Though down this road we've been so many
-                            times.</h3>
-                    </div>
-                </div>-->
+                <!--        <div class="row">
+                            <div class="col-md-8 col-md-offset-2 subtext to-animate">
+                                <h3>Our weary eyes still stray to the horizon. Though down this road we've been so many
+                                    times.</h3>
+                            </div>
+                        </div>-->
             </div>
         </div>
         <div class="row client-slider">
@@ -255,11 +266,13 @@ $legalMessage = $this->legal['locale'][$this->lang][$legalLocaleId]['content'];
                     </li>
                     <li>
                         <i class="icon-phone"></i>
-                        <a class="phone" href="tel:<?= $this->appData->locale->{$this->lang}->phone ?>"><?= $this->appData->locale->{$this->lang}->phone ?></a>
+                        <a class="phone"
+                           href="tel:<?= $this->appData->locale->{$this->lang}->phone ?>"><?= $this->appData->locale->{$this->lang}->phone ?></a>
                     </li>
                     <li>
                         <i class="icon-envelope"></i>
-                        <a class="mail" href="mailto:<?= $this->appData->locale->{$this->lang}->email ?>"><?= $this->appData->locale->{$this->lang}->email ?></a>
+                        <a class="mail"
+                           href="mailto:<?= $this->appData->locale->{$this->lang}->email ?>"><?= $this->appData->locale->{$this->lang}->email ?></a>
                     </li>
                 </ul>
             </div>
