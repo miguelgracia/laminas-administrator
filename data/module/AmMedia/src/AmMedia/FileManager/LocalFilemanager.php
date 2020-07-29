@@ -219,9 +219,6 @@ class LocalFilemanager extends BaseFilemanager
         return $this->initUploader([
             'upload_dir' => $current_path,
         ])->post(true);
-
-        // end application to prevent double response (uploader and filemanager)
-        exit();
     }
 
     /**
@@ -440,30 +437,32 @@ class LocalFilemanager extends BaseFilemanager
         $this->__log('replacing "' . $old_path . '"');
 
         if (!$this->has_permission('replace') || !$this->has_permission('upload')) {
-            $this->error(sprintf($this->lang('NOT_ALLOWED')));
+            return $this->error(sprintf($this->lang('NOT_ALLOWED')));
         }
 
         if (is_dir($old_path)) {
-            $this->error(sprintf($this->lang('NOT_ALLOWED')));
+            return $this->error(sprintf($this->lang('NOT_ALLOWED')));
         }
 
         // we check the given file has the same extension as the old one
         if (strtolower(pathinfo($_FILES[$this->config->upload['paramName']]['name'], PATHINFO_EXTENSION)) != strtolower(pathinfo($this->post['newfilepath'], PATHINFO_EXTENSION))) {
-            $this->error(sprintf($this->lang('ERROR_REPLACING_FILE') . ' ' . pathinfo($this->post['newfilepath'], PATHINFO_EXTENSION)));
+            return $this->error(sprintf($this->lang('ERROR_REPLACING_FILE') . ' ' . pathinfo($this->post['newfilepath'], PATHINFO_EXTENSION)));
         }
 
         // check if file is writable
         if (!$this->has_system_permission($old_path, ['w'])) {
-            $this->error(sprintf($this->lang('NOT_ALLOWED_SYSTEM')));
+            return $this->error(sprintf($this->lang('NOT_ALLOWED_SYSTEM')));
         }
 
         $result = $this->initUploader([
             'upload_dir' => $upload_dir,
         ])->post(true);
 
+        $resultBody = (array) json_decode($result->getBody());
+
         // success upload
-        if (!property_exists($result['files'][0], 'error')) {
-            $new_path = $upload_dir . $result['files'][0]->name;
+        if (!property_exists($resultBody['files'][0], 'error')) {
+            $new_path = $upload_dir . $resultBody['files'][0]->name;
             $this->__log('replacing "' . $old_path . '" with "' . $new_path . '"');
 
             rename($new_path, $old_path);
@@ -473,10 +472,9 @@ class LocalFilemanager extends BaseFilemanager
             if (file_exists($new_thumbnail)) {
                 rename($new_thumbnail, $old_thumbnail);
             }
-        }
 
-        // end application to prevent double response (uploader and filemanager)
-        exit();
+            return $result;
+        }
     }
 
     /**
