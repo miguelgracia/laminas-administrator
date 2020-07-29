@@ -287,7 +287,7 @@ abstract class BaseFilemanager
 
                 case 'replace':
                     if ($this->postvar('newfilepath')) {
-                        $this->replace();
+                        $response = $this->replace();
                     }
                     break;
 
