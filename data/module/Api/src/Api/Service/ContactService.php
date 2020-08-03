@@ -11,6 +11,7 @@ use Laminas\Validator\EmailAddress;
 use Laminas\Mime\Message as MimeMessage;
 use Laminas\Mime\Mime;
 use Laminas\Mime\Part as MimePart;
+use Laminas\Validator\File\IsImage;
 
 class ContactService
 {
@@ -32,11 +33,26 @@ class ContactService
 
     private function parseFiles(&$files)
     {
+        $messages = [];
+
         foreach ($files as $key => $file) {
             if ($file['size'] === 0) {
                 unset($files[$key]);
+                continue;
+            }
+
+            $imageValidator = new IsImage();
+
+            if (!$imageValidator->isValid($file)) {
+                $messages[$file['name']] = [
+                    'file' => $file,
+                    'messages' => $imageValidator->getMessages()
+                ];
+                unset($files[$key]);
             }
         }
+
+        return $messages;
     }
 
     public function sendFormMail($formData, $mailTo, $fieldset = 'contact')
@@ -69,19 +85,28 @@ class ContactService
 
         $formDataText = '';
 
+        $eol = '[END_OF_LINE]';
+
         foreach ($formData[$fieldset] as $field => $fieldValue) {
             if (in_array($field, $ignoreFields)) {
                 continue;
             }
-            $formDataText .= $translations[$field] . ': ' . $fieldValue . "[END_OF_LINE]";
+            $formDataText .= $translations[$field] . ': ' . $fieldValue . $eol;
         }
 
         $files = $formData[$fieldset]['file'];
 
-        $this->parseFiles($files);
+        $validationMessages = $this->parseFiles($files);
+
+        if (count($validationMessages)) {
+            $formDataText .= $eol . $eol . 'ATENCION. Se han intentado subir archivos que no corresponden a un formato de imagen conocido: ' . $eol;
+            foreach ($validationMessages as $fileName => $validationMessage) {
+                $formDataText .= $fileName;
+            }
+        }
 
         if (count($files)) {
-            $formDataText = str_replace('[END_OF_LINE]', '<br>', $formDataText);
+            $formDataText = str_replace($eol, '<br>', $formDataText);
             $html = new MimePart($formDataText);
             $html->type = Mime::TYPE_HTML;
             $html->charset = 'utf-8';
@@ -107,7 +132,7 @@ class ContactService
             $contentTypeHeader = $mail->getHeaders()->get('Content-Type');
             $contentTypeHeader->setType('multipart/related');
         } else {
-            $formDataText = str_replace('[END_OF_LINE]', "\n", $formDataText);
+            $formDataText = str_replace($eol, "\n", $formDataText);
             $body = $formDataText;
             $mail->setBody($body);
         }
