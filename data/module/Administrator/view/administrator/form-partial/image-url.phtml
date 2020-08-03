@@ -33,6 +33,9 @@ if (count($imagesUrl)) {
     }
 } else {
     $element->setValue('');
+    $element->setAttribute('id',$id."0");
+    $element->setAttribute('data-id',$id);
+    $element->setAttribute('data-index',"0");
     $html .= sprintf($row,$formInput->render($element));
 }
 
