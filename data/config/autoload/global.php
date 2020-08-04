@@ -12,7 +12,7 @@
  */
 
 return [
-    'db111' => [
+    'db' => [
         'driver' => 'Pdo',
         'dsn' => 'mysql:dbname=qwi250;host=qwi250.absconsultor.es',
         'driver_options' => [
