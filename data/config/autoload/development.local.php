@@ -16,6 +16,15 @@
  */
 
 return [
+    'db' => [
+        'driver' => 'Pdo',
+        'dsn' => 'mysql:dbname=absconsultor;host=mysql',
+        'driver_options' => [
+            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+        ],
+        'username' => 'root',
+        'password' => '123456',
+    ],
     'view_manager' => [
         'display_exceptions' => true,
         'base_path' => 'https://bravo-silva.ngrok.io/',

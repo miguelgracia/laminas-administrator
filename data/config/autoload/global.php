@@ -12,14 +12,14 @@
  */
 
 return [
-    'db' => [
+    'db111' => [
         'driver' => 'Pdo',
-        'dsn' => 'mysql:dbname=absconsultor;host=mysql',
+        'dsn' => 'mysql:dbname=qwi250;host=qwi250.absconsultor.es',
         'driver_options' => [
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         ],
-        'username' => 'root',
-        'password' => '123456',
+        'username' => 'qwi252',
+        'password' => 'U4e54b5',
     ],
     'service_manager' => [
         'factories' => [
