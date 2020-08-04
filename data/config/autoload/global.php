@@ -26,4 +26,6 @@ return [
             'Laminas\Db\Adapter\Adapter' => 'Laminas\Db\Adapter\AdapterServiceFactory',
         ],
     ],
+    'js_assets_version' => '1.0.0',
+    'css_assets_version' => '1.0.0',
 ];

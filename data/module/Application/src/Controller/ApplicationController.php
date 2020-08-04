@@ -54,10 +54,10 @@ abstract class ApplicationController extends AbstractActionController
 
         $ogFacebook->fb_id = '1593489187619085';
         $ogFacebook->type = 'website';
-        $ogFacebook->url = 'http://' . $_SERVER['SERVER_NAME'] . '/' . $_SERVER['REQUEST_URI'];
+        $ogFacebook->url = 'https://' . $_SERVER['SERVER_NAME'] . '/' . $_SERVER['REQUEST_URI'];
         $ogFacebook->width = '500';
         $ogFacebook->height = '300';
-        $ogFacebook->image = 'http://absconsultor.es/img/white-logo-blue-background.png';
+        $ogFacebook->image = 'https://absconsultor.es/img/white-logo-blue-background.png';
 
         $routeParams = $this->getEvent()->getRouteMatch()->getParams();
 
@@ -72,6 +72,9 @@ abstract class ApplicationController extends AbstractActionController
             'visible' => '1',
         ]);
 
+        $config = $serviceManager->get('Config');
+
+
         $this->layout()->setVariables([
             'showCookieAlert' => $showCookieAlert,
             'languages' => $languagesForFlags,
@@ -81,6 +84,8 @@ abstract class ApplicationController extends AbstractActionController
             'legal' => $serviceManager->get(StaticPageService::class)->getData(),
             'srmController' => 'srm' . $routeParams['__CONTROLLER__'] . 'Controller',
             'controllerAction' => $routeParams['action'] . 'Action',
+            'jsVersion' => $config['js_assets_version'],
+            'cssVersion' => $config['css_assets_version'],
         ]);
 
         return parent::onDispatch($e);
