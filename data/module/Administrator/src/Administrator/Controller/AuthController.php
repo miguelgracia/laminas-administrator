@@ -183,6 +183,9 @@ abstract class AuthController extends AbstractActionController
 
         $this->layout('layout/admin-login-layout');
 
+        $this->layout()->adminCssVersion = $this->config['admin_css_assets_version'];
+        $this->layout()->adminJsVersion = $this->config['admin_js_assets_version'];
+
         if (!in_array($module, $this->whitelist)) {
             $this->layout('layout/admin-layout');
 

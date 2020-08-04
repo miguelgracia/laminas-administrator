@@ -28,4 +28,6 @@ return [
     ],
     'js_assets_version' => '1.0.0',
     'css_assets_version' => '1.0.0',
+    'admin_js_assets_version' => '1.0.0',
+    'admin_css_assets_version' => '1.0.0',
 ];
