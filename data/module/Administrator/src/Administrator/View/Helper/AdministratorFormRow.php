@@ -17,7 +17,7 @@ class AdministratorFormRow extends AbstractHelper
         return '<div class="box-body">%s%s</div><div class="box-footer">%s</div>';
     }
 
-    private function localeTabTemplate($tplType = '')
+    private function localeTabTemplate($tplType = '', $countTabs = 0)
     {
         switch ($tplType) {
             case 'link':
@@ -27,9 +27,10 @@ class AdministratorFormRow extends AbstractHelper
                 $template = "<div class='tab-pane %s' id='tab_%s'>%s</div>";
                 break;
             default:
+                $hideClass = $countTabs < 2 ? 'hide' : '';
                 $template = "
                     <div class='nav-tabs-custom'>
-                        <ul class='nav nav-tabs languages'>
+                        <ul class='nav nav-tabs languages $hideClass'>
                             %s
                         </ul>
                         <div class='tab-content languages'>
@@ -130,7 +131,7 @@ class AdministratorFormRow extends AbstractHelper
                 }
             }
 
-            $tabTpl = $localeTabs != '' ? sprintf($this->localeTabTemplate(), $linkTabs, $localeTabs) : '';
+            $tabTpl = $localeTabs != '' ? sprintf($this->localeTabTemplate('', $index), $linkTabs, $localeTabs) : '';
 
             return sprintf($this->formTemplate(), $boxBody, $tabTpl, $boxFooter);
         }
