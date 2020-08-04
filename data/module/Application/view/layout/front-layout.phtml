@@ -24,13 +24,12 @@ echo $this->doctype(); ?>
 
         <!-- Le styles -->
         <?php echo $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.jpg'])
-            ->prependStylesheet($assetPath . '/css/style.css?t=' . microtime())
-            //->prependStylesheet($assetPath . '/css/bootstrap.css')
-            ->prependStylesheet($assetPath . '/css/magnific-popup.css')
-            ->prependStylesheet($assetPath . '/css/tiny-slider.css')
-            ->prependStylesheet($assetPath . '/css/simple-line-icons.css')
-            ->prependStylesheet($assetPath . '/css/icomoon.css')
-            ->prependStylesheet($assetPath . '/css/animate.css')
+            ->prependStylesheet($assetPath . '/css/style.css?v=' . $this->cssVersion)
+            ->prependStylesheet($assetPath . '/css/magnific-popup.css?v=' . $this->cssVersion)
+            ->prependStylesheet($assetPath . '/css/tiny-slider.css?v=' . $this->cssVersion)
+            ->prependStylesheet($assetPath . '/css/simple-line-icons.css?v=' . $this->cssVersion)
+            ->prependStylesheet($assetPath . '/css/icomoon.css?v=' . $this->cssVersion)
+            ->prependStylesheet($assetPath . '/css/animate.css?v=' . $this->cssVersion)
             ->prependStylesheet('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,400italic,700');
         ?>
 
@@ -122,8 +121,8 @@ echo $this->doctype(); ?>
     <input type="hidden" id="google-captcha-key" value="6LdGVMwUAAAAALwwx1GI2tM5ECgIABu9zXxkxogh">
 
     <?php echo $this->headScript()
-            ->appendFile($assetPath. '/dist/vendor-dist.js')
-            ->appendFile($assetPath. '/dist/dist.js?t=' . microtime())
+            ->appendFile($assetPath. '/dist/vendor-dist.js?v=' . $this->jsVersion)
+            ->appendFile($assetPath. '/dist/dist.js?v=' . $this->jsVersion)
         ; ?>
         <?php echo $this->inlineScript() ?>
     </body>
