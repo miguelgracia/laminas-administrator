@@ -11,9 +11,11 @@ use Laminas\Form\Element\Select;
 use Laminas\Form\Element\Text;
 use Laminas\Form\Fieldset;
 use Laminas\InputFilter\InputFilterProviderInterface;
+use Laminas\Validator\Callback;
 use Laminas\Validator\Db\RecordExists;
 use Laminas\Validator\EmailAddress;
 use Laminas\Validator\File\FilesSize;
+use Laminas\Validator\File\IsImage;
 
 class ContactFieldset extends Fieldset implements InputFilterProviderInterface
 {
@@ -180,6 +182,26 @@ class ContactFieldset extends Fieldset implements InputFilterProviderInterface
                                 FilesSize::TOO_BIG => _("El conjunto de archivos debería tener un tamaño máximo de '%max%' pero tiene un tamaño de '%size%'")
                             ]
                         ]
+                    ],
+                    [
+                        /**
+                         * Devemos usar el validador de tipo Callback porque el validador IsImage no admite la variable
+                         * $_FILES con multiples archivos
+                         */
+                        'name' => Callback::class,
+                        'options' => [
+                            'callback' => function ($files) {
+                                foreach ($files as $file) {
+                                    if (!(new IsImage)->isValid($file)) {
+                                        return false;
+                                    }
+                                }
+                                return true;
+                            },
+                            'messages' => [
+                                Callback::INVALID_VALUE => _("Lo sentimos. Solo es posible subir archivos de imagen.")
+                            ]
+                        ],
                     ]
                 ]
             ],
