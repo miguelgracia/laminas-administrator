@@ -78,6 +78,8 @@ class Gallery extends AbstractHelper
 
         foreach ($elements as $index => $element) {
 
+            $indexTime = $index + time();
+
             $imagesHtml = '';
 
             $images = json_decode($element->imageUrl);
@@ -89,7 +91,7 @@ class Gallery extends AbstractHelper
                 }
                 $imagesHtml .= sprintf(
                     $imageWrapper,
-                    $galleryPrefix . $index,
+                    $galleryPrefix . $indexTime,
                     $img,
                     $classes,
                     $img,
