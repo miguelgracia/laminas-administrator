@@ -66,7 +66,7 @@ class ContactService
         }
 
         $mail = (new Message)
-            ->setFrom('absconsultor@absconsultor.es', "ABS Consultor - Contacto Web")
+            ->setFrom($mailTo, "ABS Consultor - Contacto Web")
             ->setEncoding('UTF-8')
             ->addTo($mailTo, 'ABS Consultor')
             ->setSubject('Información de contacto desde la web');

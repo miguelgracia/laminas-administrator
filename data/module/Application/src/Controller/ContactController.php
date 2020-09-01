@@ -84,7 +84,7 @@ class ContactController extends ApplicationController
 
         $post = $this->request->getPost();
 
-        $mailInbox = $post['question_code'] !== ''
+        $mailInbox = $post['contact']['question_code'] !== ''
             ? $this->appData->row->mailTechnicalInbox
             : $this->appData->row->mailInbox;
 
