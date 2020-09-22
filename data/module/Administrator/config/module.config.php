@@ -4,11 +4,9 @@ use Administrator\Factory\AdministratorControllerFactory;
 use Administrator\Factory\AdministratorFormServiceFactory;
 use Administrator\Factory\AdministratorModelAbstractFactory;
 use Administrator\Factory\AdministratorTableAbstractFactory;
-use Administrator\Model\AuthStorage;
 use Administrator\Service\AdministratorFormService;
 use Administrator\Service\DatatableService;
 use Administrator\Service\SessionService;
-use Laminas\I18n\Translator\Resources;
 
 return [
     'view_manager' => [
@@ -130,10 +128,9 @@ return [
             AdministratorModelAbstractFactory::class,
         ],
         'factories' => [
-            AuthStorage::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
             \Administrator\Service\ConfigureFieldsetService::class => \Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory::class,
             \Administrator\Service\CheckIdService::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
-            'AuthService' => \Administrator\Factory\AuthFactory::class,
+            \Administrator\Service\AuthService::class => \Administrator\Factory\AuthFactory::class,
             SessionService::class => SessionService::class,
             AdministratorFormService::class => AdministratorFormServiceFactory::class,
             \Administrator\Service\DatatablePluginManager::class => \Administrator\Factory\DatatablePluginManagerFactory::class,

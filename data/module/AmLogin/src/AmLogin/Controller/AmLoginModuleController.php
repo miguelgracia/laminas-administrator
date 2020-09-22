@@ -29,9 +29,7 @@ class AmLoginModuleController extends AuthController
 
     public function logoutAction()
     {
-        $this->getSessionStorage()->forgetMe();
         $this->getAuthService()->clearIdentity();
-
         $this->flashmessenger()->addMessage('Ha salido de la plataforma.');
         return $this->goToSection('login');
     }
