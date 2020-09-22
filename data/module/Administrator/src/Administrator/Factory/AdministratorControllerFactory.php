@@ -2,9 +2,8 @@
 
 namespace Administrator\Factory;
 
-use Administrator\Model\AuthStorage;
 use Administrator\Service\AdministratorFormService;
-use Administrator\Service\DatatableConfigInterface;
+use Administrator\Service\AuthService;
 use Administrator\Service\DatatableService;
 use Administrator\Service\SessionService;
 use AmProfile\Service\ProfilePermissionService;
@@ -28,8 +27,7 @@ class AdministratorControllerFactory implements FactoryInterface
         $controllerInstance = new $controllerClassName(
             $container->get('Config'),
             $container->get(SessionService::class),
-            $container->get('AuthService'),
-            $container->get(AuthStorage::class),
+            $container->get(AuthService::class),
             $container->get(ProfilePermissionService::class),
             $container->get(DatatableService::class),
             $container->get('ViewRenderer')

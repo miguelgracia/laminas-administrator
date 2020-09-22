@@ -18,7 +18,6 @@ abstract class AuthController extends AbstractActionController
     // Whitelist de rutas con las que no se muestra login
     protected $whitelist = ['login'];
 
-    protected $storage;
     protected $authService;
     protected $triggerResults;
 
@@ -37,7 +36,6 @@ abstract class AuthController extends AbstractActionController
         $config,
         $sessionService,
         $authService,
-        $storage,
         $profilePermissionService,
         $datatableService,
         $viewRenderer
@@ -45,7 +43,6 @@ abstract class AuthController extends AbstractActionController
         $this->config = $config;
         $this->sessionService = $sessionService;
         $this->authService = $authService;
-        $this->storage = $storage;
         $this->profilePermissionService = $profilePermissionService;
         $this->datatableService = $datatableService;
         $this->viewRenderer = $viewRenderer;
@@ -82,11 +79,6 @@ abstract class AuthController extends AbstractActionController
     public function getAuthService($returnAuthInstance = true)
     {
         return $returnAuthInstance ? $this->authService->getAuthInstance() : $this->authService;
-    }
-
-    public function getSessionStorage()
-    {
-        return $this->storage;
     }
 
     /**
@@ -132,7 +124,6 @@ abstract class AuthController extends AbstractActionController
 
     protected function forbidUser()
     {
-        $this->getSessionStorage()->forgetMe();
         $this->getAuthService()->clearIdentity();
     }
 
