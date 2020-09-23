@@ -140,12 +140,11 @@ return [
     'view_helpers' => [
         'aliases' => [
             'AdministratorMenu' => \Administrator\View\Helper\AdministratorMenu::class,
+            'administrator_form_row' => \Administrator\View\Helper\AdministratorFormRow::class
         ],
         'factories' => [
             \Administrator\View\Helper\AdministratorMenu::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
-            'administrator_form_row' => function () {
-                return new \Administrator\View\Helper\AdministratorFormRow;
-            }
+            \Administrator\View\Helper\AdministratorFormRow::class => \Laminas\ServiceManager\Factory\InvokableFactory::class
         ]
     ],
     \Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory::class => [
