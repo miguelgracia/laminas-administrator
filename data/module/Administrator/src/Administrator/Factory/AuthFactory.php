@@ -21,7 +21,7 @@ class AuthFactory implements FactoryInterface
         $storage = new Session(
             Session::NAMESPACE_DEFAULT,
             Session::MEMBER_DEFAULT,
-            $sessionManager->rememberMe(10)
+            $sessionManager->rememberMe(30 * 60)
         );
 
         return new AuthService(
