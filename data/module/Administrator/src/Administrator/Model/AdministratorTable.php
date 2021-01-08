@@ -23,15 +23,15 @@ abstract class AdministratorTable extends AbstractTableGateway implements Adapte
 
         if ($id == 0) {
             $this->insert($data);
-            $id = $this->getLastInsertValue();
-        } else {
-            if ($this->isTableRow($id, $fieldKey)) {
-                $this->update($data, [$fieldKey => $id]);
-            } else {
-                throw new \Exception($this->table . ' ' . $fieldKey . ' id does not exist');
-            }
-            $this->update($data, [$fieldKey => $id]);
+            return $this->getLastInsertValue();
         }
+
+        if (!$this->isTableRow($id, $fieldKey)) {
+            throw new \Exception($this->table . ' ' . $fieldKey . ' id does not exist');
+        }
+
+        $this->update($data, [$fieldKey => $id]);
+
         return $id;
     }
 }

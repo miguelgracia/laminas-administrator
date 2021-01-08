@@ -38,15 +38,10 @@ use Laminas\Session\Storage\SessionArrayStorage;
 
 return [
     'languages_by_host' => [
-        'bravo-consultoria.local' => ['es', 'en'],
-        'bravo-silva.ngrok.io' => ['es', 'en'],
-        'absconsultor.es' => ['es', 'en'],
-        'absconsultor.local' => ['es', 'en'],
+        'laminas-admin.local' => ['es', 'en'],
     ],
     'media_base_url' => [
-        'absconsultor.local' => 'http://media.absconsultor.local',
-        'absconsultor.es' => 'https://media.absconsultor.es',
-        'bravo-silva.ngrok.io' => 'https://bravo-silva.ngrok.io/media'
+        'laminas-admin.local' => 'http://media.laminas-admin.local',
     ],
     'router' => [
         'router_class' => TranslatorAwareTreeRouteStack::class,
@@ -276,7 +271,7 @@ return [
         ],
     ],
     'view_manager' => [
-        'base_path' => 'https://absconsultor.es/',
+        'base_path' => 'http://laminas-admin.local/',
         'display_not_found_reason' => true,
         'display_exceptions' => true,
         'doctype' => 'HTML5',

@@ -16,12 +16,10 @@ trait MyOrmModelTrait
                 case 'get':
                     $property = $this->parseProperty($output_array[2]);
                     return property_exists($this, $property) ? $this->{$property} : null;
-                    break;
                 case 'set':
                     $property = $this->parseProperty($output_array[2]);
                     $this->{$property} = $arguments[0];
                     return $this;
-                    break;
             }
         }
     }

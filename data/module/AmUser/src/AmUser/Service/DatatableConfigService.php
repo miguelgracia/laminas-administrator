@@ -15,22 +15,20 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
 
         $disallowOrderTo = $disallowSearchTo;
 
-        $thisClass = $this;
-
         return [
             'searchable' => $disallowSearchTo,
             'orderable' => $disallowOrderTo,
-            'columns' => function ($header) use ($thisClass) {
+            'columns' => function ($header) {
                 //ocultamos la columna ID
                 $header['admin_users.id']['options']['visible'] = false;
-                $thisClass->setEditAndDeleteColumnsOptions($header);
+                $this->setEditAndDeleteColumnsOptions($header);
                 return $header;
             },
-            'parse_row_data' => function ($row) use ($thisClass) {
+            'parse_row_data' => function ($row) {
                 //$row contiene los datos de cada una de las filas que ha generado la consulta.
-                //Desde aquí podemos parsear los datos antes de visualizarlos por pantalla
+                //Desde aquï¿½ podemos parsear los datos antes de visualizarlos por pantalla
 
-                $thisClass->setEditAndDeleteColumnsValues($row);
+                $this->setEditAndDeleteColumnsValues($row);
 
                 $row['active'] = $row['active'] == '1' ? 'SI' : 'NO';
 
@@ -42,7 +40,7 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
     public function getQueryConfig()
     {
         return [
-            //En fields solo tenemos que añadir los campos de la tabla indicada en 'from'
+            //En fields solo tenemos que aï¿½adir los campos de la tabla indicada en 'from'
             'fields' => [
                 'id',
                 'username',
@@ -57,16 +55,16 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
                     //ON tal = tal
                     'admin_profile_id = admin_profiles.id',
                     [
-                        //Campos del join. La key es el alias del campo y el valor es el nombre del campo en sí
+                        //Campos del join. La key es el alias del campo y el valor es el nombre del campo en sï¿½
                         'name' => 'name'
                     ],
                     //Tipo de join
                     'left'
                 ],
             ],
-            //Los campos que estén dentro del 'having_fields' no se verán afectados por la clausula where al
+            //Los campos que estï¿½n dentro del 'having_fields' no se verï¿½n afectados por la clausula where al
             //filtar, sino por la clausula having. Esto es necesario para aquellos campos cuyo valor dependen
-            //de una agrupación y deseamos filtrar por ellos.
+            //de una agrupaciï¿½n y deseamos filtrar por ellos.
             'having_fields' => [
             ],
             /*'where' => array(

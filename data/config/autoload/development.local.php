@@ -27,6 +27,6 @@ return [
     ],
     'view_manager' => [
         'display_exceptions' => true,
-        'base_path' => 'https://bravo-silva.ngrok.io/',
+        'base_path' => 'http://laminas-admin.local/',
     ],
 ];

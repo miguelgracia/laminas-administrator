@@ -45,7 +45,7 @@ class OpenGraphTag extends AbstractHelper
                             if (!$isImageValidator->isValid($itemValue)) {
                                 continue;
                             }
-                            $itemValue = 'http://absconsultor.es' . $itemValue;
+                            $itemValue = 'http://laminas-admin.local' . $itemValue;
                         }
                         echo sprintf($this->openTag(), $this->props[$key], $itemValue);
                     }

@@ -57,7 +57,7 @@ abstract class ApplicationController extends AbstractActionController
         $ogFacebook->url = 'https://' . $_SERVER['SERVER_NAME'] . '/' . $_SERVER['REQUEST_URI'];
         $ogFacebook->width = '500';
         $ogFacebook->height = '300';
-        $ogFacebook->image = 'https://absconsultor.es/img/white-logo-blue-background.jpg';
+        $ogFacebook->image = 'http://laminas-admin.local/img/white-logo-blue-background.jpg';
 
         $routeParams = $this->getEvent()->getRouteMatch()->getParams();
 

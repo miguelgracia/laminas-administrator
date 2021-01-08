@@ -15,23 +15,21 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
 
         $disallowOrderTo = $disallowSearchTo;
 
-        $thisClass = $this;
-
         return [
             'searchable' => $disallowSearchTo,
             'orderable' => $disallowOrderTo,
-            'columns' => function ($header) use ($thisClass) {
+            'columns' => function ($header) {
                 //ocultamos la columna ID
                 $header['partners.id']['options']['visible'] = false;
 
-                $thisClass->setEditAndDeleteColumnsOptions($header);
+                $this->setEditAndDeleteColumnsOptions($header);
 
                 return $header;
             },
-            'parse_row_data' => function ($row) use ($thisClass) {
+            'parse_row_data' => function ($row) {
                 //$row contiene los datos de cada una de las filas que ha generado la consulta.
                 //Desde aquí podemos parsear los datos antes de visualizarlos por pantalla
-                $thisClass->setEditAndDeleteColumnsValues($row);
+                $this->setEditAndDeleteColumnsValues($row);
 
                 $row['active'] = $row['active'] == '1' ? 'SI' : 'NO';
 

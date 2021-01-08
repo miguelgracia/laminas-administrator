@@ -4,7 +4,7 @@ namespace Administrator\Form;
 
 use Laminas\Form\Form;
 
-class AdministratorForm extends Form
+abstract class AdministratorForm extends Form
 {
     const ACTION_DEFAULT = 'index';
     const ACTION_ADD = 'add';
@@ -32,4 +32,6 @@ class AdministratorForm extends Form
             $this->add($formElemenetManager->build($fieldsetName));
         }
     }
+
+    abstract public function initializers();
 }
