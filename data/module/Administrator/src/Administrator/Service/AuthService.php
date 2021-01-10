@@ -2,23 +2,42 @@
 
 namespace Administrator\Service;
 
+use Laminas\Authentication\Adapter;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\Authentication\Storage;
 use Laminas\Db\Sql\Select;
 
-class AuthService
+class AuthService extends AuthenticationService
 {
     protected $userData = false;
-    protected $authService;
     protected $userTable;
 
-    public function __construct($authService, $userTable)
+    public function __construct($userTable, Storage\StorageInterface $storage = null, Adapter\AdapterInterface $adapter = null)
     {
-        $this->authService = $authService;
+        parent::__construct($storage, $adapter);
         $this->userTable = $userTable;
     }
 
-    public function getAuthInstance()
+    public function checkUser($username, $password)
     {
-        return $this->authService;
+        $this
+            ->getAdapter()
+            ->setIdentity($username)
+            ->setCredential($password);
+
+        $result = $this->authenticate();
+
+        $this->getStorage()->write([
+            'user' => $username,
+            'password' => $password
+        ]);
+
+        if ($result->getCode() != 1) {
+            //Forbid User
+            $this->clearIdentity();
+        }
+
+        return $result;
     }
 
     /**
@@ -30,7 +49,7 @@ class AuthService
             return $this->userData;
         }
 
-        $username = $this->authService->getIdentity();
+        $username = $this->getIdentity();
 
         $username = $username['user'];
 

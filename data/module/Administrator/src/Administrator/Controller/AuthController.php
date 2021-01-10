@@ -2,6 +2,7 @@
 
 namespace Administrator\Controller;
 
+use Administrator\Service\AuthService;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Mvc\MvcEvent;
 use Laminas\View\Model\JsonModel;
@@ -18,7 +19,11 @@ abstract class AuthController extends AbstractActionController
     // Whitelist de rutas con las que no se muestra login
     protected $whitelist = ['login'];
 
+    /**
+     * @var AuthService
+     */
     protected $authService;
+
     protected $triggerResults;
 
     protected $sessionService;
@@ -76,21 +81,12 @@ abstract class AuthController extends AbstractActionController
         return $this->model;
     }
 
-    public function getAuthService($returnAuthInstance = true)
-    {
-        return $returnAuthInstance ? $this->authService->getAuthInstance() : $this->authService;
-    }
-
     /**
      * @param $module
-     * Sección del gestor al que redirigimos
-     *
      * @param array $params
-     * Parámetros opcionales
-     *
-     * @return \Laminas\Http\Response
+     * @return string
      */
-    public function goToSection($module, $params = [], $returnLink = false, $options = [])
+    public function getUrlSection($module, $params = [])
     {
         $defaultParams = [
             'module' => $module
@@ -102,63 +98,31 @@ abstract class AuthController extends AbstractActionController
 
         $defaultParams = array_merge($defaultParams, $params);
 
-        return $returnLink
-            ? $this->url()->fromRoute('administrator', $defaultParams, $options)
-            : $this->redirect()->toRoute('administrator', $defaultParams, $options);
+        return $this->url()->fromRoute('administrator', $defaultParams);
     }
 
-    public function gotoAddSection($module, $returnLink = false, $options = [])
+    /**
+     * @param $module
+     * Sección del gestor al que redirigimos
+     *
+     * @param array $params
+     * Parámetros opcionales
+     * @param array $options
+     * @return \Laminas\Http\Response
+     */
+    public function goToSection($module, $params = [], $options = [])
     {
-        return $this->goToSection($module, ['action' => 'add'], $returnLink, $options);
-    }
+        $defaultParams = [
+            'module' => $module
+        ];
 
-    public function goToEditSection($module, $id, $returnLink = false, $options = [])
-    {
-        return $this->goToSection($module, ['action' => 'edit', 'id' => $id], $returnLink, $options);
-    }
-
-    protected function getUserData()
-    {
-        return $this->getAuthService(false)->getUserData();
-    }
-
-    protected function forbidUser()
-    {
-        $this->getAuthService()->clearIdentity();
-    }
-
-    protected function checkUser($username, $password)
-    {
-        $authService = $this->getAuthService();
-
-        $authService
-            ->getAdapter()
-            ->setIdentity($username)
-            ->setCredential($password);
-
-        $result = $authService->authenticate();
-
-        $this->getAuthService()->getStorage()->write([
-            'user' => $username,
-            'password' => $password
-        ]);
-
-        if ($result->getCode() != 1) {
-            $this->forbidUser();
+        if (!array_key_exists('action', $params)) {
+            $params['action'] = 'index';
         }
 
-        return $result;
-    }
+        $defaultParams = array_merge($defaultParams, $params);
 
-    public function isActiveUser($userData)
-    {
-        $activo = (bool) $userData->active;
-
-        if (!$activo) {
-            $this->forbidUser();
-        }
-
-        return $activo;
+        return $this->redirect()->toRoute('administrator', $defaultParams, $options);
     }
 
     public function onDispatch(MvcEvent $e)
@@ -195,7 +159,7 @@ abstract class AuthController extends AbstractActionController
         return parent::onDispatch($e);
     }
 
-    protected function accessErrorHandler($errorKey)
+    private function accessErrorHandler($errorKey)
     {
         $jsonModel = new JsonModel([
             'status' => 'ok',
@@ -216,21 +180,21 @@ abstract class AuthController extends AbstractActionController
 
     private function canAccess($module, $action)
     {
-        // Comprobamos si esta autenticado
-        $authService = $this->getAuthService();
-
-        if (!$authService->hasIdentity()) {
+        if (!$this->authService->hasIdentity()) {
             $this->sessionService->section_referer = $this->event->getRouteMatch()->getParams();
             $this->sessionService->query_params = $this->getRequest()->getQuery()->toArray();
 
             return 'ACCESS_SESSION_EXPIRED';
         }
 
-        $userData = $this->getUserData();
+        $userData = $this->authService->getUserData();
 
         $this->layout()->userData = $userData;
 
-        if (!$this->isActiveUser($userData)) {
+        $isActiveUser = (bool) $userData->active;
+
+        if (!$isActiveUser) {
+            $this->authService->clearIdentity();
             return 'ACCESS_USER_DEACTIVATE';
         }
 
@@ -252,22 +216,9 @@ abstract class AuthController extends AbstractActionController
         return $eventManager->trigger($triggerName, null);
     }
 
-    protected function getView($params = [], $viewName)
+    protected function getView($viewName, $params = [])
     {
-        $viewModel = new ViewModel($params);
-        $viewModel->setTemplate('administrator/' . $viewName);
-
-        return $viewModel;
-    }
-
-    public function getAddView($params = [])
-    {
-        return $this->getView($params, 'add');
-    }
-
-    public function getEditView($params = [])
-    {
-        return $this->getView($params, 'edit');
+        return (new ViewModel($params))->setTemplate('administrator/' . $viewName);
     }
 
     public function parseTriggers()

@@ -8,7 +8,6 @@ use Interop\Container\ContainerInterface;
 use Laminas\Authentication\Storage\Session;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\Authentication\AuthenticationService;
 use Laminas\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
 use Laminas\Session\SessionManager;
 
@@ -25,17 +24,16 @@ class AuthFactory implements FactoryInterface
         );
 
         return new AuthService(
-            new AuthenticationService(
-                $storage,
-                new AuthAdapter(
-                    $container->get(Adapter::class),
-                    'admin_users',
-                    'username',
-                    'password',
-                    'md5(?)'
-                )
-            ),
-            $container->get(UserTable::class)
+            $container->get(UserTable::class),
+            $storage,
+            new AuthAdapter(
+                $container->get(Adapter::class),
+                'admin_users',
+                'username',
+                'password',
+                'md5(?)'
+            )
+
         );
     }
 }

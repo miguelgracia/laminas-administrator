@@ -13,7 +13,7 @@ class AmLoginModuleController extends AuthController
 
     public function indexAction()
     {
-        if ($this->getAuthService()->hasIdentity()) {
+        if ($this->authService->hasIdentity()) {
             return $this->logoutAction();
         }
 
@@ -29,7 +29,7 @@ class AmLoginModuleController extends AuthController
 
     public function logoutAction()
     {
-        $this->getAuthService()->clearIdentity();
+        $this->authService->clearIdentity();
         $this->flashmessenger()->addMessage('Ha salido de la plataforma.');
         return $this->goToSection('login');
     }
@@ -41,7 +41,7 @@ class AmLoginModuleController extends AuthController
         if ($request->isXmlHttpRequest()) {
             $response = $this->getResponse();
 
-            $hasIdentity = $this->getAuthService()->hasIdentity();
+            $hasIdentity = $this->authService->hasIdentity();
 
             $response->setContent(json_encode([
                 'status' => 'ok',
@@ -58,7 +58,7 @@ class AmLoginModuleController extends AuthController
 
     public function rememberPasswordAction()
     {
-        if (!$this->getAuthService()->hasIdentity()) {
+        if (!$this->authService->hasIdentity()) {
             $this->layout('layout/login');
             $form = new RecordarPasswordForm('recordar-password');
 
@@ -116,7 +116,7 @@ class AmLoginModuleController extends AuthController
             $passwordCheck = $postFields['password'];
 
             try {
-                $result = $this->checkUser($userCheck, $passwordCheck);
+                $result = $this->authService->checkUser($userCheck, $passwordCheck);
 
                 if ($result->getCode() != $result::SUCCESS) {
                     $this->flashMessenger()->addMessage('Usuario o password incorrectos');
@@ -145,7 +145,7 @@ class AmLoginModuleController extends AuthController
             }
         }
 
-        return $this->goToSection($redirectTo, $redirectParams, false, ['query' => $queryParams]);
+        return $this->goToSection($redirectTo, $redirectParams, ['query' => $queryParams]);
     }
 
     private function saveLastLogin($userCheck, $passwordCheck)

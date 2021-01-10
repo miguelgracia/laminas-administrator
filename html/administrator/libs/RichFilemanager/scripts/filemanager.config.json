@@ -25,7 +25,7 @@
         "fileConnector": "/admin/media/connector",
         "fileRootSizeLimit": false,
         "baseUrl": false,
-        "capabilities": ["select", "upload", "download", "rename", "move", "replace", "delete"],
+        "capabilities": ["select", "upload", "download", "delete"],
         "logger": false,
         "plugins": []
     },
