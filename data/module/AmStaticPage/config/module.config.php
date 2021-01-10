@@ -13,7 +13,11 @@ return [
             \AmStaticPage\Form\StaticPageLocaleFieldset::class => \Administrator\Factory\AdministratorLocaleFieldsetFactory::class
         ]
     ],
-
+    'datatable' => [
+        'factories' => [
+            \AmStaticPage\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+        ]
+    ],
     'service_manager' => [
     ],
 

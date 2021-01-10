@@ -221,7 +221,7 @@ abstract class AuthController extends AbstractActionController
         return (new ViewModel($params))->setTemplate('administrator/' . $viewName);
     }
 
-    public function parseTriggers()
+    protected function parseTriggers()
     {
         $html = '';
         foreach ($this->triggerResults as $result) {

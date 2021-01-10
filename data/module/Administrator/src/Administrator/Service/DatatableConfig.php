@@ -79,22 +79,19 @@ abstract class DatatableConfig
     public function setEditAndDeleteColumnsValues(&$row)
     {
         $module = $this->controllerPluginManager->get('Params')->fromRoute('module');
-
-        $canEdit = $this->permissions->hasModuleAccess($module, 'edit');
-        $canDelete = $this->permissions->hasModuleAccess($module, 'delete');
-
         $link = "<a href='%s'><i class='col-xs-12 text-center fa %s'></i></a>";
 
         $controller = $this->controllerPluginManager->getController();
 
-        $editUrl = $controller->getUrlSection($module, ['action' => 'edit', 'id' => $row['id']]);
-        $deleteUrl = $controller->getUrlSection($module, ['action' => 'delete', 'id' => $row['id']]);
-
+        $canEdit = $this->permissions->hasModuleAccess($module, 'edit');
         if ($canEdit) {
+            $editUrl = $controller->getUrlSection($module, ['action' => 'edit', 'id' => $row['id']]);
             $row['edit'] = sprintf($link, $editUrl, 'fa-edit');
         }
 
+        $canDelete = $this->permissions->hasModuleAccess($module, 'delete');
         if ($canDelete) {
+            $deleteUrl = $controller->getUrlSection($module, ['action' => 'delete', 'id' => $row['id']]);
             $row['delete'] = sprintf($link, $deleteUrl, 'fa-remove js-eliminar');
         }
     }

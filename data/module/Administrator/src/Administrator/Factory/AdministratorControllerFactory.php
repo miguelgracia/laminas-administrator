@@ -18,8 +18,6 @@ class AdministratorControllerFactory implements FactoryInterface
         $routeMatch = $container->get('Application')->getMvcEvent()->getRouteMatch();
         $module = $routeMatch->getParam('module');
 
-        $module = $module == '' ? 'login' : $module;
-
         $moduleName = 'Am' . ((new DashToCamelCase)->filter($module));
 
         $controllerClassName = sprintf('%s\\Controller\\%sModuleController', $moduleName, $moduleName);

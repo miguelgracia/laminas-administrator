@@ -19,4 +19,9 @@ return [
             'AmModule\Service\ModuleService' => 'AmModule\Service\ModuleService'
         ]
     ],
+    'datatable' => [
+        'factories' => [
+            \AmModule\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+        ]
+    ],
 ];

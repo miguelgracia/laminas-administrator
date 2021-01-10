@@ -14,4 +14,9 @@ return [
             \AmUser\Form\UserFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class
         ]
     ],
+    'datatable' => [
+        'factories' => [
+            \AmUser\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+        ]
+    ],
 ];

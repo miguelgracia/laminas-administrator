@@ -17,4 +17,9 @@ return [
             ]
         ]
     ],
+    'datatable' => [
+        'factories' => [
+            \AmLanguage\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+        ]
+    ],
 ];

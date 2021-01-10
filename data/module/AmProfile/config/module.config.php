@@ -24,4 +24,9 @@ return [
             \AmProfile\Service\ProfilePermissionService::class => \AmProfile\Service\ProfilePermissionServiceFactory::class,
         ]
     ],
+    'datatable' => [
+        'factories' => [
+            \AmProfile\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+        ]
+    ],
 ];

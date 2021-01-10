@@ -17,4 +17,9 @@ return [
             \AmJob\Form\JobLocaleFieldset::class => \Administrator\Factory\AdministratorLocaleFieldsetFactory::class
         ]
     ],
+    'datatable' => [
+        'factories' => [
+            \AmJob\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+        ]
+    ],
 ];

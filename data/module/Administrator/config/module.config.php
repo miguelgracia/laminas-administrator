@@ -55,28 +55,10 @@ return [
             ]
         ],
     ],
-
     'controllers' => [
         'factories' => [
             AdministratorControllerFactory::class => AdministratorControllerFactory::class,
         ],
-    ],
-    'datatable' => [
-        'factories' => [
-            \AmAppData\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmJob\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmJobCategory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmLanguage\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmModule\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmPartner\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmProfile\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmSection\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmStaticPage\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmUser\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmAccessory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmAccessoryCategory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
-            \AmCertification\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class
-        ]
     ],
     'form_elements' => [
         /**

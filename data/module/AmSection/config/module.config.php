@@ -16,7 +16,11 @@ return [
             \AmSection\Form\SectionLocaleFieldset::class => \Administrator\Factory\AdministratorLocaleFieldsetFactory::class
         ]
     ],
-
+    'datatable' => [
+        'factories' => [
+            \AmSection\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+        ]
+    ],
     'service_manager' => [
     ],
 

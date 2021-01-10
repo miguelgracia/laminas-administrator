@@ -17,5 +17,10 @@ return [
     ],
 
     'router' => [
-    ]
+    ],
+    'datatable' => [
+        'factories' => [
+            \AmPartner\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+        ]
+    ],
 ];

@@ -17,4 +17,9 @@ return [
             \AmAccessory\Form\AccessoryLocaleFieldset::class => \Administrator\Factory\AdministratorLocaleFieldsetFactory::class
         ]
     ],
+    'datatable' => [
+        'factories' => [
+            \AmAccessory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+        ]
+    ],
 ];

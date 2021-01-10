@@ -12,4 +12,9 @@ return [
             \AmCertification\Form\CertificationFieldset::class => \Administrator\Factory\AdministratorFieldsetFactory::class,
         ]
     ],
+    'datatable' => [
+        'factories' => [
+            \AmCertification\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class
+        ]
+    ],
 ];

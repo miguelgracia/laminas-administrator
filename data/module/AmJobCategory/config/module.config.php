@@ -16,7 +16,11 @@ return [
             \AmJobCategory\Form\JobCategoryLocaleFieldset::class => \Administrator\Factory\AdministratorLocaleFieldsetFactory::class
         ]
     ],
-
+    'datatable' => [
+        'factories' => [
+            \AmJobCategory\Service\DatatableConfigService::class => \Administrator\Factory\DatatableConfigFactory::class,
+        ]
+    ],
     'service_manager' => [
     ],
 
