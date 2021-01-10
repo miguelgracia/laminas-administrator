@@ -30,6 +30,6 @@ trait AddAction
 
         $blocks = $this->parseTriggers();
 
-        return $this->getAddView(compact('form', 'title', 'blocks'));
+        return $this->getView('add', compact('form', 'title', 'blocks'));
     }
 }

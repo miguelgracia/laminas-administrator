@@ -34,7 +34,6 @@ trait IndexAction
             ]
         ] + $this->datatableConfigService->getViewParams();
 
-        return (new ViewModel($viewParams))
-            ->setTemplate('administrator/list-datatable');
+        return (new ViewModel($viewParams))->setTemplate('administrator/list-datatable');
     }
 }

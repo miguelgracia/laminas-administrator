@@ -55,8 +55,8 @@ class DatatableConfigService extends DatatableConfig implements DatatableConfigI
 
                 $controller = $controllerPlugin->getController();
 
-                $editUrl = $controller->goToSection('app-data', ['action' => 'edit', 'id' => $row['id']], true);
-                $deleteUrl = $controller->goToSection('app-data', ['action' => 'delete', 'id' => $row['id']], true);
+                $editUrl = $controller->getUrlSection('app-data', ['action' => 'edit', 'id' => $row['id']]);
+                $deleteUrl = $controller->getUrlSection('app-data', ['action' => 'delete', 'id' => $row['id']]);
 
                 $row['edit'] = $canEdit ? sprintf($link, $editUrl, 'fa-edit') : '';
                 $row['delete'] = $canDelete ? sprintf($link, $deleteUrl, 'fa-remove js-eliminar') : '';

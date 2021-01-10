@@ -39,7 +39,7 @@ abstract class DatatableConfig
             $controller = $this->controllerPluginManager->getController();
 
             if (method_exists($controller, $addAction . 'Action')) {
-                $viewParams['add_action'] = $controller->goToSection($module, ['action' => $addAction], true);
+                $viewParams['add_action'] = $controller->getUrlSection($module, ['action' => $addAction]);
             }
         }
         return $viewParams;
@@ -78,8 +78,7 @@ abstract class DatatableConfig
 
     public function setEditAndDeleteColumnsValues(&$row)
     {
-        $params = $this->controllerPluginManager->get('Params');
-        $module = $params->fromRoute('module');
+        $module = $this->controllerPluginManager->get('Params')->fromRoute('module');
 
         $canEdit = $this->permissions->hasModuleAccess($module, 'edit');
         $canDelete = $this->permissions->hasModuleAccess($module, 'delete');
@@ -88,10 +87,8 @@ abstract class DatatableConfig
 
         $controller = $this->controllerPluginManager->getController();
 
-        $module = $params->fromRoute('module');
-
-        $editUrl = $controller->goToSection($module, ['action' => 'edit', 'id' => $row['id']], true);
-        $deleteUrl = $controller->goToSection($module, ['action' => 'delete', 'id' => $row['id']], true);
+        $editUrl = $controller->getUrlSection($module, ['action' => 'edit', 'id' => $row['id']]);
+        $deleteUrl = $controller->getUrlSection($module, ['action' => 'delete', 'id' => $row['id']]);
 
         if ($canEdit) {
             $row['edit'] = sprintf($link, $editUrl, 'fa-edit');

@@ -31,7 +31,7 @@ trait EditAction
 
             if ($isValid) {
                 $this->formService->save();
-                return $this->goToEditSection($thisModule, $id);
+                return $this->goToSection($thisModule, ['action' => 'edit', 'id' => $id]);
             }
         }
 
@@ -49,10 +49,10 @@ trait EditAction
             $controller = $this->getPluginManager()->getController();
 
             if (method_exists($controller, $addAction . 'Action')) {
-                $viewParams['add_action'] = $controller->goToSection($module, ['action' => $addAction], true);
+                $viewParams['add_action'] = $controller->getUrlSection($module, ['action' => $addAction]);
             }
         }
 
-        return $this->getEditView($viewParams);
+        return $this->getView('edit', $viewParams);
     }
 }
